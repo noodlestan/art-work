@@ -30,15 +30,15 @@
 
 **Description:** CLI for discovering projects, inspecting and synchronizing checkouts, linking resources, and executing commands across them.
 
-**Owner:** Project: Artificial
+**Owner:** Project: Art Work
 
-**Namespace:** Namespace: Art Domains
+**Namespace:** Namespace: Art Work
 
 **Author:** Noodlestan Collective
 
-**Path:** `art-domains/cli/workspace/`
+**Path:** `cli/work`
 
-**Canonical Name:** `@art-domains/workspace-cli`
+**Canonical Name:** `@art-work/cli`
 
 **Published:** `true`
 
@@ -56,7 +56,7 @@
 
 **Bin:**
 
-- `art-workspace`: `./dist/index.js`
+- `art-work-cli`: `./dist/index.js`
 
 **Engines:**
 
