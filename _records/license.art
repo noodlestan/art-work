@@ -1,29 +1,16 @@
-# Art Work
+# Module
 
-> Manage multi-repository development environments for parallel planning and execution.
+## License: Noodlestan 2026 MIT
 
-Tools for discovering projects, managing knowledge and context resources, and operating across multiple checkouts: cloning, visualizing, synchronizing, and executing commands.
+**Short:**
 
-## Getting started
+Copyright (c) 2026 [Noodlestan](https://noodlestan.org/).
 
-### Using the Art Work Cli
+Published under a [MIT license](https://noodlestan.mit-license.org/).
 
-```md
-npm install -g @art-work/cli
-art-work-cli --help
-```
+**Long:**
 
-## Development
-
-### Scripts
-
-- **$** `npm run build` — Bundle all packages for production.
-- **$** `npm run lint` — Lint all packages.
-- **$** `npm run ci` — Full CI pass (lint + build + test).
-
-## License
-
-MIT License
+MIT License https://noodlestan.mit-license.org/
 
 Copyright (c) 2026 Noodlestan https://noodlestan.org/
 

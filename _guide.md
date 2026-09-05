@@ -21,7 +21,7 @@ _guide.md           — this file
 _backlog/           — plans, instructions, reports
 _records/           — project, repository, namespace, and license records
 architecture/       — repository-level architecture documentation
-cli/                — CLI packages (workspace-cli source lives at cli/workspace)
+cli/                — CLI packages (work-cli source lives at cli/work)
 ```
 
 ## Records Management
@@ -50,11 +50,17 @@ Projects in this repository use the following workflows:
 | **Executing Work** `$DOMAINS/work/workflows/executing-work/workflow.art`   | Organize work execution by sub-agents to produce completed, verified outcomes and feedback.       |
 | **Deploying** `$DOMAINS/deployments/workflows/deploying/workflow.art`      | Organizes deployment of artefacts in operations.                                                  |
 
+### Roadmapping
+
+- The roadmap lives at `_roadmap/` with subdirectories such as `/3-now` and `/4-next/`.
+- The short-term roadmapping focus is captured in `_roadmap/_parking-lot.md`.
+- The requirements, use cases, and principles are captured in `_roadmap/_architect.md`.
+
 ### Planning Work
 
 - The backlog lives at `_backlog/` with subdirectories such as `/3-now` and `/4-next/`.
-- The roadmap lives at `_roadmap/`.
-- The short-term focus is captured in `_backlog/_parking-lot.md` and `_roadmap/_parking-lot.md`.
+- The short-term focus is captured in `_backlog/_parking-lot.md`.
+- Planning coordination and constraints are captured in `_backlog/_architect.md`.
 
 ## Operating Instructions
 

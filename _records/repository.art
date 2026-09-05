@@ -1,0 +1,49 @@
+# Module
+
+## Repository: Art Work
+
+**Purpose:** Host and manage the Art Work workspace orchestration tools and applications, and their planning artefacts.
+
+**Description:** Monorepo containing the Art Work roadmap, workspace orchestration source code, and their backlogs.
+
+**Owner:** Project: Art Work
+
+**Author:** Noodlestan Collective
+
+**Remote:** `git@github.com:noodlestan/art-work.git`
+
+**Consumers:** TBD
+
+**Private:** `false`
+
+**Workspaces:** None
+
+**Language:** TypeScript
+
+**Engines:**
+
+- Node: `>= 22`
+
+**PackageManager:** `npm@10.2.3`
+
+**PackageFile:** package.json
+
+**Dependencies:**
+
+- Runtime:
+  - TBD
+- Dev:
+  - TBD
+
+**Scripts:**
+
+- Package Script Set: Root Lifecycle
+
+**Scaffolders:**
+
+- Scaffolder Skeleton: Project Skeleton
+- Scaffolder Files: Project README
+- Scaffolder Files: Project Package Json
+- Scaffolder Files: Project Lefthook
+
+**License:** License: Noodlestan 2026 MIT

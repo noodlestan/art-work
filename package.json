@@ -1,7 +1,7 @@
 {
   "name": "noodlestan/art-work",
   "version": "0.0.1",
-  "description": "Workspace orchestration tools and applications for the Noodlestan ecosystem.",
+  "description": "Tools for discovering projects, managing knowledge and context resources, and operating across multiple checkouts: cloning, visualizing, synchronizing, and executing commands.",
   "author": "Noodlestan",
   "license": "MIT",
   "private": true,

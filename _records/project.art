@@ -1,0 +1,28 @@
+# Module
+
+## Project: Art Work
+
+**Purpose:** Manage multi-repository development environments for parallel planning and execution.
+
+**Description:** Tools for discovering projects, managing knowledge and context resources, and operating across multiple checkouts: cloning, visualizing, synchronizing, and executing commands.
+
+**Owner:** Project: Art Domains
+
+**Author:** Noodlestan Collective
+
+**Repository:** Repository: Art Work
+
+**Resources:**
+
+- Package: Workspace CLI
+- Application: Workspace Website (PLANNED)
+- Tool: Workspace Tool (PLANNED)
+
+**Private:** `false`
+
+**Management:**
+
+- Uses Workflow: Roadmapping. Roadmap at `_roadmap`.
+- Uses Workflow: Planning Work. Backlog at `_backlog`.
+
+**License:** License: Noodlestan 2026 MIT
