@@ -2,7 +2,7 @@
 
 **ID:** `extract-workspace-cli-art-work`
 
-**Status:** `READY`
+**Status:** `DONE`
 
 **Template:** `.agents/domains/plans/templates/plan.tart`
 
@@ -66,7 +66,7 @@ Move the workspace-cli source code from `$ART_DOMAINS/cli/workspace` to `$ART_WO
 
 ### Next
 
-Delegate the `READY` iterations: `move-workspace-cli-source`, `update-package-record` (instructions written under `./plan-extract-workspace-cli-art-work/instructions/`).
+Move plan to `1-done/` or proceed to next plan in milestone.
 
 ### Blockers
 
@@ -123,14 +123,16 @@ All steps MUST pass. No `it.todo()` tests may remain.
 
 | Iteration / Instructions             | Status  |
 | ------------------------------------ | ------- |
-| Iteration: Move Workspace Cli Source | `READY` |
-| Iteration: Update Package Record     | `READY` |
+| Iteration: Move Workspace Cli Source | `DONE`  |
+| Iteration: Update Package Record     | `DONE`  |
 
 ### Iteration: Move Workspace Cli Source
 
 **Id:** `move-workspace-cli-source`
 
-**Status:** `READY`
+**Status:** `DONE`
+
+**Report:** `./plan-extract-workspace-cli-art-work/instructions/move-workspace-cli-source__report.md`
 
 **Purpose:** Move the workspace-cli source code to the art-work repository.
 
@@ -152,8 +154,8 @@ All steps MUST pass. No `it.todo()` tests may remain.
 
 | ID                            | Repository / Checkout / Branch            | Policy       | Hash | Status     |
 | ----------------------------- | ----------------------------------------- | ------------ | ---- | ---------- |
-| `move-workspace-cli-source`   | Art Work / `$ART_WORK` / `building`       | `AUTONOMOUS` | -    | `AUTHORED` |
-| `remove-workspace-cli-source` | Art Domains / `$ART_DOMAINS` / `building` | `AUTONOMOUS` | -    | `AUTHORED` |
+| `move-workspace-cli-source`   | Art Work / `$ART_WORK` / `building`       | `AUTONOMOUS` | `de733b1` | `COMMITTED` |
+| `remove-workspace-cli-source` | Art Domains / `$ART_DOMAINS` / `building` | `AUTONOMOUS` | `27e4198` | `COMMITTED` |
 
 ##### Commit: `move-workspace-cli-source`
 
@@ -175,7 +177,9 @@ clean(workspace-cli): Remove workspace-cli (source moved to Art Work).
 
 **Id:** `update-package-record`
 
-**Status:** `READY`
+**Status:** `DONE`
+
+**Report:** `./plan-extract-workspace-cli-art-work/instructions/update-package-record__report.md`
 
 **Purpose:** Update the workspace-cli package record for its new home in Art Work.
 
@@ -201,7 +205,7 @@ clean(workspace-cli): Remove workspace-cli (source moved to Art Work).
 
 | ID                                    | Repository / Checkout / Branch      | Policy       | Hash | Status     |
 | ------------------------------------- | ----------------------------------- | ------------ | ---- | ---------- |
-| `update-workspace-cli-package-record` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` | -    | `AUTHORED` |
+| `update-workspace-cli-package-record` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` | `8bef66a` | `COMMITTED` |
 
 ##### Commit: `update-workspace-cli-package-record`
 
@@ -227,7 +231,10 @@ records(art-work): Update Work Cli package record to Art Work.
 
 ### Evidence
 
-- None.
+- Moved workspace-cli source code from `$ART_DOMAINS/cli/workspace` to `$ART_WORK/cli/work`.
+- Updated package record, `package.json`, and `npm-deployment.art` to `@art-work/cli` / `art-work-cli`.
+- Verified build and tests pass (63 test files, 271 tests passed).
+- Commits `de733b1` (art-work), `27e4198` (art-domains), and `8bef66a` (art-work) authored and pushed to `origin/building`.
 
 ### Findings
 
