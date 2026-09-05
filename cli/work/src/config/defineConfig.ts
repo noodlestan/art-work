@@ -1,0 +1,27 @@
+import { normalizeRecordPaths } from './private/normalizeRecordPaths';
+import type { PartialWorkspaceConfig, WorkspaceConfig } from './types';
+
+export function defineConfig(config: PartialWorkspaceConfig): WorkspaceConfig {
+	const clonePath = config.clone?.path || 'checkouts';
+	const rootPath = config.root?.path || process.cwd();
+	const checkoutsPath = config.checkouts?.path || '_records/';
+	const checkoutTemplatePath =
+		config.checkouts?.template || '.agents/domains/workspace/templates/checkout.art.njk';
+	const recordsPaths = normalizeRecordPaths(config.records);
+
+	return {
+		clone: {
+			path: clonePath,
+		},
+		root: {
+			path: rootPath,
+		},
+		checkouts: {
+			path: checkoutsPath,
+			template: checkoutTemplatePath,
+		},
+		records: {
+			paths: recordsPaths,
+		},
+	};
+}

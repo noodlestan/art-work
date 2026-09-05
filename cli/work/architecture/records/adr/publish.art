@@ -1,0 +1,13 @@
+# Module: Publish
+
+**Purpose:** Decisions about how packages are published, consumed across repos, and managed for local development.
+
+## Decision: Workspace-Level Symlinks for Local Development
+
+**Status:** Accepted
+
+**Context:** When developing across repos, changes need to be visible without publishing on every edit.
+
+**Decision:** Use workspace-level symlinks to override npm-installed packages with local checkouts during development.
+
+**Consequences:** Fast iteration, no publish cycle needed for local dev, requires orchestration tooling.

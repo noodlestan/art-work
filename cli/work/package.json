@@ -1,0 +1,56 @@
+{
+  "name": "@art-domains/workspace-cli",
+  "version": "0.0.19",
+  "description": "Workspace orchestration CLI",
+  "author": "Noodlestan Collective",
+  "license": "MIT",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/noodlestan/art-domains",
+    "directory": "cli/workspace"
+  },
+  "type": "module",
+  "bin": {
+    "art-workspace": "./dist/index.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./config": {
+      "types": "./dist/config/index.d.ts",
+      "import": "./dist/config/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "LICENSE-MIT",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "npm run build:main && npm run build:config && tsc --emitDeclarationOnly",
+    "build:clean": "rm -rf dist",
+    "build:main": "esbuild src/index.ts --bundle --platform=node --outfile=dist/index.js --format=esm --packages=external",
+    "build:config": "esbuild src/config/index.ts --bundle --platform=node --outfile=dist/config/index.js --format=esm --packages=external",
+    "dev": "npm run build:main -- --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "prettier . -c && eslint . && tsc --noEmit",
+    "lint:fix": "prettier . -c --write && eslint . --fix",
+    "ci": "npm run lint && npm run build && npm run test"
+  },
+  "dependencies": {
+    "commander": "^12.0.0",
+    "esbuild": "^0.28.0",
+    "simple-git": "^3.24.0"
+  },
+  "devDependencies": {
+    "@noodlestan/esbuild": "^0.0.12",
+    "@types/node": "^25.9.5",
+    "typescript": "^5.4.0",
+    "vitest": "^1.4.0"
+  }
+}

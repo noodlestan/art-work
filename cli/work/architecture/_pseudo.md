@@ -1,0 +1,1181 @@
+# Pseudo: Workspace CLI
+
+Mostly useful for prototyping data structures or interactions (but these are detailed in `architecture/{topic}.md` files once settled) and for defining expectations (BDD) and logic (pseudo) for use cases. Zero real code — bodies prescribe what to do, not how to implement.
+
+## Entry Point
+
+### Function: main()
+
+**Responsibility:** Parse CLI arguments and route to the appropriate command handler.
+
+```pseudo
+main
+  parse args with commander
+  route to: clone | branch | repo | link | links | unlink | sanity | pull | push | sync | checkouts run | publish
+```
+
+## Data Structures
+
+Detailed definitions live in `architecture/context-model.md`. Symbols relevant to the use cases below:
+
+- **WorkspaceContext** — single object passed to all routines: `config`, `store`, `log`
+- **CheckoutStore** — in-memory checkout identity: `addCheckout`, `getCheckoutForLocation`, `getCheckoutOfRepo`, `getCheckoutByName`, `updateCheckout`, `getAllCheckouts`
+
+### Function: getCheckoutsByPattern(store, patterns)
+
+**Responsibility:** Resolve checkout patterns to a deduplicated list of checkouts. Supports exact match (no wildcard) and wildcard match (pattern contains \*).
+
+**Pseudo:**
+
+```pseudo
+getCheckoutsByPattern(store, patterns)
+  matched = new Map()  // keyed by record.location
+
+  for pattern in patterns:
+    patternMatched = false
+
+    for checkout in store.getAllCheckouts():
+      if pattern contains '*':
+        regex = patternToRegex(pattern)  // escape special chars, * -> .*
+        nameMatch = regex.test(checkout.record.name)
+        locationMatch = regex.test(checkout.record.location)
+      else:
+        nameMatch = checkout.record.name.toLowerCase() === pattern.toLowerCase()
+        locationMatch = checkout.record.location.toLowerCase() === pattern.toLowerCase()
+
+      if nameMatch or locationMatch:
+        matched.set(checkout.record.location, checkout)
+        patternMatched = true
+
+    if not patternMatched:
+      warn("no checkout matches pattern: " + pattern)
+
+  return Array.from(matched.values())
+```
+
+- **Checkout** — per-repo identity: `repo?`, `record` (name/location/branch/repository), `path`, and optional computed `scan` state
+- **Records** — `WorkspaceRecord`, `RepositoryRecord`, `CheckoutRecord` (structure files in `.agents/domains/workspace/structures/`)
+
+Every command starts by loading records into the store:
+
+```pseudo
+hydrate(ctx)
+  repos = await loadRepositoryRecords(ctx)
+  records = await loadCheckoutRecords(ctx, repos)
+  hydrateStoreFromRecords(ctx.config, ctx.store, records)
+```
+
+## Operation Logs
+
+Detailed definitions live in `architecture/operations-log.md`. Symbols relevant to the use cases below:
+
+- **OperationsLog** — append-only: `log(operation)`, `all()`, `since(ts)`, `latest(n)`
+- **Operation** — `operation` kind, `ts`, `checkout`, `outcome` (success/failure), `message()`
+- **Kinds** — `clone`, `push`, `pull`, `publish`, `branch`, `linked`, `unlink`, `run`
+- **Factories** — per-kind operation factories in `src/private/commands/operations/`: `createCloneOperation`, `createPushOperation`, `createPullOperation`, `createBranchOperation`, `createLinkedOperation`, `createPublishOperation`, `createUnlinkOperation`, `createCheckoutRunOperation`; plus generic ones in `src/private/operations/`: `createGenericOperation(operation, data)` / `createOperationSuccess(pending, message?)` / `createOperationFailure(pending, error)`. Each operation logs a pending instance; success/failure are derived from it via the generic factories. Read-only commands (`repo`, `links`) never log operations — their failures surface as report states.
+
+## Reports
+
+Detailed definitions live in `architecture/reports.md`. Symbols relevant to the use cases below:
+
+- **Workspace Report** — `repo | location | branch | states`; header `Workspace:`; presents workspace root status (1 row only); states = `issues.join("; ")` or `-`; presented after every command that reads or mutates checkouts
+- **Checkout Report** — `repo | location | branch | states`; header `Checkouts:`; states = `issues.join("; ")` or `-`; presented after every command that reads or mutates checkouts
+- **Operations Report** — `🟢/🔴 | repo | operation | message`; header `Operations Report:`; appended when side effects occurred
+- **Extraneous Report** — `directory | branch | states`; header `Untracked:`; states = `issues.join("; ")` or `clean`; directories under the checkouts path with no matching record
+
+## Use Cases
+
+### Command: clone [--all] [name] [location]
+
+**Responsibility (clone --all):** Bootstrap workspace by cloning all repos, updating records, and presenting the Checkout Report with Operations Report.
+
+**Responsibility (clone <repo>):** Clone a single repo. The first argument is the repository name (manifest lookup, case-insensitive, `@scope/` prefix stripped). The optional second argument is a location basename under the config checkouts path. The checkout name is `<repo> @ <location>` when a location is given, otherwise the repo name. Multiple checkouts of the same repo are supported. Refuses when the target location is already used by another checkout.
+
+**Responsibility (clone, no args):** Present the Checkout Report and Extraneous Report without cloning.
+
+**Pseudo:**
+
+```pseudo
+clone(options)                            // { all, repoName, checkoutInput }
+  ctx = createWorkspaceContext(config, store, log)
+  hydrate(ctx)
+
+  if options.all: cloneAll(ctx, repos)
+  else if options.repoName: cloneSpecific(ctx, repos, options.repoName, options.checkoutInput)
+  else: cloneStatus(ctx)
+
+  presentCheckoutReport(ctx.config, ctx.store.getAllCheckouts())
+  presentOperationsReport(ctx.log)
+
+cloneAll(ctx, repos)
+  for repo in repos:
+    if not ctx.store.getCheckoutOfRepo(repo.name):
+      checkout = createCheckout(ctx.config, repo.name, repo)
+      ctx.store.addCheckout(checkout)
+
+  for checkout in ctx.store.getAllCheckouts():
+    cloneIfMissing(ctx, checkout)
+
+cloneSpecific(ctx, repos, repoName, checkoutInput)
+  canonical = repoName without "@scope/" prefix
+  repo = repos.find(r => r.name.toLowerCase() === canonical.toLowerCase())
+  if not repo:
+    ctx.log.log(createOperationFailure(createCloneOperation(undefined), `unknown repo "${repoName}"`))
+    return
+
+  location = createCheckoutLocation(repo, checkoutInput)
+
+  elsewhere = ctx.store.getCheckoutOfRepo(repo.name)
+  if elsewhere and elsewhere.record.location !== location:
+    msg = `checkout for '${repo.name}' exists at ${elsewhere.record.location}. Cannot clone to ${location}.`
+    ctx.log.log(createOperationFailure(createCloneOperation(elsewhere), msg))
+    return
+
+  existing = ctx.store.getCheckoutForLocation(location)
+  if existing and existing.repo?.name !== repo.name:
+    msg = `location ${location} is already used by checkout '${existing.record.name}'.`
+    ctx.log.log(createOperationFailure(createCloneOperation(existing), msg))
+    return
+
+  if not existing:
+    name = checkoutInput ? `${repo.name} @ ${checkoutInput}` : repo.name
+    checkout = createCheckout(ctx.config, location, repo, "main", name)
+    ctx.store.addCheckout(checkout)
+    await saveCheckoutRecord(ctx.config, checkout.record)
+
+  cloneIfMissing(ctx, checkout)
+  scanCheckoutState(checkout)
+
+cloneStatus(ctx)
+  scanAllCheckoutsStates(ctx)
+  presentCheckoutReport(ctx.config, ctx.store.getAllCheckouts())
+```
+
+### Command: branch <branch> [-c <PATTERN...>] [--all]
+
+**Responsibility:** Create and checkout a feature branch across multiple checkouts, update checkout records and present Checkout Report + Operations Report. Either `-c` or `--all` must be provided. See [Command Arguments](#command-arguments) for `--checkouts` and `--all` behaviour.
+
+**Pseudo:**
+
+```pseudo
+branch(branch, options)
+  ctx = createWorkspaceContext(config, store, log)
+  hydrate(ctx)
+
+  if not options.all and (not options.checkouts or options.checkouts is empty):
+    print "No checkouts matched."
+    print "Usage: Use `art-workspace branch [options] -c <pattern>` or `art-workspace branch [options] --all` if you want to apply the branch to all checkouts."
+    return
+
+  if options.all:
+    targets = ctx.store.getAllCheckouts()
+  else:
+    targets = ctx.store.getCheckoutsByPattern(options.checkouts)
+
+  for checkout in targets:
+    checkout = scanCheckoutState(checkout)
+    if not checkout.exists:
+      ctx.log.log(createOperationFailure(createBranchOperation(checkout, branch), "checkout not cloned"))
+      continue
+
+    pending = createBranchOperation(checkout, branch)
+    try:
+      ctx.log.log(pending)
+      outcome = createOrSwitchBranch(checkout.path, branch)      // "created" | "switched"
+      ctx.log.log(createOperationSuccess(pending, outcome === "created" ? `created ${branch}` : `switched to ${branch}`))
+
+      updated = { ...checkout, record: { ...checkout.record, branch } }
+      ctx.store.updateCheckout(updated)
+      scanned = scanCheckoutState(updated)
+      await saveCheckoutRecord(ctx.config, scanned.record, scanned.filename)
+    catch error:
+      ctx.log.log(createOperationFailure(createBranchOperation(checkout, branch), error))
+      continue
+
+  presentCheckoutReport(ctx.config, ctx.store.getAllCheckouts())
+  presentOperationsReport(ctx.log)
+```
+
+### Command: repo [<locations...>]
+
+**Responsibility:** List the packages of active checkouts (all checkouts when none specified). Read each checkout's project graph recursively via `loadProjectGraph` (project → namespaces → packages; record files discovered by `findRecordFiles`). Resolve each package's `package.json` (current version) and query `npm info` (published version). Present grouped results: each checkout's Repository State Report is immediately followed by its Package State Report. Multiple checkouts of the same repository remain distinct.
+
+**Pseudo:**
+
+```pseudo
+repo(locations)
+  ctx = createWorkspaceContext(config, store, log)
+  hydrate(ctx)
+
+  if locations is empty:
+    targets = ctx.store.getAllCheckouts()
+  else:
+    targets = []
+    for name in locations:
+      checkout = ctx.store.getCheckoutByName(name) ?? ctx.store.getCheckoutForLocation(name)
+      if not checkout:
+        warn "unknown checkout: {name}"
+        continue
+      targets.push(checkout)
+
+  repositoryCheckoutStates = new Map()
+  repositoryCheckoutPackages = new Map()
+
+  for checkout in targets:
+    graph = await loadProjectGraph(ctx.config, checkout.path)
+    state = { target: checkout, branch, issues: [], graph }
+    repositoryCheckoutStates.set(checkout.record.location, state)
+
+    for warning in graph.warnings:
+      warn warning
+
+    if graph.projects is empty:
+      state.issues.push("no project records")
+      continue
+
+    packageStates = getRepositoryCheckoutPackages(checkout.path, graph)
+    repositoryCheckoutPackages.set(checkout.record.location, packageStates)
+
+  for [location, state] in repositoryCheckoutStates:
+    presentRepositoryState(state)
+    packageStates = repositoryCheckoutPackages.get(location) ?? []
+    presentPackageStateReport(state.target, packageStates)
+```
+
+### Function: resolveCheckoutByName(store, input)
+
+**Responsibility:** Resolve a checkout by name, handling multiple input formats (exact name, "Repository:" prefix, slug format, location). Returns the matching checkout or null. Note: not yet used by `repo` — the current implementation resolves inline with `getCheckoutByName ?? getCheckoutForLocation`. Designed for future use by other commands.
+
+**Note:** Superseded by `getCheckoutsByPattern` for pattern-based resolution. `resolveCheckoutByName` remains for single-checkout exact resolution by name, slug, or location.
+
+**Pseudo:**
+
+```pseudo
+resolveCheckoutByName(store, input)
+  checkout = store.getCheckoutByName(input)
+  if checkout: return checkout
+
+  normalized = input.replace(/^Repository:\s*/i, '').trim()
+  if normalized !== input:
+    checkout = store.getCheckoutByName(normalized)
+    if checkout: return checkout
+
+  slug = normalized.toLowerCase().replace(/\s+/g, '-')
+  checkout = store.getCheckoutByName(slug)
+  if checkout: return checkout
+
+  checkout = store.getCheckoutForLocation(slug)
+  if checkout: return checkout
+
+  return null
+```
+
+### Command: link <location> <package> [<target>]
+
+**Responsibility:** Symlink a source package from a repo checkout location into a target location's `node_modules` for local development. The `<location>` and `<target>` params are both checkout locations and must resolve to existing checkouts. If `<target>` is omitted, the link is created in root workspace `node_modules/`. Present Operations Report.
+
+**Pseudo:**
+
+```pseudo
+link(location, package, target)
+  ctx = createWorkspaceContext(config, store, log)
+  hydrate(ctx)
+
+  sourceCheckout = ctx.store.getCheckoutForLocation(location)
+  if not sourceCheckout:
+    ctx.log.log(createOperationFailure(createLinkedOperation(undefined, package, ""), "unknown location " + location))
+    presentOperationsReport(ctx.log)
+    return
+
+  projects = readProjectRecords(ctx, sourceCheckout)
+  pkg = findPackage(projects, package)          // search by canonicalName, then by name
+  if not pkg:
+    ctx.log.log(createOperationFailure(createLinkedOperation(sourceCheckout, package, ""), "unknown package"))
+    presentOperationsReport(ctx.log)
+    return
+
+  pkgPath = join(sourceCheckout.path, pkg.projectPath, pkg.namespacePath, pkg.path)
+  targetCheckout = target ? ctx.store.getCheckoutForLocation(target) : null
+  targetDir = targetCheckout ? targetCheckout.path : join(ctx.config.root.path, "node_modules")
+  linkTarget = join(targetDir, "node_modules", pkg.canonicalName)
+  ensureDir(dirname(linkTarget))                // scoped names need @scope dir
+  rm -rf linkTarget                              // replace existing symlink or npm-installed dir
+  ln -s pkgPath linkTarget
+
+  ctx.log.log(createOperationSuccess(createLinkedOperation(sourceCheckout, pkg.canonicalName, linkTarget)))
+  presentOperationsReport(ctx.log)
+```
+
+### Command: links
+
+**Responsibility:** Show symlink sources. Scan the workspace root `node_modules` and every known repository project's `node_modules` (project records at `{checkout}/_records/`). Collect symlinks — including scoped `@scope/pkg` subdirectories. Present the Symlink Report. Read-only: no operations are logged.
+
+**Pseudo:**
+
+```pseudo
+links()
+  ctx = createWorkspaceContext(config, store, log)
+  hydrate(ctx)
+
+  links = scanNodeModules(join(ctx.config.root.path, "node_modules"), "workspace root")
+
+  for checkout in ctx.store.getAllCheckouts():
+    projects = readProjectRecords(ctx, checkout)
+    if projects is empty:
+      warn "no project records for {checkout.record.name}"
+      continue
+    for project in projects:
+      dir = join(checkout.path, project.path, "node_modules")
+      links += scanNodeModules(dir, checkout.record.location)
+
+  presentSymlinkReport(links)
+
+scanNodeModules(dir, location)
+  result = []
+  if not dirExists(dir): return result
+  for entry in listDirectories(dir):
+    entryPath = join(dir, entry)
+    if entry starts with "@":
+      for sub in listDirectories(entryPath):
+        if isSymlink(join(entryPath, sub)):
+          result.push({ package: "@" + entry + "/" + sub, location })
+    else if isSymlink(entryPath):
+      result.push({ package: entry, location })
+  return result
+```
+
+### Command: unlink <location> <package> [<target>]
+
+**Responsibility:** Remove a package symlink created by `link` and restore the published version with `npm install`. Params mirror `link`. Present Operations Report.
+
+**Pseudo:**
+
+```pseudo
+unlink(location, package, target)
+  ctx = createWorkspaceContext(config, store, log)
+  hydrate(ctx)
+
+  sourceCheckout = ctx.store.getCheckoutForLocation(location)
+  if not sourceCheckout:
+    ctx.log.log(createOperationFailure(createUnlinkOperation(undefined, package, ""), "unknown location " + location))
+    presentOperationsReport(ctx.log)
+    return
+
+  projects = readProjectRecords(ctx, sourceCheckout)
+  pkg = findPackage(projects, package)
+  if not pkg:
+    ctx.log.log(createOperationFailure(createUnlinkOperation(sourceCheckout, package, ""), "unknown package"))
+    presentOperationsReport(ctx.log)
+    return
+
+  targetCheckout = target ? ctx.store.getCheckoutForLocation(target) : null
+  targetDir = targetCheckout ? targetCheckout.path : join(ctx.config.root.path, "node_modules")
+  linkTarget = join(targetDir, "node_modules", pkg.canonicalName)
+
+  if not isSymlink(linkTarget):
+    return                                    // npm-installed or absent — nothing to remove
+
+  rm linkTarget
+  npm install in targetDir
+  ctx.log.log(createOperationSuccess(createUnlinkOperation(sourceCheckout, pkg.canonicalName, linkTarget)))
+  presentOperationsReport(ctx.log)
+```
+
+### Command: pull [-c <PATTERN...>] [--all]
+
+**Responsibility:** Pull from origin for selected checkouts. Either `-c` or `--all` must be provided. See [Command Arguments](#command-arguments) for `--checkouts` and `--all` behaviour.
+
+**Pseudo:**
+
+```pseudo
+pull(options)
+  ctx = createWorkspaceContext(config, store, log)
+  hydrate(ctx)
+  scanAllCheckoutsStates(ctx)
+
+  if not options.all and (not options.checkouts or options.checkouts is empty):
+    print "No checkouts matched."
+    print "Usage: Use `art-workspace pull [options] -c <pattern>` or `art-workspace pull [options] --all` if you want to apply the pull to all checkouts."
+    return
+
+  if options.all:
+    targets = ctx.store.getAllCheckouts()
+  else:
+    targets = ctx.store.getCheckoutsByPattern(options.checkouts)
+
+  for checkout in targets:
+    if checkout.scan.can('pull') and checkout.scan.should('pull'):
+      doPullCheckout(ctx, checkout)
+
+  presentCheckoutReport(ctx.config, ctx.store.getAllCheckouts())
+  presentOperationsReport(ctx.log)
+```
+
+### Command: push [-c <PATTERN...>] [--all]
+
+**Responsibility:** Push to origin for selected checkouts. Try pull first if behind. Either `-c` or `--all` must be provided. See [Command Arguments](#command-arguments) for `--checkouts` and `--all` behaviour.
+
+**Pseudo:**
+
+```pseudo
+push(options)
+  ctx = createWorkspaceContext(config, store, log)
+  hydrate(ctx)
+  scanAllCheckoutsStates(ctx)
+
+  if not options.all and (not options.checkouts or options.checkouts is empty):
+    print "No checkouts matched."
+    print "Usage: Use `art-workspace push [options] -c <pattern>` or `art-workspace push [options] --all` if you want to apply the push to all checkouts."
+    return
+
+  if options.all:
+    targets = ctx.store.getAllCheckouts()
+  else:
+    targets = ctx.store.getCheckoutsByPattern(options.checkouts)
+
+  for checkout in targets:
+    if checkout.scan.can('push') and checkout.scan.should('push'):
+      if checkout.scan.should('pull'):
+        doPullCheckout(ctx, checkout)
+      pushCheckout(ctx, checkout)
+
+  presentCheckoutReport(ctx.config, ctx.store.getAllCheckouts())
+  presentOperationsReport(ctx.log)
+```
+
+### Command: sync [-c <PATTERN...>] [--all]
+
+**Responsibility:** Sync selected checkouts — pull then push. Either `-c` or `--all` must be provided. See [Command Arguments](#command-arguments) for `--checkouts` and `--all` behaviour.
+
+**Pseudo:**
+
+```pseudo
+sync(options)
+  ctx = createWorkspaceContext(config, store, log)
+  hydrate(ctx)
+  scanAllCheckoutsStates(ctx)
+
+  if not options.all and (not options.checkouts or options.checkouts is empty):
+    print "No checkouts matched."
+    print "Usage: Use `art-workspace sync [options] -c <pattern>` or `art-workspace sync [options] --all` if you want to apply the sync to all checkouts."
+    return
+
+  if options.all:
+    targets = ctx.store.getAllCheckouts()
+  else:
+    targets = ctx.store.getCheckoutsByPattern(options.checkouts)
+
+  for checkout in targets:
+    if checkout.scan.can('pull'):
+      if checkout.scan.should('pull'): doPullCheckout(ctx, checkout)
+      if checkout.scan.can('push') and checkout.scan.should('push'): pushCheckout(ctx, checkout)
+
+  presentCheckoutReport(ctx.config, ctx.store.getAllCheckouts())
+  presentOperationsReport(ctx.log)
+```
+
+### Command: checkouts run <command...> [-c <PATTERN...>] [-A, --all]
+
+**Responsibility:** Run an arbitrary shell command in each selected checkout. Either `-c` or `--all` must be provided. Inner flags are passed after `--`. See [Command Arguments](#command-arguments) for `--checkouts` and `--all` behaviour.
+
+```pseudo
+checkouts run(command, options)
+  ctx = createWorkspaceContext(config, store, log)
+  hydrate(ctx)
+  scanAllCheckoutsStates(ctx)
+
+  if not options.all and (not options.checkouts or options.checkouts is empty):
+    print "No checkouts matched."
+    print "Usage: Use `art-workspace checkouts run [options] -c <pattern>` or `art-workspace checkouts run [options] --all` if you want to run the command in all checkouts."
+    return
+
+  if options.all:
+    targets = ctx.store.getAllCheckouts()
+  else:
+    targets = ctx.store.getCheckoutsByPattern(options.checkouts)
+
+  for checkout in targets:
+    doCheckoutRun(ctx, checkout, command)
+
+  presentCheckoutReport(ctx.config, ctx.store.getAllCheckouts())
+  presentOperationsReport(ctx.log)
+```
+
+### Command: publish [--auto]
+
+**Responsibility:** Push repos and publish packages to npm. Present Checkout Report + Operations Report. Records are updated by the commands themselves via `saveCheckoutRecord`; there is no global records sync step.
+
+**Pseudo:**
+
+```pseudo
+publish(auto)
+  ctx = createWorkspaceContext(config, store, log)
+  hydrate(ctx)
+  scanAllCheckoutsStates(ctx)
+
+  for checkout in ctx.store.getAllCheckouts():
+    // Push if clean, has remote, unpushed > 0
+    if auto and shouldPushCheckout(checkout):
+      pushCheckout(ctx, checkout)
+
+    // Publish unpublished packages
+    projects = readProjectRecords(ctx, checkout)
+    for project in projects:
+      for ns in project.namespaces:
+        for pkg in ns.packages:
+          dir = join(checkout.path, project.path, ns.path, pkg.path)
+          pkgJson = readPackageJson(join(dir, "package.json"))
+          if not pkgJson or pkgJson.private: continue
+          published = npmIsPublished(pkg.canonicalName, pkgJson.version)
+          if not published and auto:
+            pending = createPublishOperation(checkout, pkg.canonicalName, pkgJson.version)
+            ctx.log.log(pending)
+            npm publish --access public in dir
+            ctx.log.log(createOperationSuccess(pending))
+
+  presentCheckoutReport(ctx.config, ctx.store.getAllCheckouts())
+  presentOperationsReport(ctx.log)
+```
+
+## Auxiliary Functions
+
+### Function: createWorkspaceContext(config, store, log)
+
+**Responsibility:** Assemble a WorkspaceContext. The store and log are created by the command entry point (see the `src/index.ts` wiring — sanity pattern) because the store needs the config.
+
+```pseudo
+createWorkspaceContext(config, store, log)
+  return { config, store, log }
+```
+
+### Function: createWorkspaceCheckout(config)
+
+**Responsibility:** Build a temporary checkout instance for the workspace root. Never persisted, never merged into the store. Used for workspace status reporting.
+
+```pseudo
+createWorkspaceCheckout(config)
+  return {
+    repo: null,
+    record: {
+      name: "WORKSPACE",
+      location: ".",
+      branch: getCurrentBranch(config.root.path),
+      repository: null,
+    },
+    path: config.root.path,
+    exists: true, remoteBranch: null, detached: false, conflicts: false,
+    dirty: false, hasRemote: false, unpushed: 0, isBehind: false, issues: [], extraneous: false,
+  }
+```
+
+### Function: makeCheckoutFilename(config, data)
+
+**Responsibility:** Derive the destination path for a new checkout record file. The slug is derived from `data.name`, lowercased with spaces replaced by dashes, suffixed with `-checkout` to avoid collisions with repository records. Used by `saveCheckoutRecord` when no explicit filename is provided.
+
+```pseudo
+makeCheckoutFilename(config, data)
+  slug = data.name.toLowerCase().replace(/\s+/g, "-")
+  return join(config.root.path, config.records.checkouts.path, slug + "-checkout.art")
+```
+
+### Function: CheckoutScan guards
+
+**Responsibility:** Whether a checkout is clean (no uncommitted changes, no conflicts, not detached).
+
+```pseudo
+checkout.scan.can(op)
+  return operation is permitted by the composed checkout states
+
+checkout.scan.should(op)
+  return operation has work to do (behind for pull, ahead for push, missing for clone)
+
+checkout.scan.issues()
+  return issue strings derived from the composed checkout states
+```
+
+### Function: pullCheckout(checkout)
+
+**Responsibility:** Pull a checkout's branch from origin. Returns a `PullResult` with the updated checkout and success/error status.
+
+```pseudo
+pullCheckout(checkout)
+  git = simpleGit(checkout.path)
+  try:
+    git.pull("origin", checkout.record.branch)
+    updated = { ...checkout, isBehind: false, issues: checkout.issues.filter(i => not /\d+ commit behind/.test(i)) }
+    return { checkout: updated, success: true }
+  catch error:
+    return { checkout, success: false, error }
+```
+
+### Function: createCheckout(config, target, repo?, branch?, name?)
+
+**Responsibility:** Build a checkout instance. `target` is the location; `safePath` normalises it. The absolute `path` is `join(config.root.path, config.clone.path, location)`. Branch defaults to `main`; name defaults to `<repo> @ <target>`.
+
+```pseudo
+createCheckout(config, target, repo?, branch?, name?)
+  location = safePath(target)
+  return {
+    repo,
+    record: {
+      name: name || (repo ? `${repo.name} @ ${target}` : target),
+      location,
+      branch: branch ?? "main",
+      repository: repo?.name,
+    },
+    path: join(config.root.path, config.clone.path, location),
+    exists: false, remoteBranch: null, detached: false, conflicts: false,
+    dirty: false, hasRemote: false, unpushed: 0, isBehind: false, issues: [], extraneous: false,
+  }
+```
+
+### Function: createCheckoutLocation(repo, target?)
+
+**Responsibility:** Compute the checkout location for a repo (with optional location suffix): `safePath(target ? repo.name + " " + target : repo.name)`.
+
+```pseudo
+createCheckoutLocation(repo, target?)
+  return safePath(target ? repo.name + " " + target : repo.name)
+```
+
+### Function: hydrateStoreFromRecords(config, store, records)
+
+**Responsibility:** Turn persisted checkout records into checkout instances and add them to the store. Called by every command after loading records.
+
+```pseudo
+hydrateStoreFromRecords(config, store, records)
+  for record in records:
+    checkout = createCheckout(config, record.checkout.location, record.repo, record.checkout.branch, record.checkout.name)
+    store.addCheckout(checkout)
+```
+
+### Function: scanCheckoutState(checkout)
+
+**Responsibility:** Read git state from the filesystem and return a new checkout with computed state in `scan`; never mutate `repo`, `record`, or `path`.
+
+**Pseudo:**
+
+```pseudo
+scanCheckoutState(checkout)
+
+  // FS layer
+  if not dirExists(checkout.path):
+    return { ...checkout, scan: createCheckoutNoClonedScan() }
+
+  scan.exists = true
+
+  // Git layer
+  try:
+    updated.branch = getCurrentBranch(checkout.path)
+    updated.detached = isDetachedHead(checkout.path)
+    updated.conflicts = hasMergeConflicts(checkout.path)
+    updated.dirty = isDirty(checkout.path)
+    updated.hasRemote = hasRemote(checkout.path)
+
+    hasBranch = updated.branch !== "-" and updated.branch !== "HEAD"
+    if updated.hasRemote and hasBranch:
+      updated.remoteBranch = getRemoteBranch(checkout.path)
+      updated.unpushed = getUnpushedCount(checkout.path, updated.remoteBranch)
+      updated.isBehind = getBehindCount(checkout.path, updated.remoteBranch) > 0
+  catch:
+    updated.issues.push("git error")
+
+  // Issue layer
+  if not updated.repo: updated.issues.unshift("unknown project")
+  if updated.detached: updated.issues.push("detached HEAD")
+  if not updated.detached and updated.branch !== updated.record.branch:
+    updated.issues.push("wrong branch")
+  if updated.conflicts: updated.issues.push("merge conflicts")
+  if not updated.hasRemote: updated.issues.push("no remote")
+  if updated.dirty: updated.issues.push("uncommitted files")
+  if updated.unpushed > 0:
+    updated.issues.push(updated.unpushed === 1 ? "1 commit ahead" : "N commits ahead")
+  if updated.isBehind:
+    behindCount = getBehindCount(checkout.path, updated.remoteBranch)
+    updated.issues.push(behindCount === 1 ? "1 commit behind" : "N commits behind")
+
+  return { ...checkout, scan }
+```
+
+### Function: scanAllCheckoutsStates(store)
+
+**Responsibility:** Scan all checkouts in the store (store capability).
+
+**Pseudo:**
+
+```pseudo
+scanAllCheckoutsStates(store)
+  for checkout in store.getAllCheckouts():
+    updated = scanCheckoutState(checkout)
+    store.updateCheckout(updated)
+```
+
+### Function: scanExtraneousCheckouts(config)
+
+**Responsibility:** Scan for extraneous (non-record based) checkouts under config.clone.path. Returns the extraneous checkouts. Unreadable checkouts path is silently ignored.
+
+**Pseudo:**
+
+```pseudo
+scanExtraneousCheckouts(config)
+  checkoutsPath = join(config.root.path, config.clone.path)
+  result = []
+
+  try:
+    for entry in listDirectories(checkoutsPath) where isDirectory:
+      location = relative(checkoutsPath, entry)
+      checkout = createExtraneousCheckout(config, location)
+      scanned = scanCheckoutState(checkout)
+      result.push(scanned)
+  catch:
+    // checkouts path doesn't exist or can't be read
+
+  return result
+```
+
+### Function: shouldPushCheckout(checkout)
+
+**Responsibility:** Decide whether a checkout should be pushed by `sanity --auto` / `publish --auto`.
+
+**Pseudo:**
+
+```pseudo
+shouldPushCheckout(checkout)
+  if not checkout.scan?.exists: return false
+  if checkout.scan.issues.some(doesIssueBlockPush): return false
+  if checkout.scan.unpushed === 0: return false
+  return true
+```
+
+### Function: doesIssueBlockPush(issue)
+
+**Responsibility:** Whether an issue prevents pushing.
+
+**Pseudo:**
+
+```pseudo
+doesIssueBlockPush(issue)
+  return issue includes "uncommitted"
+      or issue includes "no remote"
+      or issue includes "merge conflicts"
+      or issue includes "detached HEAD"
+```
+
+### Function: pushCleanCheckouts(ctx)
+
+**Responsibility:** Push every checkout in the store that passes `shouldPushCheckout`. Used by `sanity --auto`.
+
+**Pseudo:**
+
+```pseudo
+pushCleanCheckouts(ctx)
+  for checkout in ctx.store.getAllCheckouts():
+    if not shouldPushCheckout(checkout): continue
+    pushCheckout(ctx, checkout)
+```
+
+### Function: pushCheckout(ctx, checkout)
+
+**Responsibility:** Push a checkout's branch to origin and clear the "commits ahead" issue on success.
+
+**Pseudo:**
+
+```pseudo
+pushCheckout(ctx, checkout)
+  git = simpleGit(checkout.path)
+  pending = createPushOperation(checkout, checkout.record.branch)
+  try:
+    ctx.log.log(pending)
+    git push origin checkout.record.branch
+    updated = { ...checkout, unpushed: 0, issues: checkout.issues.filter(i => not /\d+ commit/.test(i)) }
+    ctx.store.updateCheckout(updated)
+    ctx.log.log(createOperationSuccess(pending))
+  catch error:
+    op = createOperationFailure(pending, error)
+    updated = { ...checkout, issues: [...checkout.issues, op.message()] }
+    ctx.store.updateCheckout(updated)
+    ctx.log.log(op)
+```
+
+### Function: runCommandInDirectory(dir, command)
+
+**Responsibility:** Execute a shell command in a directory via spawn with `cwd` = dir. A single-element command string is split into `[cmd, ...args]`. Captures stdout/stderr and resolves with a `RunCommandOutcome { code, output, error }` (never rejects). Reusable by the future `package run` command.
+
+```pseudo
+runCommandInDirectory(dir, command)
+  [cmd, ...args] = command.length === 1 ? command[0].split(/\s+/) : command
+  child = spawn(cmd, args, { cwd: dir })
+  output = ""
+  error = ""
+  child.stdout.on("data", chunk => output += chunk)
+  child.stderr.on("data", chunk => error += chunk)
+  child.on("error", err => resolve({ code: null, output, error: err.message }))
+  child.on("exit", code => resolve({ code, output, error }))
+```
+
+### Function: doCheckoutRun(ctx, checkout, command)
+
+**Responsibility:** Run a command in a single checkout, logging pending → success/failure operations. Uncloned checkouts log a failure operation and are skipped. Renders captured output/error after the operation.
+
+```pseudo
+doCheckoutRun(ctx, checkout, command)
+  commandLine = command.join(" ")
+
+  if not checkout.scan?.state("exists").exists:
+    ctx.log.log(createOperationFailure(createCheckoutRunOperation(checkout, commandLine), "checkout not cloned"))
+    return null
+
+  pending = createCheckoutRunOperation(checkout, commandLine)
+  try:
+    ctx.log.log(pending)
+    runOutcome = await runCommandInDirectory(checkout.path, command)
+    if runOutcome.code === 0:
+      ctx.log.log(createOperationSuccess(pending))
+    else:
+      ctx.log.log(createOperationFailure(pending, "Exit code: " + runOutcome.code))
+    if runOutcome.output: print "--- Output:" + runOutcome.output
+    if runOutcome.error: print "--- Error:" + runOutcome.error
+    return checkout
+  catch error:
+    ctx.log.log(createOperationFailure(pending, error))
+    return null
+```
+
+### Function: hasLocalBranch(dir, branch)
+
+**Responsibility:** Check whether a branch exists locally in a repo.
+
+**Pseudo:**
+
+```pseudo
+hasLocalBranch(dir, branch)
+  git rev-parse --verify --quiet refs/heads/branch in dir
+  return output non-empty (exit code 0)
+```
+
+### Function: createOrSwitchBranch(dir, branch)
+
+**Responsibility:** Switch to the branch when it exists locally, otherwise create it.
+
+**Pseudo:**
+
+```pseudo
+createOrSwitchBranch(dir, branch)
+  git = simpleGit(dir)
+  if hasLocalBranch(dir, branch):
+    git.checkout(branch)
+    return "switched"
+  git.checkoutLocalBranch(branch)
+  return "created"
+```
+
+### Function: cloneIfMissing(ctx, checkout)
+
+**Responsibility:** Clone a checkout when its directory is missing. Returns the rescanned checkout, or null when nothing was cloned (already exists, or no repo known).
+
+**Pseudo:**
+
+```pseudo
+cloneIfMissing(ctx, checkout)
+  scanned = scanCheckoutState(checkout)
+  if scanned.exists: return scanned
+  if not scanned.repo: return null
+
+  pending = createCloneOperation(scanned)
+  try:
+    ctx.log.log(pending)
+    git clone scanned.repo.remote scanned.path     // simpleGit("").clone(remote, path)
+  catch error:
+    ctx.log.log(createOperationFailure(pending, error))
+    return null
+
+  rescan = scanCheckoutState(scanned)
+  ctx.log.log(createOperationSuccess(createCloneOperation(rescan)))
+
+  actualBranch = getCurrentBranch(scanned.path)
+  await saveCheckoutRecord(ctx.config, {
+    name: rescan.record.name,
+    repository: rescan.repo?.name,
+    location: rescan.record.location,
+    branch: actualBranch || "main",
+  })
+  return rescan
+```
+
+### Function: presentWorkspaceReport(workspace)
+
+**Responsibility:** Present the Workspace Report (1 row only). Always presented before the Checkout Report.
+
+**Pseudo:**
+
+```pseudo
+presentWorkspaceReport(workspace)
+  if workspace is undefined: return
+  print "Workspace:"
+  print table (repo, location, branch, states)
+    // repo = "-"
+    // location = workspace.record.location
+    // states = workspace.scan?.issues.join("; ") or "-"
+  print ""                                       // empty line after the table
+```
+
+### Function: presentCheckoutReport(config, checkouts)
+
+**Responsibility:** Present the Checkout Report ordered by repo name; checkouts without a remote last.
+
+**Pseudo:**
+
+```pseudo
+presentCheckoutReport(config, checkouts)
+  items = [...checkouts]
+  items.sort(no remote last, then by repo name)
+  print "Checkouts:"
+  print table (repo, location, branch, states)
+    // repo = checkout.repo?.name or "-"
+    // location = join(config.clone.path, checkout.record.location)
+    // states = checkout.scan?.issues.join("; ") or "-"
+  print ""                                       // empty line after the table
+```
+
+### Function: presentOperationsReport(log)
+
+**Responsibility:** Present the Operations Report. Omitted when no operations occurred.
+
+**Pseudo:**
+
+```pseudo
+presentOperationsReport(log)
+  operations = log.all()
+  if operations is empty:
+    return
+
+  print "Operations Report:"
+  print table ('', repo, operation, message)
+    // '' = outcome marker: 🟢 success / 🔴 failure
+    // repo = op.checkout?.repo?.name or "unknown"
+  print ""
+```
+
+### Function: presentRepositoryState(state)
+
+**Responsibility:** Present a single checkout's Repository State Report. Shows the repository name, current branch, and any issues. Used by `repo`.
+
+**Pseudo:**
+
+```pseudo
+presentRepositoryState(state)
+  print "Repository: {state.target.repo?.name or state.target.record.name}"
+  print "Branch: {state.branch or state.target.record.branch}"
+  if state.issues is not empty:
+    print "States: {state.issues.join('; ')}"
+```
+
+### Function: presentPackageStateReport(checkout, packageStates)
+
+**Responsibility:** Present the Package State Report for a checkout's packages. Omitted when no packages. Shows each package's canonical name, version, published version, and states.
+
+**Pseudo:**
+
+```pseudo
+presentPackageStateReport(checkout, packageStates)
+  if packageStates is empty: return
+  print "Packages for {checkout.record.name}:"
+  print table (package, version, published, states)
+    // version = record.version ?? "-"
+    // published = record.publishedVersion ?? "-"
+    // states = record.states.join("; ") or "-"
+  print ""
+```
+
+### Function: presentExtraneousReport(extraneous)
+
+**Responsibility:** Present the Extraneous Report. Omitted when none found.
+
+**Pseudo:**
+
+```pseudo
+presentExtraneousReport(extraneous)
+  if extraneous is empty:
+    return
+
+  print "Untracked:"
+  print table (directory, branch, states)
+    // directory = record.location, branch = record.branch
+    // states = scan?.issues.join("; ") or "clean"
+  print ""
+```
+
+### Function: loadWorkspaceConfig(root)
+
+**Responsibility:** Load and parse the workspace config from `.art-workspace.mts`. Falls back to the default config (with a warning) when the manifest is missing.
+
+**Pseudo:**
+
+```pseudo
+loadWorkspaceConfig(root)
+  if .art-workspace.mts not exists:
+    warn ".art-workspace.mts not found at {root}; Using default config."
+    return default config with root.path = root
+
+  bundle with esbuild (ESM, node platform)
+  write temp .mjs
+  import temp file
+  config = imported default
+  config.root.path = root
+  return config
+```
+
+### Function: loadRepositoryRecords(config)
+
+**Responsibility:** Read all repository records dynamically. Uses `findRecordFiles` to discover `.art` files, then parses each with `readRepositoryRecord`. Returns `Promise`.
+
+**Pseudo:**
+
+```pseudo
+loadRepositoryRecords(config)
+  candidates = findRecordFiles(config.records, config.root.path, kinds?)
+  records = []
+  for file in candidates:
+    record = readRepositoryRecord(file)
+    if record: records.push(record)
+  return records
+```
+
+### Function: loadCheckoutRecords(config, repos)
+
+**Responsibility:** Read all checkout records dynamically. Uses `findRecordFiles` to discover `.art` files, then parses each with `readCheckoutRecord`. Returns `Promise`. Adds `filename` to each returned record.
+
+**Pseudo:**
+
+```pseudo
+loadCheckoutRecords(config, repos)
+  candidates = findRecordFiles(config.records, config.root.path, ['checkout'])
+  records = []
+  for file in candidates:
+    record = readCheckoutRecord(file)
+    if not record.name:
+      warn "checkout record with empty name, skipped"
+      continue
+    repo = repos.find(r => r.name === record.repository)
+    records.push({ repo, checkout: record, filename: file })
+  return records
+```
+
+### Function: saveCheckoutRecord(config, data, filename?)
+
+**Responsibility:** Write a checkout record as an `.art` file. Data-first signature. When `filename` is provided, write directly to that path (loaded-record update). When omitted, call `makeCheckoutFilename(config, data)` to derive the destination (new-record creation). The function is `async` returning `Promise<string>` for API consistency.
+
+**Pseudo:**
+
+```pseudo
+saveCheckoutRecord(config, data, filename?)
+  template = read template at config.records.checkouts.template (or hardcoded default)
+  content = render(template, data)
+  fileName = filename ?? makeCheckoutFilename(config, data)
+  if not data.repository: drop the "Repository:" line from content
+  mkdir dirname(fileName), recursive
+  write file fileName with content
+  return fileName
+```
+
+### Function: readProjectRecords(ctx, checkout)
+
+**Responsibility:** Read a checkout's project records dynamically. Uses `findRecordFiles(config.records, checkoutPath, ['Records'])` to discover `.art` files, then filters by kind (project, namespace, package) using the singular readers. Returns `Promise`.
+
+**Pseudo:**
+
+```pseudo
+readProjectRecords(ctx, checkout)
+  checkoutPath = checkout.path
+
+  projects   = await loadProjectRecords(ctx.config, checkoutPath)
+  namespaces = await loadNamespaceRecords(ctx.config, checkoutPath)
+  packages   = await loadPackageRecords(ctx.config, checkoutPath)
+
+  for project in projects:
+    project.namespaces = namespaces.filter(ns => project.namespaceNames.includes(ns.name))
+    for ns in project.namespaces:
+      ns.packages = packages.filter(pkg => ns.packageNames.includes(pkg.name))
+      for name in ns.packageNames where not found:
+        warn "unknown package: {name}"
+
+    for name in project.namespaceNames where not resolved:
+      warn "unknown namespace: {name}"
+
+  return projects
+```
+
+### Function: getRepositoryCheckoutPackages(checkoutPath, graph)
+
+**Responsibility:** Collect `PackageStateRecord` values for all packages in a checkout's project graph. Iterates projects → namespaces → packages, delegates to `createPackageStateRecord` (resolves `package.json` path) and `scanPackageStateRecord` (queries `npm info`). Extracted from `runRepo` into `src/private/repositories/`.
+
+**Pseudo:**
+
+```pseudo
+getRepositoryCheckoutPackages(checkoutPath, graph)
+  packageStates = []
+  for project in graph.projects:
+    for nsName in project.namespaceNames:
+      ns = graph.namespaces.get(nsName)
+      if not ns: continue
+      for pkgName in ns.packageNames:
+        pkg = graph.packages.get(pkgName)
+        if not pkg: continue
+        { record } = createPackageStateRecord(checkoutPath, project.path, ns.path, pkg)
+        scanPackageStateRecord(pkg, record)
+        packageStates.push(record)
+  return packageStates
+```
+
+### Function: createPackageStateRecord(checkoutPath, projectPath, nsPath, pkg)
+
+**Responsibility:** Build a `PackageStateRecord` with initial null version and states. Resolves the `package.json` path (with namespace, falling back to without namespace when missing). Returns `{ pkgPath, record }`.
+
+**Pseudo:**
+
+```pseudo
+createPackageStateRecord(checkoutPath, projectPath, nsPath, pkg)
+  pkgPath = join(checkoutPath, projectPath, nsPath, pkg.path)
+  if not exists(join(pkgPath, "package.json")):
+    altPath = join(checkoutPath, projectPath, pkg.path)     // try without namespace
+    if exists(join(altPath, "package.json")): pkgPath = altPath
+
+  record = { canonicalName: pkg.canonicalName, version: null, publishedVersion: null, directory: pkgPath, states: [] }
+
+  if exists(join(pkgPath, "package.json")):
+    try: record.version = readJson(join(pkgPath, "package.json")).version ?? null
+    catch: record.states.push("no package.json")
+  else:
+    record.states.push("no package.json")
+
+  return { pkgPath, record }
+```
+
+### Function: scanPackageStateRecord(pkg, record)
+
+**Responsibility:** Populate `publishedVersion` on an existing `PackageStateRecord` by querying `npm info`. Skips for unpublished marker version `0.0.0`.
+
+**Pseudo:**
+
+```pseudo
+scanPackageStateRecord(pkg, record)
+  if record.version is not null and record.version !== "0.0.0":
+    try: record.publishedVersion = exec("npm info {pkg.canonicalName} version").trim()
+    catch: record.publishedVersion = "unknown"
+```
+
+### Function: findPackage(projects, package)
+
+**Responsibility:** Locate a package across the checkout's projects by canonical name first, then by plain name. Returns the resolved `ProjectPackage` (with its `project.path` and `namespace.path` context) or null.
+
+**Pseudo:**
+
+```pseudo
+findPackage(projects, package)
+  for project in projects:
+    for ns in project.namespaces:
+      for pkg in ns.packages:
+        if pkg.canonicalName === package or pkg.name === package:
+          return { ...pkg, projectPath: project.path, namespacePath: ns.path }
+  return null
+```
