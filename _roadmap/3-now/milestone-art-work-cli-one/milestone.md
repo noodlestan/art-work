@@ -58,12 +58,12 @@ Complete the workspace CLI across 3 phases: establish the CLI baseline, implemen
 
 ## Phases
 
-| Index | Name                    | Status    |
-| ----- | ----------------------- | --------- |
-| 1     | Establish CLI baseline  | `DONE`    |
-| 2     | Implement more commands | `WORKING` |
-| 3     | Implement more commands | `WORKING` |
-| 4     | Consolidate             | `DRAFT`   |
+| Index | Name                    | Status     |
+| ----- | ----------------------- | ---------- |
+| 1     | Establish CLI baseline  | `DONE`     |
+| 2     | Consolidate             | `WORKING`  |
+| 3     | Decompose               | `PLANNING` |
+| 4     | Implement more commands | `DRAFT`    |
 
 ### Phase: 1 — Establish CLI baseline
 
@@ -141,8 +141,8 @@ Complete the workspace CLI across 3 phases: establish the CLI baseline, implemen
 | -     |                                                                                                                              |            |
 | 3     | Plan: Create Art Cli Project and Repo `_backlog/1-done/plan-create-art-cli-project-repo/plan.md`                             | `DONE`     |
 | 3     | Plan: Create Art Work Repository and Project `_backlog/1-done/plan-create-art-work-repository-project/plan.md`               | `DONE`     |
-| 3     | Plan: Extract Workspace Cli to Art Work `_backlog/3-now/plan-extract-workspace-cli-art-work/plan.md`                         | `READY`    |
-| 3     | Plan: Extract Read/Write Records to Art Cli `_backlog/4-next/plan-extract-read-write-records-art-cli/plan.md`                | `READY`    |
+| 3     | Plan: Extract Workspace Cli to Art Work `_backlog/1-done/plan-extract-workspace-cli-art-work/plan.md`                        | `DONE`     |
+| 3     | Plan: Extract Read/Write Records to Art Cli `_backlog/3-now/plan-extract-read-write-records-art-cli/plan.md`                 | `READY`    |
 | 3     | Plan: Make Art Work Cli work from global install `_backlog/4-next/plan-work-cli-global-install/plan.md`                      | (create)   |
 | -     |                                                                                                                              |            |
 | 4     | Plan: Replace Repo Command                                                                                                   | -          |
