@@ -1,7 +1,8 @@
-import type { WorkspaceRecordsPath } from '..';
+import { FSRecordsPath } from '@art-lib/fs-records';
+
 import { PartialWorkspaceConfig } from '../types';
 
-const DEFAULTS: WorkspaceRecordsPath = {
+const DEFAULTS: FSRecordsPath = {
 	base: '.',
 	pattern: '*.art',
 	ignored: ['node_modules/', '.git/', 'dist/'],
@@ -9,9 +10,7 @@ const DEFAULTS: WorkspaceRecordsPath = {
 	gitignore: true,
 };
 
-export function normalizeRecordPaths(
-	records: PartialWorkspaceConfig['records'],
-): WorkspaceRecordsPath[] {
+export function normalizeRecordPaths(records: PartialWorkspaceConfig['records']): FSRecordsPath[] {
 	const paths = records?.paths;
 
 	if (!paths || paths.length === 0) {

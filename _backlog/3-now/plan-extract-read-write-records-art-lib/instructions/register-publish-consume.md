@@ -46,8 +46,8 @@ Register the Lib Records package in the Art Cli project record, publish `@art-li
 
 ## Mandatory Reading
 
-- ::READ `$ART_DOMAINS/_backlog/3-now/plan-extract-read-write-records-art-cli/plan.md` (Plan) — Full plan context, scope, and commit blueprints.
-- ::READ `$ART_CLI/_records/project.art` (Source) — Art-cli project record; Package: Lib Records is registered as PLANNED.
+- ::READ `$ART_DOMAINS/_backlog/3-now/plan-extract-read-write-records-art-lib/plan.md` (Plan) — Full plan context, scope, and commit blueprints.
+- ::READ `$ART_CLI/_records/project.art` (Source) — art-lib project record; Package: Lib Records is registered as PLANNED.
 - ::READ `$ART_CLI/libs/records/package.json` (Source) — The lib package.json to publish.
 - ::READ `$ART_WORK/cli/work/_records/package.art` (Source) — The art-work-cli package record to update.
 - ::READ `$ART_WORK/cli/work/package.json` (Source) — The art-work-cli package.json to update.

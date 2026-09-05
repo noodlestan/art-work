@@ -22,6 +22,6 @@
     "skipLibCheck": true,
     "noEmit": true
   },
-  "include": ["libs/"],
+  "include": ["libs/", "cli/"],
   "exclude": ["**/node_modules/", "**/dist/", "**/coverage/"]
 }

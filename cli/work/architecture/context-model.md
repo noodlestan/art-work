@@ -110,10 +110,10 @@ The types are deliberately minimal: paths and names (what `repo`/`link`/`links`/
 
 ### Reader Organization
 
-The records layer (`src/private/records/`) is organized **by record kind**:
+The resource readers and loaders (`src/private/resources/`) are organized **by resource kind**, consuming generic record discovery and reading from `@art-lib/fs-records`:
 
 ```text
-src/private/records/
+src/private/resources/
   repository/           # repository: read-only
     readRepositoryRecord.ts
     loadRepositoryRecords.ts
@@ -132,8 +132,6 @@ src/private/records/
   package/              # package records: read-only
     readPackageRecord.ts
     loadPackageRecords.ts
-  shared/               # shared record utilities
-    findRecordFiles.ts
   projectGraph/         # graph loading, consolidation, finding
     loadProjectGraph.ts
     consolidateProjectGraph.ts

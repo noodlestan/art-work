@@ -1,6 +1,6 @@
 # Sub-Agent REPORT (#producer)
 
-**Plan:** `extract-read-write-records-art-cli`
+**Plan:** `extract-read-write-records-art-lib`
 
 **Iteration Id:** `extract-record-modules`
 
@@ -10,14 +10,14 @@
 
 ### Changes
 
-| Goal Item | Status | Details |
-| --- | --- | --- |
+| Goal Item                     | Status    | Details                                                                                                                                                                                                                                                                  |
+| ----------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Copy record modules & helpers | COMPLETED | Copied `findRecordFiles.ts`, `readRecordFileContent.ts`, and private helpers (`createRecordFile`, `directoryExists`, `filterByKinds`, `findRecordFilesInPath`, `getGitIgnoredSet`, `globPath`, `normalizeExcludes`, `normalizePatterns`) to `$ART_CLI/libs/records/src/` |
-| Define standalone types | COMPLETED | Created `RecordsPath`, `RecordsConfig`, and `RecordFile` in `$ART_CLI/libs/records/src/types.ts` |
-| Adapt imports & exports | COMPLETED | Updated record modules to use `RecordsConfig` and `RecordsPath`; exported API from `$ART_CLI/libs/records/src/index.ts` |
-| Adapt tests | COMPLETED | Created test helpers in `$ART_CLI/libs/records/src/test/` and adapted `findRecordFiles.test.ts` (12 tests passing) |
-| Validation | COMPLETED | `npm run lint`, `npm run build`, and `npm run test` pass cleanly in `$ART_CLI/libs/records` and via root `npm run ci` |
-| Commit & push | COMPLETED | Committed `6f7a73f` and pushed to `origin/building` |
+| Define standalone types       | COMPLETED | Created `RecordsPath`, `RecordsConfig`, and `RecordFile` in `$ART_CLI/libs/records/src/types.ts`                                                                                                                                                                         |
+| Adapt imports & exports       | COMPLETED | Updated record modules to use `RecordsConfig` and `RecordsPath`; exported API from `$ART_CLI/libs/records/src/index.ts`                                                                                                                                                  |
+| Adapt tests                   | COMPLETED | Created test helpers in `$ART_CLI/libs/records/src/test/` and adapted `findRecordFiles.test.ts` (12 tests passing)                                                                                                                                                       |
+| Validation                    | COMPLETED | `npm run lint`, `npm run build`, and `npm run test` pass cleanly in `$ART_CLI/libs/records` and via root `npm run ci`                                                                                                                                                    |
+| Commit & push                 | COMPLETED | Committed `6f7a73f` and pushed to `origin/building`                                                                                                                                                                                                                      |
 
 #### Files changed
 

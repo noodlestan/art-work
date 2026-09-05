@@ -4,6 +4,7 @@ import { dirname, join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { makeMockConfig } from '../../../test/helpers/context/makeMockConfig';
+import { createRecordFile } from '../../../test/helpers/records/createRecordFile';
 import {
 	writeNamespaceMockRecord,
 	writePackageMockRecord,
@@ -11,7 +12,6 @@ import {
 } from '../../../test/helpers/records/writeProjectMockRecord';
 import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir';
 import { removeTempDirs } from '../../../test/helpers/tempDirs/removeTempDirs';
-import { createRecordFile } from '../../records/private/createRecordFile';
 import { loadNamespaceRecords } from '../namespace/loadNamespaceRecords';
 import { readNamespaceRecord } from '../namespace/readNamespaceRecord';
 import { loadPackageRecords } from '../package/loadPackageRecords';

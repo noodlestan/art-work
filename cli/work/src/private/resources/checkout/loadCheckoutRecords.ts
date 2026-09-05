@@ -1,6 +1,7 @@
+import { findRecordFiles } from '@art-lib/fs-records';
+
 import { WorkspaceContext } from '../../context/createWorkspaceContext';
 import { createGenericOperation } from '../../operations/createGenericOperation';
-import { findRecordFiles } from '../../records/findRecordFiles';
 import { RepositoryCheckoutRecord, RepositoryRecord } from '../types';
 
 import { readCheckoutRecord } from './readCheckoutRecord';

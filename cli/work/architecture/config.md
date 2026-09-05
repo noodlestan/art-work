@@ -15,10 +15,11 @@ interface WorkspaceConfig {
   root: { path: string };
   clone: { path: string };
   checkouts: { path: string; template: string };
-  records: { paths: WorkspaceRecordsPath[] };
+  records: { paths: FSRecordsPath[] };
 }
 
-interface WorkspaceRecordsPath {
+// from @art-lib/fs-records
+interface FSRecordsPath {
   base: string; // default '.'
   pattern: string | string[]; // default '*.art'
   ignored: string[]; // default ['node_modules/', '.git/', 'dist/']

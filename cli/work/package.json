@@ -43,6 +43,7 @@
     "ci": "npm run lint && npm run build && npm run test"
   },
   "dependencies": {
+    "@art-lib/fs-records": "^0.0.1",
     "commander": "^12.0.0",
     "esbuild": "^0.28.0",
     "simple-git": "^3.24.0"

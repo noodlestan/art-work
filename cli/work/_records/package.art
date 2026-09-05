@@ -1,5 +1,13 @@
 # Module
 
+## Package Dependency: Art Lib FS Records
+
+**Canonical Name:** `@art-lib/fs-records`
+
+**Purpose:** Generic record read/write modules for Art MD record files.
+
+**Version:** `^0.0.1`
+
 ## Package Dependency: Commander
 
 **Canonical Name:** `commander`
@@ -69,6 +77,7 @@
 **Dependencies:**
 
 - Runtime:
+  - Package Dependency: Art Lib FS Records
   - Package Dependency: Commander
   - Package Dependency: Simple Git
   - Package Dependency: ESBuild

@@ -79,7 +79,7 @@ Complete the workspace CLI across 3 phases: establish the CLI baseline, implemen
 
 ### Phase: 2 — Consolidate
 
-**Goal:** Consolidate the CLI into its own repo (art-work) and shared libraries (art-cli).
+**Goal:** Consolidate the CLI into its own repo (art-work) and shared libraries (art-lib).
 
 **Description:** Performance optimizations. UI improvements (args, predictability, and feedback)
 
@@ -93,7 +93,7 @@ Complete the workspace CLI across 3 phases: establish the CLI baseline, implemen
 
 **Goal:** Decompose into packages
 
-**Description:** Create the art-cli and art-work repositories;
+**Description:** Create the art-lib and art-work repositories;
 
 **Status:** `PLANNING`
 
@@ -139,10 +139,10 @@ Complete the workspace CLI across 3 phases: establish the CLI baseline, implemen
 | 2     | Plan: Workspace CLI — Checkouts Run Command `_backlog/0-archive/2026-09-04-plan-implement-checkouts-run/plan.md`             | `ARCHIVED` |
 | 2     | Plan: Streamline Operation Types and Factories `_backlog/0-archive/2026-09-05-plan-streamline-ops/plan.md`                   | `ARCHIVED` |
 | -     |                                                                                                                              |            |
-| 3     | Plan: Create Art Cli Project and Repo `_backlog/1-done/plan-create-art-cli-project-repo/plan.md`                             | `DONE`     |
+| 3     | Plan: Create Art Cli Project and Repo `_backlog/1-done/plan-create-art-lib-project-repo/plan.md`                             | `DONE`     |
 | 3     | Plan: Create Art Work Repository and Project `_backlog/1-done/plan-create-art-work-repository-project/plan.md`               | `DONE`     |
 | 3     | Plan: Extract Workspace Cli to Art Work `_backlog/1-done/plan-extract-workspace-cli-art-work/plan.md`                        | `DONE`     |
-| 3     | Plan: Extract Read/Write Records to Art Cli `_backlog/3-now/plan-extract-read-write-records-art-cli/plan.md`                 | `READY`    |
+| 3     | Plan: Extract Read/Write Records to Art Cli `_backlog/3-now/plan-extract-read-write-records-art-lib/plan.md`                 | `READY`    |
 | 3     | Plan: Make Art Work Cli work from global install `_backlog/4-next/plan-work-cli-global-install/plan.md`                      | (create)   |
 | -     |                                                                                                                              |            |
 | 4     | Plan: Replace Repo Command                                                                                                   | -          |
@@ -160,7 +160,7 @@ Complete the workspace CLI across 3 phases: establish the CLI baseline, implemen
 
 ### Next
 
-Phase 2 — delegate the `READY` plan `plan-streamline-ops` (instructions written). Then Phase 3 — delegate the `READY` plans `plan-create-art-cli-project-repo`, `plan-create-art-work-repository-project`, `plan-extract-workspace-cli-art-work`, `plan-extract-read-write-records-art-cli` (instructions written).
+Phase 2 — delegate the `READY` plan `plan-streamline-ops` (instructions written). Then Phase 3 — delegate the `READY` plans `plan-create-art-lib-project-repo`, `plan-create-art-work-repository-project`, `plan-extract-workspace-cli-art-work`, `plan-extract-read-write-records-art-lib` (instructions written).
 
 ### Blockers
 
@@ -197,9 +197,9 @@ Phase 2 — delegate the `READY` plan `plan-streamline-ops` (instructions writte
 
 ### Decisions
 
-- Phase 3 splits the move plan into 4 plans: create art-cli repo, create art-work repo, extract workspace cli to art-work, extract read/write records to art-cli.
-- The workspace CLI moves to `noodlestan/art-work` (canonical `@art-work/cli`); the shared records lib lives in `noodlestan/art-cli` (canonical `@art-cli/lib-records`).
-- The superseded plan `plan-move-code-project-art-cli` is archived.
+- Phase 3 splits the move plan into 4 plans: create art-lib repo, create art-work repo, extract workspace cli to art-work, extract read/write records to art-lib.
+- The workspace CLI moves to `noodlestan/art-work` (canonical `@art-work/cli`); the shared records lib lives in `noodlestan/art-lib` (canonical `@art-lib/lib-records`).
+- The superseded plan `plan-move-code-project-art-lib` is archived.
 
 ### Knowledge to Update
 

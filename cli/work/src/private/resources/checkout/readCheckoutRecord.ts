@@ -1,8 +1,8 @@
-import { readRecordFileContent } from '../../records/readRecordFileContent';
-import type { RecordFile } from '../../records/types';
+import { type FSRecordFile, readRecordFileContent } from '@art-lib/fs-records';
+
 import type { CheckoutRecord } from '../types';
 
-export async function readCheckoutRecord(file: RecordFile): Promise<CheckoutRecord | null> {
+export async function readCheckoutRecord(file: FSRecordFile): Promise<CheckoutRecord | null> {
 	const fileWithContents = file.content ? file : await readRecordFileContent(file);
 	if (!fileWithContents.content) {
 		return null;

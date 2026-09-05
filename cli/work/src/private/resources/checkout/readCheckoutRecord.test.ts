@@ -4,9 +4,9 @@ import { join } from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { makeMockConfig } from '../../../test/helpers/context/makeMockConfig';
+import { createRecordFile } from '../../../test/helpers/records/createRecordFile';
 import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir';
 import { removeTempDirs } from '../../../test/helpers/tempDirs/removeTempDirs';
-import { createRecordFile } from '../../records/private/createRecordFile';
 
 import { readCheckoutRecord } from './readCheckoutRecord';
 import { saveCheckoutRecord } from './saveCheckoutRecord';

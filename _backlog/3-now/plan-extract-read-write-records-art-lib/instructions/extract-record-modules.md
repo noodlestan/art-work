@@ -46,7 +46,7 @@ Extract the generic record read/write modules and their tests from the art-work-
 
 ## Mandatory Reading
 
-- ::READ `$ART_DOMAINS/_backlog/3-now/plan-extract-read-write-records-art-cli/plan.md` (Plan) — Full plan context, scope, and commit blueprints.
+- ::READ `$ART_DOMAINS/_backlog/3-now/plan-extract-read-write-records-art-lib/plan.md` (Plan) — Full plan context, scope, and commit blueprints.
 - ::READ `$ART_WORK/cli/work/src/private/records/findRecordFiles.ts` (Source) — Module to extract.
 - ::READ `$ART_WORK/cli/work/src/private/records/readRecordFileContent.ts` (Source) — Module to extract.
 - ::READ `$ART_WORK/cli/work/src/private/records/types.ts` (Source) — Module to extract.

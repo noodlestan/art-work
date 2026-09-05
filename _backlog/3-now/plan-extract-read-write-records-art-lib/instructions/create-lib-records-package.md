@@ -46,10 +46,10 @@ Create the Lib Records package in the art-lib repository: canonical name `@art-l
 
 ## Mandatory Reading
 
-- ::READ `$ART_DOMAINS/_backlog/3-now/plan-extract-read-write-records-art-cli/plan.md` (Plan) — Full plan context, scope, and commit blueprints.
-- ::READ `$ART_CLI/package.json` (Source) — Art-cli root package.json; confirms the `libs/**` workspace pattern.
-- ::READ `$ART_CLI/_records/project.art` (Source) — Art-cli project record; confirms Package: Lib Records (PLANNED) is registered.
-- ::READ `$ART_CLI/tsconfig.json` (Source) — Art-cli root tsconfig to extend.
+- ::READ `$ART_DOMAINS/_backlog/3-now/plan-extract-read-write-records-art-lib/plan.md` (Plan) — Full plan context, scope, and commit blueprints.
+- ::READ `$ART_CLI/package.json` (Source) — art-lib root package.json; confirms the `libs/**` workspace pattern.
+- ::READ `$ART_CLI/_records/project.art` (Source) — art-lib project record; confirms Package: Lib Records (PLANNED) is registered.
+- ::READ `$ART_CLI/tsconfig.json` (Source) — art-lib root tsconfig to extend.
 
 - RULE: You MUST follow any links under `## Mandatory Reading` sections found in the listed files.
 - RULE: If you are unable to read a file linked under `## Mandatory Reading` you must stop and REPORT A BLOCKER.

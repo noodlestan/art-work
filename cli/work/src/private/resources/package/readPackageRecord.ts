@@ -1,8 +1,8 @@
-import { readRecordFileContent } from '../../records/readRecordFileContent';
-import type { RecordFile } from '../../records/types';
+import { type FSRecordFile, readRecordFileContent } from '@art-lib/fs-records';
+
 import type { PackageRecord } from '../types';
 
-export async function readPackageRecord(file: RecordFile): Promise<PackageRecord | null> {
+export async function readPackageRecord(file: FSRecordFile): Promise<PackageRecord | null> {
 	const fileWithContents = file.content ? file : await readRecordFileContent(file);
 	if (!fileWithContents.content) {
 		return null;

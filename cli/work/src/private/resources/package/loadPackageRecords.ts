@@ -1,5 +1,6 @@
+import { findRecordFiles } from '@art-lib/fs-records';
+
 import type { WorkspaceConfig } from '../../../config';
-import { findRecordFiles } from '../../records/findRecordFiles';
 import type { PackageRecord } from '../types';
 
 import { readPackageRecord } from './readPackageRecord';

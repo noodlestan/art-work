@@ -3,10 +3,10 @@ import { dirname, join } from 'node:path';
 
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
+import { createRecordFile } from '../../../test/helpers/records/createRecordFile';
 import { writeRepoMockRecord } from '../../../test/helpers/records/writeRepoMockRecord';
 import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir';
 import { removeTempDirs } from '../../../test/helpers/tempDirs/removeTempDirs';
-import { createRecordFile } from '../../records/private/createRecordFile';
 
 import { readRepositoryRecord } from './readRepositoryRecord';
 
