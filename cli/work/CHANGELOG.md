@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 0.0.20
+
+### Changed
+
+- **Package renamed** to `@art-work/cli` (was: `@art-domains/workspace-cli`).
+
 ## 0.0.19
 
 ### Added

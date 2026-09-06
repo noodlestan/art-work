@@ -1,6 +1,6 @@
 {
   "name": "@art-work/cli",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "CLI for discovering projects, inspecting and synchronizing checkouts, linking resources, and executing commands across them.",
   "author": "Noodlestan Collective",
   "license": "MIT",
