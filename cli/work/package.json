@@ -1,6 +1,6 @@
 {
   "name": "@art-work/cli",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "CLI for discovering projects, inspecting and synchronizing checkouts, linking resources, and executing commands across them.",
   "author": "Noodlestan Collective",
   "license": "MIT",
@@ -12,16 +12,16 @@
   },
   "type": "module",
   "bin": {
-    "art-work-cli": "./dist/index.js"
+    "art-work-cli": "./dist/esm/index.mjs"
   },
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "types": "./dist/esm/index.d.ts",
+      "import": "./dist/esm/index.mjs"
     },
     "./config": {
-      "types": "./dist/config/index.d.ts",
-      "import": "./dist/config/index.js"
+      "types": "./dist/esm/config/index.d.ts",
+      "import": "./dist/esm/config/index.mjs"
     }
   },
   "files": [
@@ -30,11 +30,13 @@
     "README.md"
   ],
   "scripts": {
-    "build": "npm run build:main && npm run build:config && tsc --emitDeclarationOnly",
+    "dev": "esbuild-cli-watch",
     "build:clean": "rm -rf dist",
-    "build:main": "esbuild src/index.ts --bundle --platform=node --outfile=dist/index.js --format=esm --packages=external",
+    "build:types:esm": "tsc --project tsconfig.esm.json",
+    "build:types:cjs": "tsc --project tsconfig.cjs.json",
+    "build:main": "esbuild-cli",
+    "build": "npm run build:main && npm run build:config && tsc --emitDeclarationOnly",
     "build:config": "esbuild src/config/index.ts --bundle --platform=node --outfile=dist/config/index.js --format=esm --packages=external",
-    "dev": "npm run build:main -- --watch",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
@@ -49,7 +51,7 @@
     "simple-git": "^3.24.0"
   },
   "devDependencies": {
-    "@noodlestan/esbuild": "^0.0.12",
+    "@noodlestan/esbuild": "^0.0.13",
     "@types/node": "^25.9.5",
     "typescript": "^5.4.0",
     "vitest": "^1.4.0"
