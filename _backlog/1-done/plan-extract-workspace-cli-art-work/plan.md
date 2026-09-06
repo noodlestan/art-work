@@ -121,10 +121,10 @@ All steps MUST pass. No `it.todo()` tests may remain.
 
 ## Items:
 
-| Iteration / Instructions             | Status  |
-| ------------------------------------ | ------- |
-| Iteration: Move Workspace Cli Source | `DONE`  |
-| Iteration: Update Package Record     | `DONE`  |
+| Iteration / Instructions             | Status |
+| ------------------------------------ | ------ |
+| Iteration: Move Workspace Cli Source | `DONE` |
+| Iteration: Update Package Record     | `DONE` |
 
 ### Iteration: Move Workspace Cli Source
 
@@ -152,8 +152,8 @@ All steps MUST pass. No `it.todo()` tests may remain.
 
 #### Commits:
 
-| ID                            | Repository / Checkout / Branch            | Policy       | Hash | Status     |
-| ----------------------------- | ----------------------------------------- | ------------ | ---- | ---------- |
+| ID                            | Repository / Checkout / Branch            | Policy       | Hash      | Status      |
+| ----------------------------- | ----------------------------------------- | ------------ | --------- | ----------- |
 | `move-workspace-cli-source`   | Art Work / `$ART_WORK` / `building`       | `AUTONOMOUS` | `de733b1` | `COMMITTED` |
 | `remove-workspace-cli-source` | Art Domains / `$ART_DOMAINS` / `building` | `AUTONOMOUS` | `27e4198` | `COMMITTED` |
 
@@ -203,8 +203,8 @@ clean(workspace-cli): Remove workspace-cli (source moved to Art Work).
 
 #### Commits:
 
-| ID                                    | Repository / Checkout / Branch      | Policy       | Hash | Status     |
-| ------------------------------------- | ----------------------------------- | ------------ | ---- | ---------- |
+| ID                                    | Repository / Checkout / Branch      | Policy       | Hash      | Status      |
+| ------------------------------------- | ----------------------------------- | ------------ | --------- | ----------- |
 | `update-workspace-cli-package-record` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` | `8bef66a` | `COMMITTED` |
 
 ##### Commit: `update-workspace-cli-package-record`
