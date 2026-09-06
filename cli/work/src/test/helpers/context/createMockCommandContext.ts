@@ -1,5 +1,5 @@
 import {
-	WorkspaceContext,
+	type WorkspaceContext,
 	createWorkspaceContext,
 } from '../../../private/context/createWorkspaceContext';
 import { createOperationsLog } from '../../../private/log/createOperationsLog';

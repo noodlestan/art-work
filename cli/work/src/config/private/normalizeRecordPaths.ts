@@ -1,6 +1,6 @@
-import { FSRecordsPath } from '@art-lib/fs-records';
+import type { FSRecordsPath } from '@art-lib/fs-records';
 
-import { PartialWorkspaceConfig } from '../types';
+import type { PartialWorkspaceConfig } from '../types';
 
 const DEFAULTS: FSRecordsPath = {
 	base: '.',

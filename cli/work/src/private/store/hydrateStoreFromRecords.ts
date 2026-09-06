@@ -1,5 +1,5 @@
 import type { WorkspaceConfig } from '../../config/types';
-import { RepositoryCheckoutRecord } from '../resources/types';
+import type { RepositoryCheckoutRecord } from '../resources/types';
 
 import { createCheckout } from './createCheckout';
 import type { CheckoutStore } from './createCheckoutStore';

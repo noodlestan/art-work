@@ -9,7 +9,7 @@ import { loadRepositoryRecords } from '../../private/resources/repository/loadRe
 import type { PackageStateRecord, ProjectGraph } from '../../private/resources/types';
 import { hydrateStoreFromRecords } from '../../private/store/hydrateStoreFromRecords';
 import { scanAllCheckoutsStates } from '../../private/store/scanAllCheckoutsStates';
-import { Checkout } from '../../private/store/types';
+import type { Checkout } from '../../private/store/types';
 
 export interface CheckoutRepositoryState {
 	target: import('../../private/store/types').Checkout;

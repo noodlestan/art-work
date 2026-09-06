@@ -1,4 +1,4 @@
-import { RepositoryRecord } from '../resources/types';
+import type { RepositoryRecord } from '../resources/types';
 
 import { safePath } from './safePath';
 

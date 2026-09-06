@@ -1,6 +1,6 @@
 import { access } from 'node:fs/promises';
 
-import { WorkspaceContext } from '../context/createWorkspaceContext';
+import type { WorkspaceContext } from '../context/createWorkspaceContext';
 import { getBehindAheadCount } from '../git/getBehindAheadCount';
 import { getCurrentBranch } from '../git/getCurrentBranch';
 import { getRemoteBranch } from '../git/getRemoteBranch';

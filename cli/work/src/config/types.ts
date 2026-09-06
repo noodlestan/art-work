@@ -1,4 +1,4 @@
-import { FSRecordsPath } from '@art-lib/fs-records';
+import type { FSRecordsPath } from '@art-lib/fs-records';
 
 export interface WorkspaceConfig {
 	root: { path: string };

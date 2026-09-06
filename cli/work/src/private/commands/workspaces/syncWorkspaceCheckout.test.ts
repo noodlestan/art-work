@@ -5,7 +5,7 @@ import simpleGit from 'simple-git';
 import { afterEach, describe, expect, it } from 'vitest';
 
 import {
-	CheckoutScan,
+	type CheckoutScan,
 	createCheckoutScan,
 	createCommittedState,
 	createExistsState,

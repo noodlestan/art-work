@@ -1,5 +1,5 @@
 import { runWithConcurrency } from '../async/runWithConcurrency';
-import { WorkspaceContext } from '../context/createWorkspaceContext';
+import type { WorkspaceContext } from '../context/createWorkspaceContext';
 import { createGenericOperation } from '../operations/createGenericOperation';
 import { scanCheckoutState } from '../scan/scanCheckoutState';
 

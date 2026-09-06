@@ -1,0 +1,11 @@
+{
+  "extends": "@noodlestan/tsconfig/cli/tsconfig.cjs.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist/cjs",
+    "emitDeclarationOnly": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "**/*.spec.ts"]
+}

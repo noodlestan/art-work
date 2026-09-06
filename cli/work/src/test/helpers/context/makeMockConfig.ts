@@ -1,4 +1,4 @@
-import { WorkspaceConfig } from '../../../config';
+import type { WorkspaceConfig } from '../../../config';
 
 export function makeMockConfig(
 	rootPath: string,

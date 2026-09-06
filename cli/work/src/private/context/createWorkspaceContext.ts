@@ -1,7 +1,7 @@
 import type { WorkspaceConfig } from '../../config/types';
 import type { OperationsLog } from '../log/createOperationsLog';
 import type { Checkout } from '../store/createCheckout';
-import { CheckoutStore } from '../store/createCheckoutStore';
+import type { CheckoutStore } from '../store/createCheckoutStore';
 
 export interface WorkspaceContext {
 	config: WorkspaceConfig;

@@ -1,5 +1,5 @@
 import {
-	CheckoutScan,
+	type CheckoutScan,
 	createCheckoutScan,
 	createCommittedState,
 	createExistsState,
