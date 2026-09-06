@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 0.1.3
+
+### Fix
+
+- **Checkouts Run** command did not allow executing commands with quotes. Example: "git commit -m 'fix ...'".
+
 ## 0.1.1
 
 ### Changed
