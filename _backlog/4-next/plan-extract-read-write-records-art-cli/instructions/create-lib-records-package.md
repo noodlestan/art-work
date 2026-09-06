@@ -1,6 +1,6 @@
 # Instructions: `create-lib-records-package`
 
-**Plan:** `extract-read-write-records-art-cli`
+**Plan:** `extract-read-write-records-art-lib`
 
 **Iteration Id:** `create-lib-records-package`
 
@@ -18,7 +18,7 @@ This section describes how to report back to the delegator after completing the 
 
 1. Summarise the current context, asking: are you reporting completion or a BLOCKER?
 2. Gather the evidence of changes made and outcomes achieved, or the blocker error details.
-3. Use the `render-template` skill with the `.agents/domains/plans/templates/instructions-report.tart` to render your report and write it next to this instruction file: `plan-extract-read-write-records-art-cli/instructions/create-lib-records-package__report.md`. No separate delegation record is created.
+3. Use the `render-template` skill with the `.agents/domains/plans/templates/instructions-report.tart` to render your report and write it next to this instruction file: `plan-extract-read-write-records-art-lib/instructions/create-lib-records-package__report.md`. No separate delegation record is created.
 4. Generate the response and send it back to the delegator.
 5. Keep the response terse per the Working Agreements: happy face + up to 3 bullet points (done `create-lib-records-package`, created `{artefacts}`, thumbs up). The full trail lives in the report file; never repeat it in chat.
 
@@ -29,7 +29,7 @@ This section describes how to report back to the delegator after completing the 
 | `$WORKSPACE`   | Current working directory    | Workspace root directory                                                                    |
 | `$DOMAINS`     | `$WORKSPACE/.agents/domains` | Domain resources directory                                                                  |
 | `$ART_DOMAINS` | Provided with prompt.        | Where this plan lives. Example: `$WORKSPACE/checkouts/art-domains-planning`                 |
-| `$ART_CLI`     | Provided with prompt.        | Where the functions are being migrated to. Example: `$WORKSPACE/checkouts/art-cli-building` |
+| `$ART_CLI`     | Provided with prompt.        | Where the functions are being migrated to. Example: `$WORKSPACE/checkouts/art-lib-building` |
 | `$ART_WORK`    | Provided with prompt.        | Repo currently containing the functions. Example: `$WORKSPACE/checkouts/art-work-building`  |
 
 ## Working Agreements
@@ -42,14 +42,14 @@ The plan workflow (see the entry point guide → Planning Workflow → Working T
 
 ## Goals
 
-Create the Lib Records package in the art-cli repository: canonical name `@art-cli/lib-records` at path `libs/records`, with package.json, tsconfig, vitest config, a stub entry point, and the package record.
+Create the Lib Records package in the art-lib repository: canonical name `@art-lib/fs-records` at path `libs/records`, with package.json, tsconfig, vitest config, a stub entry point, and the package record.
 
 ## Mandatory Reading
 
-- ::READ `$ART_DOMAINS/_backlog/4-next/plan-extract-read-write-records-art-cli/plan.md` (Plan) — Full plan context, scope, and commit blueprints.
-- ::READ `$ART_CLI/package.json` (Source) — Art-cli root package.json; confirms the `libs/**` workspace pattern.
-- ::READ `$ART_CLI/_records/project.art` (Source) — Art-cli project record; confirms Package: Lib Records (PLANNED) is registered.
-- ::READ `$ART_CLI/tsconfig.json` (Source) — Art-cli root tsconfig to extend.
+- ::READ `$ART_DOMAINS/_backlog/4-next/plan-extract-read-write-records-art-lib/plan.md` (Plan) — Full plan context, scope, and commit blueprints.
+- ::READ `$ART_CLI/package.json` (Source) — Art Lib root package.json; confirms the `libs/**` workspace pattern.
+- ::READ `$ART_CLI/_records/project.art` (Source) — Art Lib project record; confirms Package: Lib Records (PLANNED) is registered.
+- ::READ `$ART_CLI/tsconfig.json` (Source) — Art Lib root tsconfig to extend.
 
 - RULE: You MUST follow any links under `## Mandatory Reading` sections found in the listed files.
 - RULE: If you are unable to read a file linked under `## Mandatory Reading` you must stop and REPORT A BLOCKER.
@@ -122,7 +122,7 @@ mkdir -p $ART_CLI/libs/records/src
 
 ```json
 {
-  "name": "@art-cli/lib-records",
+  "name": "@art-lib/fs-records",
   "version": "0.0.1",
   "description": "Generic record read/write modules for Art MD record files.",
   "author": "Noodlestan Collective",
@@ -188,7 +188,7 @@ export {};
 **1f. Create `$ART_CLI/libs/records/README.md`:**
 
 ```md
-# @art-cli/lib-records
+# @art-lib/fs-records
 
 > Generic record read/write modules for Art MD record files.
 
@@ -244,9 +244,9 @@ Create `$ART_CLI/libs/records/_records/package.art`:
 
 **Author:** Noodlestan Collective
 
-**Path:** `art-cli/libs/records/`
+**Path:** `art-lib/libs/fs-records/`
 
-**Canonical Name:** `@art-cli/lib-records`
+**Canonical Name:** `@art-lib/fs-records`
 
 **Published:** `false`
 
@@ -276,9 +276,9 @@ Create `$ART_CLI/libs/records/_records/package.art`:
 **Message:**
 
 ```
-scaffold(art-cli): Create lib/records package `@art-cli/lib-records`.
+scaffold(art-lib): Create lib/records package `@art-lib/fs-records`.
 
-- Create Package: Lib Records at libs/records with canonical @art-cli/lib-records.
+- Create Package: Lib Records at libs/records with canonical @art-lib/fs-records.
 - Add package record, scaffold, and stub entry point.
 ```
 
@@ -291,7 +291,7 @@ cd $ART_CLI
 git push -u origin main
 ```
 
-The GitHub repository `noodlestan/art-cli` may not exist yet. If the push fails with `Repository not found`, do NOT report a blocker — record the deferred push in the report and continue. The push is executed once the repository is created on GitHub.
+The GitHub repository `noodlestan/art-lib` may not exist yet. If the push fails with `Repository not found`, do NOT report a blocker — record the deferred push in the report and continue. The push is executed once the repository is created on GitHub.
 
 **Expected outcome:** the commit is pushed to `origin/main`, or the deferred push is recorded in the report.
 
@@ -308,7 +308,7 @@ Report according to the "How to Report Back to the Delegator" instructions, noti
 **Instructions:**
 
 - Verify that commits have been executed and pushed according to the commit's policy.
-- Verify that `$ART_CLI/libs/records` exists with package.json (`@art-cli/lib-records`), tsconfig, vitest config, stub entry point, README, license, and package record.
+- Verify that `$ART_CLI/libs/records` exists with package.json (`@art-lib/fs-records`), tsconfig, vitest config, stub entry point, README, license, and package record.
 - Verify that `npm ci` from `$ART_CLI` recognizes the new workspace.
 - Execute the **Verifying Completion** step as defined in the "Operating Instructions" section.
 - Report according to the "How to Report Back to the Delegator" instructions.

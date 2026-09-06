@@ -1,12 +1,12 @@
-# Module: Workspace CLI — Execution Model
+# Art Work Cli — Execution Model
 
-**Purpose:** Decisions about how workspace commands execute — one-shot now, reactive later.
+**Purpose:** Decisions about how Art Work commands execute — one-shot now, reactive later.
 
 ## Decision: Imperative First, Reactive Later
 
 **Status:** Adopted
 
-**Context:** The workspace CLI runs as one-shot processes: `art-workspace clone`, `art-workspace sanity`, etc. Each invocation creates a `WorkspaceContext` (in-memory `CheckoutStore` + `OperationsLog`), performs work, presents reports, and exits. This is the simplest model that works — but the ecosystem will eventually need live updates: `npm run workspace watch` that re-scans on filesystem events, re-reports without re-invocation, and keeps a long-lived store in sync.
+**Context:** The Art Work Cli runs as one-shot processes: `art-workspace clone`, `art-workspace sanity`, etc. Each invocation creates a `WorkspaceContext` (in-memory `CheckoutStore` + `OperationsLog`), performs work, presents reports, and exits. This is the simplest model that works — but the ecosystem will eventually need live updates: `npm run workspace watch` that re-scans on filesystem events, re-reports without re-invocation, and keeps a long-lived store in sync.
 
 **Decision:** Implement commands as imperative one-shot processes now. The `WorkspaceContext` is created per invocation, the store is populated from disk, mutations happen in memory, reports are presented, records are saved per mutation, and the context is discarded. The design must stay clean enough that a reactive layer can subscribe to the same `CheckoutStore` and `OperationsLog` APIs without rearchitecting — specifically:
 

@@ -1,4 +1,4 @@
-# Parking Lot: Workspace CLI Planning
+# Parking Lot: Art Work Cli Planning
 
 This file is a temp tracker and parking lot. Column convention: **ACTIONABLE** / **PENDING** / **BLOCKER** / **FOLLOW-UPS** (not in scope). No done items here — completed work is recorded in `_backlog/`.
 

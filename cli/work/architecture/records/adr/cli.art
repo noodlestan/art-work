@@ -1,24 +1,22 @@
-# Module: Workspace CLI
+# Art Work Cli — Cli
 
 **Purpose:** Decisions about the workspace orchestration tooling — its package structure, manifest format, and data sources.
 
-## Decision: CLI Package in Artificial Ecosystem
+## Decision: CLI Package in own repository
 
 **Status:** Adopted
 
-**Context:** The workspace meta-repo currently hosts cross-repo orchestration commands (`ops clone/branch/symlink/preview`) as shell scripts and manual processes. As the ecosystem grows, these commands need a proper home with versioning, testing, and distribution.
+**Context:** The Art Domains repository currently hosts domains source code along with the workspace Cli. As the ecosystem grows, the CLI needs a proper home with versioning, roadmapping, testing, and distribution.
 
-**Decision:** Create `@art-domains/workspace-cli` at `checkouts/artificial/art-domains/cli/workspace` (bin: `art-workspace`). The CLI hosts workspace orchestration commands: `clone`, `branch`, `symlink`, `preview`. It follows the art-domains pattern: CLI package for commands, companion domain package (`@art-domains/workspace`) for structures and resources.
-
-**Consequences:** Workspace commands become versioned, testable, distributable. Artificial repo becomes the home for workspace tooling (in addition to art toolchain). Requires migrating current ops scripts to TypeScript.
+**Decision:** Create `@art-work/cli` at `cli/work` (bin: `art-work-cli`). The CLI hosts workspace orchestration commands: `clone`, `branch`, `symlink`, `preview`.
 
 ## Decision: Workspace Root as Private npm Package
 
 **Status:** Adopted
 
-**Context:** The workspace meta-repo was deliberately "not a build root" and had no `package.json`. To install and expose the workspace CLI and its npm scripts (`workspace`, `workspace:sanity`, `workspace:publish`), the workspace root needs a package manifest. This could be misread as turning the workspace into a build root.
+**Context:** The workspace meta-repo was deliberately "not a build root" and had no `package.json`. To install and expose the Art Work Cli and its npm scripts (`workspace`, `workspace:sanity`, `workspace:publish`), the workspace root needs a package manifest. This could be misread as turning the workspace into a build root.
 
-**Decision:** Create a root `package.json` at the workspace root: `name: noodlestan-workspace`, `private: true`, no runtime dependencies, a single devDependency (`@art-domains/workspace-cli`), and tooling scripts only. The root package is a **tooling manifest, not a build root**: it produces no build artifacts, has no release or publish pipeline, and hosts no application code. "Not a build root" is preserved — the workspace coordinates and consumes; it does not build or publish.
+**Decision:** Create a root `package.json` at the workspace root: `name: noodlestan-workspace`, `private: true`, no runtime dependencies, a single devDependency (`@art-work/cli`), and tooling scripts only. The root package is a **tooling manifest, not a build root**: it produces no build artifacts, has no release or publish pipeline, and hosts no application code. "Not a build root" is preserved — the workspace coordinates and consumes; it does not build or publish.
 
 **Consequences:** npm scripts and `npx` work at the workspace level; the CLI is installed once and exposed as `art-workspace`. The tooling-manifest vs build-root distinction stays visible in the workspace description ("the workspace meta-repo; it is not a build root") and by keeping root dependencies minimal. Risk of scope creep toward build-root behavior is guarded by that description.
 
@@ -26,21 +24,21 @@
 
 **Status:** Adopted
 
-**Context:** Workspace commands need to know where repos are cloned, where records live, and where checkouts are stored. A configuration file provides this information, but maintaining it separately from the records creates duplicate sources of truth. The manifest is loaded by the CLI via esbuild bundle-at-runtime, and the manifest imports `defineConfig` from the CLI package itself. This makes the package's entry point a public authoring API that consumers (the manifest) type-check against. Without explicit typings and an exports map, the import degrades to `any` or fails to resolve. The manifest's import pulls the CLI package entry into the load-time bundle, which includes `commander` (v12, CommonJS). esbuild inlining that CJS code into ESM output keeps `require('node:events')`, which throws under pure-ESM Node.
+**Context:** Workspace commands need paths to repos, records, and checkouts. The config must avoid duplicating record sources of truth and remain type-safe. Loading it currently requires bundling its TypeScript and its defineConfig import.
 
-**Decision:** Author `.art-workspace.mts` at workspace root as a TypeScript ESM module. It exports workspace paths (`WorkspaceConfig`: clone path, records paths for repositories and checkouts). The format is `.mts` because the root `package.json` has no `"type": "module"`: the explicit `.mts` extension pins ESM for Node and bundlers, is unambiguous under Node's native type-stripping, and signals TypeScript authoring to editors and tooling. The config is manually authored, not generated (see "Manifest Mirrors Records Structures; Checkouts Derived at Entry Point"). Split the authoring surface from the command surface: `src/config.ts` owns `defineConfig`, the config types, `locateCheckouts`, and `loadWorkspaceConfig` — zero runtime deps beyond `esbuild` (ESM-friendly). The package exports a dedicated subpath `@art-domains/workspace-cli/config` (`exports` map: `./config` → `types` + `import`), and the manifest imports from it: `import { defineConfig } from '@art-domains/workspace-cli/config'`. The main entry (`src/index.ts`) re-exports the config module for the CLI commands and backwards compatibility. Export from the CLI package entry: `defineConfig` (typed authoring helper for the manifest) and the config types `WorkspaceConfig`, `WorkspaceRecord`, `RepositoryRecord` mirroring `Structure: Workspace` and `Structure: Repository`. Emit type declarations (`dist/index.d.ts`) and add an `exports` map so imports resolve and type-check in the `.mts` manifest.
+**Decision:** Add `.art-workspace.mts` at the workspace root. It exports typed WorkspaceConfig, WorkspaceRecord, and RepositoryRecord. `src/config.ts` owns defineConfig, config types, locateCheckouts, and loadWorkspaceConfig. Export it as `@art-work/cli/config` (types + import), and re-export from the main entry for CLI/backwards compatibility. Emit declarations. Keep the root package CommonJS-defaulted; .mts explicitly establishes ESM.
 
-**Consequences:** Type-safe, importable config for tools. Records remain the source of truth; no duplicate maintenance once the generator lands. Tools get IDE support and type checking when consuming the manifest. The root `package.json` stays CommonJS-defaulted without needing `"type": "module"`. The CLI command surface (commander, simple-git) never enters the manifest bundle. Commander stays a runtime dependency of the CLI, loaded by Node's loader when the CLI runs — never esbuild-inlined. Stable, typed authoring surface; the manifest gets IDE support and compile-time validation. The API is locked early — renaming types or exports is a breaking change once consumers exist (the manifest is the first consumer). Amends "Manifest Mirrors Records Structures; Checkouts Derived at Entry Point": the public authoring API is the `/config` subpath; the main entry re-exports for the CLI.
+**Consequences:** The manifest has a stable, type-safe authoring API with IDE/type-checking support. CLI dependencies such as commander never enter the manifest bundle. Records remain the source of truth; checkouts are derived. The public API is now a compatibility boundary.
 
-## Decision: Runtime Config Loading — esbuild Bundle-at-Runtime
+**Decision:** Runtime Config Loading — esbuild Bundle-at-Runtime
 
 **Status:** Adopted
 
-**Context:** The manifest is a `.mts` TypeScript module, but the compiled CLI is plain ESM JavaScript running in Node. Node cannot natively execute TypeScript (until recent type-stripping versions), so the CLI must transpile the manifest before importing it. The manifest also imports `defineConfig` from the CLI package itself.
+**Context:** The .mts manifest must be transpiled before the compiled ESM CLI can import it.
 
-**Decision:** Load the manifest with esbuild bundle-at-runtime (Vite-style): read `.art-workspace.mts`, run `esbuild.build({ entryPoints, bundle: true, write: false, format: 'esm', platform: 'node' })`, write the bundled output to a temp `.mjs`, then `await import()`. The manifest's `import { defineConfig } from '@art-domains/workspace-cli'` is resolved from the consumer `node_modules` and inlined. `esbuild` becomes a **runtime dependency** of `@art-domains/workspace-cli` (currently dev-only via `@noodlestan/esbuild`).
+**Decision:** Load .`art-workspace.mts` with esbuild at runtime: bundle, emit ESM to a temporary `mjs`, then `import()` it. `esbuild` becomes a runtime dependency of `@art-work/cli`.
 
-**Consequences:** Works on any supported Node version with full TypeScript support. Adds `esbuild` as a runtime dependency. Alternative (Node native type stripping, `--experimental-strip-types`) would be dependency-free but requires Node ≥ 22.6 and only erasable TS syntax; reconsider when the minimum Node version is guaranteed.
+**Consequences:** TypeScript manifests work across supported Node versions without relying on native type stripping. The trade-off is a runtime `esbuild` dependency. Reconsider native type stripping once Node ≥22.6 is guaranteed.
 
 ## Decision: Manifest Mirrors Records Structures; Checkouts Derived at Entry Point
 

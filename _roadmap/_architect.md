@@ -1,4 +1,4 @@
-# Architect Briefing: Workspace
+# Architect Briefing: Art Work Roadmap
 
 This file tracks the forward-looking plan: why, principles, NFRs, definitions, conventions, and follow-ups.
 
@@ -6,18 +6,18 @@ This file tracks the forward-looking plan: why, principles, NFRs, definitions, c
 
 Agents SHOULD scan these files for relevant clarifications when faced with ambiguity or omissions that may result from missing definitions.
 
-- `architecture/index.md` — How the workspace CLI is structured, how it works, and its use cases.
-- `architecture/config.md` — The configuration system.
-- `architecture/commands.md` — The command surface, procedures, and edge cases.
-- `architecture/context-model.md` — Records and `WorkspaceContext`, `CheckoutStore`, `Checkout`.
-- `architecture/operations-log.md` — How operations are logged.
-- `architecture/reports.md` — How state and operation logs are presented.
-- `architecture/_pseudo.md` — the CLI pseudo-code contract: data structures, use cases, and auxiliary functions.
+- `cli/work/architecture/index.md` — How the Art Work Cli is structured, how it works, and its use cases.
+- `cli/work/architecture/config.md` — The configuration system.
+- `cli/work/architecture/commands.md` — The command surface, procedures, and edge cases.
+- `cli/work/architecture/context-model.md` — Records and `WorkspaceContext`, `CheckoutStore`, `Checkout`.
+- `cli/work/architecture/operations-log.md` — How operations are logged.
+- `cli/work/architecture/reports.md` — How state and operation logs are presented.
+- `cli/work/architecture/_pseudo.md` — the CLI pseudo-code contract: data structures, use cases, and auxiliary functions.
 - Decision records in `architecture/records/adr/`: `cli.art`, `execution-model.art`, and `publish.art`.
 
 ## Why
 
-The Noodlestan ecosystem spans multiple independent repositories (`artificial`, `purrception`, `purrtrait`, `purrpose`, `no-comply`, `workspace-tooling`). Each repo builds standalone, but cross-repo development requires coordination: cloning relevant repositories to controlled checkouts, branching across them, symlinking for local dev, and publishing packages. The workspace meta-repo orchestrates this workflow.
+The Noodlestan ecosystem spans multiple independent repositories (`artificials`, `purrception`, `purrtrait`, `purrpose`, `no-comply`, `workspace-tooling`, ...). Each repo builds standalone, but cross-repo development requires coordination: cloning relevant repositories to controlled checkouts, branching across them, symlinking for local dev, and publishing packages. The workspace meta-repo orchestrates this workflow.
 
 ## Principles
 
@@ -26,7 +26,7 @@ The Noodlestan ecosystem spans multiple independent repositories (`artificial`, 
 - Publish packages to npm before they can be consumed across repos.
 - The workspace owns cross-repo workflow; repos own their hooks and CI.
 - The workspace `context` checkout must never commit to an extracted project.
-- Workspace tooling lives in the artificial ecosystem (`@art-domains/*`) for consistency with other domain tooling.
+- Workspace tooling lives in the artificial ecosystem (`@art-work/cli`) and cli libraries in (`@art-lib/lib-*`
 - Records are the source of truth; generated files (`.art-workspace.mts`) are derived from records.
 - **Imperative first, reactive later.** Commands run as one-shot processes now; the store and log are in-memory per invocation. The design must stay clean enough that `npm run workspace watch` can subscribe to filesystem events and re-scan without rearchitecting. See `architecture/records/adr/execution-model.art`.
 

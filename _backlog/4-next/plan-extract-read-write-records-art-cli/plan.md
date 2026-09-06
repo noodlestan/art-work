@@ -1,6 +1,6 @@
 # Plan: Extract Read/Write Records to Art Cli
 
-**ID:** `extract-read-write-records-art-cli`
+**ID:** `extract-read-write-records-art-lib`
 
 **Status:** `READY`
 
@@ -8,9 +8,9 @@
 
 **Skill:** `write-plan`
 
-**Purpose:** Extract the generic record read/write modules into a shared library in the art-cli repository.
+**Purpose:** Extract the generic record read/write modules into a shared library in the art-lib repository.
 
-**Description:** Create Package: Lib Records in art-cli (canonical `@art-cli/lib-records`, path `libs/records`); extract the generic record read/write modules and their tests from workspace-cli; register the lib in the Art Cli project record; publish the lib; consume it in workspace-cli; update knowledge; publish a new workspace-cli version; test in `$WORKSPACE`.
+**Description:** Create Package: Lib Records in art-lib (canonical `@art-lib/fs-records`, path `libs/records`); extract the generic record read/write modules and their tests from art-work-cli; register the lib in the Art Cli project record; publish the lib; consume it in art-work-cli; update knowledge; publish a new art-work-cli version; test in `$WORKSPACE`.
 
 ## Mandatory Reading
 
@@ -20,27 +20,27 @@
 
 ## Path Variables
 
-| Variable       | Resolved Path                | Purpose                                                                                     |
-| -------------- | ---------------------------- | ------------------------------------------------------------------------------------------- |
-| `$WORKSPACE`   | Current working directory    | Workspace root directory                                                                    |
-| `$DOMAINS`     | `$WORKSPACE/.agents/domains` | Domain resources directory                                                                  |
-| `$ART_DOMAINS` | Provided with prompt.        | Where this plan lives. Example: `$WORKSPACE/checkouts/art-domains-planning`                 |
-| `$ART_CLI`     | Provided with prompt.        | Where the functions are being migrated to. Example: `$WORKSPACE/checkouts/art-cli-building` |
-| `$ART_WORK`    | Provided with prompt.        | Repo currently containing the functions. Example: `$WORKSPACE/checkouts/art-work-building`  |
+| Variable     | Resolved Path                | Purpose                                                                                     |
+| ------------ | ---------------------------- | ------------------------------------------------------------------------------------------- |
+| `$WORKSPACE` | Current working directory    | Workspace root directory                                                                    |
+| `$DOMAINS`   | `$WORKSPACE/.agents/domains` | Domain resources directory                                                                  |
+| `$ART_WORK`  | Provided with prompt.        | Where this plan lives. Example: `$WORKSPACE/checkouts/art-domains-planning`                 |
+| `$ART_CLI`   | Provided with prompt.        | Where the functions are being migrated to. Example: `$WORKSPACE/checkouts/art-lib-building` |
+| `$ART_WORK`  | Provided with prompt.        | Repo currently containing the functions. Example: `$WORKSPACE/checkouts/art-work-building`  |
 
 ## Summary
 
-Create Package: Lib Records in art-cli (`@art-cli/lib-records`, path `libs/records`); extract the generic record read/write modules and their tests from workspace-cli; register, publish, consume; publish a new workspace-cli version; test in `$WORKSPACE`.
+Create Package: Lib Records in art-lib (`@art-lib/fs-records`, path `libs/records`); extract the generic record read/write modules and their tests from art-work-cli; register, publish, consume; publish a new art-work-cli version; test in `$WORKSPACE`.
 
 ## Context
 
 ### Upstream Work
 
-| Kind                  | Path                                                                   | Role                                                                 |
-| --------------------- | ---------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| Parking Lot           | `$ART_DOMAINS/_backlog/_parking-lot.md`                                | Tracks short-term actionables, pending questions, and blockers.      |
-| Architecture Briefing | `_roadmap/_architect.md`                                               | Workspace principles, NFRs, milestones.                              |
-| Milestone             | `$ART_DOMAINS/_roadmap/3-now/milestone-workspace-cli-one/milestone.md` | Coordinates this plan as Phase 3 of the Workspace CLI One milestone. |
+| Kind                  | Path                                                               | Role                                                                |
+| --------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------- |
+| Parking Lot           | `$ART_WORK/_backlog/_parking-lot.md`                               | Tracks short-term actionables, pending questions, and blockers.     |
+| Architecture Briefing | `_roadmap/_architect.md`                                           | Art Work principles, NFRs, milestones.                              |
+| Milestone             | `$ART_WORK/_roadmap/3-now/milestone-art-work-cli-one/milestone.md` | Coordinates this plan as Phase 3 of the Art Work Cli One milestone. |
 
 ### Required Skills
 
@@ -61,13 +61,13 @@ Create Package: Lib Records in art-cli (`@art-cli/lib-records`, path `libs/recor
 
 ## Scope
 
-Create the Lib Records package in art-cli; extract the generic record read/write modules and their tests from workspace-cli; register the lib in the Art Cli project record; publish the lib; consume it in workspace-cli; update knowledge; publish a new workspace-cli version; test in `$WORKSPACE`.
+Create the Lib Records package in art-lib; extract the generic record read/write modules and their tests from art-work-cli; register the lib in the Art Cli project record; publish the lib; consume it in art-work-cli; update knowledge; publish a new art-work-cli version; test in `$WORKSPACE`.
 
 ## Work
 
 ### Next
 
-Delegate the `READY` iterations: `create-lib-records-package`, `extract-record-modules`, `register-publish-consume` (instructions written under `./plan-extract-read-write-records-art-cli/instructions/`).
+Delegate the `READY` iterations: `create-lib-records-package`, `extract-record-modules`, `register-publish-consume` (instructions written under `./plan-extract-read-write-records-art-lib/instructions/`).
 
 ### Blockers
 
@@ -105,7 +105,7 @@ If any of these fail, resolve the issue before proceeding with implementation.
 
 **Purpose:** Confirms that the work item has been completed and satisfies its intended outcome. Operation of Workflow: Executing Work, defined in `$DOMAINS/work/workflows/executing-work/ops/verifying-completion.art`.
 
-**Instructions:** (From `$ART_DOMAINS/_guide.md`)
+**Instructions:** (From `$ART_WORK/_guide.md`)
 
 Run from the package directory:
 
@@ -134,19 +134,19 @@ All steps MUST pass. No `it.todo()` tests may remain.
 
 **Status:** `READY`
 
-**Purpose:** Create the Lib Records package in the art-cli repository.
+**Purpose:** Create the Lib Records package in the art-lib repository.
 
-**Description:** Create Package: Lib Records with canonical name `@art-cli/lib-records` at path `libs/records`.
+**Description:** Create Package: Lib Records with canonical name `@art-lib/fs-records` at path `libs/records`.
 
-**Instructions:** `./plan-extract-read-write-records-art-cli/instructions/create-lib-records-package.md`
+**Instructions:** `./plan-extract-read-write-records-art-lib/instructions/create-lib-records-package.md`
 
 **Changes:**
 
-- Create Package: Lib Records, canonical `@art-cli/lib-records`, path `libs/records`.
+- Create Package: Lib Records, canonical `@art-lib/fs-records`, path `libs/records`.
 
 **Dependencies:**
 
-- Plan: Create Art Cli Project and Repo — the art-cli repo must exist first.
+- Plan: Create Art Cli Project and Repo — the art-lib repo must exist first.
 
 #### Commits:
 
@@ -159,9 +159,9 @@ All steps MUST pass. No `it.todo()` tests may remain.
 **Message:**
 
 ```
-scaffold(art-cli): Create lib/records package `@art-cli/lib-records`.
+scaffold(art-lib): Create lib/records package `@art-lib/fs-records`.
 
-- Create Package: Lib Records at libs/records with canonical @art-cli/lib-records.
+- Create Package: Lib Records at libs/records with canonical @art-lib/fs-records.
 - Add package record, scaffold, and stub entry point.
 ```
 
@@ -173,18 +173,18 @@ scaffold(art-cli): Create lib/records package `@art-cli/lib-records`.
 
 **Purpose:** Extract the generic record read/write modules and their tests into the Lib Records package.
 
-**Description:** Extract the generic record read/write modules and their tests from workspace-cli to `art-cli/libs/records`.
+**Description:** Extract the generic record read/write modules and their tests from art-work-cli to `art-lib/libs/fs-records`.
 
-**Instructions:** `./plan-extract-read-write-records-art-cli/instructions/extract-record-modules.md`
+**Instructions:** `./plan-extract-read-write-records-art-lib/instructions/extract-record-modules.md`
 
 **Changes:**
 
-- Extract generic record read/write modules and their tests to `art-cli/libs/records`.
+- Extract generic record read/write modules and their tests to `art-lib/libs/fs-records`.
 
 **Dependencies:**
 
 - `create-lib-records-package` — the package must exist before modules are extracted.
-- Plan: Extract Workspace Cli to Art Work — the workspace-cli source must be in art-work before modules are extracted from it.
+- Plan: Extract Art Work Cli to Art Work — the art-work-cli source must be in art-work before modules are extracted from it.
 
 #### Commits:
 
@@ -197,7 +197,7 @@ scaffold(art-cli): Create lib/records package `@art-cli/lib-records`.
 **Message:**
 
 ```
-refactor(art-cli): extract record read/write modules from workspace-cli
+refactor(art-lib): extract record read/write modules from art-work-cli
 
 - Copy generic record read/write modules and their tests to libs/records.
 - Adapt imports and exports for the lib package.
@@ -209,19 +209,19 @@ refactor(art-cli): extract record read/write modules from workspace-cli
 
 **Status:** `READY`
 
-**Purpose:** Register the lib, publish it, and consume it in workspace-cli.
+**Purpose:** Register the lib, publish it, and consume it in art-work-cli.
 
-**Description:** Register the lib in the Art Cli project record; publish the lib; consume it in workspace-cli; update knowledge; publish a new workspace-cli version; test in `$WORKSPACE`.
+**Description:** Register the lib in the Art Cli project record; publish the lib; consume it in art-work-cli; update knowledge; publish a new art-work-cli version; test in `$WORKSPACE`.
 
-**Instructions:** `./plan-extract-read-write-records-art-cli/instructions/register-publish-consume.md`
+**Instructions:** `./plan-extract-read-write-records-art-lib/instructions/register-publish-consume.md`
 
 **Changes:**
 
 - Register the lib in the Art Cli project record.
 - Publish the lib.
-- Consume the lib in workspace-cli.
-- Update knowledge in art-cli and art-work.
-- Publish a new workspace-cli version.
+- Consume the lib in art-work-cli.
+- Update knowledge in art-lib and art-work.
+- Publish a new art-work-cli version.
 - Test in `$WORKSPACE`.
 
 **Dependencies:**
@@ -230,43 +230,43 @@ refactor(art-cli): extract record read/write modules from workspace-cli
 
 #### Commits:
 
-| ID                                     | Repository / Checkout / Branch  | Policy       | Hash | Status     |
-| -------------------------------------- | ------------------------------- | ------------ | ---- | ---------- |
-| `register-and-publish-lib-records`     | Art Cli / `$ART_CLI` / `main`   | `AUTONOMOUS` | -    | `AUTHORED` |
-| `consume-lib-records-in-workspace-cli` | Art Work / `$ART_WORK` / `main` | `AUTONOMOUS` | -    | `AUTHORED` |
-| `release-workspace-cli`                | Art Work / `$ART_WORK` / `main` | `AUTONOMOUS` | -    | `AUTHORED` |
+| ID                                    | Repository / Checkout / Branch  | Policy       | Hash | Status     |
+| ------------------------------------- | ------------------------------- | ------------ | ---- | ---------- |
+| `register-and-publish-lib-records`    | Art Cli / `$ART_CLI` / `main`   | `AUTONOMOUS` | -    | `AUTHORED` |
+| `consume-lib-records-in-art-work-cli` | Art Work / `$ART_WORK` / `main` | `AUTONOMOUS` | -    | `AUTHORED` |
+| `release-art-work-cli`                | Art Work / `$ART_WORK` / `main` | `AUTONOMOUS` | -    | `AUTHORED` |
 
 ##### Commit: `register-and-publish-lib-records`
 
 **Message:**
 
 ```
-records(art-cli): register lib records in project record and publish
+records(art-lib): register lib records in project record and publish
 
 - Register Package: Lib Records in the Art Cli project record.
-- Publish @art-cli/lib-records to npm.
+- Publish @art-lib/fs-records to npm.
 ```
 
-##### Commit: `consume-lib-records-in-workspace-cli`
+##### Commit: `consume-lib-records-in-art-work-cli`
 
 **Message:**
 
 ```
-refactor(art-work): consume @art-cli/lib-records in workspace-cli
+refactor(art-work): consume @art-lib/fs-records in art-work-cli
 
-- Replace local record read/write modules with imports from @art-cli/lib-records.
+- Replace local record read/write modules with imports from @art-lib/fs-records.
 - Update package record and dependencies.
-- Update knowledge in art-cli and art-work.
+- Update knowledge in art-lib and art-work.
 ```
 
-##### Commit: `release-workspace-cli`
+##### Commit: `release-art-work-cli`
 
 **Message:**
 
 ```
-release(art-work): publish workspace-cli with lib records dependency
+release(art-work): publish art-work-cli with lib records dependency
 
-- Publish a new workspace-cli version consuming @art-cli/lib-records.
+- Publish a new art-work-cli version consuming @art-lib/fs-records.
 - Test in $WORKSPACE.
 ```
 
@@ -276,9 +276,9 @@ release(art-work): publish workspace-cli with lib records dependency
 
 ### Not In Scope
 
-- Creating the art-cli repository (tracked in Plan: Create Art Cli Project and Repo).
-- Moving the workspace-cli source code (tracked in Plan: Extract Workspace Cli to Art Work).
-- Generating the art-cli ecosystem roadmap notes (future plan, not yet tracked).
+- Creating the art-lib repository (tracked in Plan: Create Art Cli Project and Repo).
+- Moving the art-work-cli source code (tracked in Plan: Extract Art Work Cli to Art Work).
+- Generating the art-lib ecosystem roadmap notes (future plan, not yet tracked).
 
 ### Evidence
 
@@ -286,18 +286,18 @@ release(art-work): publish workspace-cli with lib records dependency
 
 ### Findings
 
-- The extraction spans two repos: modules are copied to art-cli (`libs/records`) while workspace-cli keeps its local copies until the lib is published and consumed.
-- Consumption replaces the local modules in workspace-cli with imports from `@art-cli/lib-records`, followed by a new workspace-cli release.
+- The extraction spans two repos: modules are copied to art-lib (`libs/records`) while art-work-cli keeps its local copies until the lib is published and consumed.
+- Consumption replaces the local modules in art-work-cli with imports from `@art-lib/fs-records`, followed by a new art-work-cli release.
 
 ### Decisions
 
-- Package: Lib Records, canonical `@art-cli/lib-records`, path `libs/records`.
-- Commit order: create package → extract modules → register + publish lib → consume in workspace-cli → release workspace-cli.
+- Package: Lib Records, canonical `@art-lib/fs-records`, path `libs/records`.
+- Commit order: create package → extract modules → register + publish lib → consume in art-work-cli → release art-work-cli.
 
 ### Knowledge to Update
 
-- Update knowledge in art-cli and art-work.
-- Update the workspace-cli package record after consuming the lib.
+- Update knowledge in art-lib and art-work.
+- Update the art-work-cli package record after consuming the lib.
 
 ### Follow Ups
 

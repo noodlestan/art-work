@@ -1,6 +1,6 @@
-# Workspace CLI — Commands
+# Art Work Cli — Commands
 
-The command surface of the workspace CLI, their procedures, and their edge cases. Commands are hosted in `@art-domains/workspace-cli` (binary `art-workspace`) and invoked from the workspace root, either directly (`art-workspace <command>`) or through npm scripts (`npm run workspace -- <command>`).
+The command surface of the Art Work Cli, their procedures, and their edge cases. Commands are hosted in `@art-work/cli` (binary `art-workspace`) and invoked from the workspace root, either directly (`art-workspace <command>`) or through npm scripts (`npm run workspace -- <command>`).
 
 ## Command Surface
 

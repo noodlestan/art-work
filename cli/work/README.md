@@ -1,4 +1,4 @@
-# @art-domains/workspace-cli
+# @art-work/cli
 
 **Purpose:** Operate and monitor multi-repository development environments.
 
@@ -17,7 +17,7 @@
 ## Installation
 
 ```bash
-npm install -g @art-domains/workspace-cli
+npm install -g @art-work/cli
 ```
 
 ## Usage

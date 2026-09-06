@@ -1,14 +1,10 @@
-# Architecture: Workspace CLI
+# Architecture: Art Work Cli
 
 **Status:** `WORKING`
 
-**Pseudo:** `art-domains/cli/workspace/architecture/_pseudo.md`
+**Pseudo:** `./_pseudo.md`
 
-**Plans:**
-
-- `art-domains/cli/workspace/_backlog/3-now/plan-workspace-cli/plan.md` - `WORKING`
-
-**Description:** A workspace meta-repo orchestrates cross-repo work within an ecosystem via a workspace CLI (`@art-domains/workspace-cli`, binary `art-workspace`) that clones repositories, branches across checkouts, symlinks packages for local development, checks repository status, and publishes packages.
+**Description:** A workspace meta-repo orchestrates cross-repo work within an ecosystem via a Art Work Cli (`@art-work/cli`, binary `art-workspace`) that clones repositories, branches across checkouts, symlinks packages for local development, checks repository status, and publishes packages.
 
 ## Why
 
@@ -33,7 +29,7 @@ An ecosystem spans multiple independent repositories (`artificial`, `purrception
 
 ### CLI Execution Model
 
-**CLI package** (`@art-domains/workspace-cli`) — hosts the orchestration commands (`clone`, `branch`, `link`, `unlink`, `sanity`, `publish`).
+**CLI package** (`@art-work/cli`) — hosts the orchestration commands (`clone`, `branch`, `link`, `unlink`, `sanity`, `publish`).
 
 The workspace owns:
 

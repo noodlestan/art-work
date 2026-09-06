@@ -1,13 +1,13 @@
 # Guide: Art Work Cli
 
-The Art Work CLI package (`@art-work/cli`, binary `art-work-cli`) orchestrates cross-repo work for the Noodlestan ecosystem. It clones repositories, branches across them, symlinks packages for local development, checks repository status, and publishes packages.
+The Art Work Cli package (`@art-work/cli`, binary `art-work-cli`) orchestrates cross-repo work for the Noodlestan ecosystem. It clones repositories, branches across them, symlinks packages for local development, checks repository status, and publishes packages.
 
 ## Recommended Reading
 
 Agents SHOULD scan these files for relevant clarifications when faced with ambiguity or omissions that may result from missing definitions.
 
-- `_guide.md` — the workspace CLI overview, plan workflow, and agent interactions.
-- `architecture/index.md` — How the workspace CLI is structured, how it works, structures, use cases, and auxiliary functions.
+- `_guide.md` — the Art Work Cli overview, plan workflow, and agent interactions.
+- `architecture/index.md` — How the Art Work Cli is structured, how it works, structures, use cases, and auxiliary functions.
 
 ## Package Layout
 

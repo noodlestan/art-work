@@ -1,4 +1,4 @@
-# Workspace CLI - Dependencies
+# Art Work Cli - Dependencies
 
 ## Commander
 

@@ -1,8 +1,8 @@
 # Guide: Art Work
 
-> Host and manage the Art Work workspace orchestration tools and applications, and their planning artefacts.
+> Host and manage the Art Work orchestration tools and applications, and their planning artefacts.
 
-Monorepo containing the Art Work workspace orchestration tools and applications, and their planning artefacts.
+Monorepo containing the Art Work orchestration tools and applications, and their planning artefacts.
 
 Uses Workflow: Planning Work with one backlog per package, coordinating with Workflow: Roadmapping from one project-wide roadmap.
 
@@ -21,7 +21,8 @@ _guide.md           — this file
 _backlog/           — plans, instructions, reports
 _records/           — project, repository, namespace, and license records
 architecture/       — repository-level architecture documentation
-cli/                — CLI packages (work-cli source lives at cli/work)
+cli/                — CLI packages
+cli/work            — `@art-work/cli`
 ```
 
 ## Records Management
@@ -38,6 +39,7 @@ Records are co-located with the resources they describe in `_records/` directori
 This repository maintains architecture references at:
 
 - `architecture/index.md` — repository-level architecture index.
+- `cli/work/architecture/index.md` — repository-level architecture index.
 
 ## Workflows
 

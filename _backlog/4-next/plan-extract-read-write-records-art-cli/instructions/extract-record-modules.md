@@ -1,6 +1,6 @@
 # Instructions: `extract-record-modules`
 
-**Plan:** `extract-read-write-records-art-cli`
+**Plan:** `extract-read-write-records-art-lib`
 
 **Iteration Id:** `extract-record-modules`
 
@@ -18,7 +18,7 @@ This section describes how to report back to the delegator after completing the 
 
 1. Summarise the current context, asking: are you reporting completion or a BLOCKER?
 2. Gather the evidence of changes made and outcomes achieved, or the blocker error details.
-3. Use the `render-template` skill with the `.agents/domains/plans/templates/instructions-report.tart` to render your report and write it next to this instruction file: `plan-extract-read-write-records-art-cli/instructions/extract-record-modules__report.md`. No separate delegation record is created.
+3. Use the `render-template` skill with the `.agents/domains/plans/templates/instructions-report.tart` to render your report and write it next to this instruction file: `plan-extract-read-write-records-art-lib/instructions/extract-record-modules__report.md`. No separate delegation record is created.
 4. Generate the response and send it back to the delegator.
 5. Keep the response terse per the Working Agreements: happy face + up to 3 bullet points (done `extract-record-modules`, created `{artefacts}`, thumbs up). The full trail lives in the report file; never repeat it in chat.
 
@@ -29,7 +29,7 @@ This section describes how to report back to the delegator after completing the 
 | `$WORKSPACE`   | Current working directory    | Workspace root directory                                                                    |
 | `$DOMAINS`     | `$WORKSPACE/.agents/domains` | Domain resources directory                                                                  |
 | `$ART_DOMAINS` | Provided with prompt.        | Where this plan lives. Example: `$WORKSPACE/checkouts/art-domains-planning`                 |
-| `$ART_CLI`     | Provided with prompt.        | Where the functions are being migrated to. Example: `$WORKSPACE/checkouts/art-cli-building` |
+| `$ART_CLI`     | Provided with prompt.        | Where the functions are being migrated to. Example: `$WORKSPACE/checkouts/art-lib-building` |
 | `$ART_WORK`    | Provided with prompt.        | Repo currently containing the functions. Example: `$WORKSPACE/checkouts/art-work-building`  |
 
 ## Working Agreements
@@ -42,11 +42,11 @@ The plan workflow (see the entry point guide → Planning Workflow → Working T
 
 ## Goals
 
-Extract the generic record read/write modules and their tests from the workspace-cli source (`$ART_WORK/cli/work/src/private/records/`) into the Lib Records package (`$ART_CLI/lib/records/src/`), adapting imports, exports, and tests for the standalone lib package.
+Extract the generic record read/write modules and their tests from the art-work-cli source (`$ART_WORK/cli/work/src/private/records/`) into the Lib Records package (`$ART_CLI/lib/records/src/`), adapting imports, exports, and tests for the standalone lib package.
 
 ## Mandatory Reading
 
-- ::READ `$ART_DOMAINS/_backlog/4-next/plan-extract-read-write-records-art-cli/plan.md` (Plan) — Full plan context, scope, and commit blueprints.
+- ::READ `$ART_DOMAINS/_backlog/4-next/plan-extract-read-write-records-art-lib/plan.md` (Plan) — Full plan context, scope, and commit blueprints.
 - ::READ `$ART_WORK/cli/work/src/private/records/findRecordFiles.ts` (Source) — Module to extract.
 - ::READ `$ART_WORK/cli/work/src/private/records/readRecordFileContent.ts` (Source) — Module to extract.
 - ::READ `$ART_WORK/cli/work/src/private/records/types.ts` (Source) — Module to extract.
@@ -145,13 +145,13 @@ export interface RecordsConfig {
 }
 ```
 
-**2b. Adapt the modules that import from the workspace-cli config:**
+**2b. Adapt the modules that import from the art-work-cli config:**
 
 - `findRecordFiles.ts`: replace `import type { WorkspaceConfig } from '../../config'` with the lib's `RecordsConfig`; the `recordsConfig` parameter type becomes `RecordsConfig`.
 - `private/findRecordFilesInPath.ts`: replace `import type { WorkspaceRecordsPath } from '../../../config'` with the lib's `RecordsPath`.
 - `private/globPath.ts`: replace `import type { WorkspaceRecordsPath } from '../../../config'` with the lib's `RecordsPath`.
 
-The lib's `RecordsPath` is structurally identical to `WorkspaceRecordsPath`, so the workspace-cli can pass its config when consuming the lib.
+The lib's `RecordsPath` is structurally identical to `WorkspaceRecordsPath`, so the art-work-cli can pass its config when consuming the lib.
 
 **2c. Create the lib entry point `$ART_CLI/lib/records/src/index.ts`:**
 
@@ -164,7 +164,7 @@ export type { RecordsConfig, RecordsPath } from './types';
 
 **2d. Adapt the test.** `findRecordFiles.test.ts` uses `makeMockConfig` from `../../test/helpers/context/makeMockConfig`. Replace it with a local helper in the lib:
 
-- Create `$ART_CLI/lib/records/src/test/makeMockRecordsConfig.ts` returning a `RecordsConfig` with the same defaults as the workspace-cli helper:
+- Create `$ART_CLI/lib/records/src/test/makeMockRecordsConfig.ts` returning a `RecordsConfig` with the same defaults as the art-work-cli helper:
 
 ```ts
 import type { RecordsConfig } from '../types';
@@ -206,7 +206,7 @@ npm run test
 **Message:**
 
 ```
-refactor(art-cli): extract record read/write modules from workspace-cli
+refactor(art-lib): extract record read/write modules from art-work-cli
 
 - Copy generic record read/write modules and their tests to libs/records.
 - Adapt imports and exports for the lib package.
@@ -221,7 +221,7 @@ cd $ART_CLI
 git push -u origin main
 ```
 
-The GitHub repository `noodlestan/art-cli` may not exist yet. If the push fails with `Repository not found`, do NOT report a blocker — record the deferred push in the report and continue. The push is executed once the repository is created on GitHub.
+The GitHub repository `noodlestan/art-lib` may not exist yet. If the push fails with `Repository not found`, do NOT report a blocker — record the deferred push in the report and continue. The push is executed once the repository is created on GitHub.
 
 **Expected outcome:** the commit is pushed to `origin/main`, or the deferred push is recorded in the report.
 
@@ -239,6 +239,6 @@ Report according to the "How to Report Back to the Delegator" instructions, noti
 
 - Verify that commits have been executed and pushed according to the commit's policy.
 - Verify that `$ART_CLI/lib/records/src/` contains the record modules, private helpers, and the adapted test, and that the lib builds and tests pass.
-- Verify that the workspace-cli source (`$ART_WORK/cli/work`) is unchanged by this iteration (its local copies remain until the consume iteration).
+- Verify that the art-work-cli source (`$ART_WORK/cli/work`) is unchanged by this iteration (its local copies remain until the consume iteration).
 - Execute the **Verifying Completion** step as defined in the "Operating Instructions" section.
 - Report according to the "How to Report Back to the Delegator" instructions.

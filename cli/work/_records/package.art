@@ -24,7 +24,7 @@
 
 **Version:** `^0.28.0`
 
-## Package: Workspace CLI
+## Package: Art Work Cli
 
 **Purpose:** Operate and monitor multi-repository development environments.
 
@@ -44,7 +44,7 @@
 
 **Private:** `false`
 
-**Deployment:** NPM Package Deployment: Workspace CLI
+**Deployment:** NPM Package Deployment: Art Work Cli
 
 **Files:**
 
@@ -78,7 +78,7 @@
 
 **Scripts:**
 
-- Package Script Set: Workspace CLI Build
+- Package Script Set: CLI Build
 - Package Script Set: Common Scripts
 
 **Scaffolders:**

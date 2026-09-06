@@ -70,7 +70,7 @@
 
 ### Documented
 
-- **Architecture:** Update workspace CLI knowledge and pseudo-code for dynamic loading and checkout-keyed reporting.
+- **Architecture:** Update Art Work Cli knowledge and pseudo-code for dynamic loading and checkout-keyed reporting.
 
 ## 0.0.16
 

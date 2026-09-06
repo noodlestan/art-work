@@ -1,4 +1,4 @@
-# Plan: Workspace CLI — Link Command
+# Plan: Art Work Cli — Link Command
 
 **ID:** `implement-link`
 
@@ -8,7 +8,7 @@
 
 **Skill:** `write-plan`
 
-**Purpose:** Implement `art-workspace link <location> <package> [<target>]` for `@art-domains/workspace-cli`.
+**Purpose:** Implement `art-workspace link <location> <package> [<target>]` for `@art-work/cli`.
 
 **Description:** Symlink a source package from a repo checkout into a target `node_modules` for local development, replacing the stub at `src/commands/link/runLink.ts`.
 
@@ -33,11 +33,11 @@ Implement the link command for local package symlinking, supporting scoped packa
 
 ### Upstream Work
 
-| Kind                  | Path                                                               | Role                                                            |
-| --------------------- | ------------------------------------------------------------------ | --------------------------------------------------------------- |
-| Parking Lot           | `$PROJECT/_backlog/_parking-lot.md`                                | Tracks short-term actionables, pending questions, and blockers. |
-| Architecture Briefing | `_roadmap/_architect.md`                                           | Workspace principles, NFRs, milestones.                         |
-| Milestone             | `$PROJECT/_roadmap/3-now/milestone-workspace-cli-one/milestone.md` | Coordinates this plan within the Workspace CLI One milestone.   |
+| Kind                  | Path                                                              | Role                                                            |
+| --------------------- | ----------------------------------------------------------------- | --------------------------------------------------------------- |
+| Parking Lot           | `$PROJECT/_backlog/_parking-lot.md`                               | Tracks short-term actionables, pending questions, and blockers. |
+| Architecture Briefing | `_roadmap/_architect.md`                                          | Workspace principles, NFRs, milestones.                         |
+| Milestone             | `$PROJECT/_roadmap/3-now/milestone-art-work-cli-one/milestone.md` | Coordinates this plan within the Art Work Cli One milestone.    |
 
 ### Required Skills
 

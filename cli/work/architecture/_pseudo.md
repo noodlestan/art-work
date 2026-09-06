@@ -1,4 +1,4 @@
-# Pseudo: Workspace CLI
+# Pseudo: Art Work Cli
 
 Mostly useful for prototyping data structures or interactions (but these are detailed in `architecture/{topic}.md` files once settled) and for defining expectations (BDD) and logic (pseudo) for use cases. Zero real code — bodies prescribe what to do, not how to implement.
 

@@ -1,4 +1,4 @@
-# Workspace CLI — Operations Log
+# Art Work Cli — Operations Log
 
 The side-effect log of a command invocation.
 
