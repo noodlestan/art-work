@@ -8,20 +8,18 @@ import { createCheckoutRunOperation } from '../operations/createCheckoutRunOpera
 export async function doCheckoutRun(
 	ctx: WorkspaceContext,
 	checkout: Checkout,
-	command: string[],
+	command: string,
 ): Promise<Checkout | null> {
-	const commandLine = command.join(' ');
-
 	if (!checkout.scan?.state('exists').exists) {
 		const op = createOperationFailure(
-			createCheckoutRunOperation(checkout, commandLine),
+			createCheckoutRunOperation(checkout, command),
 			new Error('checkout not cloned'),
 		);
 		ctx.log.log(op);
 		return null;
 	}
 
-	const pending = createCheckoutRunOperation(checkout, commandLine);
+	const pending = createCheckoutRunOperation(checkout, command);
 	try {
 		ctx.log.log(pending);
 		const runOutcome = await runCommandInDirectory(checkout.path, command);
@@ -39,7 +37,8 @@ export async function doCheckoutRun(
 				console.info('');
 			}
 			if (runOutcome.error) {
-				console.error('\n--- Error:\n');
+				const maybeErrorLabel = runOutcome.code === 0 ? '' : ' Error:';
+				console.error(`\n---${maybeErrorLabel}\n`);
 				console.error(runOutcome.error);
 				console.error('');
 			}

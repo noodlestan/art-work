@@ -155,13 +155,13 @@ program
 	.description('Checkout operations')
 	.command('run')
 	.description('Run a command in selected checkouts')
-	.argument('<command...>', 'command to run')
+	.argument('<command>', 'command to run')
 	.option(
 		'-c, --checkouts <PATTERN...>',
 		'One or more. Matches checkout name and location. Wildcard asterisk * supported. Example: -c "* @ refactor" "lib-*"',
 	)
 	.option('-A, --all', 'Apply to all checkouts')
-	.action(async (command: string[], options: { checkouts?: string[]; all?: boolean }) => {
+	.action(async (command: string, options: { checkouts?: string[]; all?: boolean }) => {
 		const root = process.cwd();
 		logger(createGenericOperation('boot'));
 		const config = await loadWorkspaceConfig(root);

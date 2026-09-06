@@ -11,15 +11,13 @@ import { scanAllCheckoutsStates } from '../../private/store/scanAllCheckoutsStat
 
 export async function runCheckoutsRun(
 	ctx: WorkspaceContext,
-	options: { command: string[]; checkouts?: string[]; all?: boolean },
+	options: { command: string; checkouts?: string[]; all?: boolean },
 ): Promise<void> {
 	const repos = await loadRepositoryRecords(ctx);
 	const records = await loadCheckoutRecords(ctx, repos);
 	hydrateStoreFromRecords(ctx.config, ctx.store, records);
 
 	ctx.log.log(createGenericOperation('command', ['checkouts', 'run', options.command]));
-
-	await scanAllCheckoutsStates(ctx);
 
 	if (!options.all && (!options.checkouts || options.checkouts.length === 0)) {
 		console.error('No checkouts matched.');
@@ -28,6 +26,8 @@ export async function runCheckoutsRun(
 		);
 		return;
 	}
+
+	await scanAllCheckoutsStates(ctx);
 
 	const checkouts = options.all
 		? ctx.store.getAllCheckouts()

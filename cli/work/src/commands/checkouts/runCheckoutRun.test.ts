@@ -36,7 +36,7 @@ describe('checkouts run command', () => {
 		writeRepoMockRecord(tempDir, 'Art', bareDir);
 		writeCheckoutMockRecord(tempDir, 'Art', 'Art', 'art');
 
-		await runCheckoutsRun(ctx, { command: ['touch', 'marker.txt'] });
+		await runCheckoutsRun(ctx, { command: 'touch marker.txt' });
 
 		expect(existsSync(join(repoDir, 'marker.txt'))).toBe(false);
 		expect(ctx.log.all().filter(op => op.operation === 'run')).toHaveLength(0);
@@ -60,7 +60,7 @@ describe('checkouts run command', () => {
 		writeRepoMockRecord(tempDir, 'Purrception', purrBare);
 		writeCheckoutMockRecord(tempDir, 'Purrception', 'Purrception', 'purr');
 
-		await runCheckoutsRun(ctx, { command: ['touch', 'marker.txt'], all: true });
+		await runCheckoutsRun(ctx, { command: 'touch marker.txt', all: true });
 
 		expect(existsSync(join(artDir, 'marker.txt'))).toBe(true);
 		expect(existsSync(join(purrDir, 'marker.txt'))).toBe(true);
@@ -68,21 +68,6 @@ describe('checkouts run command', () => {
 		const runOps = ctx.log.all().filter(op => op.operation === 'run');
 		expect(runOps).toHaveLength(2);
 		expect(runOps.map(op => op.outcome)).toEqual(['success', 'success']);
-	});
-
-	it('runs a multi-word command passed as a single string', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
-		const artBare = makeTempDir(tempDirs);
-		const artDir = join(tempDir, ctx.config.clone.path, 'art');
-		await initWorkingRepoTest(artDir, artBare);
-
-		writeRepoMockRecord(tempDir, 'Art', artBare);
-		writeCheckoutMockRecord(tempDir, 'Art', 'Art', 'art');
-
-		await runCheckoutsRun(ctx, { command: ['touch marker.txt'], all: true });
-
-		expect(existsSync(join(artDir, 'marker.txt'))).toBe(true);
 	});
 
 	it('runs only in checkouts matching the pattern', async () => {
@@ -100,7 +85,7 @@ describe('checkouts run command', () => {
 		writeRepoMockRecord(tempDir, 'Purrception', purrBare);
 		writeCheckoutMockRecord(tempDir, 'Purrception', 'Purrception', 'purr');
 
-		await runCheckoutsRun(ctx, { command: ['touch', 'marker.txt'], checkouts: ['art*'] });
+		await runCheckoutsRun(ctx, { command: 'touch marker.txt', checkouts: ['art*'] });
 
 		expect(existsSync(join(artDir, 'marker.txt'))).toBe(true);
 		expect(existsSync(join(purrDir, 'marker.txt'))).toBe(false);
@@ -126,7 +111,7 @@ describe('checkouts run command', () => {
 		writeRepoMockRecord(tempDir, 'Purrception', purrBare);
 		writeCheckoutMockRecord(tempDir, 'Purrception', 'Purrception', 'purr');
 
-		await runCheckoutsRun(ctx, { command: ['sh', '-c', 'exit 1'], all: true });
+		await runCheckoutsRun(ctx, { command: 'sh -c "exit 1"', all: true });
 
 		const runOps = ctx.log.all().filter(op => op.operation === 'run');
 		expect(runOps).toHaveLength(2);
@@ -138,7 +123,7 @@ describe('checkouts run command', () => {
 		const tempDir = makeTempDir(tempDirs);
 		const ctx = createMockCommandContext(tempDir);
 
-		await runCheckoutsRun(ctx, { command: ['touch', 'marker.txt'], checkouts: ['nonexistent'] });
+		await runCheckoutsRun(ctx, { command: 'touch marker.txt', checkouts: ['nonexistent'] });
 
 		expect(console.warn).toHaveBeenCalledWith('no checkout matches pattern: "nonexistent"');
 		expect(ctx.log.all().filter(op => op.operation === 'run')).toHaveLength(0);
@@ -151,7 +136,7 @@ describe('checkouts run command', () => {
 		writeRepoMockRecord(tempDir, 'Missing', 'git@example.com:missing.git');
 		writeCheckoutMockRecord(tempDir, 'Missing', 'Missing', 'missing');
 
-		await runCheckoutsRun(ctx, { command: ['touch', 'marker.txt'], all: true });
+		await runCheckoutsRun(ctx, { command: 'touch marker.txt', all: true });
 
 		const runOps = ctx.log.all().filter(op => op.operation === 'run');
 		expect(runOps).toHaveLength(1);
