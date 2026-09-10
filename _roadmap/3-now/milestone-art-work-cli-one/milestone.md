@@ -1,6 +1,6 @@
-# Milestone: Workspace CLI One
+# Milestone: Art Work CLi One
 
-**ID:** `workspace-cli-one`
+**ID:** `art-work-cli-one`
 
 **Status:** `WORKING`
 
@@ -142,11 +142,11 @@ Complete the workspace CLI across 3 phases: establish the CLI baseline, implemen
 | 3     | Plan: Create Art Cli Project and Repo `_backlog/1-done/plan-create-art-lib-project-repo/plan.md`                             | `DONE`     |
 | 3     | Plan: Create Art Work Repository and Project `_backlog/1-done/plan-create-art-work-repository-project/plan.md`               | `DONE`     |
 | 3     | Plan: Extract Workspace Cli to Art Work `_backlog/1-done/plan-extract-workspace-cli-art-work/plan.md`                        | `DONE`     |
-| 3     | Plan: Extract Read/Write Records to Art Cli `_backlog/3-now/plan-extract-read-write-records-art-lib/plan.md`                 | `READY`    |
-| 3     | Plan: Make Art Work Cli work from global install `_backlog/4-next/plan-work-cli-global-install/plan.md`                      | (create)   |
+| 3     | Plan: Extract Read/Write Records to Art Cli `_backlog/3-now/plan-extract-read-write-records-art-lib/plan.md`                 | `DONE`     |
+| 3     | Plan: Make Art Work Cli work from global install `_backlog/4-next/plan-art-work-cli-global-install/plan.md`                  | `PLANNING` |
 | -     |                                                                                                                              |            |
-| 4     | Plan: Replace Repo Command                                                                                                   | -          |
-| 4     | Plan: Replace Clone Command                                                                                                  | -          |
+| 4     | Plan: Replace Repo Command                                                                                                   | (create)   |
+| 4     | Plan: Replace Clone Command                                                                                                  | (create)   |
 | 4     | Plan: Workspace CLI — Packages Run Command `_backlog/4-next/plan-implement-packages-run/plan.md`                             | `DRAFT`    |
 | 4     | Plan: Make Behind Check Opt-in `_backlog/6-plan/plan-make-behind-check-opt-in/plan.md`                                       | `DRAFT`    |
 | 4     | Plan: Workspace CLI — Link Command `_backlog/6-plan/plan-implement-link/plan.md`                                             | `DRAFT`    |
