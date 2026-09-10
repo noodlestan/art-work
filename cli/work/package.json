@@ -31,18 +31,16 @@
   ],
   "scripts": {
     "dev": "esbuild-cli-watch",
+    "lint": "prettier . -c && eslint . && tsc --noEmit",
+    "lint:fix": "prettier . -c --write && eslint . --fix",
+    "build": "esbuild-cli",
     "build:clean": "rm -rf dist",
     "build:types:esm": "tsc --project tsconfig.esm.json",
     "build:types:cjs": "tsc --project tsconfig.cjs.json",
-    "build:main": "esbuild-cli",
-    "build": "npm run build:main && npm run build:config && tsc --emitDeclarationOnly",
-    "build:config": "esbuild src/config/index.ts --bundle --platform=node --outfile=dist/config/index.js --format=esm --packages=external",
     "test": "vitest run",
+    "test:ci": "vitest run --coverage",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
-    "lint": "prettier . -c && eslint . && tsc --noEmit",
-    "lint:fix": "prettier . -c --write && eslint . --fix",
-    "ci": "npm run lint && npm run build && npm run test"
+    "ci": "npm run lint && npm run build && npm run test:ci"
   },
   "dependencies": {
     "@art-lib/fs-records": "^0.0.1",
@@ -50,10 +48,5 @@
     "esbuild": "^0.28.0",
     "simple-git": "^3.24.0"
   },
-  "devDependencies": {
-    "@noodlestan/esbuild": "^0.0.13",
-    "@types/node": "^25.9.5",
-    "typescript": "^5.4.0",
-    "vitest": "^1.4.0"
-  }
+  "devDependencies": {}
 }

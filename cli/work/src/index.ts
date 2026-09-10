@@ -21,9 +21,6 @@ import type { Operation } from './private/operations/types';
 import { makeOperationLogLine } from './private/present/makeOperationLogLine';
 import { createCheckoutStore } from './private/store/createCheckoutStore';
 
-export { defineConfig, loadWorkspaceConfig } from './config';
-export type { WorkspaceConfig } from './config';
-
 const program = new Command();
 
 const logger = (op: Operation) => {
