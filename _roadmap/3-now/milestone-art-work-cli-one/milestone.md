@@ -142,8 +142,8 @@ Complete the workspace CLI across 3 phases: establish the CLI baseline, implemen
 | 3     | Plan: Create Art Work Repository and Project `_backlog/0-archive/2026-09-06-plan-create-art-work-repository-project/plan.md` | `ARCHIVE`  |
 | 3     | Plan: Extract Workspace Cli to Art Work `_backlog/0-archive/2026-09-06-plan-extract-workspace-cli-art-work/plan.md`          | `ARCHIVE`  |
 | 3     | Plan: Extract Read/Write Records to Art Cli `_backlog/0-archive/2026-09-06-plan-extract-read-write-records-art-lib/plan.md`  | `ARCHIVE`  |
+| 3     | Plan: Improvements and Fixes `_backlog/3-now/plan-improvements-and-fixes/plan.md`                                            | `READY`    |
 | 3     | Plan: Make Art Work Cli work from global install `_backlog/4-next/plan-art-work-cli-global-install/plan.md`                  | `PLANNING` |
-| 3     | Plan: Improvements and Fixes `_backlog/4-next/plan-improvements-and-fixes/plan.md`                                           | `PLANNING` |
 | -     |                                                                                                                              |            |
 | 4     | Plan: Replace Repo Command                                                                                                   | (create)   |
 | 4     | Plan: Replace Clone Command                                                                                                  | (create)   |

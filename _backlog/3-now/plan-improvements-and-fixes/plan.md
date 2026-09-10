@@ -2,7 +2,7 @@
 
 **ID:** `plan-improvements-and-fixes`
 
-**Status:** `PLANNING`
+**Status:** `READY`
 
 **Template:** `.agents/domains/plans/templates/plan.tart`
 
@@ -10,7 +10,7 @@
 
 **Purpose:** Improve user experience by making command output clearer and more useful.
 
-**Description:** New --quiet option, improvements to run headers and operation reports, and fixes to checkout scanning, Git state detection, version reporting, and operation logging.
+**Description:** New --output option, improvements to run headers and operation reports, and fixes to checkout scanning, Git state detection, version reporting, and operation logging.
 
 ## Mandatory Reading
 
@@ -28,7 +28,7 @@
 
 ## Summary
 
-Make the Art Work Cli executable and operational when installed globally, while preserving local development and monorepo usage. Update the CLI implementation and package metadata as required, and verify both invocation modes.
+Improve user experience by making command output clearer and more useful: new --output option, improvements to run headers and operation reports, and fixes to checkout scanning, Git state detection, version reporting, and operation logging.
 
 ## Context
 
@@ -59,34 +59,13 @@ Make the Art Work Cli executable and operational when installed globally, while 
 
 ## Scope
 
-Fixes
-
-Restrict Pull/Push/Sync to scan only matched checkouts.
-Fix Pull/Push/Sync reports showing a stale state after a successful push.
-Add a hasGitDir check to ScanCheckoutState; when .git is not present, bypass Git checks that can inherit state from the parent directory. Add createGitDirState(hasGit) before anything else.
-Replace the hardcoded CLI version with the package version.
-Fix operations log showing the repo name instead of checkout. Ensure operations add a checkout where possible; handle clone operation failures where the checkout name is not yet determined rather than logging only the repository name or unknown and bailing out.
-Verify whether the remaining bugs in the BUGS table are still valid, including clone edge cases and extraneous items.
-
-Feedback
-
-Present a header on every run containing the version and record location.
-Change reports to show separate repo and checkout columns.
-Rename the existing checkouts location column to checkout.
-
-Options
-
-Add --mode quiet|verbose to every command.
-Add mode: 'quiet' to config defaults.
-In quiet mode, do not show pending operations.
-Make verbose override the quiet configuration.
-Extract a shared function that decorates each command with the --mode argument; do the same for the existing -c, --checkouts argument.
+Improve user experience by making command output clearer and more useful: new --output option, improvements to run headers and operation reports, and fixes to checkout scanning, Git state detection, version reporting, and operation logging.
 
 ## Work
 
 ### Next
 
-- Plan iterations.
+- Delegate the next commit blueprint.
 
 ### Blockers
 
@@ -141,25 +120,30 @@ Additionally verify the CLI from a global installation and from the local develo
 
 ## Items:
 
-| Iteration / Instructions    | Status     |
-| --------------------------- | ---------- |
-| Iteration: Bug Fixes        | `PLANNING` |
-| Iteration: Improve Feedback | `PLANNING` |
-| Iteration: Add Quiet Option | `PLANNING` |
+| Iteration / Instructions     | Status  |
+| ---------------------------- | ------- |
+| Iteration: Bug Fixes         | `READY` |
+| Iteration: Improve Feedback  | `READY` |
+| Iteration: Add Output Option | `READY` |
 
 ### Iteration: Bug Fixes
 
 **Id:** `bug-fixes`
 
-**Status:** `PLANNING`
+**Status:** `READY`
 
 **Purpose:** Fix existing bugs that affect checkout operations and state detection.
 
-**Description:** Fix Pull/Push/Sync scanning, stale operation state, Git state detection without .git, hardcoded version reporting, operation logging, and remaining valid bugs from the BUGS table.
-
-**Instructions:** ./plan-improvements-and-fixes/instructions/bug-fixes.md
+**Description:** Fix Pull/Push/Sync matching and scanning, stale operation state, Git state detection without .git, hardcoded version reporting, operation logging, and remaining valid bugs from the BUGS table.
 
 **Changes:**
+
+- Fix Pull/Push/Sync to only scan the matched checkouts and to always execute pull/push on the workspace regardless of ahead/behind count.
+- Fix `sanity --auto` to sync (pull and push) instead of only pushing.
+- Add `-w, --workspace` option to apply commands on the workspace along with checkouts.
+- Fix stale reports after a successful push for Pull, Push, Sync, and Sanity (auto).
+- Update `ScanCheckoutState` to detect `hasGitDir`, report a `no git` state, and bypass Git checks when `.git` is absent.
+- Replace the hardcoded CLI version with the package version.
 
 **Dependencies:**
 
@@ -167,74 +151,21 @@ Additionally verify the CLI from a global installation and from the local develo
 
 #### Commits:
 
-| ID        | Repository / Checkout / Branch      | Policy       | Hash | Status        |
-| --------- | ----------------------------------- | ------------ | ---- | ------------- |
-| `fix-...` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `PLACEHOLDER` |
-
-##### Commit: `fix-...`
-
-**Message:**
-
-```text
-fix(art-work-cli): ....
-```
-
-### Iteration: Improve Feedback
-
-**Id:** `improve-feedback`
-
-**Status:** `PLANNING`
-
-**Purpose:** Make command feedback clearer and more useful.
-
-**Description:** Present a header on every run with version and record location, and improve operation reports to distinguish repo and checkout. Add a path column to checkouts after location, and make location column rows present the location name (no path).
-
-**Instructions:** `./plan-improvements-and-fixes/instructions/improve-feedback.md`
-
-**Changes:**
-
-#### Commits:
-
-| ID        | Repository / Checkout / Branch      | Policy       | Hash | Status        |
-| --------- | ----------------------------------- | ------------ | ---- | ------------- |
-| `add-...` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `PLACEHOLDER` |
-
-##### Commit: `add-...`
-
-**Message:**
-
-```text
-build(art-work-cli): Add ...
-```
-
-### Iteration: Add Quiet Option
-
-**Id:** `add-quiet-option`
-
-**Status:** `PLANNING`
-
-**Purpose:** Give users control over the amount of command output.
-
-**Description:** Add a `--quiet` option to commands, make quiet mode the configurable default, hide pending operations in quiet mode, and allow verbose output to override the quiet configuration.
-
-**Instructions:** `./plan-improvements-and-fixes/instructions/add-quiet-option.md`
-
-#### Commits:
-
-| ID                                 | Repository / Checkout / Branch      | Policy       | Hash | Status        |
-| ---------------------------------- | ----------------------------------- | ------------ | ---- | ------------- |
-| `fix-checkout-matching`            | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `PLACEHOLDER` |
-| `match-workspace-in-checkouts-arg` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `PLACEHOLDER` |
-| `fix-checkout-stale-reports`       | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `PLACEHOLDER` |
-| `fix-inherited-checkout-state`     | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `PLACEHOLDER` |
-| `report-version`                   | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `PLACEHOLDER` |
-| `log-checkout-name`                | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `PLACEHOLDER` |
+| ID                              | Repository / Checkout / Branch      | Policy       | Hash | Status        |
+| ------------------------------- | ----------------------------------- | ------------ | ---- | ------------- |
+| `fix-checkout-matching`         | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `AUTHORED` |
+| `match-workspace-checkouts-arg` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `AUTHORED` |
+| `fix-checkout-stale-reports`    | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `AUTHORED` |
+| `fix-inherited-checkout-state`  | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `AUTHORED` |
+| `report-version`                | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `AUTHORED` |
 
 ##### Commit: `fix-checkout-matching`
 
 **Changes:**
 
+- Fix Pull/Push/Sync ALWAYS execute pull/push on workspace regardles of ahead/behind count. (Note `sanity --auto` doesn't.)
 - Restrict Pull/Push/Sync scanning to only the matched checkouts.
+- Fix `sanity --auto` only pushes, should pull as well, i.e., should do `sync` instead of just `push`.
 
 **Message:**
 
@@ -242,7 +173,7 @@ build(art-work-cli): Add ...
 fix(art-work-cli): Scan the matched checkouts only; Update scans.
 ```
 
-##### Commit: `match-workspace-in-checkouts-arg`
+##### Commit: `match-workspace-checkouts-arg`
 
 **Changes:**
 
@@ -284,7 +215,7 @@ fix(art-work-cli): Update checkout scans after running pull, push, sync, and san
 **Message:**
 
 ```text
-fix(art-work-cli): report package version
+fix(art-work--cli): Skip git checks when no .git is present.
 ```
 
 ##### Commit: `report-version`
@@ -299,18 +230,111 @@ fix(art-work-cli): report package version
 build(art-work-cli): Report CLI version on every run.
 ```
 
-##### Commit: `log-checkout-name`
+### Iteration: Improve Feedback
+
+**Id:** `improve-feedback`
+
+**Status:** `READY`
+
+**Purpose:** Make command feedback clearer and more useful.
+
+**Description:** Present a header on every run with version, workspace root, and data location, and improve operation reports to distinguish workspace, repo, and checkout.
 
 **Changes:**
 
-- Fix operations log entries that show the repo name instead of the checkout.
-  - Ensure operations add a checkout where it can be determined.
-  - Handle clone operation failures where the checkout name has not yet been determined, rather than logging only the repository name or `unknown` and bailing out.
+Examples of reports
+
+```
+Operations Report:
+    repo  checkout  operation  message      ms
+🟢  Ops   ops       branch     created foo  87
+```
+
+```
+Operations Report:
+    repo  checkout  operation  message  ms
+🟢  Ops   ops       clone      to ops   0
+```
+
+```
+Operations Report:
+    repo      checkout           operation         message           ms
+🟢  Art Lib   art-lib-building   pull              from origin/main  3390
+🟢  Art Work  art-work-building  pull              from origin/main  3445
+🟢  -         pull               from origin/main  1676
+🟢  -         push               to origin/main    1631
+```
+
+Currently, workspace operations are off by one.
+
+- Make workspace operations display WORKSPACE in repo column and '-' in checkout column.
+
+#### Commits:
+
+| ID                            | Repository / Checkout / Branch      | Policy       | Hash | Status     |
+| ----------------------------- | ----------------------------------- | ------------ | ---- | ---------- |
+| `fix-repo-op-rows-off-by-one` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `AUTHORED` |
+
+##### Commit: `fix-repo-op-rows-off-by-one`
 
 **Message:**
 
 ```text
-build(art-work-cli): Log checkout name in all operations.
+fix(art-work-cli): Operations report missing repo/checkout labels on repo operation rows.
+```
+
+### Iteration: Add Output Option
+
+**Id:** `add-output-option`
+
+**Status:** `READY`
+
+**Purpose:** Give users control over the amount of command output.
+
+**Description:** Add `output.mode` configuration and `--output` option to all commands, makign quiet mode the configured default, hiding pending operations in quiet mode, and making the option override the configuration value.
+
+**Changes:**
+
+- Add `output.mode: 'quiet' | 'verbose'` to config, default `quiet`.
+- Add `--output = quiet|verbose` argument to every command.
+- Add a logger factory to replace the current basic lambda.
+
+```ts
+const logger = (op: Operation) => {
+  console.info(makeOperationLogLine(op, { standalone: true }).join(' | '));
+};
+```
+
+Replaced by (in `src/private/logger`).
+
+```ts
+const createLogger = (): LoggerAPI;
+interface LoggerAPI {
+  log: (op: Operation) => void;
+  setOutputMode: (mode: 'quiet' | 'verbose') => void;
+};
+```
+
+Quiet mode does not show pending operations.
+
+Logger starts with internal `mode` set to undefined and buffers all ops until `setOutputMode()` is called. If the mode is `verbose` it should flush all buffered ops to console and start logging synchronously, if mode is `quiet` it should discard all buffered pending ops, and all future pending ops logged.
+
+Add `program.option('-o, --output', 'One of ');`
+
+Commands should call `setOutputMode(options.output | config.output.mode)` after context is created.
+
+#### Commits:
+
+| ID                  | Repository / Checkout / Branch      | Policy       | Hash | Status     |
+| ------------------- | ----------------------------------- | ------------ | ---- | ---------- |
+| `add-output-option` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `AUTHORED` |
+
+##### Commit: `add-output-option`
+
+**Message:**
+
+```text
+build(art-work-cli): Add `--output` option to all arguments.
 ```
 
 ---
@@ -319,23 +343,23 @@ build(art-work-cli): Log checkout name in all operations.
 
 ### Not In Scope
 
-- None
+- None.
 
 ### Evidence
 
-- None
+- None.
 
 ### Findings
 
-- None
+- None.
 
 ### Decisions
 
-- None
+- None.
 
 ### Knowledge to Update
 
-- Incliuded as an iteration.
+- None.
 
 ### Follow Ups
 
