@@ -139,16 +139,15 @@ Complete the workspace CLI across 3 phases: establish the CLI baseline, implemen
 | 2     | Plan: Workspace CLI — Checkouts Run Command `_backlog/0-archive/2026-09-04-plan-implement-checkouts-run/plan.md`             | `ARCHIVED` |
 | 2     | Plan: Streamline Operation Types and Factories `_backlog/0-archive/2026-09-05-plan-streamline-ops/plan.md`                   | `ARCHIVED` |
 | -     |                                                                                                                              |            |
-| 3     | Plan: Create Art Cli Project and Repo `_backlog/1-done/plan-create-art-lib-project-repo/plan.md`                             | `DONE`     |
-| 3     | Plan: Create Art Work Repository and Project `_backlog/1-done/plan-create-art-work-repository-project/plan.md`               | `DONE`     |
-| 3     | Plan: Extract Workspace Cli to Art Work `_backlog/1-done/plan-extract-workspace-cli-art-work/plan.md`                        | `DONE`     |
-| 3     | Plan: Extract Read/Write Records to Art Cli `_backlog/3-now/plan-extract-read-write-records-art-lib/plan.md`                 | `DONE`     |
+| 3     | Plan: Create Art Work Repository and Project `_backlog/0-archive/2026-09-06-plan-create-art-work-repository-project/plan.md` | `ARCHIVE`  |
+| 3     | Plan: Extract Workspace Cli to Art Work `_backlog/0-archive/2026-09-06-plan-extract-workspace-cli-art-work/plan.md`          | `ARCHIVE`  |
+| 3     | Plan: Extract Read/Write Records to Art Cli `_backlog/0-archive/2026-09-06-plan-extract-read-write-records-art-lib/plan.md`  | `ARCHIVE`  |
 | 3     | Plan: Make Art Work Cli work from global install `_backlog/4-next/plan-art-work-cli-global-install/plan.md`                  | `PLANNING` |
+| 3     | Plan: Improvements and Fixes `_backlog/4-next/plan-improvements-and-fixes/plan.md`                                           | `PLANNING` |
 | -     |                                                                                                                              |            |
 | 4     | Plan: Replace Repo Command                                                                                                   | (create)   |
 | 4     | Plan: Replace Clone Command                                                                                                  | (create)   |
 | 4     | Plan: Workspace CLI — Packages Run Command `_backlog/4-next/plan-implement-packages-run/plan.md`                             | `DRAFT`    |
-| 4     | Plan: Make Behind Check Opt-in `_backlog/6-plan/plan-make-behind-check-opt-in/plan.md`                                       | `DRAFT`    |
 | 4     | Plan: Workspace CLI — Link Command `_backlog/6-plan/plan-implement-link/plan.md`                                             | `DRAFT`    |
 | 4     | Plan: Workspace CLI — Links Command `_backlog/6-plan/plan-implement-links/plan.md`                                           | `DRAFT`    |
 | 4     | Plan: Workspace CLI — Unlink Command `_backlog/6-plan/plan-implement-unlink/plan.md`                                         | `DRAFT`    |
@@ -160,7 +159,9 @@ Complete the workspace CLI across 3 phases: establish the CLI baseline, implemen
 
 ### Next
 
-Phase 2 — delegate the `READY` plan `plan-streamline-ops` (instructions written). Then Phase 3 — delegate the `READY` plans `plan-create-art-lib-project-repo`, `plan-create-art-work-repository-project`, `plan-extract-workspace-cli-art-work`, `plan-extract-read-write-records-art-lib` (instructions written).
+- Integrate `extract-read-write-records-art-lib` .
+- Prepare `art-work-cli-global-install` for delegation.
+- Prepare `improvements-and-fixes` for delegation.
 
 ### Blockers
 

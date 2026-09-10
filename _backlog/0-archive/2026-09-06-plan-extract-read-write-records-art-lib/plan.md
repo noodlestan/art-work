@@ -2,7 +2,7 @@
 
 **ID:** `extract-read-write-records-art-lib`
 
-**Status:** `READY`
+**Status:** `DONE`
 
 **Template:** `.agents/domains/plans/templates/plan.tart`
 
@@ -24,7 +24,6 @@
 | ------------ | ---------------------------- | ------------------------------------------------------------------------------------------- |
 | `$WORKSPACE` | Current working directory    | Workspace root directory                                                                    |
 | `$DOMAINS`   | `$WORKSPACE/.agents/domains` | Domain resources directory                                                                  |
-| `$ART_WORK`  | Provided with prompt.        | Where this plan lives. Example: `$WORKSPACE/checkouts/art-domains-planning`                 |
 | `$ART_CLI`   | Provided with prompt.        | Where the functions are being migrated to. Example: `$WORKSPACE/checkouts/art-lib-building` |
 | `$ART_WORK`  | Provided with prompt.        | Repo currently containing the functions. Example: `$WORKSPACE/checkouts/art-work-building`  |
 
@@ -67,7 +66,7 @@ Create the Lib Records package in art-lib; extract the generic record read/write
 
 ### Next
 
-Delegate the `READY` iterations: `create-lib-records-package`, `extract-record-modules`, `register-publish-consume` (instructions written under `./plan-extract-read-write-records-art-lib/instructions/`).
+- None.
 
 ### Blockers
 
@@ -122,92 +121,17 @@ All steps MUST pass. No `it.todo()` tests may remain.
 
 ## Items:
 
-| Iteration / Instructions              | Status  |
-| ------------------------------------- | ------- |
-| Iteration: Create Lib Records Package | `READY` |
-| Iteration: Extract Record Modules     | `READY` |
-| Iteration: Register, Publish, Consume | `READY` |
+| Iteration / Instructions                  | Status |
+| ----------------------------------------- | ------ |
+| Iteration: Create Lib Records Package     | `DONE` |
+| Iteration: Extract Record Modules         | `DONE` |
+| Iteration: Consume Art Cli FS Records Lib | `DONE` |
 
-### Iteration: Create Lib Records Package
-
-**Id:** `create-lib-records-package`
-
-**Status:** `READY`
-
-**Purpose:** Create the Lib Records package in the art-lib repository.
-
-**Description:** Create Package: Lib Records with canonical name `@art-lib/fs-records` at path `libs/records`.
-
-**Instructions:** `./plan-extract-read-write-records-art-lib/instructions/create-lib-records-package.md`
-
-**Changes:**
-
-- Create Package: Lib Records, canonical `@art-lib/fs-records`, path `libs/records`.
-
-**Dependencies:**
-
-- Plan: Create Art Cli Project and Repo — the art-lib repo must exist first.
-
-#### Commits:
-
-| ID                           | Repository / Checkout / Branch | Policy       | Hash | Status     |
-| ---------------------------- | ------------------------------ | ------------ | ---- | ---------- |
-| `create-lib-records-package` | Art Cli / `$ART_CLI` / `main`  | `AUTONOMOUS` | -    | `AUTHORED` |
-
-##### Commit: `create-lib-records-package`
-
-**Message:**
-
-```
-scaffold(art-lib): Create lib/records package `@art-lib/fs-records`.
-
-- Create Package: Lib Records at libs/records with canonical @art-lib/fs-records.
-- Add package record, scaffold, and stub entry point.
-```
-
-### Iteration: Extract Record Modules
-
-**Id:** `extract-record-modules`
-
-**Status:** `READY`
-
-**Purpose:** Extract the generic record read/write modules and their tests into the Lib Records package.
-
-**Description:** Extract the generic record read/write modules and their tests from art-work-cli to `art-lib/libs/fs-records`.
-
-**Instructions:** `./plan-extract-read-write-records-art-lib/instructions/extract-record-modules.md`
-
-**Changes:**
-
-- Extract generic record read/write modules and their tests to `art-lib/libs/fs-records`.
-
-**Dependencies:**
-
-- `create-lib-records-package` — the package must exist before modules are extracted.
-- Plan: Extract Art Work Cli to Art Work — the art-work-cli source must be in art-work before modules are extracted from it.
-
-#### Commits:
-
-| ID                       | Repository / Checkout / Branch | Policy       | Hash | Status     |
-| ------------------------ | ------------------------------ | ------------ | ---- | ---------- |
-| `extract-record-modules` | Art Cli / `$ART_CLI` / `main`  | `AUTONOMOUS` | -    | `AUTHORED` |
-
-##### Commit: `extract-record-modules`
-
-**Message:**
-
-```
-refactor(art-lib): extract record read/write modules from art-work-cli
-
-- Copy generic record read/write modules and their tests to libs/records.
-- Adapt imports and exports for the lib package.
-```
-
-### Iteration: Register, Publish, Consume
+### Iteration: Consume Art Cli FS Records Lib
 
 **Id:** `register-publish-consume`
 
-**Status:** `READY`
+**Status:** `DONE`
 
 **Purpose:** Register the lib, publish it, and consume it in art-work-cli.
 
@@ -226,26 +150,13 @@ refactor(art-lib): extract record read/write modules from art-work-cli
 
 **Dependencies:**
 
-- `extract-record-modules` — the modules must be extracted before the lib is registered and published.
+- Plan: Extract Read/Write Records to Art Cli `$ART_LIB/_backlog/0-archive/plan-extract-read-write-records-art-lib/plan.md`
 
 #### Commits:
 
-| ID                                    | Repository / Checkout / Branch  | Policy       | Hash | Status     |
-| ------------------------------------- | ------------------------------- | ------------ | ---- | ---------- |
-| `register-and-publish-lib-records`    | Art Cli / `$ART_CLI` / `main`   | `AUTONOMOUS` | -    | `AUTHORED` |
-| `consume-lib-records-in-art-work-cli` | Art Work / `$ART_WORK` / `main` | `AUTONOMOUS` | -    | `AUTHORED` |
-| `release-art-work-cli`                | Art Work / `$ART_WORK` / `main` | `AUTONOMOUS` | -    | `AUTHORED` |
-
-##### Commit: `register-and-publish-lib-records`
-
-**Message:**
-
-```
-records(art-lib): register lib records in project record and publish
-
-- Register Package: Lib Records in the Art Cli project record.
-- Publish @art-lib/fs-records to npm.
-```
+| ID                                    | Repository / Checkout / Branch  | Policy       | Hash      | Status     |
+| ------------------------------------- | ------------------------------- | ------------ | --------- | ---------- |
+| `consume-lib-records-in-art-work-cli` | Art Work / `$ART_WORK` / `main` | `AUTONOMOUS` | `c9438e8` | `AUTHORED` |
 
 ##### Commit: `consume-lib-records-in-art-work-cli`
 
@@ -257,17 +168,6 @@ refactor(art-work): consume @art-lib/fs-records in art-work-cli
 - Replace local record read/write modules with imports from @art-lib/fs-records.
 - Update package record and dependencies.
 - Update knowledge in art-lib and art-work.
-```
-
-##### Commit: `release-art-work-cli`
-
-**Message:**
-
-```
-release(art-work): publish art-work-cli with lib records dependency
-
-- Publish a new art-work-cli version consuming @art-lib/fs-records.
-- Test in $WORKSPACE.
 ```
 
 ---

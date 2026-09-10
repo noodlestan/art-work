@@ -46,7 +46,7 @@ Populate the project, repository, and namespace records for the Art Work project
 
 ## Mandatory Reading
 
-- ::READ `$ART_DOMAINS/_backlog/3-now/plan-create-art-work-repository-project/plan.md` (Plan) — Full plan context, scope, and commit blueprints.
+- ::READ `$ART_DOMAINS/_backlog/0-archive/plan-create-art-work-repository-project/plan.md` (Plan) — Full plan context, scope, and commit blueprints.
 - ::READ `$ART_JS/_records/namespace.art` (Source) — Template namespace record to copy and adapt.
 - ::READ `$ART_JS/_records/project.art` (Source) — Template project record to copy and adapt.
 - ::READ `$ART_JS/_records/repository.art` (Source) — Template repository record to copy and adapt.

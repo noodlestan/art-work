@@ -24,13 +24,12 @@ This section describes how to report back to the delegator after completing the 
 
 ## Path Variables
 
-| Variable       | Resolved Path                | Purpose                                                                                     |
-| -------------- | ---------------------------- | ------------------------------------------------------------------------------------------- |
-| `$WORKSPACE`   | Current working directory    | Workspace root directory                                                                    |
-| `$DOMAINS`     | `$WORKSPACE/.agents/domains` | Domain resources directory                                                                  |
-| `$ART_DOMAINS` | Provided with prompt.        | Where this plan lives. Example: `$WORKSPACE/checkouts/art-domains-planning`                 |
-| `$ART_CLI`     | Provided with prompt.        | Where the functions are being migrated to. Example: `$WORKSPACE/checkouts/art-lib-building` |
-| `$ART_WORK`    | Provided with prompt.        | Repo currently containing the functions. Example: `$WORKSPACE/checkouts/art-work-building`  |
+| Variable     | Resolved Path                | Purpose                                                                                     |
+| ------------ | ---------------------------- | ------------------------------------------------------------------------------------------- |
+| `$WORKSPACE` | Current working directory    | Workspace root directory                                                                    |
+| `$DOMAINS`   | `$WORKSPACE/.agents/domains` | Domain resources directory                                                                  |
+| `$ART_CLI`   | Provided with prompt.        | Where the functions are being migrated to. Example: `$WORKSPACE/checkouts/art-lib-building` |
+| `$ART_WORK`  | Provided with prompt.        | Repo currently containing the functions. Example: `$WORKSPACE/checkouts/art-work-building`  |
 
 ## Working Agreements
 
@@ -46,7 +45,7 @@ Create the Lib Records package in the art-lib repository: canonical name `@art-l
 
 ## Mandatory Reading
 
-- ::READ `$ART_DOMAINS/_backlog/3-now/plan-extract-read-write-records-art-lib/plan.md` (Plan) — Full plan context, scope, and commit blueprints.
+- ::READ `$ART_LIB/_backlog/0-archive/plan-extract-read-write-records-art-lib/plan.md` (Plan) — Full plan context, scope, and commit blueprints.
 - ::READ `$ART_CLI/package.json` (Source) — art-lib root package.json; confirms the `libs/**` workspace pattern.
 - ::READ `$ART_CLI/_records/project.art` (Source) — art-lib project record; confirms Package: Lib Records (PLANNED) is registered.
 - ::READ `$ART_CLI/tsconfig.json` (Source) — art-lib root tsconfig to extend.

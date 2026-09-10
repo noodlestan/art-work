@@ -24,13 +24,12 @@ This section describes how to report back to the delegator after completing the 
 
 ## Path Variables
 
-| Variable       | Resolved Path                | Purpose                                                                                     |
-| -------------- | ---------------------------- | ------------------------------------------------------------------------------------------- |
-| `$WORKSPACE`   | Current working directory    | Workspace root directory                                                                    |
-| `$DOMAINS`     | `$WORKSPACE/.agents/domains` | Domain resources directory                                                                  |
-| `$ART_DOMAINS` | Provided with prompt.        | Where this plan lives. Example: `$WORKSPACE/checkouts/art-domains-planning`                 |
-| `$ART_CLI`     | Provided with prompt.        | Where the functions are being migrated to. Example: `$WORKSPACE/checkouts/art-lib-building` |
-| `$ART_WORK`    | Provided with prompt.        | Repo currently containing the functions. Example: `$WORKSPACE/checkouts/art-work-building`  |
+| Variable     | Resolved Path                | Purpose                                                                                     |
+| ------------ | ---------------------------- | ------------------------------------------------------------------------------------------- |
+| `$WORKSPACE` | Current working directory    | Workspace root directory                                                                    |
+| `$DOMAINS`   | `$WORKSPACE/.agents/domains` | Domain resources directory                                                                  |
+| `$ART_CLI`   | Provided with prompt.        | Where the functions are being migrated to. Example: `$WORKSPACE/checkouts/art-lib-building` |
+| `$ART_WORK`  | Provided with prompt.        | Repo currently containing the functions. Example: `$WORKSPACE/checkouts/art-work-building`  |
 
 ## Working Agreements
 
@@ -46,7 +45,7 @@ Extract the generic record read/write modules and their tests from the art-work-
 
 ## Mandatory Reading
 
-- ::READ `$ART_DOMAINS/_backlog/3-now/plan-extract-read-write-records-art-lib/plan.md` (Plan) — Full plan context, scope, and commit blueprints.
+- ::READ `$ART_LIB/_backlog/0-archive/plan-extract-read-write-records-art-lib/plan.md` (Plan) — Full plan context, scope, and commit blueprints.
 - ::READ `$ART_WORK/cli/work/src/private/records/findRecordFiles.ts` (Source) — Module to extract.
 - ::READ `$ART_WORK/cli/work/src/private/records/readRecordFileContent.ts` (Source) — Module to extract.
 - ::READ `$ART_WORK/cli/work/src/private/records/types.ts` (Source) — Module to extract.
