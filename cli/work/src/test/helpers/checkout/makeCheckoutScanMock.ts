@@ -1,16 +1,14 @@
-import {
-	type CheckoutScan,
-	createCheckoutScan,
-	createCommittedState,
-	createExistsState,
-	createGitDirState,
-	createNoConflictsState,
-	createNoDetachedState,
-	createRemoteState,
-	createRepoState,
-	createSyncState,
-	createWrongRemoteState,
-} from '../../../private/scan/types';
+import { createCheckoutScan } from '../../../private/scan/private/createCheckoutScan';
+import { createCommittedState } from '../../../private/scan/states/createCommittedState';
+import { createExistsState } from '../../../private/scan/states/createExistsState';
+import { createGitDirState } from '../../../private/scan/states/createGitDirState';
+import { createNoConflictsState } from '../../../private/scan/states/createNoConflictsState';
+import { createNoDetachedState } from '../../../private/scan/states/createNoDetachedState';
+import { createRemoteState } from '../../../private/scan/states/createRemoteState';
+import { createRepoState } from '../../../private/scan/states/createRepoState';
+import { createSyncState } from '../../../private/scan/states/createSyncState';
+import { createWrongRemoteState } from '../../../private/scan/states/createWrongRemoteState';
+import type { CheckoutScan } from '../../../private/scan/types';
 
 export type CheckoutScanScenario = 'default' | 'ahead' | 'behind' | 'uncommitted' | 'no-remote';
 

@@ -70,15 +70,3 @@ export interface CheckoutScan {
 	can: (op: CheckoutOp) => boolean;
 	issues: () => string[];
 }
-
-export { createCommittedState } from './states/createCommittedState';
-export { createExistsState } from './states/createExistsState';
-export { createGitDirState } from './states/createGitDirState';
-export { createNoConflictsState } from './states/createNoConflictsState';
-export { createNoDetachedState } from './states/createNoDetachedState';
-export { createRemoteState } from './states/createRemoteState';
-export { createRepoState } from './states/createRepoState';
-export { createSyncState } from './states/createSyncState';
-export { createWrongRemoteState } from './states/createWrongRemoteState';
-export { createCheckoutNoClonedScan } from './private/createCheckoutNoClonedScan';
-export { createCheckoutScan } from './private/createCheckoutScan';

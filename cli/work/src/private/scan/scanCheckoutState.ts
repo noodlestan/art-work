@@ -15,19 +15,17 @@ import { createGenericOperation } from '../operations/createGenericOperation';
 import { createOperationFailure } from '../operations/createOperationFailure';
 import type { Checkout } from '../store/types';
 
-import {
-	createCheckoutNoClonedScan,
-	createCheckoutScan,
-	createCommittedState,
-	createExistsState,
-	createGitDirState,
-	createNoConflictsState,
-	createNoDetachedState,
-	createRemoteState,
-	createRepoState,
-	createSyncState,
-	createWrongRemoteState,
-} from './types';
+import { createCheckoutNoClonedScan } from './private/createCheckoutNoClonedScan';
+import { createCheckoutScan } from './private/createCheckoutScan';
+import { createCommittedState } from './states/createCommittedState';
+import { createExistsState } from './states/createExistsState';
+import { createGitDirState } from './states/createGitDirState';
+import { createNoConflictsState } from './states/createNoConflictsState';
+import { createNoDetachedState } from './states/createNoDetachedState';
+import { createRemoteState } from './states/createRemoteState';
+import { createRepoState } from './states/createRepoState';
+import { createSyncState } from './states/createSyncState';
+import { createWrongRemoteState } from './states/createWrongRemoteState';
 
 export async function scanCheckoutState(
 	ctx: WorkspaceContext,
