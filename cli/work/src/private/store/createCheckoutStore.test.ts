@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest';
 
-import { makeMockConfig } from '../../test/helpers/context/makeMockConfig';
+import { makeConfigMock } from '../../test/helpers/context/makeConfigMock';
 
 import { createCheckout } from './createCheckout';
 import { createCheckoutStore } from './createCheckoutStore';
 
 describe('createCheckoutStore', () => {
 	it('addCheckout stores the provided checkout', () => {
-		const config = makeMockConfig('.');
+		const config = makeConfigMock('.');
 		const store = createCheckoutStore();
 		const repo = { name: 'Foo Bar', remote: 'git@example.com:test.git' };
 		const c = createCheckout(config, 'fix-test', repo);
@@ -22,7 +22,7 @@ describe('createCheckoutStore', () => {
 	});
 
 	it('addCheckout rejects duplicate checkouts', () => {
-		const config = makeMockConfig('.');
+		const config = makeConfigMock('.');
 		const store = createCheckoutStore();
 		const repo = { name: 'Foo Bar', remote: 'git@example.com:test.git' };
 		const c1 = createCheckout(config, 'fix-test', repo, undefined, 'one');
@@ -39,7 +39,7 @@ describe('createCheckoutStore', () => {
 	});
 
 	it('getCheckoutByName', () => {
-		const config = makeMockConfig('.');
+		const config = makeConfigMock('.');
 		const store = createCheckoutStore();
 		const repo = { name: 'Foo Bar', remote: 'git@example.com:test.git' };
 
@@ -52,7 +52,7 @@ describe('createCheckoutStore', () => {
 	});
 
 	it('getCheckoutForLocation', () => {
-		const config = makeMockConfig('.');
+		const config = makeConfigMock('.');
 		const store = createCheckoutStore();
 		const repo = { name: 'Foo Bar', remote: 'git@example.com:test.git' };
 
@@ -65,7 +65,7 @@ describe('createCheckoutStore', () => {
 	});
 
 	it('getCheckoutOfRepo is case-insensitive', () => {
-		const config = makeMockConfig('.');
+		const config = makeConfigMock('.');
 		const store = createCheckoutStore();
 		const repo = { name: 'Foo Bar', remote: 'git@example.com:test.git' };
 
@@ -77,7 +77,7 @@ describe('createCheckoutStore', () => {
 	});
 
 	it('updateCheckout replaces existing checkout', () => {
-		const config = makeMockConfig('.');
+		const config = makeConfigMock('.');
 		const store = createCheckoutStore();
 		const repo = { name: 'Foo Bar', remote: 'git@example.com:test.git' };
 		const c = createCheckout(config, 'fix-test', repo);
@@ -91,7 +91,7 @@ describe('createCheckoutStore', () => {
 	});
 
 	it('updateCheckout replaces by location', () => {
-		const config = makeMockConfig('.');
+		const config = makeConfigMock('.');
 		const store = createCheckoutStore();
 		const repo = { name: 'Foo Bar', remote: 'git@example.com:test.git' };
 		const c1 = createCheckout(config, 'fix-test', repo, undefined, 'one');
@@ -107,7 +107,7 @@ describe('createCheckoutStore', () => {
 	});
 
 	it('getCheckoutsByPattern exact name match', () => {
-		const config = makeMockConfig('.');
+		const config = makeConfigMock('.');
 		const store = createCheckoutStore();
 		const repo = { name: 'Foo Bar', remote: 'git@example.com:test.git' };
 		const c = createCheckout(config, 'fix-test', repo);
@@ -119,7 +119,7 @@ describe('createCheckoutStore', () => {
 	});
 
 	it('getCheckoutsByPattern exact location match', () => {
-		const config = makeMockConfig('.');
+		const config = makeConfigMock('.');
 		const store = createCheckoutStore();
 		const repo = { name: 'Foo Bar', remote: 'git@example.com:test.git' };
 		const c = createCheckout(config, 'fix-test', repo);
@@ -131,7 +131,7 @@ describe('createCheckoutStore', () => {
 	});
 
 	it('getCheckoutsByPattern exact match fails with warning', () => {
-		const config = makeMockConfig('.');
+		const config = makeConfigMock('.');
 		const store = createCheckoutStore();
 		const repo = { name: 'Foo Bar', remote: 'git@example.com:test.git' };
 		const c = createCheckout(config, 'fix-test', repo);
@@ -142,7 +142,7 @@ describe('createCheckoutStore', () => {
 	});
 
 	it('getCheckoutsByPattern wildcard name match', () => {
-		const config = makeMockConfig('.');
+		const config = makeConfigMock('.');
 		const store = createCheckoutStore();
 		const repo = { name: 'Foo Bar', remote: 'git@example.com:test.git' };
 		const c = createCheckout(config, 'fix-test', repo);
@@ -154,7 +154,7 @@ describe('createCheckoutStore', () => {
 	});
 
 	it('getCheckoutsByPattern wildcard location match', () => {
-		const config = makeMockConfig('.');
+		const config = makeConfigMock('.');
 		const store = createCheckoutStore();
 		const repo = { name: 'Foo Bar', remote: 'git@example.com:test.git' };
 		const c = createCheckout(config, 'fix-test', repo);
@@ -167,7 +167,7 @@ describe('createCheckoutStore', () => {
 	});
 
 	it('getCheckoutsByPattern mixed patterns deduplication', () => {
-		const config = makeMockConfig('.');
+		const config = makeConfigMock('.');
 		const store = createCheckoutStore();
 		const repo = { name: 'Foo Bar', remote: 'git@example.com:test.git' };
 		const c = createCheckout(config, 'fix-test', repo);
@@ -180,7 +180,7 @@ describe('createCheckoutStore', () => {
 	});
 
 	it('getCheckoutsByPattern case-insensitive', () => {
-		const config = makeMockConfig('.');
+		const config = makeConfigMock('.');
 		const store = createCheckoutStore();
 		const repo = { name: 'Foo Bar', remote: 'git@example.com:test.git' };
 		const c = createCheckout(config, 'fix-test', repo);
@@ -192,7 +192,7 @@ describe('createCheckoutStore', () => {
 	});
 
 	it('getCheckoutsByPattern multiple checkouts one pattern matches two deduplication', () => {
-		const config = makeMockConfig('.');
+		const config = makeConfigMock('.');
 		const store = createCheckoutStore();
 		const repo = { name: 'Foo Bar', remote: 'git@example.com:test.git' };
 		const c = createCheckout(config, 'fix-test', repo);

@@ -3,7 +3,7 @@ import { join } from 'node:path';
 
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { makeMockConfig } from '../../../test/helpers/context/makeMockConfig';
+import { makeConfigMock } from '../../../test/helpers/context/makeConfigMock';
 import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir';
 import { removeTempDirs } from '../../../test/helpers/tempDirs/removeTempDirs';
 
@@ -18,7 +18,7 @@ afterEach(async () => {
 describe('saveCheckoutRecord', () => {
 	it('saved record contains expected markers', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const config = makeMockConfig(tempDir);
+		const config = makeConfigMock(tempDir);
 		const file = join(tempDir, 'test.art');
 		const data = { name: 'Artificial', location: 'checkouts/artificial', branch: 'main' };
 
@@ -32,7 +32,7 @@ describe('saveCheckoutRecord', () => {
 
 	it('renders from the template file when config and root are provided', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const config = makeMockConfig(tempDir);
+		const config = makeConfigMock(tempDir);
 		const file = join(tempDir, '_records/test.art');
 		const data = { name: 'Artificial', location: 'checkouts/artificial', branch: 'main' };
 
@@ -45,7 +45,7 @@ describe('saveCheckoutRecord', () => {
 
 	it('falls back to hardcoded template when template file is missing', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const config = makeMockConfig(tempDir);
+		const config = makeConfigMock(tempDir);
 		const file = join(tempDir, '_records/test.art');
 		const data = { name: 'Artificial', location: 'checkouts/artificial', branch: 'main' };
 
@@ -58,7 +58,7 @@ describe('saveCheckoutRecord', () => {
 
 	it('generates filename when no explicit file is provided', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const config = makeMockConfig(tempDir);
+		const config = makeConfigMock(tempDir);
 		const data = { name: 'My Checkout', location: 'checkouts/my-checkout', branch: 'main' };
 
 		const saved = await saveCheckoutRecord(config, data);

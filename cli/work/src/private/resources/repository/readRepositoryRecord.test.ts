@@ -3,7 +3,7 @@ import { dirname, join } from 'node:path';
 
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { createRecordFile } from '../../../test/helpers/records/createRecordFile';
+import { makeRecordFileMock } from '../../../test/helpers/records/makeRecordFileMock';
 import { writeRepoMockRecord } from '../../../test/helpers/records/writeRepoMockRecord';
 import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir';
 import { removeTempDirs } from '../../../test/helpers/tempDirs/removeTempDirs';
@@ -12,7 +12,7 @@ import { readRepositoryRecord } from './readRepositoryRecord';
 
 export const tempDirs: string[] = [];
 
-const makeRecordFile = (filename: string) => createRecordFile(dirname(filename), filename);
+const makeRecordFile = (filename: string) => makeRecordFileMock(dirname(filename), filename);
 
 afterEach(async () => {
 	await removeTempDirs(tempDirs);

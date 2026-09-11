@@ -3,8 +3,8 @@ import { join } from 'node:path';
 
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { makeMockConfig } from '../../../test/helpers/context/makeMockConfig';
-import { createRecordFile } from '../../../test/helpers/records/createRecordFile';
+import { makeConfigMock } from '../../../test/helpers/context/makeConfigMock';
+import { makeRecordFileMock } from '../../../test/helpers/records/makeRecordFileMock';
 import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir';
 import { removeTempDirs } from '../../../test/helpers/tempDirs/removeTempDirs';
 
@@ -21,12 +21,12 @@ afterEach(async () => {
 describe('readCheckoutRecord', () => {
 	it('saves and reads a checkout record round-trip', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const config = makeMockConfig(tempDir);
+		const config = makeConfigMock(tempDir);
 		const file = join(tempDir, 'test.art');
 		const data = { name: 'Artificial', location: 'checkouts/artificial', branch: 'main' };
 
 		const saved = await saveCheckoutRecord(config, data, file);
-		const read = await readCheckoutRecord(createRecordFile(tempDir, saved));
+		const read = await readCheckoutRecord(makeRecordFileMock(tempDir, saved));
 
 		expect(read).toEqual(data);
 	});
@@ -35,7 +35,7 @@ describe('readCheckoutRecord', () => {
 		const tempDir = makeTempDir(tempDirs);
 		const file = join(tempDir, 'missing.art');
 
-		const read = await readCheckoutRecord(createRecordFile(tempDir, file));
+		const read = await readCheckoutRecord(makeRecordFileMock(tempDir, file));
 
 		expect(read).toBeNull();
 	});
@@ -45,7 +45,7 @@ describe('readCheckoutRecord', () => {
 		const file = join(tempDir, 'noheading.art');
 		writeFileSync(file, '# Module\n\n**Location:** `checkouts/test`\n\n**Branch:** `main`\n');
 
-		const read = await readCheckoutRecord(createRecordFile(tempDir, file));
+		const read = await readCheckoutRecord(makeRecordFileMock(tempDir, file));
 
 		expect(read).toBeNull();
 	});
@@ -57,7 +57,7 @@ describe('readCheckoutRecord', () => {
 
 		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
-		const read = await readCheckoutRecord(createRecordFile(tempDir, file));
+		const read = await readCheckoutRecord(makeRecordFileMock(tempDir, file));
 
 		expect(read).not.toBeNull();
 		if (!read) return;

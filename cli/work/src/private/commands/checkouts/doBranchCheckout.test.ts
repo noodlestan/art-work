@@ -3,12 +3,12 @@ import { join } from 'node:path';
 import simpleGit from 'simple-git';
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { createMockCommandContext } from '../../../test/helpers/context/createMockCommandContext';
+import { makeCheckoutMock } from '../../../test/helpers/checkout/makeCheckoutMock';
+import { makeCommandContextMock } from '../../../test/helpers/context/makeCommandContextMock';
 import { commitFileTest } from '../../../test/helpers/git/commitFileTest';
 import { initGitRepoTest } from '../../../test/helpers/git/initGitRepoTest';
 import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir';
 import { removeTempDirs } from '../../../test/helpers/tempDirs/removeTempDirs';
-import { createCheckout } from '../../store/createCheckout';
 
 import { doBranchCheckout } from './doBranchCheckout';
 
@@ -21,14 +21,14 @@ afterEach(async () => {
 describe('doBranchCheckout', () => {
 	it('creates a new branch and returns the updated checkout', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const repoDir = join(tempDir, ctx.config.clone.path, 'my-repo');
 		await initGitRepoTest(repoDir);
 		await commitFileTest(repoDir, 'file.txt');
 
-		const checkout = createCheckout(ctx.config, 'my-repo', {
-			name: 'MyRepo',
-			remote: 'git@example.com:my-repo.git',
+		const checkout = makeCheckoutMock({
+			path: repoDir,
+			repo: { name: 'MyRepo', remote: 'git@example.com:my-repo.git' },
 		});
 
 		const result = await doBranchCheckout(ctx, checkout, 'feat/x');
@@ -44,11 +44,8 @@ describe('doBranchCheckout', () => {
 
 	it('logs failure and returns null when branch creation fails', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
-		const checkout = createCheckout(ctx.config, 'nonexistent', {
-			name: 'Nonexistent',
-			remote: 'git@example.com:nonexistent.git',
-		});
+		const ctx = makeCommandContextMock(tempDir);
+		const checkout = makeCheckoutMock({ path: '/nonexistent' });
 
 		const result = await doBranchCheckout(ctx, checkout, 'feat/x');
 

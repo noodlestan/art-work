@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import simpleGit from 'simple-git';
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { createMockCommandContext } from '../../test/helpers/context/createMockCommandContext';
+import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock';
 import { commitFileTest } from '../../test/helpers/git/commitFileTest';
 import { initGitRepoTest } from '../../test/helpers/git/initGitRepoTest';
 import { initWorkingRepoTest } from '../../test/helpers/git/initWorkingRepoTest';
@@ -24,7 +24,7 @@ afterEach(async () => {
 describe('scanCheckoutState', () => {
 	it('missing dir returns an exists state and a not-cloned issue', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const checkout = createCheckout(ctx.config, 'nope');
 
 		const result = await scanCheckoutState(ctx, checkout);
@@ -37,7 +37,7 @@ describe('scanCheckoutState', () => {
 
 	it('empty record branch does not produce wrong-branch issue', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const checkoutDir = join(tempDir, ctx.config.clone.path, 'extraneous');
 		await initGitRepoTest(checkoutDir);
 
@@ -50,7 +50,7 @@ describe('scanCheckoutState', () => {
 
 	it('record branch matching actual branch does not produce wrong-branch issue', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const checkoutDir = join(tempDir, ctx.config.clone.path, 'myrepo');
 		await initGitRepoTest(checkoutDir);
 
@@ -62,7 +62,7 @@ describe('scanCheckoutState', () => {
 
 	it('record branch mismatching actual branch produces wrong-branch issue', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const checkoutDir = join(tempDir, ctx.config.clone.path, 'myrepo');
 		await initGitRepoTest(checkoutDir);
 
@@ -75,7 +75,7 @@ describe('scanCheckoutState', () => {
 	it('record remote matching actual remote does not produce wrong-remote issue', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const bareDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const checkoutDir = join(tempDir, ctx.config.clone.path, 'myrepo');
 		await initWorkingRepoTest(checkoutDir, bareDir);
 
@@ -92,7 +92,7 @@ describe('scanCheckoutState', () => {
 	it('record remote mismatching actual remote produces wrong-remote issue', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const bareDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const checkoutDir = join(tempDir, ctx.config.clone.path, 'myrepo');
 		await initWorkingRepoTest(checkoutDir, bareDir);
 
@@ -109,7 +109,7 @@ describe('scanCheckoutState', () => {
 	it('cheap scan reports no behind when tracking ref is stale; refetch reports behind', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const bareDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const checkoutDir = join(tempDir, ctx.config.clone.path, 'refetch');
 		await initWorkingRepoTest(checkoutDir, bareDir);
 		const git = simpleGit(checkoutDir);
@@ -141,7 +141,7 @@ describe('scanCheckoutState', () => {
 
 	it('reports a no-git state when the checkout dir has no .git', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const checkout = createCheckout(ctx.config, 'norepo', undefined, '');
 		await mkdir(checkout.path, { recursive: true });
 
@@ -153,7 +153,7 @@ describe('scanCheckoutState', () => {
 
 	it('reports a git-dir state when the checkout dir has a .git', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const checkoutDir = join(tempDir, ctx.config.clone.path, 'myrepo');
 		await initGitRepoTest(checkoutDir);
 

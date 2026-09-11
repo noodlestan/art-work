@@ -1,6 +1,6 @@
 import type { WorkspaceConfig } from '../../../config';
 
-export function makeMockConfig(
+export function makeConfigMock(
 	rootPath: string,
 	overrides?: Partial<WorkspaceConfig>,
 ): WorkspaceConfig {

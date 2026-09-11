@@ -3,7 +3,7 @@ import { join } from 'node:path';
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { createMockCommandContext } from '../../test/helpers/context/createMockCommandContext';
+import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock';
 import { initWorkingRepoTest } from '../../test/helpers/git/initWorkingRepoTest';
 import { writeCheckoutMockRecord } from '../../test/helpers/records/writeCheckoutMockRecord';
 import { writeRepoMockRecord } from '../../test/helpers/records/writeRepoMockRecord';
@@ -28,7 +28,7 @@ afterEach(async () => {
 describe('checkouts run command', () => {
 	it('prints the usage message and runs nothing when neither -c nor --all is provided', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const bareDir = makeTempDir(tempDirs);
 		const repoDir = join(tempDir, ctx.config.clone.path, 'art');
 		await initWorkingRepoTest(repoDir, bareDir);
@@ -49,7 +49,7 @@ describe('checkouts run command', () => {
 
 	it('runs the command in every checkout when --all is provided', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const artBare = makeTempDir(tempDirs);
 		const purrBare = makeTempDir(tempDirs);
 		const artDir = join(tempDir, ctx.config.clone.path, 'art');
@@ -74,7 +74,7 @@ describe('checkouts run command', () => {
 
 	it('runs only in checkouts matching the pattern', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const artBare = makeTempDir(tempDirs);
 		const purrBare = makeTempDir(tempDirs);
 		const artDir = join(tempDir, ctx.config.clone.path, 'art');
@@ -100,7 +100,7 @@ describe('checkouts run command', () => {
 
 	it('logs a failure operation per checkout when the command exits non-zero', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const artBare = makeTempDir(tempDirs);
 		const purrBare = makeTempDir(tempDirs);
 		const artDir = join(tempDir, ctx.config.clone.path, 'art');
@@ -123,7 +123,7 @@ describe('checkouts run command', () => {
 
 	it('warns and executes nothing when no checkout matches the pattern', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 
 		await runCheckoutsRun(ctx, { command: 'touch marker.txt', checkouts: ['nonexistent'] });
 
@@ -132,7 +132,7 @@ describe('checkouts run command', () => {
 
 	it('logs a failure operation for a recorded-but-not-cloned checkout', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 
 		writeRepoMockRecord(tempDir, 'Missing', 'git@example.com:missing.git');
 		writeCheckoutMockRecord(tempDir, 'Missing', 'Missing', 'missing');

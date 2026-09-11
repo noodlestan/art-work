@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import simpleGit from 'simple-git';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { createMockCommandContext } from '../../test/helpers/context/createMockCommandContext';
+import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock';
 import { commitFileTest } from '../../test/helpers/git/commitFileTest';
 import { initWorkingRepoTest } from '../../test/helpers/git/initWorkingRepoTest';
 import { writeCheckoutMockRecord } from '../../test/helpers/records/writeCheckoutMockRecord';
@@ -30,7 +30,7 @@ afterEach(async () => {
 describe('push command', () => {
 	it('prints the usage message and runs nothing when neither -c nor --all is provided', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 
 		writeRepoMockRecord(tempDir, 'Art', '');
 		writeCheckoutMockRecord(tempDir, 'Art', 'Art', 'art');
@@ -47,7 +47,7 @@ describe('push command', () => {
 
 	it('pushes clean checkouts that are ahead', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const bareDir = makeTempDir(tempDirs);
 		const repoDir = join(tempDir, ctx.config.clone.path, 'ahead');
 		await initWorkingRepoTest(repoDir, bareDir);
@@ -75,7 +75,7 @@ describe('push command', () => {
 
 	it('pushes without pulling first (pre-push pull removed)', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const bareDir = makeTempDir(tempDirs);
 		const repoDir = join(tempDir, ctx.config.clone.path, 'aheadonly');
 		await initWorkingRepoTest(repoDir, bareDir);
@@ -102,7 +102,7 @@ describe('push command', () => {
 
 	it('skips dirty checkouts', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const bareDir = makeTempDir(tempDirs);
 		const repoDir = join(tempDir, ctx.config.clone.path, 'dirtypush');
 		await initWorkingRepoTest(repoDir, bareDir);
@@ -121,7 +121,7 @@ describe('push command', () => {
 
 	it('pushes checkouts already up to date', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const bareDir = makeTempDir(tempDirs);
 		const repoDir = join(tempDir, ctx.config.clone.path, 'current');
 		await initWorkingRepoTest(repoDir, bareDir);
@@ -142,7 +142,7 @@ describe('push command', () => {
 
 	it('skips checkouts not cloned', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 
 		writeRepoMockRecord(tempDir, 'Missing', 'git@example.com:missing.git');
 		writeCheckoutMockRecord(tempDir, 'Missing', 'Missing', 'missing');
@@ -158,7 +158,7 @@ describe('push command', () => {
 	it('does not push the workspace root without the workspace option', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const bareDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		await initWorkingRepoTest(tempDir, bareDir);
 		await commitFileTest(tempDir, 'ahead.txt');
 
@@ -174,7 +174,7 @@ describe('push command', () => {
 	it('pushes the workspace root when it is ahead and clean with the workspace option', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const bareDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		await initWorkingRepoTest(tempDir, bareDir);
 		await commitFileTest(tempDir, 'ahead.txt');
 

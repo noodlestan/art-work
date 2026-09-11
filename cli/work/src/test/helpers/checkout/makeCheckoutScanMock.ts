@@ -14,7 +14,7 @@ import {
 
 export type CheckoutScanScenario = 'default' | 'ahead' | 'behind' | 'uncommitted' | 'no-remote';
 
-export function createCheckoutScanMock(scenarios: CheckoutScanScenario[] = []): CheckoutScan {
+export function makeCheckoutScanMock(scenarios: CheckoutScanScenario[] = []): CheckoutScan {
 	const has = (scenario: CheckoutScanScenario) => scenarios.includes(scenario);
 
 	const ahead = has('ahead') ? 1 : 0;

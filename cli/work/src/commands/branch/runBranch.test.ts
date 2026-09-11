@@ -3,7 +3,7 @@ import { join } from 'node:path';
 import simpleGit from 'simple-git';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { createMockCommandContext } from '../../test/helpers/context/createMockCommandContext';
+import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock';
 import { commitFileTest } from '../../test/helpers/git/commitFileTest';
 import { initGitRepoTest } from '../../test/helpers/git/initGitRepoTest';
 import { writeCheckoutMockRecord } from '../../test/helpers/records/writeCheckoutMockRecord';
@@ -29,7 +29,7 @@ afterEach(async () => {
 describe('branch command', () => {
 	it('prints the usage message and runs nothing when neither -c nor --all is provided', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 
 		writeRepoMockRecord(tempDir, 'Art', '');
 		writeCheckoutMockRecord(tempDir, 'Art', 'Art', 'art');
@@ -46,7 +46,7 @@ describe('branch command', () => {
 
 	it('creates and checks out a new branch in a single specified checkout', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const repoDir = join(tempDir, ctx.config.clone.path, 'one');
 		await initGitRepoTest(repoDir);
 
@@ -68,7 +68,7 @@ describe('branch command', () => {
 
 	it('branches all checkouts when none are specified', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		await initGitRepoTest(join(tempDir, ctx.config.clone.path, 'alpha'));
 		await initGitRepoTest(join(tempDir, ctx.config.clone.path, 'beta'));
 
@@ -88,7 +88,7 @@ describe('branch command', () => {
 
 	it('warns and skips when pattern matches no checkouts', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		await initGitRepoTest(join(tempDir, ctx.config.clone.path, 'checkouts/one'));
 
 		writeRepoMockRecord(tempDir, 'One', 'git@example.com:one.git');
@@ -103,7 +103,7 @@ describe('branch command', () => {
 
 	it('logs a failure and continues when a checkout is not cloned', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		await initGitRepoTest(join(tempDir, ctx.config.clone.path, 'checkouts/good'));
 
 		writeRepoMockRecord(tempDir, 'Good', 'git@example.com:good.git');
@@ -124,7 +124,7 @@ describe('branch command', () => {
 
 	it('branches a checkout with no matching repository', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		await initGitRepoTest(join(tempDir, ctx.config.clone.path, 'conv'));
 
 		writeCheckoutMockRecord(tempDir, 'Conv', 'Conv', 'conv');
@@ -142,7 +142,7 @@ describe('branch command', () => {
 
 	it('switches to an existing branch', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const repoDir = join(tempDir, ctx.config.clone.path, 'one');
 		await initGitRepoTest(repoDir);
 		const git = simpleGit(repoDir);
@@ -164,7 +164,7 @@ describe('branch command', () => {
 
 	it('branches checkouts matching wildcard pattern', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		await initGitRepoTest(join(tempDir, ctx.config.clone.path, 'alpha'));
 		await initGitRepoTest(join(tempDir, ctx.config.clone.path, 'beta'));
 
@@ -185,7 +185,7 @@ describe('branch command', () => {
 
 	it('warns and skips when pattern matches no checkouts', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		await initGitRepoTest(join(tempDir, ctx.config.clone.path, 'alpha'));
 
 		writeRepoMockRecord(tempDir, 'Alpha', 'git@example.com:alpha.git');

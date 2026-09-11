@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { createCheckoutScanMock } from '../../test/helpers/checkout/createCheckoutScanMock';
+import { makeCheckoutScanMock } from '../../test/helpers/checkout/makeCheckoutScanMock';
 import { makeWorkspaceCheckoutMock } from '../../test/helpers/checkout/makeWorkspaceCheckoutMock';
 
 import { presentWorkspaceReport } from './presentWorkspaceReport';
@@ -28,7 +28,7 @@ describe('presentWorkspaceReport', () => {
 
 		presentWorkspaceReport(
 			makeWorkspaceCheckoutMock('/tmp', {
-				scan: createCheckoutScanMock(['ahead', 'uncommitted']),
+				scan: makeCheckoutScanMock(['ahead', 'uncommitted']),
 			}),
 		);
 
@@ -40,7 +40,7 @@ describe('presentWorkspaceReport', () => {
 
 		presentWorkspaceReport(
 			makeWorkspaceCheckoutMock('/tmp', {
-				scan: createCheckoutScanMock(['behind']),
+				scan: makeCheckoutScanMock(['behind']),
 			}),
 		);
 
@@ -60,7 +60,7 @@ describe('presentWorkspaceReport', () => {
 
 		presentWorkspaceReport(
 			makeWorkspaceCheckoutMock('/tmp', {
-				scan: createCheckoutScanMock(['no-remote']),
+				scan: makeCheckoutScanMock(['no-remote']),
 			}),
 		);
 

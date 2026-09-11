@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import simpleGit from 'simple-git';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { createMockCommandContext } from '../../test/helpers/context/createMockCommandContext';
+import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock';
 import { initBareRepoTest } from '../../test/helpers/git/initBareRepoTest';
 import { initWorkingRepoTest } from '../../test/helpers/git/initWorkingRepoTest';
 import { writeCheckoutMockRecord } from '../../test/helpers/records/writeCheckoutMockRecord';
@@ -30,7 +30,7 @@ afterEach(async () => {
 describe('clone command', () => {
 	it('clones a missing repo and creates the checkout record', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 
 		const bareDir = join(tempDir, 'bare/artificial');
 		await initBareRepoTest(bareDir);
@@ -51,7 +51,7 @@ describe('clone command', () => {
 
 	it('reports issues for a dirty checkout', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const bareDir = join(tempDir, 'bare/artificial');
 		await initBareRepoTest(bareDir);
 		const workingDir = join(tempDir, 'checkouts/artificial');
@@ -69,7 +69,7 @@ describe('clone command', () => {
 
 	it('reports current branch even if different from checkout record', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const bareDir = join(tempDir, 'bare/artificial');
 		await initBareRepoTest(bareDir);
 		const workingDir = join(tempDir, 'checkouts/artificial');
@@ -88,7 +88,7 @@ describe('clone command', () => {
 
 	it('errors for an unknown repo name', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 
 		await runClone(ctx, { repoName: 'Unknown' });
 
@@ -100,7 +100,7 @@ describe('clone command', () => {
 
 	it('clones all repos when --all is passed', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const bareDir1 = join(tempDir, 'bare/repo1');
 		await initBareRepoTest(bareDir1);
 		const bareDir2 = join(tempDir, 'bare/repo2');
@@ -119,7 +119,7 @@ describe('clone command', () => {
 
 	it('resolves default location and branch when no checkout override exists', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const bareDir = join(tempDir, 'bare/my-repo');
 		await initBareRepoTest(bareDir);
 
@@ -133,7 +133,7 @@ describe('clone command', () => {
 
 	it('uses target location when specified', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const bareDir = join(tempDir, 'bare/artificial');
 		await initBareRepoTest(bareDir);
 
@@ -147,7 +147,7 @@ describe('clone command', () => {
 
 	it('creates checkout named Artificial-foo when cloning Artificial to foo', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const bareDir = join(tempDir, 'bare/artificial');
 		await initBareRepoTest(bareDir);
 
@@ -167,7 +167,7 @@ describe('clone command', () => {
 
 	it('is idempotent when cloning an existing checkout', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const bareDir = join(tempDir, 'bare/artificial');
 		await initBareRepoTest(bareDir);
 
@@ -182,7 +182,7 @@ describe('clone command', () => {
 
 	it('allows multiple checkouts of the same repo with different locations', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const bareDir = join(tempDir, 'bare/artificial');
 		await initBareRepoTest(bareDir);
 

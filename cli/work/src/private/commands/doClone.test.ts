@@ -2,11 +2,11 @@ import { join } from 'node:path';
 
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { createMockCommandContext } from '../../test/helpers/context/createMockCommandContext';
+import { makeCheckoutMock } from '../../test/helpers/checkout/makeCheckoutMock';
+import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock';
 import { initBareRepoTest } from '../../test/helpers/git/initBareRepoTest';
 import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir';
 import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs';
-import { createCheckout } from '../store/createCheckout';
 
 import { doClone } from './doClone';
 
@@ -19,13 +19,13 @@ afterEach(async () => {
 describe('doClone', () => {
 	it('clones a checkout and returns the updated state', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const bareDir = makeTempDir(tempDirs);
 		await initBareRepoTest(bareDir);
 
-		const checkout = createCheckout(ctx.config, 'my-repo', {
-			name: 'MyRepo',
-			remote: bareDir,
+		const checkout = makeCheckoutMock({
+			path: join(tempDir, ctx.config.clone.path, 'my-repo'),
+			repo: { name: 'MyRepo', remote: bareDir },
 		});
 
 		const result = await doClone(ctx, checkout);
@@ -38,10 +38,10 @@ describe('doClone', () => {
 
 	it('logs failure and returns null when clone fails', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
-		const checkout = createCheckout(ctx.config, 'my-repo', {
-			name: 'MyRepo',
-			remote: join(tempDir, 'nonexistent-repo.git'),
+		const ctx = makeCommandContextMock(tempDir);
+		const checkout = makeCheckoutMock({
+			path: join(tempDir, ctx.config.clone.path, 'my-repo'),
+			repo: { name: 'MyRepo', remote: join(tempDir, 'nonexistent-repo.git') },
 		});
 
 		const result = await doClone(ctx, checkout);
@@ -53,8 +53,8 @@ describe('doClone', () => {
 
 	it('returns null when checkout has no repo', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
-		const checkout = createCheckout(ctx.config, 'orphan');
+		const ctx = makeCommandContextMock(tempDir);
+		const checkout = makeCheckoutMock();
 
 		const result = await doClone(ctx, checkout);
 

@@ -4,9 +4,9 @@ import { join } from 'node:path';
 import simpleGit from 'simple-git';
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { createCheckoutScanMock } from '../../../test/helpers/checkout/createCheckoutScanMock';
+import { makeCheckoutScanMock } from '../../../test/helpers/checkout/makeCheckoutScanMock';
 import { makeWorkspaceCheckoutMock } from '../../../test/helpers/checkout/makeWorkspaceCheckoutMock';
-import { createMockCommandContext } from '../../../test/helpers/context/createMockCommandContext';
+import { makeCommandContextMock } from '../../../test/helpers/context/makeCommandContextMock';
 import { commitFileTest } from '../../../test/helpers/git/commitFileTest';
 import { initWorkingRepoTest } from '../../../test/helpers/git/initWorkingRepoTest';
 import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir';
@@ -27,9 +27,9 @@ describe('doPushWorkspaceCheckout', () => {
 		await initWorkingRepoTest(tempDir, bareDir);
 		await commitFileTest(tempDir, 'ahead.txt');
 
-		const ctx = createMockCommandContext(
+		const ctx = makeCommandContextMock(
 			tempDir,
-			makeWorkspaceCheckoutMock(tempDir, { scan: createCheckoutScanMock(['ahead']) }),
+			makeWorkspaceCheckoutMock(tempDir, { scan: makeCheckoutScanMock(['ahead']) }),
 		);
 
 		const updated = await doPushWorkspaceCheckout(ctx);
@@ -54,10 +54,10 @@ describe('doPushWorkspaceCheckout', () => {
 		const git = simpleGit(tempDir);
 		await git.push('origin', 'main', ['--set-upstream']);
 
-		const ctx = createMockCommandContext(
+		const ctx = makeCommandContextMock(
 			tempDir,
 			makeWorkspaceCheckoutMock(tempDir, {
-				scan: createCheckoutScanMock([]),
+				scan: makeCheckoutScanMock([]),
 			}),
 		);
 
@@ -71,10 +71,10 @@ describe('doPushWorkspaceCheckout', () => {
 
 	it('skips when the workspace is dirty', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(
+		const ctx = makeCommandContextMock(
 			tempDir,
 			makeWorkspaceCheckoutMock(tempDir, {
-				scan: createCheckoutScanMock(['ahead', 'uncommitted']),
+				scan: makeCheckoutScanMock(['ahead', 'uncommitted']),
 			}),
 		);
 
@@ -85,7 +85,7 @@ describe('doPushWorkspaceCheckout', () => {
 
 	it('throws when there is no workspace checkout', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 
 		await expect(doPushWorkspaceCheckout(ctx)).rejects.toThrow('No workspace in context.');
 		expect(ctx.log.all()).toHaveLength(0);
@@ -98,9 +98,9 @@ describe('doPushWorkspaceCheckout', () => {
 		await commitFileTest(tempDir, 'ahead.txt');
 
 		await simpleGit(tempDir).remote(['set-url', 'origin', join(tempDir, 'missing-origin')]);
-		const ctx = createMockCommandContext(
+		const ctx = makeCommandContextMock(
 			tempDir,
-			makeWorkspaceCheckoutMock(tempDir, { scan: createCheckoutScanMock(['ahead']) }),
+			makeWorkspaceCheckoutMock(tempDir, { scan: makeCheckoutScanMock(['ahead']) }),
 		);
 
 		await expect(doPushWorkspaceCheckout(ctx)).resolves.toBeNull();

@@ -4,7 +4,7 @@ import { join } from 'node:path';
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { createMockCommandContext } from '../../test/helpers/context/createMockCommandContext';
+import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock';
 import { initGitRepoTest } from '../../test/helpers/git/initGitRepoTest';
 import { writeCheckoutMockRecord } from '../../test/helpers/records/writeCheckoutMockRecord';
 import {
@@ -89,7 +89,7 @@ describe('repo command', () => {
 
 	it("lists a single checkout's packages", async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		await setupCheckoutWithPackages(tempDir, ctx);
 
 		await runRepo(ctx, { locations: ['artificial'] });
@@ -106,7 +106,7 @@ describe('repo command', () => {
 
 	it('defaults to all checkouts when none specified', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const dir1 = join(tempDir, ctx.config.clone.path, 'artificial');
 		const dir2 = join(tempDir, ctx.config.clone.path, 'conventions-fixes');
 		await initGitRepoTest(dir1);
@@ -187,7 +187,7 @@ describe('repo command', () => {
 
 	it('identifies checkout without project records', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const checkoutDir = join(tempDir, ctx.config.clone.path, 'purrception');
 		await initGitRepoTest(checkoutDir);
 
@@ -202,7 +202,7 @@ describe('repo command', () => {
 
 	it('groups each repository report with its package report', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const dir1 = join(tempDir, ctx.config.clone.path, 'artificial');
 		const dir2 = join(tempDir, ctx.config.clone.path, 'purrception');
 		await initGitRepoTest(dir1);
@@ -261,7 +261,7 @@ describe('repo command', () => {
 
 	it('unknown checkout warns and skips', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 
 		await runRepo(ctx, { locations: ['unknown'] });
 
@@ -273,7 +273,7 @@ describe('repo command', () => {
 
 	it('identifies project referencing a missing namespace', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const checkoutDir = join(tempDir, ctx.config.clone.path, 'artificial');
 		await initGitRepoTest(checkoutDir);
 
@@ -296,7 +296,7 @@ describe('repo command', () => {
 
 	it('identifies namespace referencing a missing package', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const checkoutDir = join(tempDir, ctx.config.clone.path, 'artificial');
 		await initGitRepoTest(checkoutDir);
 
@@ -323,7 +323,7 @@ describe('repo command', () => {
 
 	it('identifies packages with no package.json', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const checkoutDir = join(tempDir, ctx.config.clone.path, 'artificial');
 		await initGitRepoTest(checkoutDir);
 
@@ -358,7 +358,7 @@ describe('repo command', () => {
 
 	it('identifies packages where npm info fails', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		await setupCheckoutWithPackages(tempDir, ctx);
 
 		vi.mocked(execSync).mockImplementation(() => {

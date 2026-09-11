@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import simpleGit from 'simple-git';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { createMockCommandContext } from '../../test/helpers/context/createMockCommandContext';
+import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock';
 import { commitFileTest } from '../../test/helpers/git/commitFileTest';
 import { initWorkingRepoTest } from '../../test/helpers/git/initWorkingRepoTest';
 import { makeOriginAheadTest } from '../../test/helpers/git/makeOriginAheadTest';
@@ -31,7 +31,7 @@ afterEach(async () => {
 describe('sync command', () => {
 	it('syncs clean checkouts', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const bareDir = makeTempDir(tempDirs);
 		const repoDir = join(tempDir, ctx.config.clone.path, 'syncme');
 		await initWorkingRepoTest(repoDir, bareDir);
@@ -63,7 +63,7 @@ describe('sync command', () => {
 
 	it('syncs checkouts behind even when the local tracking ref is stale', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const bareDir = makeTempDir(tempDirs);
 		const repoDir = join(tempDir, ctx.config.clone.path, 'behindsync');
 		await initWorkingRepoTest(repoDir, bareDir);
@@ -90,7 +90,7 @@ describe('sync command', () => {
 
 	it('skips dirty checkouts', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const bareDir = makeTempDir(tempDirs);
 		const repoDir = join(tempDir, ctx.config.clone.path, 'dirtysync');
 		await initWorkingRepoTest(repoDir, bareDir);
@@ -110,7 +110,7 @@ describe('sync command', () => {
 
 	it('skips checkouts not cloned', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 
 		writeRepoMockRecord(tempDir, 'Missing', 'git@example.com:missing.git');
 		writeCheckoutMockRecord(tempDir, 'Missing', 'Missing', 'missing');
@@ -125,7 +125,7 @@ describe('sync command', () => {
 
 	it('syncs checkouts already up to date', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const bareDir = makeTempDir(tempDirs);
 		const repoDir = join(tempDir, ctx.config.clone.path, 'current');
 		await initWorkingRepoTest(repoDir, bareDir);
@@ -150,7 +150,7 @@ describe('sync command', () => {
 	it('does not sync the workspace root without the workspace option', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const bareDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		await makeWorkspaceRootBehindTest(tempDir, bareDir, tempDirs);
 		await commitFileTest(tempDir, 'ahead.txt');
 
@@ -163,7 +163,7 @@ describe('sync command', () => {
 	it('syncs the workspace root (pulls when behind and pushes when ahead) with the workspace option', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const bareDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		await makeWorkspaceRootBehindTest(tempDir, bareDir, tempDirs);
 		await commitFileTest(tempDir, 'ahead.txt');
 
@@ -184,7 +184,7 @@ describe('sync command', () => {
 	it('skips push when pull fails (bad remote)', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const bareDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 
 		const repoDir = join(tempDir, ctx.config.clone.path, 'badremote');
 		await initWorkingRepoTest(repoDir, bareDir);

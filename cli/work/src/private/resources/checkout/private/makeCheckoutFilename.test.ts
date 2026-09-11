@@ -2,7 +2,7 @@ import { join } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
-import { makeMockConfig } from '../../../../test/helpers/context/makeMockConfig';
+import { makeConfigMock } from '../../../../test/helpers/context/makeConfigMock';
 import { makeTempDir } from '../../../../test/helpers/tempDirs/makeTempDir';
 
 import { makeCheckoutFilename } from './makeCheckoutFilename';
@@ -12,7 +12,7 @@ const tempDirs: string[] = [];
 describe('makeCheckoutFilename', () => {
 	it('derives slug from checkout name', () => {
 		const tempDir = makeTempDir(tempDirs);
-		const config = makeMockConfig(tempDir);
+		const config = makeConfigMock(tempDir);
 		const data = { name: 'Artificial', location: 'checkouts/artificial', branch: 'main' };
 
 		const result = makeCheckoutFilename(config, data);
@@ -22,7 +22,7 @@ describe('makeCheckoutFilename', () => {
 
 	it('normalizes spaces to dashes', () => {
 		const tempDir = makeTempDir(tempDirs);
-		const config = makeMockConfig(tempDir);
+		const config = makeConfigMock(tempDir);
 		const data = { name: 'My Checkout', location: 'checkouts/my-checkout', branch: 'main' };
 
 		const result = makeCheckoutFilename(config, data);
@@ -32,7 +32,7 @@ describe('makeCheckoutFilename', () => {
 
 	it('lowercases the name', () => {
 		const tempDir = makeTempDir(tempDirs);
-		const config = makeMockConfig(tempDir);
+		const config = makeConfigMock(tempDir);
 		const data = { name: 'UPPER CASE', location: 'checkouts/upper-case', branch: 'main' };
 
 		const result = makeCheckoutFilename(config, data);
@@ -42,7 +42,7 @@ describe('makeCheckoutFilename', () => {
 
 	it('uses config root path and checkouts path', () => {
 		const tempDir = makeTempDir(tempDirs);
-		const config = makeMockConfig(tempDir);
+		const config = makeConfigMock(tempDir);
 		const data = { name: 'Foo', location: 'checkouts/foo', branch: 'main' };
 
 		const result = makeCheckoutFilename(config, data);

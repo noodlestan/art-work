@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { makeMockConfig } from '../../test/helpers/context/makeMockConfig';
+import { makeConfigMock } from '../../test/helpers/context/makeConfigMock';
 import { createCloneOperation } from '../commands/operations/createCloneOperation';
 import { createOperationSuccess } from '../operations/createOperationSuccess';
 import { createCheckout } from '../store/createCheckout';
@@ -8,7 +8,7 @@ import { createCheckout } from '../store/createCheckout';
 import { createOperationsLog } from './createOperationsLog';
 
 function makeCheckout(name: string) {
-	const config = makeMockConfig('.');
+	const config = makeConfigMock('.');
 	const repo = { name, remote: `git@example.com:${name}.git` };
 	return createCheckout(config, repo.name, repo, 'main');
 }

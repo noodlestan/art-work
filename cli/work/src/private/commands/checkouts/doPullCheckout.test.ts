@@ -4,13 +4,13 @@ import { join } from 'node:path';
 import simpleGit from 'simple-git';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { createCheckoutScanMock } from '../../../test/helpers/checkout/createCheckoutScanMock';
-import { createMockCommandContext } from '../../../test/helpers/context/createMockCommandContext';
+import { makeCheckoutMock } from '../../../test/helpers/checkout/makeCheckoutMock';
+import { makeCheckoutScanMock } from '../../../test/helpers/checkout/makeCheckoutScanMock';
+import { makeCommandContextMock } from '../../../test/helpers/context/makeCommandContextMock';
 import { initWorkingRepoTest } from '../../../test/helpers/git/initWorkingRepoTest';
 import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir';
 import { removeTempDirs } from '../../../test/helpers/tempDirs/removeTempDirs';
 import { scanCheckoutState } from '../../scan/scanCheckoutState';
-import { createCheckout } from '../../store/createCheckout';
 
 import { doPullCheckout } from './doPullCheckout';
 
@@ -23,7 +23,7 @@ afterEach(async () => {
 describe('doPullCheckout', () => {
 	it('pulls a behind checkout and returns the updated state', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const bareDir = makeTempDir(tempDirs);
 		const repoDir = join(tempDir, ctx.config.clone.path, 'behind');
 		await initWorkingRepoTest(repoDir, bareDir);
@@ -42,9 +42,9 @@ describe('doPullCheckout', () => {
 		const git = simpleGit(repoDir);
 		await git.fetch('origin', 'main');
 
-		const checkout = createCheckout(ctx.config, 'behind', {
-			name: 'Behind',
-			remote: 'git@example.com:behind.git',
+		const checkout = makeCheckoutMock({
+			path: repoDir,
+			repo: { name: 'Behind', remote: 'git@example.com:behind.git' },
 		});
 		const scanned = await scanCheckoutState(ctx, checkout);
 		expect(scanned.scan?.state('sync').behind).toBe(1);
@@ -60,7 +60,7 @@ describe('doPullCheckout', () => {
 
 	it('logs failure and returns null when the pull fails', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const bareDir = makeTempDir(tempDirs);
 		const repoDir = join(tempDir, ctx.config.clone.path, 'nopull');
 		await initWorkingRepoTest(repoDir, bareDir);
@@ -69,11 +69,11 @@ describe('doPullCheckout', () => {
 		const git = simpleGit(repoDir);
 		await git.remote(['set-url', 'origin', join(tempDir, 'missing-origin')]);
 
-		const checkout = createCheckout(ctx.config, 'nopull', {
-			name: 'NoPull',
-			remote: 'git@example.com:nopull.git',
+		const checkout = makeCheckoutMock({
+			path: repoDir,
+			repo: { name: 'NoPull', remote: 'git@example.com:nopull.git' },
 		});
-		checkout.scan = createCheckoutScanMock(['behind']);
+		checkout.scan = makeCheckoutScanMock(['behind']);
 
 		const result = await doPullCheckout(ctx, checkout);
 
@@ -84,7 +84,7 @@ describe('doPullCheckout', () => {
 
 	it('emits a pending pull before the pull side effect', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const bareDir = makeTempDir(tempDirs);
 		const repoDir = join(tempDir, ctx.config.clone.path, 'pending-pull');
 		await initWorkingRepoTest(repoDir, bareDir);
@@ -93,11 +93,11 @@ describe('doPullCheckout', () => {
 		const git = simpleGit(repoDir);
 		await git.remote(['set-url', 'origin', join(tempDir, 'missing-origin')]);
 
-		const checkout = createCheckout(ctx.config, 'pending-pull', {
-			name: 'PendingPull',
-			remote: 'git@example.com:pending-pull.git',
+		const checkout = makeCheckoutMock({
+			path: repoDir,
+			repo: { name: 'PendingPull', remote: 'git@example.com:pending-pull.git' },
 		});
-		checkout.scan = createCheckoutScanMock(['behind']);
+		checkout.scan = makeCheckoutScanMock(['behind']);
 
 		let pendingEmitted = false;
 		const spy = vi.fn(() => {

@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { createMockCommandContext } from '../../test/helpers/context/createMockCommandContext';
+import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock';
 import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir';
 import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs';
 import { createCloneOperation } from '../commands/operations/createCloneOperation';
@@ -50,7 +50,7 @@ describe('presentOperationsReport', () => {
 		const spy = vi.spyOn(console, 'info').mockImplementation(() => {});
 		const log = createOperationsLog();
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const checkout = createCheckout(ctx.config, 'my-repo', {
 			name: 'MyRepo',
 			remote: 'git@example.com:my-repo.git',
@@ -73,7 +73,7 @@ describe('makeOperationLogLine', () => {
 
 	it('renders a success line with 🟢', () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const checkout = createCheckout(ctx.config, 'my-repo', {
 			name: 'MyRepo',
 			remote: 'git@example.com:my-repo.git',

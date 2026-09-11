@@ -6,10 +6,10 @@ import { createOperationsLog } from '../../../private/log/createOperationsLog';
 import type { Checkout } from '../../../private/store/createCheckout';
 import { createCheckoutStore } from '../../../private/store/createCheckoutStore';
 
-import { makeMockConfig } from './makeMockConfig';
+import { makeConfigMock } from './makeConfigMock';
 
-export function createMockCommandContext(tempDir: string, workspace?: Checkout): WorkspaceContext {
-	const config = makeMockConfig(tempDir);
+export function makeCommandContextMock(tempDir: string, workspace?: Checkout): WorkspaceContext {
+	const config = makeConfigMock(tempDir);
 	const store = createCheckoutStore();
 	const log = createOperationsLog();
 	const ctx = createWorkspaceContext(config, store, log, workspace);

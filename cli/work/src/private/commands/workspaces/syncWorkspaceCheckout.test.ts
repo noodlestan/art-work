@@ -4,9 +4,9 @@ import { join } from 'node:path';
 import simpleGit from 'simple-git';
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { createCheckoutScanMock } from '../../../test/helpers/checkout/createCheckoutScanMock';
+import { makeCheckoutScanMock } from '../../../test/helpers/checkout/makeCheckoutScanMock';
 import { makeWorkspaceCheckoutMock } from '../../../test/helpers/checkout/makeWorkspaceCheckoutMock';
-import { createMockCommandContext } from '../../../test/helpers/context/createMockCommandContext';
+import { makeCommandContextMock } from '../../../test/helpers/context/makeCommandContextMock';
 import { commitFileTest } from '../../../test/helpers/git/commitFileTest';
 import { initWorkingRepoTest } from '../../../test/helpers/git/initWorkingRepoTest';
 import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir';
@@ -40,9 +40,9 @@ describe('syncWorkspaceCheckout', () => {
 		// Also make workspace ahead with a local commit.
 		await commitFileTest(tempDir, 'local-commit.txt');
 
-		const ctx = createMockCommandContext(
+		const ctx = makeCommandContextMock(
 			tempDir,
-			makeWorkspaceCheckoutMock(tempDir, { scan: createCheckoutScanMock(['behind']) }),
+			makeWorkspaceCheckoutMock(tempDir, { scan: makeCheckoutScanMock(['behind']) }),
 		);
 
 		await syncWorkspaceCheckout(ctx);
@@ -66,9 +66,9 @@ describe('syncWorkspaceCheckout', () => {
 		await initWorkingRepoTest(tempDir, bareDir);
 		await commitFileTest(tempDir, 'ahead.txt');
 
-		const ctx = createMockCommandContext(
+		const ctx = makeCommandContextMock(
 			tempDir,
-			makeWorkspaceCheckoutMock(tempDir, { scan: createCheckoutScanMock(['ahead']) }),
+			makeWorkspaceCheckoutMock(tempDir, { scan: makeCheckoutScanMock(['ahead']) }),
 		);
 
 		await syncWorkspaceCheckout(ctx);
@@ -80,7 +80,7 @@ describe('syncWorkspaceCheckout', () => {
 
 	it('throws when there is no workspace in context', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 
 		await expect(syncWorkspaceCheckout(ctx)).rejects.toThrow('No workspace in context.');
 		expect(ctx.log.all()).toHaveLength(0);

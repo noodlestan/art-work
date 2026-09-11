@@ -6,7 +6,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { getCurrentBranch } from '../../../private/git/getCurrentBranch';
 import { createCheckout } from '../../../private/store/createCheckout';
-import { createMockCommandContext } from '../../../test/helpers/context/createMockCommandContext';
+import { makeCommandContextMock } from '../../../test/helpers/context/makeCommandContextMock';
 import { initBareRepoTest } from '../../../test/helpers/git/initBareRepoTest';
 import { writeRepoMockRecord } from '../../../test/helpers/records/writeRepoMockRecord';
 import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir';
@@ -24,7 +24,7 @@ afterEach(async () => {
 describe('cloneIfMissing', () => {
 	it('checkout without a repo returns null', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const checkout = createCheckout(ctx.config, 'orphan');
 
 		const result = await cloneIfMissing(ctx, checkout);
@@ -34,7 +34,7 @@ describe('cloneIfMissing', () => {
 
 	it('clones and checks out the recorded branch when it exists on remote', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 
 		const bareDir = join(tempDir, 'bare/feature-repo');
 		await initBareRepoTest(bareDir);
@@ -79,7 +79,7 @@ describe('cloneIfMissing', () => {
 
 	it('falls back to default branch when recorded branch does not exist on remote', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 
 		const bareDir = join(tempDir, 'bare/fallback-repo');
 		await initBareRepoTest(bareDir);

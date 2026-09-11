@@ -2,7 +2,7 @@ import { join } from 'node:path';
 
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { makeMockConfig } from '../../test/helpers/context/makeMockConfig';
+import { makeConfigMock } from '../../test/helpers/context/makeConfigMock';
 import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir';
 import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs';
 
@@ -18,7 +18,7 @@ afterEach(async () => {
 describe('hydrateStoreFromRecords', () => {
 	it('populates the store with a checkout per record', () => {
 		const tempDir = makeTempDir(tempDirs);
-		const config = makeMockConfig(tempDir);
+		const config = makeConfigMock(tempDir);
 		const store = createCheckoutStore();
 		const records = [
 			{
@@ -43,7 +43,7 @@ describe('hydrateStoreFromRecords', () => {
 
 	it('copies filename from record into checkout', () => {
 		const tempDir = makeTempDir(tempDirs);
-		const config = makeMockConfig(tempDir);
+		const config = makeConfigMock(tempDir);
 		const store = createCheckoutStore();
 		const filename = join(tempDir, '_records/checkouts/foo.art');
 		const records = [
@@ -63,7 +63,7 @@ describe('hydrateStoreFromRecords', () => {
 
 	it('new checkouts created via hydrate carry the source filename', () => {
 		const tempDir = makeTempDir(tempDirs);
-		const config = makeMockConfig(tempDir);
+		const config = makeConfigMock(tempDir);
 		const store = createCheckoutStore();
 		const records = [
 			{

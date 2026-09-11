@@ -3,7 +3,7 @@ import { join } from 'node:path';
 import simpleGit from 'simple-git';
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { createMockCommandContext } from '../../test/helpers/context/createMockCommandContext';
+import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock';
 import { commitFileTest } from '../../test/helpers/git/commitFileTest';
 import { initWorkingRepoTest } from '../../test/helpers/git/initWorkingRepoTest';
 import { writeCheckoutMockRecord } from '../../test/helpers/records/writeCheckoutMockRecord';
@@ -26,7 +26,7 @@ afterEach(async () => {
 describe('scanAllCheckoutsStates', () => {
 	it('no-op on an empty store', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 
 		await scanAllCheckoutsStates(ctx);
 
@@ -35,7 +35,7 @@ describe('scanAllCheckoutsStates', () => {
 
 	it('scans all checkouts and updates the store for each', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 
 		const checkoutA = createCheckout(ctx.config, 'a', undefined, 'main', 'A');
 		const checkoutB = createCheckout(ctx.config, 'b', undefined, 'main', 'B');
@@ -57,7 +57,7 @@ describe('scanAllCheckoutsStates', () => {
 
 	it('preserves checkout order from getAllCheckouts', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 
 		const locations = ['alpha', 'bravo', 'charlie', 'delta'];
 		for (const loc of locations) {
@@ -73,7 +73,7 @@ describe('scanAllCheckoutsStates', () => {
 	it('with refetch=true detects behind state after remote advances', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const bareDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 
 		const repoDir = join(tempDir, ctx.config.clone.path, 'refetchtest');
 		await initWorkingRepoTest(repoDir, bareDir);

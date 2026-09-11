@@ -3,7 +3,7 @@ import { join } from 'node:path';
 
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { createMockCommandContext } from '../../../test/helpers/context/createMockCommandContext';
+import { makeCommandContextMock } from '../../../test/helpers/context/makeCommandContextMock';
 import { writeCheckoutMockRecord } from '../../../test/helpers/records/writeCheckoutMockRecord';
 import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir';
 import { removeTempDirs } from '../../../test/helpers/tempDirs/removeTempDirs';
@@ -20,7 +20,7 @@ afterEach(async () => {
 describe('loadCheckouts', () => {
 	it('loads checkouts with repos resolved by name', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 
 		const repoA = { name: 'A', remote: 'git@example.com:a.git' };
 		const repoB = { name: 'B', remote: 'git@example.com:b.git' };
@@ -41,7 +41,7 @@ describe('loadCheckouts', () => {
 
 	it('includes an extraneous checkout for an unknown repo', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 
 		const repoA = { name: 'A', remote: 'git@example.com:a.git' };
 		const repoB = { name: 'B', remote: 'git@example.com:b.git' };
@@ -63,7 +63,7 @@ describe('loadCheckouts', () => {
 
 	it('skips a checkout record with an empty name', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 
 		const dir = join(tempDir, '_records');
 		mkdirSync(dir, { recursive: true });
@@ -78,7 +78,7 @@ describe('loadCheckouts', () => {
 
 	it('returns an empty list for an empty checkouts dir', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 
 		mkdirSync(join(tempDir, '_records'), { recursive: true });
 
@@ -89,7 +89,7 @@ describe('loadCheckouts', () => {
 
 	it('returns the source file path as filename for each loaded record', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 
 		writeCheckoutMockRecord(tempDir, 'Foo', 'Foo', 'foo');
 

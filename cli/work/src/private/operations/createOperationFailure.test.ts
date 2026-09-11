@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { createMockCommandContext } from '../../test/helpers/context/createMockCommandContext';
+import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock';
 import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir';
 import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs';
 import { createPullOperation } from '../commands/operations/createPullOperation';
@@ -16,7 +16,7 @@ afterEach(async () => {
 
 function makePullPending() {
 	const tempDir = makeTempDir(tempDirs);
-	const ctx = createMockCommandContext(tempDir);
+	const ctx = makeCommandContextMock(tempDir);
 	const checkout = createCheckout(ctx.config, 'my-repo', {
 		name: 'MyRepo',
 		remote: 'git@example.com:my-repo.git',

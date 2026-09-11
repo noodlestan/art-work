@@ -3,8 +3,8 @@ import { dirname, join } from 'node:path';
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { makeMockConfig } from '../../../test/helpers/context/makeMockConfig';
-import { createRecordFile } from '../../../test/helpers/records/createRecordFile';
+import { makeConfigMock } from '../../../test/helpers/context/makeConfigMock';
+import { makeRecordFileMock } from '../../../test/helpers/records/makeRecordFileMock';
 import {
 	writeNamespaceMockRecord,
 	writePackageMockRecord,
@@ -24,7 +24,7 @@ import { loadProjectGraph } from './loadProjectGraph';
 
 const tempDirs: string[] = [];
 
-const makeRecordFile = (filename: string) => createRecordFile(dirname(filename), filename);
+const makeRecordFile = (filename: string) => makeRecordFileMock(dirname(filename), filename);
 
 beforeEach(() => {
 	vi.spyOn(console, 'warn').mockImplementation(() => {});
@@ -74,7 +74,7 @@ describe('loadProjectRecords', () => {
 		const tempDir = makeTempDir(tempDirs);
 		writeProjectMockRecord(tempDir, 'Project A', { path: '.' });
 		writeProjectMockRecord(tempDir, 'Project B', { path: 'b' });
-		const config = makeMockConfig(tempDir);
+		const config = makeConfigMock(tempDir);
 
 		const records = await loadProjectRecords(config, tempDir);
 		expect(records).toHaveLength(2);
@@ -82,7 +82,7 @@ describe('loadProjectRecords', () => {
 	});
 
 	it('returns empty array for a missing checkout path', async () => {
-		const config = makeMockConfig('/nonexistent/checkout');
+		const config = makeConfigMock('/nonexistent/checkout');
 		const records = await loadProjectRecords(config, '/nonexistent/checkout');
 		expect(records).toEqual([]);
 	});
@@ -94,7 +94,7 @@ describe('loadProjectRecords', () => {
 		const badFile = join(tempDir, '_records/bad.art');
 		writeFileSync(badFile, 'no heading');
 
-		const config = makeMockConfig(tempDir);
+		const config = makeConfigMock(tempDir);
 		const records = await loadProjectRecords(config, tempDir);
 		expect(records).toHaveLength(1);
 		expect(records[0].name).toBe('Good');
@@ -139,7 +139,7 @@ describe('loadNamespaceRecords', () => {
 		const tempDir = makeTempDir(tempDirs);
 		writeNamespaceMockRecord(tempDir, 'NS A', { path: 'a' });
 		writeNamespaceMockRecord(tempDir, 'NS B', { path: 'b' });
-		const config = makeMockConfig(tempDir);
+		const config = makeConfigMock(tempDir);
 
 		const records = await loadNamespaceRecords(config, tempDir);
 		expect(records).toHaveLength(2);
@@ -147,7 +147,7 @@ describe('loadNamespaceRecords', () => {
 	});
 
 	it('returns empty array for a missing checkout path', async () => {
-		const config = makeMockConfig('/nonexistent/checkout');
+		const config = makeConfigMock('/nonexistent/checkout');
 		const records = await loadNamespaceRecords(config, '/nonexistent/checkout');
 		expect(records).toEqual([]);
 	});
@@ -159,7 +159,7 @@ describe('loadNamespaceRecords', () => {
 		const badFile = join(tempDir, '_records/bad.art');
 		writeFileSync(badFile, 'no heading');
 
-		const config = makeMockConfig(tempDir);
+		const config = makeConfigMock(tempDir);
 		const records = await loadNamespaceRecords(config, tempDir);
 		expect(records).toHaveLength(1);
 		expect(records[0].name).toBe('Good');
@@ -204,7 +204,7 @@ describe('loadPackageRecords', () => {
 		const tempDir = makeTempDir(tempDirs);
 		writePackageMockRecord(tempDir, 'Pkg A', { path: 'a' });
 		writePackageMockRecord(tempDir, 'Pkg B', { path: 'b' });
-		const config = makeMockConfig(tempDir);
+		const config = makeConfigMock(tempDir);
 
 		const records = await loadPackageRecords(config, tempDir);
 		expect(records).toHaveLength(2);
@@ -212,7 +212,7 @@ describe('loadPackageRecords', () => {
 	});
 
 	it('returns empty array for a missing checkout path', async () => {
-		const config = makeMockConfig('/nonexistent/checkout');
+		const config = makeConfigMock('/nonexistent/checkout');
 		const records = await loadPackageRecords(config, '/nonexistent/checkout');
 		expect(records).toEqual([]);
 	});
@@ -224,7 +224,7 @@ describe('loadPackageRecords', () => {
 		const badFile = join(tempDir, '_records/bad.art');
 		writeFileSync(badFile, 'no heading');
 
-		const config = makeMockConfig(tempDir);
+		const config = makeConfigMock(tempDir);
 		const records = await loadPackageRecords(config, tempDir);
 		expect(records).toHaveLength(1);
 		expect(records[0].name).toBe('Good');
@@ -319,7 +319,7 @@ describe('loadProjectGraph', () => {
 			canonicalName: '@artisans/art-mantras',
 			path: 'apps/art-mantras',
 		});
-		const config = makeMockConfig(tempDir);
+		const config = makeConfigMock(tempDir);
 
 		const graph = await loadProjectGraph(config, tempDir);
 
@@ -344,7 +344,7 @@ describe('loadProjectGraph', () => {
 		);
 		writeFileSync(join(tempDir, '_records/bad-project.art'), 'no heading');
 
-		const config = makeMockConfig(tempDir);
+		const config = makeConfigMock(tempDir);
 		const graph = await loadProjectGraph(config, tempDir);
 
 		expect(graph.projects).toHaveLength(1);
@@ -353,7 +353,7 @@ describe('loadProjectGraph', () => {
 	});
 
 	it('handles missing records directory', async () => {
-		const config = makeMockConfig('/nonexistent/checkout');
+		const config = makeConfigMock('/nonexistent/checkout');
 		const graph = await loadProjectGraph(config, '/nonexistent/checkout');
 
 		expect(graph.projects).toEqual([]);
@@ -371,7 +371,7 @@ describe('loadProjectGraph', () => {
 			join(nestedDir, '_records/package.art'),
 			'# Module\n\n## Package: Parser\n\n**Canonical Name:** `@art/parser`\n\n**Path:** `.`\n',
 		);
-		const config = makeMockConfig(tempDir);
+		const config = makeConfigMock(tempDir);
 
 		const records = await loadPackageRecords(config, tempDir);
 		expect(records).toHaveLength(1);

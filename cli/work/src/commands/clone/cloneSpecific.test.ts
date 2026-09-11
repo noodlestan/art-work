@@ -7,7 +7,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { loadCheckoutRecords } from '../../private/resources/checkout/loadCheckoutRecords';
 import { loadRepositoryRecords } from '../../private/resources/repository/loadRepositoryRecords';
 import { hydrateStoreFromRecords } from '../../private/store/hydrateStoreFromRecords';
-import { createMockCommandContext } from '../../test/helpers/context/createMockCommandContext';
+import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock';
 import { initBareRepoTest } from '../../test/helpers/git/initBareRepoTest';
 import { writeCheckoutMockRecord } from '../../test/helpers/records/writeCheckoutMockRecord';
 import { writeRepoMockRecord } from '../../test/helpers/records/writeRepoMockRecord';
@@ -26,7 +26,7 @@ afterEach(async () => {
 describe('cloneSpecific', () => {
 	it('unknown repo logs failure containing unknown repo', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		const spy = vi.spyOn(ctx.log, 'log');
 
 		await cloneSpecific(ctx, [], 'nope');
@@ -38,7 +38,7 @@ describe('cloneSpecific', () => {
 
 	it('clones a missing repo and creates the checkout record', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 
 		const bareDir = join(tempDir, 'bare/one');
 		await initBareRepoTest(bareDir);
@@ -59,7 +59,7 @@ describe('cloneSpecific', () => {
 
 	it('creates second checkout when repo already exists at different location', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 
 		const bareDir = join(tempDir, 'bare/foo');
 		await initBareRepoTest(bareDir);
@@ -83,7 +83,7 @@ describe('cloneSpecific', () => {
 
 	it('clone with custom location uses correct name and path', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 
 		const bareDir = join(tempDir, 'bare/foo');
 		await initBareRepoTest(bareDir);
@@ -102,7 +102,7 @@ describe('cloneSpecific', () => {
 
 	it('clone without location uses repo name as name and path', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 
 		const bareDir = join(tempDir, 'bare/foo');
 		await initBareRepoTest(bareDir);
@@ -121,7 +121,7 @@ describe('cloneSpecific', () => {
 
 	it('logs failure when the location is already used by a different checkout', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		writeRepoMockRecord(tempDir, 'One', 'git@example.com:one.git');
 		writeRepoMockRecord(tempDir, 'Two', 'git@example.com:two.git');
 		writeCheckoutMockRecord(tempDir, 'Two', 'Two', 'one custom');
@@ -138,7 +138,7 @@ describe('cloneSpecific', () => {
 
 	it('logs failure when target directory already exists on disk', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const ctx = createMockCommandContext(tempDir);
+		const ctx = makeCommandContextMock(tempDir);
 		writeRepoMockRecord(tempDir, 'One', 'git@example.com:one.git');
 
 		const targetDir = join(tempDir, ctx.config.clone.path, 'one');
