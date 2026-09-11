@@ -1,14 +1,15 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 
-import simpleGit from 'simple-git';
 import { afterEach, describe, expect, it } from 'vitest';
 
 import { makeCheckoutScanMock } from '../../../test/helpers/checkout/makeCheckoutScanMock';
 import { makeWorkspaceCheckoutMock } from '../../../test/helpers/checkout/makeWorkspaceCheckoutMock';
 import { makeCommandContextMock } from '../../../test/helpers/context/makeCommandContextMock';
-import { commitFileTest } from '../../../test/helpers/git/commitFileTest';
-import { initWorkingRepoTest } from '../../../test/helpers/git/initWorkingRepoTest';
+import { advanceBareRepoByOneCommit } from '../../../test/helpers/git/advanceBareRepoByOneCommit';
+import { advanceGitRepoByOneCommit } from '../../../test/helpers/git/advanceGitRepoByOneCommit';
+import { makeGitBareRepo } from '../../../test/helpers/git/makeGitBareRepo';
+import { makeGitRepoFromBare } from '../../../test/helpers/git/makeGitRepoFromBare';
 import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir';
 import { removeTempDirs } from '../../../test/helpers/tempDirs/removeTempDirs';
 
@@ -22,27 +23,19 @@ afterEach(async () => {
 
 describe('syncWorkspaceCheckout', () => {
 	it('pulls then pushes the workspace root and re-scans with refetch', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const bareDir = makeTempDir(tempDirs);
-		await initWorkingRepoTest(tempDir, bareDir);
-		const git = simpleGit(tempDir);
-		await git.push('origin', 'main', ['--set-upstream']);
+		const workspaceDir = makeTempDir(tempDirs);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		await makeGitRepoFromBare(tempDirs, bareDir, { dir: workspaceDir });
 
 		// Push an extra commit from a second clone so workspace is behind.
-		const advDir = makeTempDir(tempDirs);
-		await git.clone(bareDir, advDir);
-		const advGit = simpleGit(advDir);
-		await advGit.addConfig('user.email', 'test@example.com');
-		await advGit.addConfig('user.name', 'Test');
-		await commitFileTest(advDir, 'remote-commit.txt');
-		await advGit.push('origin', 'main');
+		await advanceBareRepoByOneCommit(tempDirs, bareDir, 'remote-commit.txt');
 
 		// Also make workspace ahead with a local commit.
-		await commitFileTest(tempDir, 'local-commit.txt');
+		await advanceGitRepoByOneCommit(workspaceDir, 'local-commit.txt');
 
 		const ctx = makeCommandContextMock(
-			tempDir,
-			makeWorkspaceCheckoutMock(tempDir, { scan: makeCheckoutScanMock(['behind']) }),
+			workspaceDir,
+			makeWorkspaceCheckoutMock(workspaceDir, { scan: makeCheckoutScanMock(['behind']) }),
 		);
 
 		await syncWorkspaceCheckout(ctx);
@@ -50,7 +43,7 @@ describe('syncWorkspaceCheckout', () => {
 		expect(ctx.workspace).toBeDefined();
 		expect(ctx.workspace?.scan?.state('sync').behind).toBe(0);
 		expect(ctx.workspace?.scan?.state('sync').ahead).toBe(0);
-		expect(existsSync(join(tempDir, 'remote-commit.txt'))).toBe(true);
+		expect(existsSync(join(workspaceDir, 'remote-commit.txt'))).toBe(true);
 
 		const ops = ctx.log.all();
 		expect(ops).toHaveLength(2);
@@ -61,14 +54,14 @@ describe('syncWorkspaceCheckout', () => {
 	});
 
 	it('skips pull when workspace cannot pull', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const bareDir = makeTempDir(tempDirs);
-		await initWorkingRepoTest(tempDir, bareDir);
-		await commitFileTest(tempDir, 'ahead.txt');
+		const workspaceDir = makeTempDir(tempDirs);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		await makeGitRepoFromBare(tempDirs, bareDir, { dir: workspaceDir });
+		await advanceGitRepoByOneCommit(workspaceDir, 'ahead.txt');
 
 		const ctx = makeCommandContextMock(
-			tempDir,
-			makeWorkspaceCheckoutMock(tempDir, { scan: makeCheckoutScanMock(['ahead']) }),
+			workspaceDir,
+			makeWorkspaceCheckoutMock(workspaceDir, { scan: makeCheckoutScanMock(['ahead']) }),
 		);
 
 		await syncWorkspaceCheckout(ctx);
@@ -79,8 +72,8 @@ describe('syncWorkspaceCheckout', () => {
 	});
 
 	it('throws when there is no workspace in context', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
 
 		await expect(syncWorkspaceCheckout(ctx)).rejects.toThrow('No workspace in context.');
 		expect(ctx.log.all()).toHaveLength(0);

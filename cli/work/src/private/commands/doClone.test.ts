@@ -4,7 +4,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 
 import { makeCheckoutMock } from '../../test/helpers/checkout/makeCheckoutMock';
 import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock';
-import { initBareRepoTest } from '../../test/helpers/git/initBareRepoTest';
+import { makeGitBareRepo } from '../../test/helpers/git/makeGitBareRepo';
 import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir';
 import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs';
 
@@ -18,13 +18,12 @@ afterEach(async () => {
 
 describe('doClone', () => {
 	it('clones a checkout and returns the updated state', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
-		const bareDir = makeTempDir(tempDirs);
-		await initBareRepoTest(bareDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 
 		const checkout = makeCheckoutMock({
-			path: join(tempDir, ctx.config.clone.path, 'my-repo'),
+			path: join(workspaceDir, ctx.config.clone.path, 'my-repo'),
 			repo: { name: 'MyRepo', remote: bareDir },
 		});
 
@@ -37,11 +36,11 @@ describe('doClone', () => {
 	});
 
 	it('logs failure and returns null when clone fails', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
 		const checkout = makeCheckoutMock({
-			path: join(tempDir, ctx.config.clone.path, 'my-repo'),
-			repo: { name: 'MyRepo', remote: join(tempDir, 'nonexistent-repo.git') },
+			path: join(workspaceDir, ctx.config.clone.path, 'my-repo'),
+			repo: { name: 'MyRepo', remote: join(workspaceDir, 'nonexistent-repo.git') },
 		});
 
 		const result = await doClone(ctx, checkout);
@@ -52,8 +51,8 @@ describe('doClone', () => {
 	});
 
 	it('returns null when checkout has no repo', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
 		const checkout = makeCheckoutMock();
 
 		const result = await doClone(ctx, checkout);

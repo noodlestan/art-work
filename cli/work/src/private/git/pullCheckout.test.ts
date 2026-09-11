@@ -1,4 +1,4 @@
-import { existsSync, writeFileSync } from 'node:fs';
+import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 
 import simpleGit from 'simple-git';
@@ -7,9 +7,10 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { makeCheckoutMock } from '../../test/helpers/checkout/makeCheckoutMock';
 import { makeCheckoutScanMock } from '../../test/helpers/checkout/makeCheckoutScanMock';
 import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock';
-import { commitFileTest } from '../../test/helpers/git/commitFileTest';
-import { initGitRepoTest } from '../../test/helpers/git/initGitRepoTest';
-import { initWorkingRepoTest } from '../../test/helpers/git/initWorkingRepoTest';
+import { advanceBareRepoByOneCommit } from '../../test/helpers/git/advanceBareRepoByOneCommit';
+import { makeGitBareRepo } from '../../test/helpers/git/makeGitBareRepo';
+import { makeGitRepo } from '../../test/helpers/git/makeGitRepo';
+import { makeGitRepoFromBare } from '../../test/helpers/git/makeGitRepoFromBare';
 import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir';
 import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs';
 import { scanCheckoutState } from '../scan/scanCheckoutState';
@@ -24,21 +25,13 @@ afterEach(async () => {
 
 describe('pullCheckout', () => {
 	it('pulls a behind checkout', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
-		const bareDir = makeTempDir(tempDirs);
-		const repoDir = join(tempDir, ctx.config.clone.path, 'behind');
-		await initWorkingRepoTest(repoDir, bareDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		const repoDir = join(workspaceDir, ctx.config.clone.path, 'behind');
+		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
 
-		const otherDir = makeTempDir(tempDirs);
-		await simpleGit(otherDir).clone(bareDir, otherDir);
-		const otherGit = simpleGit(otherDir);
-		await otherGit.addConfig('user.email', 'test@example.com');
-		await otherGit.addConfig('user.name', 'Test');
-		writeFileSync(join(otherDir, 'origin.txt'), 'origin');
-		await otherGit.add('.');
-		await otherGit.commit('origin change');
-		await otherGit.push('origin', 'main');
+		await advanceBareRepoByOneCommit(tempDirs, bareDir);
 
 		const git = simpleGit(repoDir);
 		await git.fetch('origin', 'main');
@@ -59,11 +52,10 @@ describe('pullCheckout', () => {
 	});
 
 	it('throws when the pull fails', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
-		const repoDir = join(tempDir, ctx.config.clone.path, 'nopull');
-		await initGitRepoTest(repoDir);
-		await commitFileTest(repoDir, 'file.txt');
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
+		const repoDir = join(workspaceDir, ctx.config.clone.path, 'nopull');
+		await makeGitRepo(tempDirs, { commit: true, dir: repoDir });
 
 		const checkout = makeCheckoutMock({
 			path: repoDir,

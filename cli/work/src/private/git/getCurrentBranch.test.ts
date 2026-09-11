@@ -1,7 +1,7 @@
 import simpleGit from 'simple-git';
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { initGitRepoTest } from '../../test/helpers/git/initGitRepoTest';
+import { makeGitRepo } from '../../test/helpers/git/makeGitRepo';
 import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir';
 import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs';
 
@@ -16,7 +16,7 @@ afterEach(async () => {
 describe('getCurrentBranch', () => {
 	it('returns the current branch name', async () => {
 		const dir = makeTempDir(tempDirs);
-		await initGitRepoTest(dir);
+		await makeGitRepo(tempDirs, { dir });
 		const git = simpleGit(dir);
 		await git.checkoutLocalBranch('feature');
 

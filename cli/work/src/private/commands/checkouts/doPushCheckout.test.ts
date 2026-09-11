@@ -5,8 +5,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { makeCheckoutMock } from '../../../test/helpers/checkout/makeCheckoutMock';
 import { makeCheckoutScanMock } from '../../../test/helpers/checkout/makeCheckoutScanMock';
 import { makeCommandContextMock } from '../../../test/helpers/context/makeCommandContextMock';
-import { commitFileTest } from '../../../test/helpers/git/commitFileTest';
-import { initGitRepoTest } from '../../../test/helpers/git/initGitRepoTest';
+import { makeGitRepo } from '../../../test/helpers/git/makeGitRepo';
 import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir';
 import { removeTempDirs } from '../../../test/helpers/tempDirs/removeTempDirs';
 
@@ -21,11 +20,10 @@ afterEach(async () => {
 
 describe('doPushCheckout', () => {
 	it('pushing a checkout with no remote logs a failure operation', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
-		const repoDir = join(tempDir, ctx.config.clone.path, 'my-repo');
-		await initGitRepoTest(repoDir);
-		await commitFileTest(repoDir, 'file.txt');
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
+		const repoDir = join(workspaceDir, ctx.config.clone.path, 'my-repo');
+		await makeGitRepo(tempDirs, { commit: true, dir: repoDir });
 
 		const checkout = makeCheckoutMock({
 			path: repoDir,

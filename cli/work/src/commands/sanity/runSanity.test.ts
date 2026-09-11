@@ -6,9 +6,10 @@ import simpleGit from 'simple-git';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock';
-import { commitFileTest } from '../../test/helpers/git/commitFileTest';
-import { initWorkingRepoTest } from '../../test/helpers/git/initWorkingRepoTest';
-import { makeWorkspaceRootBehindTest } from '../../test/helpers/git/makeWorkspaceRootBehindTest';
+import { advanceBareRepoByOneCommit } from '../../test/helpers/git/advanceBareRepoByOneCommit';
+import { advanceGitRepoByOneCommit } from '../../test/helpers/git/advanceGitRepoByOneCommit';
+import { makeGitBareRepo } from '../../test/helpers/git/makeGitBareRepo';
+import { makeGitRepoFromBare } from '../../test/helpers/git/makeGitRepoFromBare';
 import { writeCheckoutMockRecord } from '../../test/helpers/records/writeCheckoutMockRecord';
 import { writeRepoMockRecord } from '../../test/helpers/records/writeRepoMockRecord';
 import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir';
@@ -25,11 +26,11 @@ afterEach(async () => {
 
 describe('sanity command', () => {
 	it('reports "not cloned" for a missing checkout', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = await makeCommandContextMock(tempDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = await makeCommandContextMock(workspaceDir);
 
-		writeRepoMockRecord(tempDir, 'Foo Bar', 'git@example.com:foo-bar.git');
-		writeCheckoutMockRecord(tempDir, 'Foo Bar', 'Foo Bar', 'foo-bar', 'ouch');
+		writeRepoMockRecord(workspaceDir, 'Foo Bar', 'git@example.com:foo-bar.git');
+		writeCheckoutMockRecord(workspaceDir, 'Foo Bar', 'Foo Bar', 'foo-bar', 'ouch');
 
 		await runSanity(ctx, { auto: false });
 
@@ -42,18 +43,18 @@ describe('sanity command', () => {
 	});
 
 	it('shows repo status when all repos are clean', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const bareDir = makeTempDir(tempDirs);
-		const ctx = await makeCommandContextMock(tempDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		const ctx = await makeCommandContextMock(workspaceDir);
 
-		const repoDir = join(tempDir, ctx.config.clone.path, 'green');
-		await initWorkingRepoTest(repoDir, bareDir);
-		await commitFileTest(repoDir, 'file.txt');
+		const repoDir = join(workspaceDir, ctx.config.clone.path, 'green');
+		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
+		await advanceGitRepoByOneCommit(repoDir, 'file.txt');
 		const git = simpleGit(repoDir);
 		await git.push('origin', 'main', ['--set-upstream']);
 
-		writeRepoMockRecord(tempDir, 'Green', bareDir);
-		writeCheckoutMockRecord(tempDir, 'Green', 'Green', 'green');
+		writeRepoMockRecord(workspaceDir, 'Green', bareDir);
+		writeCheckoutMockRecord(workspaceDir, 'Green', 'Green', 'green');
 
 		await runSanity(ctx, { auto: false });
 
@@ -66,16 +67,16 @@ describe('sanity command', () => {
 	});
 
 	it('shows dirty repo with issues', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const bareDir = makeTempDir(tempDirs);
-		const ctx = await makeCommandContextMock(tempDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		const ctx = await makeCommandContextMock(workspaceDir);
 
-		const repoDir = join(tempDir, ctx.config.clone.path, 'dirty');
-		await initWorkingRepoTest(repoDir, bareDir);
+		const repoDir = join(workspaceDir, ctx.config.clone.path, 'dirty');
+		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
 		writeFileSync(join(repoDir, 'dirty.txt'), 'dirty');
 
-		writeRepoMockRecord(tempDir, 'Dirty', bareDir);
-		writeCheckoutMockRecord(tempDir, 'Dirty', 'Dirty', 'dirty');
+		writeRepoMockRecord(workspaceDir, 'Dirty', bareDir);
+		writeCheckoutMockRecord(workspaceDir, 'Dirty', 'Dirty', 'dirty');
 
 		await runSanity(ctx, { auto: false });
 
@@ -88,16 +89,16 @@ describe('sanity command', () => {
 	});
 
 	it('shows clean unpushed repo without --auto', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const bareDir = makeTempDir(tempDirs);
-		const ctx = await makeCommandContextMock(tempDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		const ctx = await makeCommandContextMock(workspaceDir);
 
-		const repoDir = join(tempDir, ctx.config.clone.path, 'unpushed');
-		await initWorkingRepoTest(repoDir, bareDir);
-		await commitFileTest(repoDir, 'file.txt');
+		const repoDir = join(workspaceDir, ctx.config.clone.path, 'unpushed');
+		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
+		await advanceGitRepoByOneCommit(repoDir, 'file.txt');
 
-		writeRepoMockRecord(tempDir, 'Unpushed', bareDir);
-		writeCheckoutMockRecord(tempDir, 'Unpushed', 'Unpushed', 'unpushed');
+		writeRepoMockRecord(workspaceDir, 'Unpushed', bareDir);
+		writeCheckoutMockRecord(workspaceDir, 'Unpushed', 'Unpushed', 'unpushed');
 
 		await runSanity(ctx, { auto: false });
 
@@ -110,19 +111,19 @@ describe('sanity command', () => {
 	});
 
 	it('pushes clean unpushed repo with --auto', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const bareDir = makeTempDir(tempDirs);
-		const ctx = await makeCommandContextMock(tempDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		const ctx = await makeCommandContextMock(workspaceDir);
 
-		const repoDir = join(tempDir, ctx.config.clone.path, 'autopush');
-		await initWorkingRepoTest(repoDir, bareDir);
-		await commitFileTest(repoDir, 'file.txt');
+		const repoDir = join(workspaceDir, ctx.config.clone.path, 'autopush');
+		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
+		await advanceGitRepoByOneCommit(repoDir, 'file.txt');
 		const git = simpleGit(repoDir);
 		await git.push('origin', 'main', ['--set-upstream']);
-		await commitFileTest(repoDir, 'file2.txt');
+		await advanceGitRepoByOneCommit(repoDir, 'file2.txt');
 
-		writeRepoMockRecord(tempDir, 'AutoPush', bareDir);
-		writeCheckoutMockRecord(tempDir, 'AutoPush', 'AutoPush', 'autopush');
+		writeRepoMockRecord(workspaceDir, 'AutoPush', bareDir);
+		writeCheckoutMockRecord(workspaceDir, 'AutoPush', 'AutoPush', 'autopush');
 
 		await runSanity(ctx, { auto: true });
 
@@ -137,17 +138,17 @@ describe('sanity command', () => {
 	});
 
 	it('does not push dirty repo with --auto', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const bareDir = makeTempDir(tempDirs);
-		const ctx = await makeCommandContextMock(tempDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		const ctx = await makeCommandContextMock(workspaceDir);
 
-		const repoDir = join(tempDir, ctx.config.clone.path, 'dirtynoauto');
-		await initWorkingRepoTest(repoDir, bareDir);
-		await commitFileTest(repoDir, 'file.txt');
+		const repoDir = join(workspaceDir, ctx.config.clone.path, 'dirtynoauto');
+		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
+		await advanceGitRepoByOneCommit(repoDir, 'file.txt');
 		writeFileSync(join(repoDir, 'dirty.txt'), 'dirty');
 
-		writeRepoMockRecord(tempDir, 'DirtyNoAuto', bareDir);
-		writeCheckoutMockRecord(tempDir, 'DirtyNoAuto', 'DirtyNoAuto', 'dirtynoauto');
+		writeRepoMockRecord(workspaceDir, 'DirtyNoAuto', bareDir);
+		writeCheckoutMockRecord(workspaceDir, 'DirtyNoAuto', 'DirtyNoAuto', 'dirtynoauto');
 
 		await runSanity(ctx, { auto: true });
 
@@ -160,20 +161,20 @@ describe('sanity command', () => {
 	});
 
 	it('surfaces detached HEAD', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const bareDir = makeTempDir(tempDirs);
-		const ctx = await makeCommandContextMock(tempDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		const ctx = await makeCommandContextMock(workspaceDir);
 
-		const repoDir = join(tempDir, ctx.config.clone.path, 'detached');
-		await initWorkingRepoTest(repoDir, bareDir);
-		await commitFileTest(repoDir, 'file.txt');
+		const repoDir = join(workspaceDir, ctx.config.clone.path, 'detached');
+		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
+		await advanceGitRepoByOneCommit(repoDir, 'file.txt');
 		const git = simpleGit(repoDir);
 		await git.push('origin', 'main', ['--set-upstream']);
 		const headSha = await git.revparse(['HEAD']);
 		await git.checkout(headSha.trim());
 
-		writeRepoMockRecord(tempDir, 'Detached', bareDir);
-		writeCheckoutMockRecord(tempDir, 'Detached', 'Detached', 'detached');
+		writeRepoMockRecord(workspaceDir, 'Detached', bareDir);
+		writeCheckoutMockRecord(workspaceDir, 'Detached', 'Detached', 'detached');
 
 		await runSanity(ctx, { auto: false });
 
@@ -186,13 +187,13 @@ describe('sanity command', () => {
 	});
 
 	it('surfaces merge conflicts', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const bareDir = makeTempDir(tempDirs);
-		const ctx = await makeCommandContextMock(tempDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		const ctx = await makeCommandContextMock(workspaceDir);
 
-		const repoDir = join(tempDir, ctx.config.clone.path, 'conflict');
-		await initWorkingRepoTest(repoDir, bareDir);
-		await commitFileTest(repoDir, 'file.txt', 'base');
+		const repoDir = join(workspaceDir, ctx.config.clone.path, 'conflict');
+		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
+		await advanceGitRepoByOneCommit(repoDir, 'file.txt');
 		const git = simpleGit(repoDir);
 		await git.push('origin', 'main', ['--set-upstream']);
 
@@ -212,8 +213,8 @@ describe('sanity command', () => {
 			// empty
 		}
 
-		writeRepoMockRecord(tempDir, 'Conflict', bareDir);
-		writeCheckoutMockRecord(tempDir, 'Conflict', 'Conflict', 'conflict');
+		writeRepoMockRecord(workspaceDir, 'Conflict', bareDir);
+		writeCheckoutMockRecord(workspaceDir, 'Conflict', 'Conflict', 'conflict');
 
 		await runSanity(ctx, { auto: false });
 
@@ -230,18 +231,18 @@ describe('sanity command', () => {
 	});
 
 	it('filters "unknown project" from workspace report output', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const bareDir = makeTempDir(tempDirs);
-		const ctx = await makeCommandContextMock(tempDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		const ctx = await makeCommandContextMock(workspaceDir);
 
-		const repoDir = join(tempDir, ctx.config.clone.path, 'green');
-		await initWorkingRepoTest(repoDir, bareDir);
-		await commitFileTest(repoDir, 'file.txt');
+		const repoDir = join(workspaceDir, ctx.config.clone.path, 'green');
+		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
+		await advanceGitRepoByOneCommit(repoDir, 'file.txt');
 		const git = simpleGit(repoDir);
 		await git.push('origin', 'main', ['--set-upstream']);
 
-		writeRepoMockRecord(tempDir, 'Green', bareDir);
-		writeCheckoutMockRecord(tempDir, 'Green', 'Green', 'green');
+		writeRepoMockRecord(workspaceDir, 'Green', bareDir);
+		writeCheckoutMockRecord(workspaceDir, 'Green', 'Green', 'green');
 
 		const spy = vi.spyOn(console, 'info').mockImplementation(() => {});
 
@@ -255,14 +256,14 @@ describe('sanity command', () => {
 	});
 
 	it('reports "unknown project" for a checkout with missing repo record', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const bareDir = makeTempDir(tempDirs);
-		const ctx = await makeCommandContextMock(tempDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		const ctx = await makeCommandContextMock(workspaceDir);
 
-		const repoDir = join(tempDir, ctx.config.clone.path, 'orphan');
-		await initWorkingRepoTest(repoDir, bareDir);
+		const repoDir = join(workspaceDir, ctx.config.clone.path, 'orphan');
+		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
 
-		writeCheckoutMockRecord(tempDir, 'Orphan', 'Orphan', 'orphan');
+		writeCheckoutMockRecord(workspaceDir, 'Orphan', 'Orphan', 'orphan');
 
 		await runSanity(ctx, { auto: false });
 
@@ -275,13 +276,13 @@ describe('sanity command', () => {
 	});
 
 	it('shows extraneous directories in the Extraneous Report', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const bareDir = makeTempDir(tempDirs);
-		const ctx = await makeCommandContextMock(tempDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		const ctx = await makeCommandContextMock(workspaceDir);
 
-		const repoDir = join(tempDir, ctx.config.clone.path, 'orphan');
-		await initWorkingRepoTest(repoDir, bareDir);
-		await commitFileTest(repoDir, 'file.txt');
+		const repoDir = join(workspaceDir, ctx.config.clone.path, 'orphan');
+		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
+		await advanceGitRepoByOneCommit(repoDir, 'file.txt');
 
 		const spy = vi.spyOn(console, 'info').mockImplementation(() => {});
 
@@ -295,15 +296,15 @@ describe('sanity command', () => {
 	});
 
 	it('presents workspace report before checkout report', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const bareDir = makeTempDir(tempDirs);
-		const ctx = await makeCommandContextMock(tempDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		const ctx = await makeCommandContextMock(workspaceDir);
 
-		const repoDir = join(tempDir, ctx.config.clone.path, 'test');
-		await initWorkingRepoTest(repoDir, bareDir);
+		const repoDir = join(workspaceDir, ctx.config.clone.path, 'test');
+		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
 
-		writeRepoMockRecord(tempDir, 'Test', 'git@example.com:test.git');
-		writeCheckoutMockRecord(tempDir, 'Test', 'Test', 'test');
+		writeRepoMockRecord(workspaceDir, 'Test', 'git@example.com:test.git');
+		writeCheckoutMockRecord(workspaceDir, 'Test', 'Test', 'test');
 
 		const calls: string[] = [];
 		vi.spyOn(console, 'info').mockImplementation((msg: string) => {
@@ -321,10 +322,12 @@ describe('sanity command', () => {
 	});
 
 	it('detects the workspace root is behind origin', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const bareDir = makeTempDir(tempDirs);
-		const ctx = await makeCommandContextMock(tempDir);
-		await makeWorkspaceRootBehindTest(tempDir, bareDir, tempDirs);
+		const workspaceDir = makeTempDir(tempDirs);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		const ctx = await makeCommandContextMock(workspaceDir);
+		await makeGitRepoFromBare(tempDirs, bareDir, { dir: workspaceDir });
+		await advanceBareRepoByOneCommit(tempDirs, bareDir, 'origin-advance.txt');
+		await simpleGit(workspaceDir).fetch('origin', 'main');
 
 		await runSanity(ctx, { auto: false });
 
@@ -334,16 +337,18 @@ describe('sanity command', () => {
 	});
 
 	it('syncs the workspace root with --auto when behind and clean', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const bareDir = makeTempDir(tempDirs);
-		const ctx = await makeCommandContextMock(tempDir);
-		await makeWorkspaceRootBehindTest(tempDir, bareDir, tempDirs);
+		const workspaceDir = makeTempDir(tempDirs);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		const ctx = await makeCommandContextMock(workspaceDir);
+		await makeGitRepoFromBare(tempDirs, bareDir, { dir: workspaceDir });
+		await advanceBareRepoByOneCommit(tempDirs, bareDir, 'origin-advance.txt');
+		await simpleGit(workspaceDir).fetch('origin', 'main');
 
 		await runSanity(ctx, { auto: true });
 
 		expect(ctx.workspace).toBeDefined();
 		expect(ctx.workspace?.scan?.state('sync').behind).toEqual(0);
-		expect(existsSync(join(tempDir, 'origin-advance.txt'))).toEqual(true);
+		expect(existsSync(join(workspaceDir, 'origin-advance.txt'))).toEqual(true);
 		const ops = ctx.log.all();
 		expect(ops).toHaveLength(2);
 		expect(ops[0].operation).toEqual('pull');
@@ -353,11 +358,13 @@ describe('sanity command', () => {
 	});
 
 	it('does not pull the workspace root with --auto when dirty', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const bareDir = makeTempDir(tempDirs);
-		const ctx = await makeCommandContextMock(tempDir);
-		await makeWorkspaceRootBehindTest(tempDir, bareDir, tempDirs);
-		writeFileSync(join(tempDir, 'dirty.txt'), 'dirty');
+		const workspaceDir = makeTempDir(tempDirs);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		const ctx = await makeCommandContextMock(workspaceDir);
+		await makeGitRepoFromBare(tempDirs, bareDir, { dir: workspaceDir });
+		await advanceBareRepoByOneCommit(tempDirs, bareDir, 'origin-advance.txt');
+		await simpleGit(workspaceDir).fetch('origin', 'main');
+		writeFileSync(join(workspaceDir, 'dirty.txt'), 'dirty');
 
 		await runSanity(ctx, { auto: true });
 
@@ -368,28 +375,34 @@ describe('sanity command', () => {
 	});
 
 	it('logs failure and continues with other operations when the workspace pull fails', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const bareDir = makeTempDir(tempDirs);
-		const ctx = await makeCommandContextMock(tempDir);
-		await makeWorkspaceRootBehindTest(tempDir, bareDir, tempDirs);
+		const workspaceDir = makeTempDir(tempDirs);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		const ctx = await makeCommandContextMock(workspaceDir);
+		await makeGitRepoFromBare(tempDirs, bareDir, { dir: workspaceDir });
+		await advanceBareRepoByOneCommit(tempDirs, bareDir, 'origin-advance.txt');
+		await simpleGit(workspaceDir).fetch('origin', 'main');
 
-		const checkoutBare = makeTempDir(tempDirs);
-		const repoDir = join(tempDir, ctx.config.clone.path, 'autopush');
-		await initWorkingRepoTest(repoDir, checkoutBare);
-		await commitFileTest(repoDir, 'file.txt');
+		const { dir: checkoutBare } = await makeGitBareRepo(tempDirs);
+		const repoDir = join(workspaceDir, ctx.config.clone.path, 'autopush');
+		await makeGitRepoFromBare(tempDirs, checkoutBare, { dir: repoDir });
+		await advanceGitRepoByOneCommit(repoDir, 'file.txt');
 		const git = simpleGit(repoDir);
 		await git.push('origin', 'main', ['--set-upstream']);
-		await commitFileTest(repoDir, 'file2.txt');
+		await advanceGitRepoByOneCommit(repoDir, 'file2.txt');
 
-		writeRepoMockRecord(tempDir, 'AutoPush', 'git@example.com:autopush.git');
-		writeCheckoutMockRecord(tempDir, 'AutoPush', 'AutoPush', 'autopush');
+		writeRepoMockRecord(workspaceDir, 'AutoPush', 'git@example.com:autopush.git');
+		writeCheckoutMockRecord(workspaceDir, 'AutoPush', 'AutoPush', 'autopush');
 
-		writeFileSync(join(tempDir, '.gitignore'), 'checkouts/\n');
-		const rootGit = simpleGit(tempDir);
+		writeFileSync(join(workspaceDir, '.gitignore'), 'checkouts/\n');
+		const rootGit = simpleGit(workspaceDir);
 		await rootGit.add(['.gitignore', '_records/']);
 		await rootGit.commit('workspace records');
 
-		await simpleGit(tempDir).remote(['set-url', 'origin', join(tempDir, 'missing-origin')]);
+		await simpleGit(workspaceDir).remote([
+			'set-url',
+			'origin',
+			join(workspaceDir, 'missing-origin'),
+		]);
 
 		await runSanity(ctx, { auto: true });
 
@@ -402,24 +415,21 @@ describe('sanity command', () => {
 	});
 
 	it('with refetch=true detects behind state for checkouts', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const bareDir = makeTempDir(tempDirs);
-		const ctx = await makeCommandContextMock(tempDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		const ctx = await makeCommandContextMock(workspaceDir);
 
-		const repoDir = join(tempDir, ctx.config.clone.path, 'refetchsanity');
-		await initWorkingRepoTest(repoDir, bareDir);
-		await commitFileTest(repoDir, 'file.txt');
+		const repoDir = join(workspaceDir, ctx.config.clone.path, 'refetchsanity');
+		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
+		await advanceGitRepoByOneCommit(repoDir, 'file.txt');
 		const git = simpleGit(repoDir);
 		await git.push('origin', 'main', ['--set-upstream']);
 
 		// Advance the remote from a separate clone
-		const advDir = makeTempDir(tempDirs);
-		await simpleGit(advDir).clone(bareDir, advDir);
-		await commitFileTest(advDir, 'remote-advance.txt');
-		await simpleGit(advDir).push('origin', 'main');
+		await advanceBareRepoByOneCommit(tempDirs, bareDir, 'remote-advance.txt');
 
-		writeRepoMockRecord(tempDir, 'RefetchSanity', bareDir);
-		writeCheckoutMockRecord(tempDir, 'RefetchSanity', 'RefetchSanity', 'refetchsanity');
+		writeRepoMockRecord(workspaceDir, 'RefetchSanity', bareDir);
+		writeCheckoutMockRecord(workspaceDir, 'RefetchSanity', 'RefetchSanity', 'refetchsanity');
 
 		await runSanity(ctx, { auto: false, refetch: true });
 

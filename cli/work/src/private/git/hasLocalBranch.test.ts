@@ -1,8 +1,7 @@
-import simpleGit from 'simple-git';
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { commitFileTest } from '../../test/helpers/git/commitFileTest';
-import { initGitRepoTest } from '../../test/helpers/git/initGitRepoTest';
+import { advanceGitRepoByOneCommit } from '../../test/helpers/git/advanceGitRepoByOneCommit';
+import { makeGitRepo } from '../../test/helpers/git/makeGitRepo';
 import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir';
 import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs';
 
@@ -17,9 +16,8 @@ afterEach(async () => {
 describe('hasLocalBranch', () => {
 	it('returns true when the branch exists locally', async () => {
 		const dir = makeTempDir(tempDirs);
-		await initGitRepoTest(dir);
-		const git = simpleGit(dir);
-		await commitFileTest(dir, 'file.txt');
+		const { git } = await makeGitRepo(tempDirs, { dir });
+		await advanceGitRepoByOneCommit(dir, 'file.txt');
 		await git.checkoutLocalBranch('feature');
 
 		const exists = await hasLocalBranch(dir, 'feature');
@@ -29,7 +27,7 @@ describe('hasLocalBranch', () => {
 
 	it('returns false when the branch does not exist locally', async () => {
 		const dir = makeTempDir(tempDirs);
-		await initGitRepoTest(dir);
+		await makeGitRepo(tempDirs, { dir });
 
 		const exists = await hasLocalBranch(dir, 'nonexistent');
 

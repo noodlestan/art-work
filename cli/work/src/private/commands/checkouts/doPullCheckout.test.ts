@@ -1,4 +1,4 @@
-import { existsSync, writeFileSync } from 'node:fs';
+import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 
 import simpleGit from 'simple-git';
@@ -7,7 +7,9 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { makeCheckoutMock } from '../../../test/helpers/checkout/makeCheckoutMock';
 import { makeCheckoutScanMock } from '../../../test/helpers/checkout/makeCheckoutScanMock';
 import { makeCommandContextMock } from '../../../test/helpers/context/makeCommandContextMock';
-import { initWorkingRepoTest } from '../../../test/helpers/git/initWorkingRepoTest';
+import { advanceBareRepoByOneCommit } from '../../../test/helpers/git/advanceBareRepoByOneCommit';
+import { makeGitBareRepo } from '../../../test/helpers/git/makeGitBareRepo';
+import { makeGitRepoFromBare } from '../../../test/helpers/git/makeGitRepoFromBare';
 import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir';
 import { removeTempDirs } from '../../../test/helpers/tempDirs/removeTempDirs';
 import { scanCheckoutState } from '../../scan/scanCheckoutState';
@@ -22,22 +24,14 @@ afterEach(async () => {
 
 describe('doPullCheckout', () => {
 	it('pulls a behind checkout and returns the updated state', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
-		const bareDir = makeTempDir(tempDirs);
-		const repoDir = join(tempDir, ctx.config.clone.path, 'behind');
-		await initWorkingRepoTest(repoDir, bareDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		const repoDir = join(workspaceDir, ctx.config.clone.path, 'behind');
+		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
 
 		// Create an advance in another clone
-		const otherDir = makeTempDir(tempDirs);
-		await simpleGit(otherDir).clone(bareDir, otherDir);
-		const otherGit = simpleGit(otherDir);
-		await otherGit.addConfig('user.email', 'test@example.com');
-		await otherGit.addConfig('user.name', 'Test');
-		writeFileSync(join(otherDir, 'origin.txt'), 'origin');
-		await otherGit.add('.');
-		await otherGit.commit('origin change');
-		await otherGit.push('origin', 'main');
+		await advanceBareRepoByOneCommit(tempDirs, bareDir);
 
 		const git = simpleGit(repoDir);
 		await git.fetch('origin', 'main');
@@ -59,15 +53,15 @@ describe('doPullCheckout', () => {
 	});
 
 	it('logs failure and returns null when the pull fails', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
-		const bareDir = makeTempDir(tempDirs);
-		const repoDir = join(tempDir, ctx.config.clone.path, 'nopull');
-		await initWorkingRepoTest(repoDir, bareDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		const repoDir = join(workspaceDir, ctx.config.clone.path, 'nopull');
+		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
 
 		// Point remote to a non-existent path so pull fails
 		const git = simpleGit(repoDir);
-		await git.remote(['set-url', 'origin', join(tempDir, 'missing-origin')]);
+		await git.remote(['set-url', 'origin', join(workspaceDir, 'missing-origin')]);
 
 		const checkout = makeCheckoutMock({
 			path: repoDir,
@@ -83,15 +77,15 @@ describe('doPullCheckout', () => {
 	});
 
 	it('emits a pending pull before the pull side effect', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
-		const bareDir = makeTempDir(tempDirs);
-		const repoDir = join(tempDir, ctx.config.clone.path, 'pending-pull');
-		await initWorkingRepoTest(repoDir, bareDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		const repoDir = join(workspaceDir, ctx.config.clone.path, 'pending-pull');
+		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
 
 		// Point remote to a non-existent path so pull fails
 		const git = simpleGit(repoDir);
-		await git.remote(['set-url', 'origin', join(tempDir, 'missing-origin')]);
+		await git.remote(['set-url', 'origin', join(workspaceDir, 'missing-origin')]);
 
 		const checkout = makeCheckoutMock({
 			path: repoDir,

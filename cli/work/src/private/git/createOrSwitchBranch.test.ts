@@ -1,8 +1,7 @@
-import simpleGit from 'simple-git';
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { commitFileTest } from '../../test/helpers/git/commitFileTest';
-import { initGitRepoTest } from '../../test/helpers/git/initGitRepoTest';
+import { advanceGitRepoByOneCommit } from '../../test/helpers/git/advanceGitRepoByOneCommit';
+import { makeGitRepo } from '../../test/helpers/git/makeGitRepo';
 import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir';
 import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs';
 
@@ -17,21 +16,20 @@ afterEach(async () => {
 describe('createOrSwitchBranch', () => {
 	it('creates a branch in a working repo', async () => {
 		const dir = makeTempDir(tempDirs);
-		await initGitRepoTest(dir);
-		await commitFileTest(dir, 'file.txt');
+		const { git } = await makeGitRepo(tempDirs, { dir });
+		await advanceGitRepoByOneCommit(dir, 'file.txt');
 
 		const result = await createOrSwitchBranch(dir, 'feat/x');
 
 		expect(result).toBe('created');
-		const git = simpleGit(dir);
 		const branch = await git.revparse(['--abbrev-ref', 'HEAD']);
 		expect(branch.trim()).toBe('feat/x');
 	});
 
 	it('switches to an existing branch on second call', async () => {
 		const dir = makeTempDir(tempDirs);
-		await initGitRepoTest(dir);
-		await commitFileTest(dir, 'file.txt');
+		await makeGitRepo(tempDirs, { dir });
+		await advanceGitRepoByOneCommit(dir, 'file.txt');
 		await createOrSwitchBranch(dir, 'feat/x');
 
 		const result = await createOrSwitchBranch(dir, 'feat/x');

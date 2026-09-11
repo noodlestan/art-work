@@ -7,7 +7,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { getCurrentBranch } from '../../../private/git/getCurrentBranch';
 import { createCheckout } from '../../../private/store/createCheckout';
 import { makeCommandContextMock } from '../../../test/helpers/context/makeCommandContextMock';
-import { initBareRepoTest } from '../../../test/helpers/git/initBareRepoTest';
+import { makeGitBareRepo } from '../../../test/helpers/git/makeGitBareRepo';
 import { writeRepoMockRecord } from '../../../test/helpers/records/writeRepoMockRecord';
 import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir';
 import { removeTempDirs } from '../../../test/helpers/tempDirs/removeTempDirs';
@@ -23,8 +23,8 @@ afterEach(async () => {
 
 describe('cloneIfMissing', () => {
 	it('checkout without a repo returns null', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
 		const checkout = createCheckout(ctx.config, 'orphan');
 
 		const result = await cloneIfMissing(ctx, checkout);
@@ -33,15 +33,14 @@ describe('cloneIfMissing', () => {
 	});
 
 	it('clones and checks out the recorded branch when it exists on remote', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
 
-		const bareDir = join(tempDir, 'bare/feature-repo');
-		await initBareRepoTest(bareDir);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 
-		const setupGit = simpleGit(tempDir);
+		const setupGit = simpleGit(workspaceDir);
 		await setupGit.clone(bareDir, 'work');
-		const workDir = join(tempDir, 'work');
+		const workDir = join(workspaceDir, 'work');
 		writeFileSync(join(workDir, 'README.md'), '# feature repo');
 		const workGit = simpleGit(workDir);
 		await workGit.add('.');
@@ -50,7 +49,7 @@ describe('cloneIfMissing', () => {
 		await workGit.checkoutLocalBranch('feature-branch');
 		await workGit.push('origin', 'feature-branch');
 
-		writeRepoMockRecord(tempDir, 'FeatureRepo', bareDir);
+		writeRepoMockRecord(workspaceDir, 'FeatureRepo', bareDir);
 		const { loadRepositoryRecords } =
 			await import('../../../private/resources/repository/loadRepositoryRecords');
 		const repos = await loadRepositoryRecords(ctx);
@@ -71,29 +70,28 @@ describe('cloneIfMissing', () => {
 		expect(branch).toBe('feature-branch');
 
 		const recordFileName = `${checkout.record.name.toLowerCase().replace(/\s+/g, '-')}-checkout.art`;
-		const recordFile = join(tempDir, '_records', recordFileName);
+		const recordFile = join(workspaceDir, '_records', recordFileName);
 		expect(existsSync(recordFile)).toBe(true);
 		const content = readFileSync(recordFile, 'utf-8');
 		expect(content).toContain('feature-branch');
 	});
 
 	it('falls back to default branch when recorded branch does not exist on remote', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
 
-		const bareDir = join(tempDir, 'bare/fallback-repo');
-		await initBareRepoTest(bareDir);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 
-		const setupGit = simpleGit(tempDir);
+		const setupGit = simpleGit(workspaceDir);
 		await setupGit.clone(bareDir, 'work');
-		const workDir = join(tempDir, 'work');
+		const workDir = join(workspaceDir, 'work');
 		writeFileSync(join(workDir, 'README.md'), '# fallback repo');
 		const workGit = simpleGit(workDir);
 		await workGit.add('.');
 		await workGit.commit('initial commit');
 		await workGit.push('origin', 'main');
 
-		writeRepoMockRecord(tempDir, 'FallbackRepo', bareDir);
+		writeRepoMockRecord(workspaceDir, 'FallbackRepo', bareDir);
 		const { loadRepositoryRecords } =
 			await import('../../../private/resources/repository/loadRepositoryRecords');
 		const repos = await loadRepositoryRecords(ctx);
@@ -114,7 +112,7 @@ describe('cloneIfMissing', () => {
 		expect(branch).toBe('main');
 
 		const recordFileName = `${checkout.record.name.toLowerCase().replace(/\s+/g, '-')}-checkout.art`;
-		const recordFile = join(tempDir, '_records', recordFileName);
+		const recordFile = join(workspaceDir, '_records', recordFileName);
 		const content = readFileSync(recordFile, 'utf-8');
 		expect(content).toContain('main');
 	});

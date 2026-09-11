@@ -1,13 +1,13 @@
 import { mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 
-import simpleGit from 'simple-git';
 import { afterEach, describe, expect, it } from 'vitest';
 
 import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock';
-import { commitFileTest } from '../../test/helpers/git/commitFileTest';
-import { initGitRepoTest } from '../../test/helpers/git/initGitRepoTest';
-import { initWorkingRepoTest } from '../../test/helpers/git/initWorkingRepoTest';
+import { advanceBareRepoByOneCommit } from '../../test/helpers/git/advanceBareRepoByOneCommit';
+import { makeGitBareRepo } from '../../test/helpers/git/makeGitBareRepo';
+import { makeGitRepo } from '../../test/helpers/git/makeGitRepo';
+import { makeGitRepoFromBare } from '../../test/helpers/git/makeGitRepoFromBare';
 import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir';
 import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs';
 import type { RepositoryRecord } from '../resources/types';
@@ -23,8 +23,8 @@ afterEach(async () => {
 
 describe('scanCheckoutState', () => {
 	it('missing dir returns an exists state and a not-cloned issue', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
 		const checkout = createCheckout(ctx.config, 'nope');
 
 		const result = await scanCheckoutState(ctx, checkout);
@@ -36,10 +36,10 @@ describe('scanCheckoutState', () => {
 	});
 
 	it('empty record branch does not produce wrong-branch issue', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
-		const checkoutDir = join(tempDir, ctx.config.clone.path, 'extraneous');
-		await initGitRepoTest(checkoutDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
+		const checkoutDir = join(workspaceDir, ctx.config.clone.path, 'extraneous');
+		await makeGitRepo(tempDirs, { dir: checkoutDir });
 
 		const checkout = createCheckout(ctx.config, 'extraneous', undefined, '');
 		const result = await scanCheckoutState(ctx, checkout);
@@ -49,10 +49,10 @@ describe('scanCheckoutState', () => {
 	});
 
 	it('record branch matching actual branch does not produce wrong-branch issue', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
-		const checkoutDir = join(tempDir, ctx.config.clone.path, 'myrepo');
-		await initGitRepoTest(checkoutDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
+		const checkoutDir = join(workspaceDir, ctx.config.clone.path, 'myrepo');
+		await makeGitRepo(tempDirs, { dir: checkoutDir });
 
 		const checkout = createCheckout(ctx.config, 'myrepo', undefined, 'main');
 		const result = await scanCheckoutState(ctx, checkout);
@@ -61,10 +61,10 @@ describe('scanCheckoutState', () => {
 	});
 
 	it('record branch mismatching actual branch produces wrong-branch issue', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
-		const checkoutDir = join(tempDir, ctx.config.clone.path, 'myrepo');
-		await initGitRepoTest(checkoutDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
+		const checkoutDir = join(workspaceDir, ctx.config.clone.path, 'myrepo');
+		await makeGitRepo(tempDirs, { dir: checkoutDir });
 
 		const checkout = createCheckout(ctx.config, 'myrepo', undefined, 'develop');
 		const result = await scanCheckoutState(ctx, checkout);
@@ -73,11 +73,11 @@ describe('scanCheckoutState', () => {
 	});
 
 	it('record remote matching actual remote does not produce wrong-remote issue', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const bareDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
-		const checkoutDir = join(tempDir, ctx.config.clone.path, 'myrepo');
-		await initWorkingRepoTest(checkoutDir, bareDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
+		const checkoutDir = join(workspaceDir, ctx.config.clone.path, 'myrepo');
+		await makeGitRepoFromBare(tempDirs, bareDir, { dir: checkoutDir });
 
 		const repo: RepositoryRecord = {
 			name: 'MyRepo',
@@ -90,11 +90,11 @@ describe('scanCheckoutState', () => {
 	});
 
 	it('record remote mismatching actual remote produces wrong-remote issue', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const bareDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
-		const checkoutDir = join(tempDir, ctx.config.clone.path, 'myrepo');
-		await initWorkingRepoTest(checkoutDir, bareDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
+		const checkoutDir = join(workspaceDir, ctx.config.clone.path, 'myrepo');
+		await makeGitRepoFromBare(tempDirs, bareDir, { dir: checkoutDir });
 
 		const repo: RepositoryRecord = {
 			name: 'MyRepo',
@@ -107,22 +107,14 @@ describe('scanCheckoutState', () => {
 	});
 
 	it('cheap scan reports no behind when tracking ref is stale; refetch reports behind', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const bareDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
-		const checkoutDir = join(tempDir, ctx.config.clone.path, 'refetch');
-		await initWorkingRepoTest(checkoutDir, bareDir);
-		const git = simpleGit(checkoutDir);
-		await git.push('origin', 'main', ['--set-upstream']);
+		const workspaceDir = makeTempDir(tempDirs);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
+		const checkoutDir = join(workspaceDir, ctx.config.clone.path, 'refetch');
+		await makeGitRepoFromBare(tempDirs, bareDir, { dir: checkoutDir });
 
 		// Push an additional commit from a second clone so the working repo's tracking ref is stale.
-		const secondDir = makeTempDir(tempDirs);
-		await git.clone(bareDir, secondDir);
-		const secondGit = simpleGit(secondDir);
-		await secondGit.addConfig('user.email', 'test@example.com');
-		await secondGit.addConfig('user.name', 'Test');
-		await commitFileTest(secondDir, 'remote-commit.txt');
-		await secondGit.push('origin', 'main');
+		await advanceBareRepoByOneCommit(tempDirs, bareDir, 'remote-commit.txt');
 
 		const repo: RepositoryRecord = {
 			name: 'RefetchRepo',
@@ -140,8 +132,8 @@ describe('scanCheckoutState', () => {
 	});
 
 	it('reports a no-git state when the checkout dir has no .git', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
 		const checkout = createCheckout(ctx.config, 'norepo', undefined, '');
 		await mkdir(checkout.path, { recursive: true });
 
@@ -152,10 +144,10 @@ describe('scanCheckoutState', () => {
 	});
 
 	it('reports a git-dir state when the checkout dir has a .git', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
-		const checkoutDir = join(tempDir, ctx.config.clone.path, 'myrepo');
-		await initGitRepoTest(checkoutDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
+		const checkoutDir = join(workspaceDir, ctx.config.clone.path, 'myrepo');
+		await makeGitRepo(tempDirs, { dir: checkoutDir });
 
 		const checkout = createCheckout(ctx.config, 'myrepo', undefined, 'main');
 		const result = await scanCheckoutState(ctx, checkout);

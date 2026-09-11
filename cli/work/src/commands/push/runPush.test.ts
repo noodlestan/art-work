@@ -5,8 +5,9 @@ import simpleGit from 'simple-git';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock';
-import { commitFileTest } from '../../test/helpers/git/commitFileTest';
-import { initWorkingRepoTest } from '../../test/helpers/git/initWorkingRepoTest';
+import { advanceGitRepoByOneCommit } from '../../test/helpers/git/advanceGitRepoByOneCommit';
+import { makeGitBareRepo } from '../../test/helpers/git/makeGitBareRepo';
+import { makeGitRepoFromBare } from '../../test/helpers/git/makeGitRepoFromBare';
 import { writeCheckoutMockRecord } from '../../test/helpers/records/writeCheckoutMockRecord';
 import { writeRepoMockRecord } from '../../test/helpers/records/writeRepoMockRecord';
 import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir';
@@ -29,11 +30,11 @@ afterEach(async () => {
 
 describe('push command', () => {
 	it('prints the usage message and runs nothing when neither -c nor --all is provided', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
 
-		writeRepoMockRecord(tempDir, 'Art', '');
-		writeCheckoutMockRecord(tempDir, 'Art', 'Art', 'art');
+		writeRepoMockRecord(workspaceDir, 'Art', '');
+		writeCheckoutMockRecord(workspaceDir, 'Art', 'Art', 'art');
 
 		await runPush(ctx, {});
 
@@ -46,15 +47,15 @@ describe('push command', () => {
 	});
 
 	it('pushes clean checkouts that are ahead', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
-		const bareDir = makeTempDir(tempDirs);
-		const repoDir = join(tempDir, ctx.config.clone.path, 'ahead');
-		await initWorkingRepoTest(repoDir, bareDir);
-		await commitFileTest(repoDir, 'ahead.txt');
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		const repoDir = join(workspaceDir, ctx.config.clone.path, 'ahead');
+		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
+		const filename = await advanceGitRepoByOneCommit(repoDir);
 
-		writeRepoMockRecord(tempDir, 'Ahead', bareDir);
-		writeCheckoutMockRecord(tempDir, 'Ahead', 'Ahead', 'ahead');
+		writeRepoMockRecord(workspaceDir, 'Ahead', bareDir);
+		writeCheckoutMockRecord(workspaceDir, 'Ahead', 'Ahead', 'ahead');
 
 		await runPush(ctx, { all: true });
 
@@ -70,19 +71,19 @@ describe('push command', () => {
 
 		const verifyDir = makeTempDir(tempDirs);
 		await simpleGit(verifyDir).clone(bareDir, verifyDir);
-		expect(existsSync(join(verifyDir, 'ahead.txt'))).toBe(true);
+		expect(existsSync(join(verifyDir, filename))).toBe(true);
 	});
 
 	it('pushes without pulling first (pre-push pull removed)', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
-		const bareDir = makeTempDir(tempDirs);
-		const repoDir = join(tempDir, ctx.config.clone.path, 'aheadonly');
-		await initWorkingRepoTest(repoDir, bareDir);
-		await commitFileTest(repoDir, 'ahead.txt');
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		const repoDir = join(workspaceDir, ctx.config.clone.path, 'aheadonly');
+		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
+		const filename = await advanceGitRepoByOneCommit(repoDir);
 
-		writeRepoMockRecord(tempDir, 'AheadOnly', bareDir);
-		writeCheckoutMockRecord(tempDir, 'AheadOnly', 'AheadOnly', 'aheadonly');
+		writeRepoMockRecord(workspaceDir, 'AheadOnly', bareDir);
+		writeCheckoutMockRecord(workspaceDir, 'AheadOnly', 'AheadOnly', 'aheadonly');
 
 		await runPush(ctx, { all: true });
 
@@ -97,20 +98,20 @@ describe('push command', () => {
 
 		const verifyDir = makeTempDir(tempDirs);
 		await simpleGit(verifyDir).clone(bareDir, verifyDir);
-		expect(existsSync(join(verifyDir, 'ahead.txt'))).toBe(true);
+		expect(existsSync(join(verifyDir, filename))).toBe(true);
 	});
 
 	it('skips dirty checkouts', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
-		const bareDir = makeTempDir(tempDirs);
-		const repoDir = join(tempDir, ctx.config.clone.path, 'dirtypush');
-		await initWorkingRepoTest(repoDir, bareDir);
-		await commitFileTest(repoDir, 'ahead.txt');
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		const repoDir = join(workspaceDir, ctx.config.clone.path, 'dirtypush');
+		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
+		await advanceGitRepoByOneCommit(repoDir);
 		writeFileSync(join(repoDir, 'dirty.txt'), 'dirty');
 
-		writeRepoMockRecord(tempDir, 'DirtyPush', bareDir);
-		writeCheckoutMockRecord(tempDir, 'DirtyPush', 'DirtyPush', 'dirtypush');
+		writeRepoMockRecord(workspaceDir, 'DirtyPush', bareDir);
+		writeCheckoutMockRecord(workspaceDir, 'DirtyPush', 'DirtyPush', 'dirtypush');
 
 		await runPush(ctx, { all: true });
 
@@ -120,14 +121,14 @@ describe('push command', () => {
 	});
 
 	it('pushes checkouts already up to date', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
-		const bareDir = makeTempDir(tempDirs);
-		const repoDir = join(tempDir, ctx.config.clone.path, 'current');
-		await initWorkingRepoTest(repoDir, bareDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		const repoDir = join(workspaceDir, ctx.config.clone.path, 'current');
+		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
 
-		writeRepoMockRecord(tempDir, 'Current', 'git@example.com:current.git');
-		writeCheckoutMockRecord(tempDir, 'Current', 'Current', 'current');
+		writeRepoMockRecord(workspaceDir, 'Current', 'git@example.com:current.git');
+		writeCheckoutMockRecord(workspaceDir, 'Current', 'Current', 'current');
 
 		await runPush(ctx, { all: true });
 
@@ -141,11 +142,11 @@ describe('push command', () => {
 	});
 
 	it('skips checkouts not cloned', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
 
-		writeRepoMockRecord(tempDir, 'Missing', 'git@example.com:missing.git');
-		writeCheckoutMockRecord(tempDir, 'Missing', 'Missing', 'missing');
+		writeRepoMockRecord(workspaceDir, 'Missing', 'git@example.com:missing.git');
+		writeCheckoutMockRecord(workspaceDir, 'Missing', 'Missing', 'missing');
 
 		await runPush(ctx, { all: true });
 
@@ -156,11 +157,11 @@ describe('push command', () => {
 	});
 
 	it('does not push the workspace root without the workspace option', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const bareDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
-		await initWorkingRepoTest(tempDir, bareDir);
-		await commitFileTest(tempDir, 'ahead.txt');
+		const workspaceDir = makeTempDir(tempDirs);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
+		await makeGitRepoFromBare(tempDirs, bareDir, { dir: workspaceDir });
+		const filename = await advanceGitRepoByOneCommit(workspaceDir);
 
 		await runPush(ctx, { all: true });
 
@@ -168,15 +169,15 @@ describe('push command', () => {
 
 		const verifyDir = makeTempDir(tempDirs);
 		await simpleGit(verifyDir).clone(bareDir, verifyDir);
-		expect(existsSync(join(verifyDir, 'ahead.txt'))).toBe(false);
+		expect(existsSync(join(verifyDir, filename))).toBe(false);
 	});
 
 	it('pushes the workspace root when it is ahead and clean with the workspace option', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const bareDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
-		await initWorkingRepoTest(tempDir, bareDir);
-		await commitFileTest(tempDir, 'ahead.txt');
+		const workspaceDir = makeTempDir(tempDirs);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
+		await makeGitRepoFromBare(tempDirs, bareDir, { dir: workspaceDir });
+		const filename = await advanceGitRepoByOneCommit(workspaceDir);
 
 		await runPush(ctx, { all: true, workspace: true });
 
@@ -185,6 +186,6 @@ describe('push command', () => {
 
 		const verifyDir = makeTempDir(tempDirs);
 		await simpleGit(verifyDir).clone(bareDir, verifyDir);
-		expect(existsSync(join(verifyDir, 'ahead.txt'))).toBe(true);
+		expect(existsSync(join(verifyDir, filename))).toBe(true);
 	});
 });

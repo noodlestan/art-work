@@ -8,7 +8,7 @@ import { loadCheckoutRecords } from '../../private/resources/checkout/loadChecko
 import { loadRepositoryRecords } from '../../private/resources/repository/loadRepositoryRecords';
 import { hydrateStoreFromRecords } from '../../private/store/hydrateStoreFromRecords';
 import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock';
-import { initBareRepoTest } from '../../test/helpers/git/initBareRepoTest';
+import { makeGitBareRepo } from '../../test/helpers/git/makeGitBareRepo';
 import { writeCheckoutMockRecord } from '../../test/helpers/records/writeCheckoutMockRecord';
 import { writeRepoMockRecord } from '../../test/helpers/records/writeRepoMockRecord';
 import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir';
@@ -25,8 +25,8 @@ afterEach(async () => {
 
 describe('cloneSpecific', () => {
 	it('unknown repo logs failure containing unknown repo', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
 		const spy = vi.spyOn(ctx.log, 'log');
 
 		await cloneSpecific(ctx, [], 'nope');
@@ -37,20 +37,19 @@ describe('cloneSpecific', () => {
 	});
 
 	it('clones a missing repo and creates the checkout record', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
 
-		const bareDir = join(tempDir, 'bare/one');
-		await initBareRepoTest(bareDir);
-		writeRepoMockRecord(tempDir, 'One', bareDir);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		writeRepoMockRecord(workspaceDir, 'One', bareDir);
 
 		const repos = await loadRepositoryRecords(ctx);
 		await cloneSpecific(ctx, repos, 'One');
 
-		const repoDir = join(tempDir, ctx.config.clone.path, 'one');
+		const repoDir = join(workspaceDir, ctx.config.clone.path, 'one');
 		expect(() => simpleGit(repoDir).status()).not.toThrow();
 
-		const recordFile = join(tempDir, '_records/one-checkout.art');
+		const recordFile = join(workspaceDir, '_records/one-checkout.art');
 		expect(existsSync(recordFile)).toBe(true);
 		const content = readFileSync(recordFile, 'utf-8');
 		expect(content).toContain('## Checkout: One');
@@ -58,13 +57,12 @@ describe('cloneSpecific', () => {
 	});
 
 	it('creates second checkout when repo already exists at different location', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
 
-		const bareDir = join(tempDir, 'bare/foo');
-		await initBareRepoTest(bareDir);
-		writeRepoMockRecord(tempDir, 'Foo', bareDir);
-		writeCheckoutMockRecord(tempDir, 'Foo', 'Foo', 'foo');
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		writeRepoMockRecord(workspaceDir, 'Foo', bareDir);
+		writeCheckoutMockRecord(workspaceDir, 'Foo', 'Foo', 'foo');
 
 		const repos = await loadRepositoryRecords(ctx);
 		hydrateStoreFromRecords(ctx.config, ctx.store, await loadCheckoutRecords(ctx, repos));
@@ -74,7 +72,7 @@ describe('cloneSpecific', () => {
 		const cloneOps = ops.filter(op => op.operation === 'clone');
 		expect(cloneOps.some(op => op.outcome === 'success')).toBe(true);
 
-		const recordFile = join(tempDir, '_records/foo-@-bar-checkout.art');
+		const recordFile = join(workspaceDir, '_records/foo-@-bar-checkout.art');
 		expect(existsSync(recordFile)).toBe(true);
 		const content = readFileSync(recordFile, 'utf-8');
 		expect(content).toContain('## Checkout: Foo @ bar');
@@ -82,12 +80,11 @@ describe('cloneSpecific', () => {
 	});
 
 	it('clone with custom location uses correct name and path', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
 
-		const bareDir = join(tempDir, 'bare/foo');
-		await initBareRepoTest(bareDir);
-		writeRepoMockRecord(tempDir, 'Foo', bareDir);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		writeRepoMockRecord(workspaceDir, 'Foo', bareDir);
 
 		const repos = await loadRepositoryRecords(ctx);
 		await cloneSpecific(ctx, repos, 'Foo', 'bar');
@@ -97,16 +94,15 @@ describe('cloneSpecific', () => {
 		expect(checkout).toBeDefined();
 		expect(checkout?.record.name).toBe('Foo @ bar');
 		expect(checkout?.record.location).toBe('foo-bar');
-		expect(checkout?.path).toBe(join(tempDir, ctx.config.clone.path, 'foo-bar'));
+		expect(checkout?.path).toBe(join(workspaceDir, ctx.config.clone.path, 'foo-bar'));
 	});
 
 	it('clone without location uses repo name as name and path', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
 
-		const bareDir = join(tempDir, 'bare/foo');
-		await initBareRepoTest(bareDir);
-		writeRepoMockRecord(tempDir, 'Foo', bareDir);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		writeRepoMockRecord(workspaceDir, 'Foo', bareDir);
 
 		const repos = await loadRepositoryRecords(ctx);
 		await cloneSpecific(ctx, repos, 'Foo');
@@ -116,15 +112,15 @@ describe('cloneSpecific', () => {
 		expect(checkout).toBeDefined();
 		expect(checkout?.record.name).toBe('Foo');
 		expect(checkout?.record.location).toBe('foo');
-		expect(checkout?.path).toBe(join(tempDir, ctx.config.clone.path, 'foo'));
+		expect(checkout?.path).toBe(join(workspaceDir, ctx.config.clone.path, 'foo'));
 	});
 
 	it('logs failure when the location is already used by a different checkout', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
-		writeRepoMockRecord(tempDir, 'One', 'git@example.com:one.git');
-		writeRepoMockRecord(tempDir, 'Two', 'git@example.com:two.git');
-		writeCheckoutMockRecord(tempDir, 'Two', 'Two', 'one custom');
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
+		writeRepoMockRecord(workspaceDir, 'One', 'git@example.com:one.git');
+		writeRepoMockRecord(workspaceDir, 'Two', 'git@example.com:two.git');
+		writeCheckoutMockRecord(workspaceDir, 'Two', 'Two', 'one custom');
 
 		const repos = await loadRepositoryRecords(ctx);
 		hydrateStoreFromRecords(ctx.config, ctx.store, await loadCheckoutRecords(ctx, repos));
@@ -137,11 +133,11 @@ describe('cloneSpecific', () => {
 	});
 
 	it('logs failure when target directory already exists on disk', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
-		writeRepoMockRecord(tempDir, 'One', 'git@example.com:one.git');
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
+		writeRepoMockRecord(workspaceDir, 'One', 'git@example.com:one.git');
 
-		const targetDir = join(tempDir, ctx.config.clone.path, 'one');
+		const targetDir = join(workspaceDir, ctx.config.clone.path, 'one');
 		mkdirSync(targetDir, { recursive: true });
 
 		const repos = await loadRepositoryRecords(ctx);

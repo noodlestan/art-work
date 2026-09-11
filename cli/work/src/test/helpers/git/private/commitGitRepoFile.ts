@@ -1,15 +1,16 @@
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-import simpleGit from 'simple-git';
+import type { SimpleGit } from 'simple-git';
 
-export async function commitFileTest(
+/** Writes a file in the repo and commits it. */
+export async function commitGitRepoFile(
 	dir: string,
+	git: SimpleGit,
 	filename: string,
 	content = 'content',
 ): Promise<void> {
 	writeFileSync(join(dir, filename), content);
-	const git = simpleGit(dir);
 	await git.add('.');
 	await git.commit('add ' + filename);
 }

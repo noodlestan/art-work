@@ -5,8 +5,8 @@ import { afterEach, describe, expect, it } from 'vitest';
 
 import { makeCheckoutMock } from '../../../test/helpers/checkout/makeCheckoutMock';
 import { makeCommandContextMock } from '../../../test/helpers/context/makeCommandContextMock';
-import { commitFileTest } from '../../../test/helpers/git/commitFileTest';
-import { initGitRepoTest } from '../../../test/helpers/git/initGitRepoTest';
+import { makeGitBareRepo } from '../../../test/helpers/git/makeGitBareRepo';
+import { makeGitRepoFromBare } from '../../../test/helpers/git/makeGitRepoFromBare';
 import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir';
 import { removeTempDirs } from '../../../test/helpers/tempDirs/removeTempDirs';
 
@@ -20,11 +20,11 @@ afterEach(async () => {
 
 describe('doBranchCheckout', () => {
 	it('creates a new branch and returns the updated checkout', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
-		const repoDir = join(tempDir, ctx.config.clone.path, 'my-repo');
-		await initGitRepoTest(repoDir);
-		await commitFileTest(repoDir, 'file.txt');
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		const repoDir = join(workspaceDir, ctx.config.clone.path, 'my-repo');
+		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
 
 		const checkout = makeCheckoutMock({
 			path: repoDir,
@@ -43,8 +43,8 @@ describe('doBranchCheckout', () => {
 	});
 
 	it('logs failure and returns null when branch creation fails', async () => {
-		const tempDir = makeTempDir(tempDirs);
-		const ctx = makeCommandContextMock(tempDir);
+		const workspaceDir = makeTempDir(tempDirs);
+		const ctx = makeCommandContextMock(workspaceDir);
 		const checkout = makeCheckoutMock({ path: '/nonexistent' });
 
 		const result = await doBranchCheckout(ctx, checkout, 'feat/x');
