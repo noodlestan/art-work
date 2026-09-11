@@ -54,10 +54,10 @@ describe('doPushWorkspaceCheckout', () => {
 			makeWorkspaceCheckoutMock(tempDir, { scan: makeAheadScan() }),
 		);
 
-		await doPushWorkspaceCheckout(ctx);
+		const updated = await doPushWorkspaceCheckout(ctx);
 
-		expect(ctx.workspace).toBeDefined();
-		expect(ctx.workspace?.scan?.state('sync').ahead).toEqual(0);
+		expect(updated).toBeDefined();
+		expect(updated?.scan?.state('sync').ahead).toEqual(0);
 
 		const verifyDir = makeTempDir(tempDirs);
 		await simpleGit(verifyDir).clone(bareDir, verifyDir);
@@ -69,27 +69,34 @@ describe('doPushWorkspaceCheckout', () => {
 		expect(ops[0].outcome).toEqual('success');
 	});
 
-	it('skips when the workspace is up to date', async () => {
+	it('pushes the workspace root when up to date', async () => {
 		const tempDir = makeTempDir(tempDirs);
+		const bareDir = makeTempDir(tempDirs);
+		await initWorkingRepoTest(tempDir, bareDir);
+		const git = simpleGit(tempDir);
+		await git.push('origin', 'main', ['--set-upstream']);
+
 		const ctx = createMockCommandContext(
 			tempDir,
-			makeWorkspaceCheckoutMock(tempDir, { scan: makeAheadScan() }),
+			makeWorkspaceCheckoutMock(tempDir, {
+				scan: createCheckoutScan([
+					createRepoState(false),
+					createExistsState(true),
+					createRemoteState('main', 'main', true),
+					createSyncState(0, 0, 0),
+					createCommittedState(true),
+					createNoConflictsState(true),
+					createNoDetachedState(true),
+				]),
+			}),
 		);
-		ctx.workspace = makeWorkspaceCheckoutMock(tempDir, {
-			scan: createCheckoutScan([
-				createRepoState(false),
-				createExistsState(true),
-				createRemoteState('main', 'main', true),
-				createSyncState(0, 0, 0),
-				createCommittedState(true),
-				createNoConflictsState(true),
-				createNoDetachedState(true),
-			]),
-		});
 
 		await doPushWorkspaceCheckout(ctx);
 
-		expect(ctx.log.all()).toHaveLength(0);
+		const ops = ctx.log.all();
+		expect(ops).toHaveLength(1);
+		expect(ops[0].operation).toEqual('push');
+		expect(ops[0].outcome).toEqual('success');
 	});
 
 	it('skips when the workspace is dirty', async () => {
@@ -114,11 +121,11 @@ describe('doPushWorkspaceCheckout', () => {
 		expect(ctx.log.all()).toHaveLength(0);
 	});
 
-	it('skips when there is no workspace checkout', async () => {
+	it('throws when there is no workspace checkout', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const ctx = createMockCommandContext(tempDir);
 
-		await expect(doPushWorkspaceCheckout(ctx)).resolves.toBeNull();
+		await expect(doPushWorkspaceCheckout(ctx)).rejects.toThrow('No workspace in context.');
 		expect(ctx.log.all()).toHaveLength(0);
 	});
 

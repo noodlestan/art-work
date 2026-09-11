@@ -333,7 +333,7 @@ describe('sanity command', () => {
 		expect(ctx.workspace?.scan?.issues()).toContain('1 commit behind');
 	});
 
-	it('pulls the workspace root with --auto when behind and clean', async () => {
+	it('syncs the workspace root with --auto when behind and clean', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const bareDir = makeTempDir(tempDirs);
 		const ctx = await createMockCommandContext(tempDir);
@@ -345,9 +345,11 @@ describe('sanity command', () => {
 		expect(ctx.workspace?.scan?.state('sync').behind).toEqual(0);
 		expect(existsSync(join(tempDir, 'origin-advance.txt'))).toEqual(true);
 		const ops = ctx.log.all();
-		expect(ops).toHaveLength(1);
+		expect(ops).toHaveLength(2);
 		expect(ops[0].operation).toEqual('pull');
 		expect(ops[0].outcome).toEqual('success');
+		expect(ops[1].operation).toEqual('push');
+		expect(ops[1].outcome).toEqual('success');
 	});
 
 	it('does not pull the workspace root with --auto when dirty', async () => {

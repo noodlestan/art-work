@@ -41,11 +41,11 @@ describe('doPullWorkspaceCheckout', () => {
 			makeWorkspaceCheckoutMock(tempDir, { scan: makeMockScan(1) }),
 		);
 
-		await doPullWorkspaceCheckout(ctx);
+		const updated = await doPullWorkspaceCheckout(ctx);
 
-		expect(ctx.workspace).toBeDefined();
-		expect(ctx.workspace?.scan?.state('sync').behind).toEqual(0);
-		expect(ctx.workspace?.scan?.issues()).not.toContain('1 commit behind');
+		expect(updated).toBeDefined();
+		expect(updated?.scan?.state('sync').behind).toEqual(0);
+		expect(updated?.scan?.issues()).not.toContain('1 commit behind');
 		expect(existsSync(join(tempDir, 'origin-advance.txt'))).toEqual(true);
 		const ops = ctx.log.all();
 		expect(ops).toHaveLength(1);
@@ -53,8 +53,13 @@ describe('doPullWorkspaceCheckout', () => {
 		expect(ops[0].outcome).toEqual('success');
 	});
 
-	it('skips when the workspace is up to date', async () => {
+	it('pulls the workspace root when up to date', async () => {
 		const tempDir = makeTempDir(tempDirs);
+		const bareDir = makeTempDir(tempDirs);
+		await initWorkingRepoTest(tempDir, bareDir);
+		const git = simpleGit(tempDir);
+		await git.push('origin', 'main', ['--set-upstream']);
+
 		const ctx = createMockCommandContext(
 			tempDir,
 			makeWorkspaceCheckoutMock(tempDir, {
@@ -64,7 +69,10 @@ describe('doPullWorkspaceCheckout', () => {
 
 		await doPullWorkspaceCheckout(ctx);
 
-		expect(ctx.log.all()).toHaveLength(0);
+		const ops = ctx.log.all();
+		expect(ops).toHaveLength(1);
+		expect(ops[0].operation).toEqual('pull');
+		expect(ops[0].outcome).toEqual('success');
 	});
 
 	it('skips when the workspace is dirty', async () => {
@@ -81,11 +89,11 @@ describe('doPullWorkspaceCheckout', () => {
 		expect(ctx.log.all()).toHaveLength(0);
 	});
 
-	it('skips when there is no workspace checkout', async () => {
+	it('throws when there is no workspace checkout', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const ctx = createMockCommandContext(tempDir);
 
-		await expect(doPullWorkspaceCheckout(ctx)).resolves.toBeNull();
+		await expect(doPullWorkspaceCheckout(ctx)).rejects.toThrow('No workspace in context.');
 		expect(ctx.log.all()).toHaveLength(0);
 	});
 

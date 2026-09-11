@@ -1,5 +1,5 @@
-import { doPullWorkspaceCheckout } from '../../private/commands/workspaces/doPullWorkspaceCheckout';
 import { scanWorkspaceCheckout } from '../../private/commands/workspaces/scanWorkspaceCheckout';
+import { syncWorkspaceCheckout } from '../../private/commands/workspaces/syncWorkspaceCheckout';
 import type { WorkspaceContext } from '../../private/context/createWorkspaceContext';
 import { createGenericOperation } from '../../private/operations/createGenericOperation';
 import { presentCheckoutReport } from '../../private/present/presentCheckoutReport';
@@ -24,27 +24,25 @@ export async function runSanity(
 
 	ctx.log.log(createGenericOperation('command', ['sanity', options.auto]));
 
-	await scanWorkspaceCheckout(ctx, options.refetch);
-
+	let workspace = await scanWorkspaceCheckout(ctx, options.refetch);
 	await scanAllCheckoutsStates(ctx, options.refetch);
+
 	if (options.auto) {
-		await doPullWorkspaceCheckout(ctx);
+		workspace = await syncWorkspaceCheckout(ctx);
 		await syncCheckouts(ctx);
 	}
 
 	const extraneous = await scanExtraneousCheckouts(ctx, ctx.store);
 
-	const workspaceIssues = ctx.workspace?.scan
-		? ctx.workspace.scan
+	const workspaceIssues = workspace?.scan
+		? workspace.scan
 				.issues()
 				.filter(i => i !== 'unknown project' && i !== 'no remote' && i !== 'wrong remote')
 		: [];
-	const filteredWorkspace = ctx.workspace
+	const filteredWorkspace = workspace
 		? {
-				...ctx.workspace,
-				scan: ctx.workspace.scan
-					? { ...ctx.workspace.scan, issues: () => workspaceIssues }
-					: undefined,
+				...workspace,
+				scan: workspace.scan ? { ...workspace.scan, issues: () => workspaceIssues } : undefined,
 			}
 		: undefined;
 

@@ -101,7 +101,7 @@ describe('push command', () => {
 		expect(ctx.log.all()).toHaveLength(0);
 	});
 
-	it('skips checkouts already up to date', async () => {
+	it('pushes checkouts already up to date', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const ctx = createMockCommandContext(tempDir);
 		const bareDir = makeTempDir(tempDirs);
@@ -115,7 +115,11 @@ describe('push command', () => {
 
 		const checkout = ctx.store.getCheckoutOfRepo('Current');
 		expect(checkout?.scan?.state('sync').delta).toBe(0);
-		expect(ctx.log.all()).toHaveLength(0);
+
+		const ops = ctx.log.all();
+		expect(ops).toHaveLength(1);
+		expect(ops[0].operation).toBe('push');
+		expect(ops[0].outcome).toBe('success');
 	});
 
 	it('skips checkouts not cloned', async () => {
@@ -143,7 +147,6 @@ describe('push command', () => {
 		await runPush(ctx, { all: true });
 
 		expect(ctx.workspace).toBeDefined();
-		expect(ctx.workspace?.scan?.state('sync').ahead).toBe(0);
 		expect(ctx.log.all()).toHaveLength(1);
 
 		const verifyDir = makeTempDir(tempDirs);

@@ -8,8 +8,8 @@ import { presentCheckoutReport } from '../../private/present/presentCheckoutRepo
 import { presentOperationsReport } from '../../private/present/presentOperationsReport';
 import { loadCheckoutRecords } from '../../private/resources/checkout/loadCheckoutRecords';
 import { loadRepositoryRecords } from '../../private/resources/repository/loadRepositoryRecords';
+import { scanCheckoutState } from '../../private/scan/scanCheckoutState';
 import { hydrateStoreFromRecords } from '../../private/store/hydrateStoreFromRecords';
-import { scanAllCheckoutsStates } from '../../private/store/scanAllCheckoutsStates';
 
 export async function runPull(
 	ctx: WorkspaceContext,
@@ -20,8 +20,6 @@ export async function runPull(
 	hydrateStoreFromRecords(ctx.config, ctx.store, records);
 
 	ctx.log.log(createGenericOperation('command', ['pull', options.checkouts]));
-
-	await scanAllCheckoutsStates(ctx);
 
 	if (!options.all && (!options.checkouts || options.checkouts.length === 0)) {
 		console.error('No checkouts matched.');
@@ -36,8 +34,10 @@ export async function runPull(
 		: ctx.store.getCheckoutsByPattern(options.checkouts ?? []);
 
 	await runWithConcurrency(checkouts, 4, async checkout => {
-		if (checkout.scan?.can?.('pull') && checkout.scan.should?.('pull')) {
-			await doPullCheckout(ctx, checkout);
+		const scanned = await scanCheckoutState(ctx, checkout, true);
+		ctx.store.updateCheckout(scanned);
+		if (scanned.scan?.can?.('pull')) {
+			await doPullCheckout(ctx, scanned);
 		}
 	});
 

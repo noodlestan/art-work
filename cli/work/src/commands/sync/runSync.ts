@@ -1,6 +1,7 @@
 import { runWithConcurrency } from '../../private/async/runWithConcurrency';
 import { doPullCheckout } from '../../private/commands/checkouts/doPullCheckout';
 import { doPushCheckout } from '../../private/commands/checkouts/doPushCheckout';
+import { scanWorkspaceCheckout } from '../../private/commands/workspaces/scanWorkspaceCheckout';
 import { syncWorkspaceCheckout } from '../../private/commands/workspaces/syncWorkspaceCheckout';
 import type { WorkspaceContext } from '../../private/context/createWorkspaceContext';
 import { createGenericOperation } from '../../private/operations/createGenericOperation';
@@ -8,8 +9,8 @@ import { presentCheckoutReport } from '../../private/present/presentCheckoutRepo
 import { presentOperationsReport } from '../../private/present/presentOperationsReport';
 import { loadCheckoutRecords } from '../../private/resources/checkout/loadCheckoutRecords';
 import { loadRepositoryRecords } from '../../private/resources/repository/loadRepositoryRecords';
+import { scanCheckoutState } from '../../private/scan/scanCheckoutState';
 import { hydrateStoreFromRecords } from '../../private/store/hydrateStoreFromRecords';
-import { scanAllCheckoutsStates } from '../../private/store/scanAllCheckoutsStates';
 
 export async function runSync(
 	ctx: WorkspaceContext,
@@ -20,8 +21,6 @@ export async function runSync(
 	hydrateStoreFromRecords(ctx.config, ctx.store, records);
 
 	ctx.log.log(createGenericOperation('command', ['sync', options.checkouts]));
-
-	await scanAllCheckoutsStates(ctx);
 
 	if (!options.all && (!options.checkouts || options.checkouts.length === 0)) {
 		console.error('No checkouts matched.');
@@ -36,16 +35,17 @@ export async function runSync(
 		: ctx.store.getCheckoutsByPattern(options.checkouts ?? []);
 
 	await runWithConcurrency(checkouts, 4, async checkout => {
-		if (checkout.scan?.can?.('pull')) {
-			const pulled = checkout.scan.should?.('pull')
-				? await doPullCheckout(ctx, checkout)
-				: checkout;
-			if (pulled?.scan?.can?.('push') && pulled.scan.should?.('push')) {
+		const scanned = await scanCheckoutState(ctx, checkout, true);
+		ctx.store.updateCheckout(scanned);
+		if (scanned.scan?.can?.('pull')) {
+			const pulled = await doPullCheckout(ctx, scanned);
+			if (pulled && pulled.scan?.can('push')) {
 				await doPushCheckout(ctx, pulled);
 			}
 		}
 	});
 
+	await scanWorkspaceCheckout(ctx);
 	await syncWorkspaceCheckout(ctx);
 
 	presentCheckoutReport(ctx.config, checkouts);

@@ -9,8 +9,12 @@ import { createPullOperation } from '../operations/createPullOperation';
 
 export async function doPullWorkspaceCheckout(ctx: WorkspaceContext): Promise<Checkout | null> {
 	const workspace = ctx.workspace;
-	if (!workspace) return null;
-	if (!workspace.scan?.can?.('pull') || !workspace.scan.should?.('pull')) return null;
+	if (!workspace) {
+		throw new Error('No workspace in context.');
+	}
+	if (!workspace.scan?.can?.('pull')) {
+		return null;
+	}
 
 	const pending = createPullOperation(workspace, workspace.record.branch);
 	const git = simpleGit(workspace.path);
@@ -18,7 +22,6 @@ export async function doPullWorkspaceCheckout(ctx: WorkspaceContext): Promise<Ch
 		ctx.log.log(pending);
 		await git.pull('origin', workspace.record.branch);
 		const updated = await scanCheckoutState(ctx, workspace, true);
-		ctx.workspace = updated;
 		ctx.log.log(createOperationSuccess(pending));
 		return updated;
 	} catch (error) {

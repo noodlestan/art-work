@@ -61,7 +61,7 @@ describe('sync command', () => {
 		expect(existsSync(join(verifyDir, 'origin.txt'))).toBe(true);
 	});
 
-	it('skips when behind without a prior fetch (false negative is now intentional)', async () => {
+	it('syncs checkouts behind even when the local tracking ref is stale', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const ctx = createMockCommandContext(tempDir);
 		const bareDir = makeTempDir(tempDirs);
@@ -74,16 +74,18 @@ describe('sync command', () => {
 
 		await runSync(ctx, { all: true });
 
-		// Without a prior fetch the local count reports behind = 0, so no pull is triggered.
-		// The refetch flag (next iteration) will restore the network fetch when needed.
 		const ops = ctx.log.all();
-		expect(ops).toHaveLength(0);
+		expect(ops).toHaveLength(2);
+		expect(ops[0].operation).toBe('pull');
+		expect(ops[0].outcome).toBe('success');
+		expect(ops[1].operation).toBe('push');
+		expect(ops[1].outcome).toBe('success');
 
 		const checkout = ctx.store.getCheckoutOfRepo('BehindSync');
 		expect(checkout?.scan?.state('sync').behind).toBe(0);
 		expect(checkout?.scan?.issues()).toEqual([]);
 
-		expect(existsSync(join(repoDir, 'origin.txt'))).toBe(false);
+		expect(existsSync(join(repoDir, 'origin.txt'))).toBe(true);
 	});
 
 	it('skips dirty checkouts', async () => {
@@ -121,7 +123,7 @@ describe('sync command', () => {
 		expect(ctx.log.all()).toHaveLength(0);
 	});
 
-	it('works on up to date checkouts', async () => {
+	it('syncs checkouts already up to date', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const ctx = createMockCommandContext(tempDir);
 		const bareDir = makeTempDir(tempDirs);
@@ -134,7 +136,11 @@ describe('sync command', () => {
 		await runSync(ctx, { all: true });
 
 		const ops = ctx.log.all();
-		expect(ops).toHaveLength(0);
+		expect(ops).toHaveLength(2);
+		expect(ops[0].operation).toBe('pull');
+		expect(ops[0].outcome).toBe('success');
+		expect(ops[1].operation).toBe('push');
+		expect(ops[1].outcome).toBe('success');
 
 		const checkout = ctx.store.getCheckoutOfRepo('Current');
 		expect(checkout?.scan?.state('sync').delta).toBe(0);
@@ -183,9 +189,9 @@ describe('sync command', () => {
 		await runSync(ctx, { all: true });
 
 		const ops = ctx.log.all();
-		// Without a prior fetch, pull is not triggered (behind=0); push is attempted and fails
+		// Pull is attempted and fails; push is skipped
 		expect(ops).toHaveLength(1);
-		expect(ops[0].operation).toBe('push');
+		expect(ops[0].operation).toBe('pull');
 		expect(ops[0].outcome).toBe('failure');
 	});
 });

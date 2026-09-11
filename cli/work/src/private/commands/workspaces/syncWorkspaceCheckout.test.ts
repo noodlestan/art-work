@@ -101,15 +101,11 @@ describe('syncWorkspaceCheckout', () => {
 		expect(ops.some(o => o.operation === 'push')).toBe(true);
 	});
 
-	it('creates and scans workspace when none exists, then skips pull/push', async () => {
+	it('throws when there is no workspace in context', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const ctx = createMockCommandContext(tempDir);
 
-		const result = await syncWorkspaceCheckout(ctx);
-
-		// No remote configured, so no pull/push operations
+		await expect(syncWorkspaceCheckout(ctx)).rejects.toThrow('No workspace in context.');
 		expect(ctx.log.all()).toHaveLength(0);
-		expect(ctx.workspace).toBeDefined();
-		expect(result).toBeDefined();
 	});
 });

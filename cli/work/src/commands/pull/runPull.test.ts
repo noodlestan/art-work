@@ -28,7 +28,7 @@ afterEach(async () => {
 });
 
 describe('pull command', () => {
-	it('skips checkouts behind when the local tracking ref is stale (false negative is now intentional)', async () => {
+	it('pulls checkouts behind even when the local tracking ref is stale', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const ctx = createMockCommandContext(tempDir);
 		const bareDir = makeTempDir(tempDirs);
@@ -41,15 +41,16 @@ describe('pull command', () => {
 
 		await runPull(ctx, { all: true });
 
-		// Without a prior fetch the local count reports behind = 0, so no pull is triggered.
-		// The refetch flag (next iteration) will restore the network fetch when needed.
 		const checkout = ctx.store.getCheckoutOfRepo('Behind');
 		expect(checkout?.scan?.state('sync').behind).toBe(0);
 		expect(checkout?.scan?.issues()).toEqual([]);
 
-		expect(ctx.log.all()).toHaveLength(0);
+		const ops = ctx.log.all();
+		expect(ops).toHaveLength(1);
+		expect(ops[0].operation).toBe('pull');
+		expect(ops[0].outcome).toBe('success');
 
-		expect(existsSync(join(repoDir, 'origin.txt'))).toBe(false);
+		expect(existsSync(join(repoDir, 'origin.txt'))).toBe(true);
 	});
 
 	it('skips dirty checkouts', async () => {
@@ -72,7 +73,7 @@ describe('pull command', () => {
 		expect(ctx.log.all()).toHaveLength(0);
 	});
 
-	it('skips checkouts already up to date', async () => {
+	it('pulls checkouts already up to date', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const ctx = createMockCommandContext(tempDir);
 		const bareDir = makeTempDir(tempDirs);
@@ -86,10 +87,14 @@ describe('pull command', () => {
 
 		const checkout = ctx.store.getCheckoutOfRepo('Current');
 		expect(checkout?.scan?.state('sync').delta).toBe(0);
-		expect(ctx.log.all()).toHaveLength(0);
+
+		const ops = ctx.log.all();
+		expect(ops).toHaveLength(1);
+		expect(ops[0].operation).toBe('pull');
+		expect(ops[0].outcome).toBe('success');
 	});
 
-	it('reports no issue and performs no pull on a clean checkout up to date with origin (false positive)', async () => {
+	it('pulls a clean checkout up to date with origin', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const ctx = createMockCommandContext(tempDir);
 		const bareDir = makeTempDir(tempDirs);
@@ -104,7 +109,11 @@ describe('pull command', () => {
 		const checkout = ctx.store.getCheckoutOfRepo('UpToDate');
 		expect(checkout?.scan?.state('sync').behind).toBe(0);
 		expect(checkout?.scan?.issues()).toEqual([]);
-		expect(ctx.log.all()).toHaveLength(0);
+
+		const ops = ctx.log.all();
+		expect(ops).toHaveLength(1);
+		expect(ops[0].operation).toBe('pull');
+		expect(ops[0].outcome).toBe('success');
 	});
 
 	it('skips checkouts not cloned', async () => {
@@ -131,7 +140,6 @@ describe('pull command', () => {
 		await runPull(ctx, { all: true });
 
 		expect(ctx.workspace).toBeDefined();
-		expect(ctx.workspace?.scan?.state('sync').behind).toBe(0);
 		expect(existsSync(join(tempDir, 'origin-advance.txt'))).toBe(true);
 
 		const ops = ctx.log.all();
