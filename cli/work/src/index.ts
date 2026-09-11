@@ -78,7 +78,7 @@ program
 		'-c, --checkouts <PATTERN...>',
 		'One or more. Matches checkout name and location. Wildcard asterisk * supported. Example: -c "* @ refactor" "lib-*"',
 	)
-	.option('-A, --all', 'Apply to all checkouts')
+	.option('-a, --all', 'Apply to all checkouts')
 	.action(async (branch: string, options: { checkouts?: string[]; all?: boolean }) => {
 		const root = process.cwd();
 		logger(createGenericOperation('boot'));
@@ -97,8 +97,9 @@ program
 		'-c, --checkouts <PATTERN...>',
 		'One or more. Matches checkout name and location. Wildcard asterisk * supported. Example: -c "* @ refactor" "lib-*"',
 	)
-	.option('-A, --all', 'Apply to all checkouts')
-	.action(async (options: { checkouts?: string[]; all?: boolean }) => {
+	.option('-a, --all', 'Apply to all checkouts')
+	.option('-w, --workspace', 'Also apply the command to the workspace root')
+	.action(async (options: { checkouts?: string[]; all?: boolean; workspace?: boolean }) => {
 		const root = process.cwd();
 		logger(createGenericOperation('boot'));
 		const config = await loadWorkspaceConfig(root);
@@ -106,7 +107,11 @@ program
 		const log = createOperationsLog(logger);
 		const ctx = createWorkspaceContext(config, store, log);
 
-		await runPull(ctx, { checkouts: options.checkouts, all: options.all });
+		await runPull(ctx, {
+			checkouts: options.checkouts,
+			all: options.all,
+			workspace: options.workspace,
+		});
 	});
 
 program
@@ -116,8 +121,9 @@ program
 		'-c, --checkouts <PATTERN...>',
 		'One or more. Matches checkout name and location. Wildcard asterisk * supported. Example: -c "* @ refactor" "lib-*"',
 	)
-	.option('-A, --all', 'Apply to all checkouts')
-	.action(async (options: { checkouts?: string[]; all?: boolean }) => {
+	.option('-a, --all', 'Apply to all checkouts')
+	.option('-w, --workspace', 'Also apply the command to the workspace root')
+	.action(async (options: { checkouts?: string[]; all?: boolean; workspace?: boolean }) => {
 		const root = process.cwd();
 		logger(createGenericOperation('boot'));
 		const config = await loadWorkspaceConfig(root);
@@ -125,7 +131,11 @@ program
 		const log = createOperationsLog(logger);
 		const ctx = createWorkspaceContext(config, store, log);
 
-		await runPush(ctx, { checkouts: options.checkouts, all: options.all });
+		await runPush(ctx, {
+			checkouts: options.checkouts,
+			all: options.all,
+			workspace: options.workspace,
+		});
 	});
 
 program
@@ -135,8 +145,9 @@ program
 		'-c, --checkouts <PATTERN...>',
 		'One or more. Matches checkout name and location. Wildcard asterisk * supported. Example: -c "* @ refactor" "lib-*"',
 	)
-	.option('-A, --all', 'Apply to all checkouts')
-	.action(async (options: { checkouts?: string[]; all?: boolean }) => {
+	.option('-a, --all', 'Apply to all checkouts')
+	.option('-w, --workspace', 'Also apply the command to the workspace root')
+	.action(async (options: { checkouts?: string[]; all?: boolean; workspace?: boolean }) => {
 		const root = process.cwd();
 		logger(createGenericOperation('boot'));
 		const config = await loadWorkspaceConfig(root);
@@ -144,7 +155,11 @@ program
 		const log = createOperationsLog(logger);
 		const ctx = createWorkspaceContext(config, store, log);
 
-		await runSync(ctx, { checkouts: options.checkouts, all: options.all });
+		await runSync(ctx, {
+			checkouts: options.checkouts,
+			all: options.all,
+			workspace: options.workspace,
+		});
 	});
 
 program
@@ -157,7 +172,7 @@ program
 		'-c, --checkouts <PATTERN...>',
 		'One or more. Matches checkout name and location. Wildcard asterisk * supported. Example: -c "* @ refactor" "lib-*"',
 	)
-	.option('-A, --all', 'Apply to all checkouts')
+	.option('-a, --all', 'Apply to all checkouts')
 	.action(async (command: string, options: { checkouts?: string[]; all?: boolean }) => {
 		const root = process.cwd();
 		logger(createGenericOperation('boot'));

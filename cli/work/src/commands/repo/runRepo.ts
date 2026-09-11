@@ -26,7 +26,7 @@ export async function runRepo(
 	const records = await loadCheckoutRecords(ctx, repos);
 	hydrateStoreFromRecords(ctx.config, ctx.store, records);
 
-	ctx.log.log(createGenericOperation('command', ['repo', options.locations]));
+	ctx.log.log(createGenericOperation('command', ['repo', options]));
 
 	await scanAllCheckoutsStates(ctx);
 

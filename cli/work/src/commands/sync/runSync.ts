@@ -5,8 +5,10 @@ import { scanWorkspaceCheckout } from '../../private/commands/workspaces/scanWor
 import { syncWorkspaceCheckout } from '../../private/commands/workspaces/syncWorkspaceCheckout';
 import type { WorkspaceContext } from '../../private/context/createWorkspaceContext';
 import { createGenericOperation } from '../../private/operations/createGenericOperation';
+import { createOperationFailure } from '../../private/operations/createOperationFailure';
 import { presentCheckoutReport } from '../../private/present/presentCheckoutReport';
 import { presentOperationsReport } from '../../private/present/presentOperationsReport';
+import { presentWorkspaceReport } from '../../private/present/presentWorkspaceReport';
 import { loadCheckoutRecords } from '../../private/resources/checkout/loadCheckoutRecords';
 import { loadRepositoryRecords } from '../../private/resources/repository/loadRepositoryRecords';
 import { scanCheckoutState } from '../../private/scan/scanCheckoutState';
@@ -14,18 +16,23 @@ import { hydrateStoreFromRecords } from '../../private/store/hydrateStoreFromRec
 
 export async function runSync(
 	ctx: WorkspaceContext,
-	options: { checkouts?: string[]; all?: boolean } = {},
+	options: { checkouts?: string[]; all?: boolean; workspace?: boolean } = {},
 ): Promise<void> {
 	const repos = await loadRepositoryRecords(ctx);
 	const records = await loadCheckoutRecords(ctx, repos);
 	hydrateStoreFromRecords(ctx.config, ctx.store, records);
 
-	ctx.log.log(createGenericOperation('command', ['sync', options.checkouts]));
+	const pending = createGenericOperation('command', ['sync', options]);
+	ctx.log.log(pending);
 
-	if (!options.all && (!options.checkouts || options.checkouts.length === 0)) {
-		console.error('No checkouts matched.');
+	if (
+		!options.all &&
+		!options.workspace &&
+		(!options.checkouts || options.checkouts.length === 0)
+	) {
+		ctx.log.log(createOperationFailure(pending, 'No targets.'));
 		console.error(
-			`Usage: Use \`art-workspace sync [options] -c <pattern>\` or \`art-workspace sync [options] --all\` if you want to apply the sync to all checkouts.`,
+			`\nUsage: Use \`sync -c <pattern>\` to match specific checkouts or \`sync --all\` if you want to apply the command to all checkouts. Add \`-w\` to apply the command to the workspace as well.\n`,
 		);
 		return;
 	}
@@ -45,8 +52,11 @@ export async function runSync(
 		}
 	});
 
-	await scanWorkspaceCheckout(ctx);
-	await syncWorkspaceCheckout(ctx);
+	if (options.workspace) {
+		await scanWorkspaceCheckout(ctx);
+		await syncWorkspaceCheckout(ctx);
+		presentWorkspaceReport(ctx.workspace);
+	}
 
 	presentCheckoutReport(ctx.config, checkouts);
 	presentOperationsReport(ctx.log);

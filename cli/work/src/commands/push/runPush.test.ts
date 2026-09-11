@@ -19,6 +19,7 @@ const tempDirs: string[] = [];
 beforeEach(() => {
 	vi.spyOn(console, 'info').mockImplementation(() => {});
 	vi.spyOn(console, 'warn').mockImplementation(() => {});
+	vi.spyOn(console, 'error').mockImplementation(() => {});
 });
 
 afterEach(async () => {
@@ -27,6 +28,23 @@ afterEach(async () => {
 });
 
 describe('push command', () => {
+	it('prints the usage message and runs nothing when neither -c nor --all is provided', async () => {
+		const tempDir = makeTempDir(tempDirs);
+		const ctx = createMockCommandContext(tempDir);
+
+		writeRepoMockRecord(tempDir, 'Art', '');
+		writeCheckoutMockRecord(tempDir, 'Art', 'Art', 'art');
+
+		await runPush(ctx, {});
+
+		const ops = ctx.log.all().filter(op => op.operation === 'command');
+		expect(ops).toHaveLength(1);
+		expect((ops[0].data as string[])[0]).toBe('push');
+		expect(ops[0].outcome).toBe('failure');
+		expect(ops[0].message()).toBe('No targets.');
+		expect(console.error).toHaveBeenCalledWith(expect.stringContaining('Usage: Use '));
+	});
+
 	it('pushes clean checkouts that are ahead', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const ctx = createMockCommandContext(tempDir);
@@ -137,7 +155,7 @@ describe('push command', () => {
 		expect(ctx.log.all()).toHaveLength(0);
 	});
 
-	it('pushes the workspace root when it is ahead and clean', async () => {
+	it('does not push the workspace root without the workspace option', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const bareDir = makeTempDir(tempDirs);
 		const ctx = createMockCommandContext(tempDir);
@@ -145,6 +163,22 @@ describe('push command', () => {
 		await commitFileTest(tempDir, 'ahead.txt');
 
 		await runPush(ctx, { all: true });
+
+		expect(ctx.log.all()).toHaveLength(0);
+
+		const verifyDir = makeTempDir(tempDirs);
+		await simpleGit(verifyDir).clone(bareDir, verifyDir);
+		expect(existsSync(join(verifyDir, 'ahead.txt'))).toBe(false);
+	});
+
+	it('pushes the workspace root when it is ahead and clean with the workspace option', async () => {
+		const tempDir = makeTempDir(tempDirs);
+		const bareDir = makeTempDir(tempDirs);
+		const ctx = createMockCommandContext(tempDir);
+		await initWorkingRepoTest(tempDir, bareDir);
+		await commitFileTest(tempDir, 'ahead.txt');
+
+		await runPush(ctx, { all: true, workspace: true });
 
 		expect(ctx.workspace).toBeDefined();
 		expect(ctx.log.all()).toHaveLength(1);

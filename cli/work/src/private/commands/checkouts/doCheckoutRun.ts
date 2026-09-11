@@ -2,6 +2,7 @@ import type { WorkspaceContext } from '../../context/createWorkspaceContext';
 import { runCommandInDirectory } from '../../exec/runCommandInDirectory';
 import { createOperationFailure } from '../../operations/createOperationFailure';
 import { createOperationSuccess } from '../../operations/createOperationSuccess';
+import { scanCheckoutState } from '../../scan/scanCheckoutState';
 import type { Checkout } from '../../store/createCheckout';
 import { createCheckoutRunOperation } from '../operations/createCheckoutRunOperation';
 
@@ -43,7 +44,9 @@ export async function doCheckoutRun(
 				console.error('');
 			}
 		}
-		return checkout;
+		const updated = await scanCheckoutState(ctx, checkout, true);
+		ctx.store.updateCheckout(updated);
+		return updated;
 	} catch (error) {
 		ctx.log.log(createOperationFailure(pending, error));
 		return null;

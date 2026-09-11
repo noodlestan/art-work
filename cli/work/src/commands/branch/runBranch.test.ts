@@ -18,6 +18,7 @@ const tempDirs: string[] = [];
 beforeEach(() => {
 	vi.spyOn(console, 'info').mockImplementation(() => {});
 	vi.spyOn(console, 'warn').mockImplementation(() => {});
+	vi.spyOn(console, 'error').mockImplementation(() => {});
 });
 
 afterEach(async () => {
@@ -26,6 +27,23 @@ afterEach(async () => {
 });
 
 describe('branch command', () => {
+	it('prints the usage message and runs nothing when neither -c nor --all is provided', async () => {
+		const tempDir = makeTempDir(tempDirs);
+		const ctx = createMockCommandContext(tempDir);
+
+		writeRepoMockRecord(tempDir, 'Art', '');
+		writeCheckoutMockRecord(tempDir, 'Art', 'Art', 'art');
+
+		await runBranch(ctx, { branch: 'feat/x' });
+
+		const ops = ctx.log.all().filter(op => op.operation === 'command');
+		expect(ops).toHaveLength(1);
+		expect((ops[0].data as string[])[0]).toBe('branch');
+		expect(ops[0].outcome).toBe('failure');
+		expect(ops[0].message()).toBe('No targets.');
+		expect(console.error).toHaveBeenCalledWith(expect.stringContaining('Usage: Use '));
+	});
+
 	it('creates and checks out a new branch in a single specified checkout', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const ctx = createMockCommandContext(tempDir);

@@ -16,13 +16,15 @@ interface CloneOptions {
 
 export async function runClone(
 	ctx: WorkspaceContext,
-	{ all, repoName, checkoutInput }: CloneOptions,
+	options: CloneOptions,
 ): Promise<WorkspaceContext> {
 	const repos = await loadRepositoryRecords(ctx);
 	const records = await loadCheckoutRecords(ctx, repos);
 	hydrateStoreFromRecords(ctx.config, ctx.store, records);
 
-	ctx.log.log(createGenericOperation('command', ['clone', { all, repoName, checkoutInput }]));
+	ctx.log.log(createGenericOperation('command', ['clone', options]));
+
+	const { all, repoName, checkoutInput } = options;
 
 	if (all) {
 		await cloneAll(ctx, repos);

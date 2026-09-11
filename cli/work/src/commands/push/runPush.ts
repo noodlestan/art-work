@@ -4,8 +4,10 @@ import { doPushWorkspaceCheckout } from '../../private/commands/workspaces/doPus
 import { scanWorkspaceCheckout } from '../../private/commands/workspaces/scanWorkspaceCheckout';
 import type { WorkspaceContext } from '../../private/context/createWorkspaceContext';
 import { createGenericOperation } from '../../private/operations/createGenericOperation';
+import { createOperationFailure } from '../../private/operations/createOperationFailure';
 import { presentCheckoutReport } from '../../private/present/presentCheckoutReport';
 import { presentOperationsReport } from '../../private/present/presentOperationsReport';
+import { presentWorkspaceReport } from '../../private/present/presentWorkspaceReport';
 import { loadCheckoutRecords } from '../../private/resources/checkout/loadCheckoutRecords';
 import { loadRepositoryRecords } from '../../private/resources/repository/loadRepositoryRecords';
 import { scanCheckoutState } from '../../private/scan/scanCheckoutState';
@@ -13,18 +15,23 @@ import { hydrateStoreFromRecords } from '../../private/store/hydrateStoreFromRec
 
 export async function runPush(
 	ctx: WorkspaceContext,
-	options: { checkouts?: string[]; all?: boolean } = {},
+	options: { checkouts?: string[]; all?: boolean; workspace?: boolean } = {},
 ): Promise<void> {
 	const repos = await loadRepositoryRecords(ctx);
 	const records = await loadCheckoutRecords(ctx, repos);
 	hydrateStoreFromRecords(ctx.config, ctx.store, records);
 
-	ctx.log.log(createGenericOperation('command', ['push', options.checkouts]));
+	const pending = createGenericOperation('command', ['push', options]);
+	ctx.log.log(pending);
 
-	if (!options.all && (!options.checkouts || options.checkouts.length === 0)) {
-		console.error('No checkouts matched.');
+	if (
+		!options.all &&
+		!options.workspace &&
+		(!options.checkouts || options.checkouts.length === 0)
+	) {
+		ctx.log.log(createOperationFailure(pending, 'No targets.'));
 		console.error(
-			`Usage: Use \`art-workspace push [options] -c <pattern>\` or \`art-workspace push [options] --all\` if you want to apply the push to all checkouts.`,
+			`\nUsage: Use \`push -c <pattern>\` to match specific checkouts or \`push --all\` if you want to apply the command to all checkouts. Add \`-w\` to apply the command to the workspace as well.\n`,
 		);
 		return;
 	}
@@ -41,8 +48,11 @@ export async function runPush(
 		}
 	});
 
-	await scanWorkspaceCheckout(ctx);
-	await doPushWorkspaceCheckout(ctx);
+	if (options.workspace) {
+		await scanWorkspaceCheckout(ctx);
+		await doPushWorkspaceCheckout(ctx);
+		presentWorkspaceReport(ctx.workspace);
+	}
 
 	presentCheckoutReport(ctx.config, checkouts);
 	presentOperationsReport(ctx.log);

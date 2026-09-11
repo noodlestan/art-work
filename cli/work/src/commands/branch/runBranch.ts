@@ -19,12 +19,13 @@ export async function runBranch(
 	const records = await loadCheckoutRecords(ctx, repos);
 	hydrateStoreFromRecords(ctx.config, ctx.store, records);
 
-	ctx.log.log(createGenericOperation('command', ['branch', options.branch, options.checkouts]));
+	const pending = createGenericOperation('command', ['branch', options]);
+	ctx.log.log(pending);
 
 	if (!options.all && (!options.checkouts || options.checkouts.length === 0)) {
-		console.error('No checkouts matched.');
+		ctx.log.log(createOperationFailure(pending, 'No targets.'));
 		console.error(
-			`Usage: Use \`art-workspace branch [options] -c <pattern>\` or \`art-workspace branch [options] --all\` if you want to apply the branch to all checkouts.`,
+			`\nUsage: Use \`branch <branch> -c <pattern>\` to match specific checkouts or \`branch <branch> --all\` if you want to apply the command to all checkouts.\n`,
 		);
 		return;
 	}

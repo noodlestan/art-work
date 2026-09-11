@@ -3,8 +3,8 @@ import type { WorkspaceContext } from '../../private/context/createWorkspaceCont
 import { createGenericOperation } from '../../private/operations/createGenericOperation';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function runUnlink(ctx: WorkspaceContext, _options: { root: string }): Promise<void> {
-	ctx.log.log(createGenericOperation('command', ['unlink']));
+export async function runUnlink(ctx: WorkspaceContext, options: { root: string }): Promise<void> {
+	ctx.log.log(createGenericOperation('command', ['unlink', options]));
 	ctx.log.log(createUnlinkOperation(ctx.workspace, '', ''));
 	// TODO: implement unlink command
 	console.info('unlink command - TODO');

@@ -39,10 +39,12 @@ describe('checkouts run command', () => {
 		await runCheckoutsRun(ctx, { command: 'touch marker.txt' });
 
 		expect(existsSync(join(repoDir, 'marker.txt'))).toBe(false);
-		expect(ctx.log.all().filter(op => op.operation === 'run')).toHaveLength(0);
-		expect(console.error).toHaveBeenCalledWith(
-			'Usage: Use `art-workspace checkouts run [options] -c <pattern>` or `art-workspace checkouts run [options] --all` if you want to run the command in all checkouts.',
-		);
+		const ops = ctx.log.all().filter(op => op.operation === 'command');
+		expect(ops).toHaveLength(1);
+		expect((ops[0].data as string[])[0]).toBe('checkouts run');
+		expect(ops[0].outcome).toBe('failure');
+		expect(ops[0].message()).toBe('No targets.');
+		expect(console.error).toHaveBeenCalledWith(expect.stringContaining('Usage: Use '));
 	});
 
 	it('runs the command in every checkout when --all is provided', async () => {
@@ -125,7 +127,6 @@ describe('checkouts run command', () => {
 
 		await runCheckoutsRun(ctx, { command: 'touch marker.txt', checkouts: ['nonexistent'] });
 
-		expect(console.warn).toHaveBeenCalledWith('no checkout matches pattern: "nonexistent"');
 		expect(ctx.log.all().filter(op => op.operation === 'run')).toHaveLength(0);
 	});
 

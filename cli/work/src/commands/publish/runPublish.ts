@@ -6,9 +6,9 @@ import { createGenericOperation } from '../../private/operations/createGenericOp
 export async function runPublish(
 	ctx: WorkspaceContext,
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	_options: { root: string; auto?: boolean },
+	options: { root: string; auto?: boolean },
 ): Promise<void> {
-	ctx.log.log(createGenericOperation('command', ['publish', _options.auto]));
+	ctx.log.log(createGenericOperation('command', ['publish', options]));
 	ctx.log.log(createPublishOperation(ctx.workspace, '', ''));
 	// TODO: implement publish command
 	console.info('publish command - TODO');

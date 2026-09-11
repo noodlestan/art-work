@@ -147,7 +147,7 @@ describe('sync command', () => {
 		expect(checkout?.scan?.issues()).toEqual([]);
 	});
 
-	it('syncs the workspace root (pulls when behind and pushes when ahead)', async () => {
+	it('does not sync the workspace root without the workspace option', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const bareDir = makeTempDir(tempDirs);
 		const ctx = createMockCommandContext(tempDir);
@@ -155,6 +155,19 @@ describe('sync command', () => {
 		await commitFileTest(tempDir, 'ahead.txt');
 
 		await runSync(ctx, { all: true });
+
+		expect(existsSync(join(tempDir, 'origin-advance.txt'))).toBe(false);
+		expect(ctx.log.all()).toHaveLength(0);
+	});
+
+	it('syncs the workspace root (pulls when behind and pushes when ahead) with the workspace option', async () => {
+		const tempDir = makeTempDir(tempDirs);
+		const bareDir = makeTempDir(tempDirs);
+		const ctx = createMockCommandContext(tempDir);
+		await makeWorkspaceRootBehindTest(tempDir, bareDir, tempDirs);
+		await commitFileTest(tempDir, 'ahead.txt');
+
+		await runSync(ctx, { all: true, workspace: true });
 
 		expect(ctx.workspace).toBeDefined();
 		expect(ctx.workspace?.scan?.state('sync').delta).toBe(0);

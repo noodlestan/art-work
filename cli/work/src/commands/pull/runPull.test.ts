@@ -20,6 +20,7 @@ const tempDirs: string[] = [];
 beforeEach(() => {
 	vi.spyOn(console, 'info').mockImplementation(() => {});
 	vi.spyOn(console, 'warn').mockImplementation(() => {});
+	vi.spyOn(console, 'error').mockImplementation(() => {});
 });
 
 afterEach(async () => {
@@ -28,6 +29,23 @@ afterEach(async () => {
 });
 
 describe('pull command', () => {
+	it('prints the usage message and runs nothing when neither -c nor --all is provided', async () => {
+		const tempDir = makeTempDir(tempDirs);
+		const ctx = createMockCommandContext(tempDir);
+
+		writeRepoMockRecord(tempDir, 'Art', '');
+		writeCheckoutMockRecord(tempDir, 'Art', 'Art', 'art');
+
+		await runPull(ctx, {});
+
+		const ops = ctx.log.all().filter(op => op.operation === 'command');
+		expect(ops).toHaveLength(1);
+		expect((ops[0].data as string[])[0]).toBe('pull');
+		expect(ops[0].outcome).toBe('failure');
+		expect(ops[0].message()).toBe('No targets.');
+		expect(console.error).toHaveBeenCalledWith(expect.stringContaining('Usage: Use '));
+	});
+
 	it('pulls checkouts behind even when the local tracking ref is stale', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const ctx = createMockCommandContext(tempDir);
@@ -131,13 +149,25 @@ describe('pull command', () => {
 		expect(ctx.log.all()).toHaveLength(0);
 	});
 
-	it('pulls the workspace root when it is behind and clean', async () => {
+	it('does not pull the workspace root without the workspace option', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const bareDir = makeTempDir(tempDirs);
 		const ctx = createMockCommandContext(tempDir);
 		await makeWorkspaceRootBehindTest(tempDir, bareDir, tempDirs);
 
 		await runPull(ctx, { all: true });
+
+		expect(existsSync(join(tempDir, 'origin-advance.txt'))).toBe(false);
+		expect(ctx.log.all()).toHaveLength(0);
+	});
+
+	it('pulls the workspace root when it is behind and clean with the workspace option', async () => {
+		const tempDir = makeTempDir(tempDirs);
+		const bareDir = makeTempDir(tempDirs);
+		const ctx = createMockCommandContext(tempDir);
+		await makeWorkspaceRootBehindTest(tempDir, bareDir, tempDirs);
+
+		await runPull(ctx, { all: true, workspace: true });
 
 		expect(ctx.workspace).toBeDefined();
 		expect(existsSync(join(tempDir, 'origin-advance.txt'))).toBe(true);
