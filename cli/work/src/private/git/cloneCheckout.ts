@@ -1,19 +1,17 @@
 import simpleGit from 'simple-git';
 
-import type { Checkout } from '../store/types';
-
-export async function cloneCheckout(checkout: Checkout): Promise<void> {
-	const recordedBranch = checkout.record.branch;
+export async function cloneCheckout(
+	remoteUrl: string,
+	dir: string,
+	branch?: string,
+): Promise<void> {
 	const git = simpleGit('');
-	if (!checkout.repo?.remote) {
-		throw new Error(``);
-	}
-	await git.clone(checkout.repo.remote, checkout.path);
+	await git.clone(remoteUrl, dir);
 
-	if (recordedBranch) {
+	if (branch) {
 		try {
-			const repoGit = simpleGit(checkout.path);
-			await repoGit.checkout(recordedBranch);
+			const repoGit = simpleGit(dir);
+			await repoGit.checkout(branch);
 		} catch {
 			// recorded branch not on remote — stay on default branch
 		}

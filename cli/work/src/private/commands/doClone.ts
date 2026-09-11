@@ -15,7 +15,7 @@ export async function doClone(ctx: WorkspaceContext, checkout: Checkout): Promis
 	const pending = createCloneOperation(checkout);
 	try {
 		ctx.log.log(pending);
-		await cloneCheckout(checkout);
+		await cloneCheckout(checkout.repo.remote, checkout.path, checkout.record.branch);
 		const rescan = await scanCheckoutState(ctx, checkout);
 		ctx.store.updateCheckout(rescan);
 		ctx.log.log(createOperationSuccess(createCloneOperation(rescan)));
