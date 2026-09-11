@@ -5,6 +5,11 @@ export interface CheckoutStateRepo {
 	known: boolean;
 }
 
+export interface CheckoutStateGitDir {
+	type: 'git-dir';
+	hasGit: boolean;
+}
+
 export interface CheckoutStateExists {
 	type: 'exists';
 	exists: boolean;
@@ -46,6 +51,7 @@ export interface CheckoutStateWrongRemote {
 
 export type CheckoutState =
 	| CheckoutStateRepo
+	| CheckoutStateGitDir
 	| CheckoutStateExists
 	| CheckoutStateRemote
 	| CheckoutStateSync
@@ -67,6 +73,7 @@ export interface CheckoutScan {
 
 export { createCommittedState } from './states/createCommittedState';
 export { createExistsState } from './states/createExistsState';
+export { createGitDirState } from './states/createGitDirState';
 export { createNoConflictsState } from './states/createNoConflictsState';
 export { createNoDetachedState } from './states/createNoDetachedState';
 export { createRemoteState } from './states/createRemoteState';

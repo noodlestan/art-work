@@ -4,17 +4,7 @@ import { join } from 'node:path';
 import simpleGit from 'simple-git';
 import { afterEach, describe, expect, it } from 'vitest';
 
-import {
-	type CheckoutScan,
-	createCheckoutScan,
-	createCommittedState,
-	createExistsState,
-	createNoConflictsState,
-	createNoDetachedState,
-	createRemoteState,
-	createRepoState,
-	createSyncState,
-} from '../../../private/scan/types';
+import { createCheckoutScanMock } from '../../../test/helpers/checkout/createCheckoutScanMock';
 import { makeWorkspaceCheckoutMock } from '../../../test/helpers/checkout/makeWorkspaceCheckoutMock';
 import { createMockCommandContext } from '../../../test/helpers/context/createMockCommandContext';
 import { commitFileTest } from '../../../test/helpers/git/commitFileTest';
@@ -30,18 +20,6 @@ afterEach(async () => {
 	await removeTempDirs(tempDirs);
 });
 
-function makeAheadScan(): CheckoutScan {
-	return createCheckoutScan([
-		createRepoState(false),
-		createExistsState(true),
-		createRemoteState('main', 'main', true),
-		createSyncState(1, 1, 0),
-		createCommittedState(true),
-		createNoConflictsState(true),
-		createNoDetachedState(true),
-	]);
-}
-
 describe('doPushWorkspaceCheckout', () => {
 	it('pushes the workspace root when clean and ahead', async () => {
 		const tempDir = makeTempDir(tempDirs);
@@ -51,7 +29,7 @@ describe('doPushWorkspaceCheckout', () => {
 
 		const ctx = createMockCommandContext(
 			tempDir,
-			makeWorkspaceCheckoutMock(tempDir, { scan: makeAheadScan() }),
+			makeWorkspaceCheckoutMock(tempDir, { scan: createCheckoutScanMock(['ahead']) }),
 		);
 
 		const updated = await doPushWorkspaceCheckout(ctx);
@@ -79,15 +57,7 @@ describe('doPushWorkspaceCheckout', () => {
 		const ctx = createMockCommandContext(
 			tempDir,
 			makeWorkspaceCheckoutMock(tempDir, {
-				scan: createCheckoutScan([
-					createRepoState(false),
-					createExistsState(true),
-					createRemoteState('main', 'main', true),
-					createSyncState(0, 0, 0),
-					createCommittedState(true),
-					createNoConflictsState(true),
-					createNoDetachedState(true),
-				]),
+				scan: createCheckoutScanMock([]),
 			}),
 		);
 
@@ -104,15 +74,7 @@ describe('doPushWorkspaceCheckout', () => {
 		const ctx = createMockCommandContext(
 			tempDir,
 			makeWorkspaceCheckoutMock(tempDir, {
-				scan: createCheckoutScan([
-					createRepoState(false),
-					createExistsState(true),
-					createRemoteState('main', 'main', true),
-					createSyncState(1, 1, 0),
-					createCommittedState(false),
-					createNoConflictsState(true),
-					createNoDetachedState(true),
-				]),
+				scan: createCheckoutScanMock(['ahead', 'uncommitted']),
 			}),
 		);
 
@@ -138,7 +100,7 @@ describe('doPushWorkspaceCheckout', () => {
 		await simpleGit(tempDir).remote(['set-url', 'origin', join(tempDir, 'missing-origin')]);
 		const ctx = createMockCommandContext(
 			tempDir,
-			makeWorkspaceCheckoutMock(tempDir, { scan: makeAheadScan() }),
+			makeWorkspaceCheckoutMock(tempDir, { scan: createCheckoutScanMock(['ahead']) }),
 		);
 
 		await expect(doPushWorkspaceCheckout(ctx)).resolves.toBeNull();

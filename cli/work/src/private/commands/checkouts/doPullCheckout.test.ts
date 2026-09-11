@@ -4,21 +4,12 @@ import { join } from 'node:path';
 import simpleGit from 'simple-git';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
+import { createCheckoutScanMock } from '../../../test/helpers/checkout/createCheckoutScanMock';
 import { createMockCommandContext } from '../../../test/helpers/context/createMockCommandContext';
 import { initWorkingRepoTest } from '../../../test/helpers/git/initWorkingRepoTest';
 import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir';
 import { removeTempDirs } from '../../../test/helpers/tempDirs/removeTempDirs';
 import { scanCheckoutState } from '../../scan/scanCheckoutState';
-import {
-	createCheckoutScan,
-	createCommittedState,
-	createExistsState,
-	createNoConflictsState,
-	createNoDetachedState,
-	createRemoteState,
-	createRepoState,
-	createSyncState,
-} from '../../scan/types';
 import { createCheckout } from '../../store/createCheckout';
 
 import { doPullCheckout } from './doPullCheckout';
@@ -82,15 +73,7 @@ describe('doPullCheckout', () => {
 			name: 'NoPull',
 			remote: 'git@example.com:nopull.git',
 		});
-		checkout.scan = createCheckoutScan([
-			createRepoState(true),
-			createExistsState(true),
-			createRemoteState('main', 'main', true),
-			createSyncState(-1, 0, 1),
-			createCommittedState(true),
-			createNoConflictsState(true),
-			createNoDetachedState(true),
-		]);
+		checkout.scan = createCheckoutScanMock(['behind']);
 
 		const result = await doPullCheckout(ctx, checkout);
 
@@ -114,15 +97,7 @@ describe('doPullCheckout', () => {
 			name: 'PendingPull',
 			remote: 'git@example.com:pending-pull.git',
 		});
-		checkout.scan = createCheckoutScan([
-			createRepoState(true),
-			createExistsState(true),
-			createRemoteState('main', 'main', true),
-			createSyncState(-1, 0, 1),
-			createCommittedState(true),
-			createNoConflictsState(true),
-			createNoDetachedState(true),
-		]);
+		checkout.scan = createCheckoutScanMock(['behind']);
 
 		let pendingEmitted = false;
 		const spy = vi.fn(() => {

@@ -1,17 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
+import { createCheckoutScanMock } from '../../test/helpers/checkout/createCheckoutScanMock';
 import { makeWorkspaceCheckoutMock } from '../../test/helpers/checkout/makeWorkspaceCheckoutMock';
-import {
-	createCheckoutScan,
-	createCommittedState,
-	createExistsState,
-	createNoConflictsState,
-	createNoDetachedState,
-	createRemoteState,
-	createRepoState,
-	createSyncState,
-	createWrongRemoteState,
-} from '../scan/types';
 
 import { presentWorkspaceReport } from './presentWorkspaceReport';
 
@@ -38,16 +28,7 @@ describe('presentWorkspaceReport', () => {
 
 		presentWorkspaceReport(
 			makeWorkspaceCheckoutMock('/tmp', {
-				scan: createCheckoutScan([
-					createRepoState(false),
-					createExistsState(true),
-					createRemoteState('main', 'main', true),
-					createSyncState(1, 1, 0),
-					createCommittedState(false),
-					createNoConflictsState(true),
-					createNoDetachedState(true),
-					createWrongRemoteState(false),
-				]),
+				scan: createCheckoutScanMock(['ahead', 'uncommitted']),
 			}),
 		);
 
@@ -59,16 +40,7 @@ describe('presentWorkspaceReport', () => {
 
 		presentWorkspaceReport(
 			makeWorkspaceCheckoutMock('/tmp', {
-				scan: createCheckoutScan([
-					createRepoState(false),
-					createExistsState(true),
-					createRemoteState('main', 'main', true),
-					createSyncState(-1, 0, 1),
-					createCommittedState(true),
-					createNoConflictsState(true),
-					createNoDetachedState(true),
-					createWrongRemoteState(false),
-				]),
+				scan: createCheckoutScanMock(['behind']),
 			}),
 		);
 
@@ -88,16 +60,7 @@ describe('presentWorkspaceReport', () => {
 
 		presentWorkspaceReport(
 			makeWorkspaceCheckoutMock('/tmp', {
-				scan: createCheckoutScan([
-					createRepoState(false),
-					createExistsState(true),
-					createRemoteState('main', 'main', false),
-					createSyncState(0),
-					createCommittedState(true),
-					createNoConflictsState(true),
-					createNoDetachedState(true),
-					createWrongRemoteState(false),
-				]),
+				scan: createCheckoutScanMock(['no-remote']),
 			}),
 		);
 

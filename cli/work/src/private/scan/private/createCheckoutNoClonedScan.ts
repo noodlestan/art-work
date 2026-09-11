@@ -1,5 +1,6 @@
 import { createCommittedState } from '../states/createCommittedState';
 import { createExistsState } from '../states/createExistsState';
+import { createGitDirState } from '../states/createGitDirState';
 import { createNoConflictsState } from '../states/createNoConflictsState';
 import { createNoDetachedState } from '../states/createNoDetachedState';
 import { createRemoteState } from '../states/createRemoteState';
@@ -12,6 +13,7 @@ import { createCheckoutScan } from './createCheckoutScan';
 export function createCheckoutNoClonedScan(known: boolean): CheckoutScan {
 	return createCheckoutScan([
 		createRepoState(known),
+		createGitDirState(false),
 		createExistsState(false),
 		createRemoteState(null, '', false),
 		createSyncState(0),

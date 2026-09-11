@@ -4,18 +4,7 @@ import { join } from 'node:path';
 import simpleGit from 'simple-git';
 import { afterEach, describe, expect, it } from 'vitest';
 
-import {
-	type CheckoutScan,
-	createCheckoutScan,
-	createCommittedState,
-	createExistsState,
-	createNoConflictsState,
-	createNoDetachedState,
-	createRemoteState,
-	createRepoState,
-	createSyncState,
-} from '../../../private/scan/types';
-import { makeMockScan } from '../../../test/helpers/checkout/makeMockScan';
+import { createCheckoutScanMock } from '../../../test/helpers/checkout/createCheckoutScanMock';
 import { makeWorkspaceCheckoutMock } from '../../../test/helpers/checkout/makeWorkspaceCheckoutMock';
 import { createMockCommandContext } from '../../../test/helpers/context/createMockCommandContext';
 import { commitFileTest } from '../../../test/helpers/git/commitFileTest';
@@ -53,7 +42,7 @@ describe('syncWorkspaceCheckout', () => {
 
 		const ctx = createMockCommandContext(
 			tempDir,
-			makeWorkspaceCheckoutMock(tempDir, { scan: makeMockScan(1) }),
+			makeWorkspaceCheckoutMock(tempDir, { scan: createCheckoutScanMock(['behind']) }),
 		);
 
 		await syncWorkspaceCheckout(ctx);
@@ -77,21 +66,9 @@ describe('syncWorkspaceCheckout', () => {
 		await initWorkingRepoTest(tempDir, bareDir);
 		await commitFileTest(tempDir, 'ahead.txt');
 
-		function makeAheadScan(): CheckoutScan {
-			return createCheckoutScan([
-				createRepoState(false),
-				createExistsState(true),
-				createRemoteState('main', 'main', true),
-				createSyncState(1, 1, 0),
-				createCommittedState(true),
-				createNoConflictsState(true),
-				createNoDetachedState(true),
-			]);
-		}
-
 		const ctx = createMockCommandContext(
 			tempDir,
-			makeWorkspaceCheckoutMock(tempDir, { scan: makeAheadScan() }),
+			makeWorkspaceCheckoutMock(tempDir, { scan: createCheckoutScanMock(['ahead']) }),
 		);
 
 		await syncWorkspaceCheckout(ctx);

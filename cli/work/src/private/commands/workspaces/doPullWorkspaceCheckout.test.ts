@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import simpleGit from 'simple-git';
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { makeMockScan } from '../../../test/helpers/checkout/makeMockScan';
+import { createCheckoutScanMock } from '../../../test/helpers/checkout/createCheckoutScanMock';
 import { makeWorkspaceCheckoutMock } from '../../../test/helpers/checkout/makeWorkspaceCheckoutMock';
 import { createMockCommandContext } from '../../../test/helpers/context/createMockCommandContext';
 import { commitFileTest } from '../../../test/helpers/git/commitFileTest';
@@ -38,7 +38,7 @@ describe('doPullWorkspaceCheckout', () => {
 
 		const ctx = createMockCommandContext(
 			tempDir,
-			makeWorkspaceCheckoutMock(tempDir, { scan: makeMockScan(1) }),
+			makeWorkspaceCheckoutMock(tempDir, { scan: createCheckoutScanMock(['behind']) }),
 		);
 
 		const updated = await doPullWorkspaceCheckout(ctx);
@@ -63,7 +63,7 @@ describe('doPullWorkspaceCheckout', () => {
 		const ctx = createMockCommandContext(
 			tempDir,
 			makeWorkspaceCheckoutMock(tempDir, {
-				scan: makeMockScan(0),
+				scan: createCheckoutScanMock([]),
 			}),
 		);
 
@@ -80,7 +80,7 @@ describe('doPullWorkspaceCheckout', () => {
 		const ctx = createMockCommandContext(
 			tempDir,
 			makeWorkspaceCheckoutMock(tempDir, {
-				scan: makeMockScan(1, true),
+				scan: createCheckoutScanMock(['behind', 'uncommitted']),
 			}),
 		);
 
@@ -115,7 +115,7 @@ describe('doPullWorkspaceCheckout', () => {
 		await git.remote(['set-url', 'origin', join(tempDir, 'missing-origin')]);
 		const ctx = createMockCommandContext(
 			tempDir,
-			makeWorkspaceCheckoutMock(tempDir, { scan: makeMockScan(1) }),
+			makeWorkspaceCheckoutMock(tempDir, { scan: createCheckoutScanMock(['behind']) }),
 		);
 
 		await expect(doPullWorkspaceCheckout(ctx)).resolves.toBeNull();

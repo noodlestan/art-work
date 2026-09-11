@@ -1,3 +1,4 @@
+import { mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 
 import simpleGit from 'simple-git';
@@ -136,5 +137,30 @@ describe('scanCheckoutState', () => {
 		// Refetch scan (refetch true) — fetches from origin, so behind = 1.
 		const refreshed = await scanCheckoutState(ctx, checkout, true);
 		expect(refreshed.scan?.state('sync').behind).toBe(1);
+	});
+
+	it('reports a no-git state when the checkout dir has no .git', async () => {
+		const tempDir = makeTempDir(tempDirs);
+		const ctx = createMockCommandContext(tempDir);
+		const checkout = createCheckout(ctx.config, 'norepo', undefined, '');
+		await mkdir(checkout.path, { recursive: true });
+
+		const result = await scanCheckoutState(ctx, checkout);
+
+		expect(result.scan?.state('git-dir')).toEqual({ type: 'git-dir', hasGit: false });
+		expect(result.scan?.issues()).toContain('no git');
+	});
+
+	it('reports a git-dir state when the checkout dir has a .git', async () => {
+		const tempDir = makeTempDir(tempDirs);
+		const ctx = createMockCommandContext(tempDir);
+		const checkoutDir = join(tempDir, ctx.config.clone.path, 'myrepo');
+		await initGitRepoTest(checkoutDir);
+
+		const checkout = createCheckout(ctx.config, 'myrepo', undefined, 'main');
+		const result = await scanCheckoutState(ctx, checkout);
+
+		expect(result.scan?.state('git-dir')).toEqual({ type: 'git-dir', hasGit: true });
+		expect(result.scan?.issues()).not.toContain('no git');
 	});
 });

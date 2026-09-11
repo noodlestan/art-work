@@ -1,4 +1,5 @@
 import { access } from 'node:fs/promises';
+import { join } from 'node:path';
 
 import type { WorkspaceContext } from '../context/createWorkspaceContext';
 import { getBehindAheadCount } from '../git/getBehindAheadCount';
@@ -19,6 +20,7 @@ import {
 	createCheckoutScan,
 	createCommittedState,
 	createExistsState,
+	createGitDirState,
 	createNoConflictsState,
 	createNoDetachedState,
 	createRemoteState,
@@ -40,6 +42,14 @@ export async function scanCheckoutState(
 
 	ctx.log.log(createGenericOperation('scan-checkout-state', checkout.record.location));
 
+	let hasGitDir = false;
+	try {
+		await access(join(checkout.path, '.git'));
+		hasGitDir = true;
+	} catch {
+		hasGitDir = false;
+	}
+
 	let branch: string | null = null;
 	let remoteBranch: string | null = null;
 	let remote = false;
@@ -49,40 +59,43 @@ export async function scanCheckoutState(
 	let ahead = 0;
 	let behind = 0;
 	let wrongRemote = false;
-	try {
-		branch = await getCurrentBranch(checkout.path);
-		remote = await hasRemote(checkout.path);
-		detached = await isDetachedHead(checkout.path);
-		conflicts = await hasMergeConflicts(checkout.path);
-		dirty = await isDirty(checkout.path);
-		if (remote && branch !== '-' && branch !== 'HEAD') {
-			remoteBranch = await getRemoteBranch(checkout.path);
-			if (refetch) await remoteFetch(checkout.path);
-			const { ahead: aheadCount, behind: behindCount } = await getBehindAheadCount(
-				checkout.path,
-				remoteBranch,
-			);
-			ahead = aheadCount;
-			behind = behindCount;
-		}
-		if (remote && checkout.repo?.remote) {
-			const actualUrl = await getRemoteUrl(checkout.path);
-			if (actualUrl && actualUrl !== checkout.repo.remote) {
-				wrongRemote = true;
+	if (hasGitDir) {
+		try {
+			branch = await getCurrentBranch(checkout.path);
+			remote = await hasRemote(checkout.path);
+			detached = await isDetachedHead(checkout.path);
+			conflicts = await hasMergeConflicts(checkout.path);
+			dirty = await isDirty(checkout.path);
+			if (remote && branch !== '-' && branch !== 'HEAD') {
+				remoteBranch = await getRemoteBranch(checkout.path);
+				if (refetch) await remoteFetch(checkout.path);
+				const { ahead: aheadCount, behind: behindCount } = await getBehindAheadCount(
+					checkout.path,
+					remoteBranch,
+				);
+				ahead = aheadCount;
+				behind = behindCount;
 			}
+			if (remote && checkout.repo?.remote) {
+				const actualUrl = await getRemoteUrl(checkout.path);
+				if (actualUrl && actualUrl !== checkout.repo.remote) {
+					wrongRemote = true;
+				}
+			}
+		} catch (error) {
+			ctx.log.log(
+				createOperationFailure(
+					createGenericOperation('scan-checkout-state', checkout.record.location),
+					error,
+				),
+			);
 		}
-	} catch (error) {
-		ctx.log.log(
-			createOperationFailure(
-				createGenericOperation('scan-checkout-state', checkout.record.location),
-				error,
-			),
-		);
 	}
 
 	const remoteState = createRemoteState(branch, checkout.record.branch, remote);
 	const scan = createCheckoutScan([
 		createRepoState(Boolean(checkout.repo)),
+		createGitDirState(hasGitDir),
 		createExistsState(true),
 		remoteState,
 		createSyncState(ahead - behind, ahead, behind),

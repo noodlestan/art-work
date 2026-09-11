@@ -14,6 +14,7 @@ export function createCheckoutScan(states: CheckoutState[]): CheckoutScan {
 		const sync = state('sync');
 		if (!repo.known) result.push('unknown project');
 		if (!exists.exists) return [...result, 'not cloned'];
+		if (!state('git-dir').hasGit) return [...result, 'no git'];
 		if (!state('no-detached').attached) result.push('detached HEAD');
 		if (
 			remote.expectedBranch !== '' &&
@@ -45,11 +46,11 @@ export function createCheckoutScan(states: CheckoutState[]): CheckoutScan {
 			const remote = state('remote');
 			return (
 				exists.exists &&
+				remote.hasRemote &&
 				remote.branch === remote.expectedBranch &&
 				state('committed').clean &&
 				state('no-conflicts').clear &&
-				state('no-detached').attached &&
-				remote.hasRemote
+				state('no-detached').attached
 			);
 		},
 		should: (op: CheckoutOp) => {
