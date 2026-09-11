@@ -151,13 +151,13 @@ Additionally verify the CLI from a global installation and from the local develo
 
 #### Commits:
 
-| ID                              | Repository / Checkout / Branch      | Policy       | Hash | Status     |
-| ------------------------------- | ----------------------------------- | ------------ | ---- | ---------- |
-| `fix-checkout-matching`         | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `AUTHORED` |
-| `match-workspace-checkouts-arg` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `AUTHORED` |
-| `fix-checkout-stale-reports`    | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `AUTHORED` |
-| `fix-inherited-checkout-state`  | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `AUTHORED` |
-| `report-version`                | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `AUTHORED` |
+| ID                              | Repository / Checkout / Branch      | Policy       | Hash       | Status     |
+| ------------------------------- | ----------------------------------- | ------------ | ---------- | ---------- |
+| `fix-checkout-matching`         | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` | `6d2cfacd` | `COMMITED` |
+| `match-workspace-checkouts-arg` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` | `39d7766e` | `COMMITED` |
+| `fix-checkout-stale-reports`    | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |            | `AUTHORED` |
+| `fix-inherited-checkout-state`  | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |            | `AUTHORED` |
+| `report-version`                | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |            | `AUTHORED` |
 
 ##### Commit: `fix-checkout-matching`
 
