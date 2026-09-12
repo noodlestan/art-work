@@ -2,7 +2,7 @@
 
 **ID:** `plan-improvements-and-fixes`
 
-**Status:** `READY`
+**Status:** `DONE`
 
 **Template:** `.agents/domains/plans/templates/plan.tart`
 
@@ -120,13 +120,13 @@ Additionally verify the CLI from a global installation and from the local develo
 
 ## Items:
 
-| Iteration / Instructions         | Status  |
-| -------------------------------- | ------- |
-| Iteration: Bug Fixes             | `DONE`  |
-| Iteration: Improve Test Coverage | `DONE`  |
-| Iteration: Refactor Helpers      | `DONE`  |
-| Iteration: Improve Feedback      | `READY` |
-| Iteration: Add Output Option     | `READY` |
+| Iteration / Instructions         | Status |
+| -------------------------------- | ------ |
+| Iteration: Bug Fixes             | `DONE` |
+| Iteration: Improve Test Coverage | `DONE` |
+| Iteration: Refactor Helpers      | `DONE` |
+| Iteration: Improve Feedback      | `DONE` |
+| Iteration: Add Output Option     | `DONE` |
 
 ### Iteration: Bug Fixes
 
@@ -156,7 +156,7 @@ Additionally verify the CLI from a global installation and from the local develo
 | ------------------------------- | ----------------------------------- | ------------ | ---------- | ---------- |
 | `fix-checkout-matching`         | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` | `6d2cfacd` | `COMMITED` |
 | `match-workspace-checkouts-arg` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` | `39d7766e` | `COMMITED` |
-| `fix-inherited-checkout-state`  | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` | `fa61ceea` | `AUTHORED` |
+| `fix-inherited-checkout-state`  | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` | `fa61ceea` | `COMMITED` |
 
 ##### Commit: `fix-checkout-matching`
 
@@ -351,7 +351,7 @@ refactor(art-work-cli): Remove factory re-exports from scan/types.ts.
 
 **Id:** `improve-feedback`
 
-**Status:** `READY`
+**Status:** `DONE`
 
 **Purpose:** Make command feedback clearer and more useful.
 
@@ -392,10 +392,31 @@ Currently, workspace operations are off by one.
 
 #### Commits:
 
-| ID                            | Repository / Checkout / Branch      | Policy       | Hash | Status     |
-| ----------------------------- | ----------------------------------- | ------------ | ---- | ---------- |
-| `report-version`              | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `AUTHORED` |
-| `fix-repo-op-rows-off-by-one` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `AUTHORED` |
+| ID                            | Repository / Checkout / Branch      | Policy       | Hash       | Status      |
+| ----------------------------- | ----------------------------------- | ------------ | ---------- | ----------- |
+| `underline-report-headers`    | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` | `b89ee9f`  | `COMMITTED` |
+| `fix-repo-op-rows-off-by-one` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` | `5e73f35d` | `COMMITTED` |
+| `report-version`              | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` | `4b342e5`  | `COMMITTED` |
+
+##### Commit: `underline-report-headers`
+
+**Changes:**
+
+- Add whitespace and underlines to reports.
+
+**Message:**
+
+```text
+build(art-work-cli): Add whitespace and underlines to reports.
+```
+
+##### Commit: `fix-repo-op-rows-off-by-one`
+
+**Message:**
+
+```text
+fix(art-work-cli): Operations report missing repo/checkout labels on repo operation rows.
+```
 
 ##### Commit: `report-version`
 
@@ -409,19 +430,11 @@ Currently, workspace operations are off by one.
 build(art-work-cli): Report CLI version on every run.
 ```
 
-##### Commit: `fix-repo-op-rows-off-by-one`
-
-**Message:**
-
-```text
-fix(art-work-cli): Operations report missing repo/checkout labels on repo operation rows.
-```
-
 ### Iteration: Add Output Option
 
 **Id:** `add-output-option`
 
-**Status:** `READY`
+**Status:** `DONE`
 
 **Purpose:** Give users control over the amount of command output.
 
@@ -459,9 +472,9 @@ Commands should call `setOutputMode(options.output | config.output.mode)` after 
 
 #### Commits:
 
-| ID                  | Repository / Checkout / Branch      | Policy       | Hash | Status     |
-| ------------------- | ----------------------------------- | ------------ | ---- | ---------- |
-| `add-output-option` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `AUTHORED` |
+| ID                  | Repository / Checkout / Branch      | Policy       | Hash      | Status      |
+| ------------------- | ----------------------------------- | ------------ | --------- | ----------- |
+| `add-output-option` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` | `be23f48` | `COMMITTED` |
 
 ##### Commit: `add-output-option`
 
