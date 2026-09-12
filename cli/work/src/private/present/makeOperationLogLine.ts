@@ -10,12 +10,15 @@ export function makeOperationLogLine(
 
 	const timing = standalone ? `(${op.timing()}ms)` : String(op.timing());
 
+	const repo = op.checkout?.repo?.name ?? (op.checkout ? 'WORKSPACE' : '-');
+	const checkout = op.checkout?.record.location ?? '-';
+
 	return [
 		op.outcome === 'pending' ? '⏳' : op.outcome === 'success' ? '🟢' : '🔴',
-		op.checkout?.repo?.name,
-		op.checkout?.record.location,
+		repo,
+		checkout,
 		op.operation,
 		truncateMiddle(op.message(), 50),
 		op.finishedTs ? timing : '',
-	].filter(Boolean) as string[];
+	];
 }
