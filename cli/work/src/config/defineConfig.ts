@@ -8,6 +8,7 @@ export function defineConfig(config: PartialWorkspaceConfig): WorkspaceConfig {
 	const checkoutTemplatePath =
 		config.checkouts?.template || '.agents/domains/workspace/templates/checkout.art.njk';
 	const recordsPaths = normalizeRecordPaths(config.records);
+	const outputMode = config.output?.mode || 'quiet';
 
 	return {
 		clone: {
@@ -22,6 +23,9 @@ export function defineConfig(config: PartialWorkspaceConfig): WorkspaceConfig {
 		},
 		records: {
 			paths: recordsPaths,
+		},
+		output: {
+			mode: outputMode,
 		},
 	};
 }

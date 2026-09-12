@@ -19,6 +19,9 @@ export function makeConfigMock(
 				},
 			],
 		},
+		output: {
+			mode: 'quiet',
+		},
 		...overrides,
 	};
 }
