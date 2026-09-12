@@ -21,7 +21,8 @@ export function presentCheckoutReport(config: WorkspaceConfig, checkouts: Checko
 		c.scan?.issues().join('; ') || '-',
 	]);
 
-	console.info('Checkouts:');
-	console.info(formatTable(rows, headers));
 	console.info('');
+	console.info('Checkouts:');
+	console.info(`----------`);
+	console.info(formatTable(rows, headers));
 }

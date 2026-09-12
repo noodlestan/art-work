@@ -14,7 +14,8 @@ export function presentExtraneousReport(extraneous: Checkout[]): void {
 		c.scan?.issues().join('; ') || 'clean',
 	]);
 
-	console.info('Untracked:');
-	console.info(formatTable(rows, headers));
 	console.info('');
+	console.info('Untracked:');
+	console.info(`----------`);
+	console.info(formatTable(rows, headers));
 }

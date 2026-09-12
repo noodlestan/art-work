@@ -19,7 +19,8 @@ export function presentPackageStateReport(
 		ps.states.join('; ') || '-',
 	]);
 
-	console.info(`Packages for ${checkout.record.name}:`);
-	console.info(formatTable(rows, headers));
 	console.info('');
+	console.info(`Packages for ${checkout.record.name}:`);
+	console.info(`----------`);
+	console.info(formatTable(rows, headers));
 }

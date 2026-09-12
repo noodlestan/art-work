@@ -11,10 +11,11 @@ export function presentWorkspaceReport(workspace?: Checkout): void {
 	const issues = workspace.scan?.issues().join('; ');
 	const branch = workspace.scan?.state('remote').branch || workspace.record.branch;
 
+	console.info('');
 	console.info('Workspace:');
+	console.info(`----------`);
 	console.info(`  remote: ${remote ?? 'none'}`);
 	console.info(`  path:   ${workspace.path}`);
 	console.info(`  branch: ${branch}`);
 	console.info(`  issues: ${issues || '-'}`);
-	console.info('');
 }

@@ -59,7 +59,7 @@ describe('presentOperationsReport', () => {
 
 		presentOperationsReport(log);
 
-		expect(spy).toHaveBeenCalledWith('Operations Report:');
+		expect(spy).toHaveBeenCalledWith('Operations:');
 	});
 });
 
