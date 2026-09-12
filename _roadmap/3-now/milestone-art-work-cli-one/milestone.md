@@ -83,7 +83,7 @@ Complete the workspace CLI across 3 phases: establish the CLI baseline, implemen
 
 **Description:** Performance optimizations. UI improvements (args, predictability, and feedback)
 
-**Status:** `WORKING`
+**Status:** `DONE`
 
 **Dependencies:**
 
@@ -139,10 +139,10 @@ Complete the workspace CLI across 3 phases: establish the CLI baseline, implemen
 | 2     | Plan: Workspace CLI — Checkouts Run Command `_backlog/0-archive/2026-09-04-plan-implement-checkouts-run/plan.md`             | `ARCHIVED` |
 | 2     | Plan: Streamline Operation Types and Factories `_backlog/0-archive/2026-09-05-plan-streamline-ops/plan.md`                   | `ARCHIVED` |
 | -     |                                                                                                                              |            |
-| 3     | Plan: Create Art Work Repository and Project `_backlog/0-archive/2026-09-06-plan-create-art-work-repository-project/plan.md` | `ARCHIVE`  |
-| 3     | Plan: Extract Workspace Cli to Art Work `_backlog/0-archive/2026-09-06-plan-extract-workspace-cli-art-work/plan.md`          | `ARCHIVE`  |
-| 3     | Plan: Extract Read/Write Records to Art Cli `_backlog/0-archive/2026-09-06-plan-extract-read-write-records-art-lib/plan.md`  | `ARCHIVE`  |
-| 3     | Plan: Improvements and Fixes `_backlog/3-now/plan-improvements-and-fixes/plan.md`                                            | `WORKING`  |
+| 3     | Plan: Create Art Work Repository and Project `_backlog/0-archive/2026-09-06-plan-create-art-work-repository-project/plan.md` | `ARCHIVED` |
+| 3     | Plan: Extract Workspace Cli to Art Work `_backlog/0-archive/2026-09-06-plan-extract-workspace-cli-art-work/plan.md`          | `ARCHIVED` |
+| 3     | Plan: Extract Read/Write Records to Art Cli `_backlog/0-archive/2026-09-06-plan-extract-read-write-records-art-lib/plan.md`  | `ARCHIVED` |
+| 3     | Plan: Improvements and Fixes `_backlog/0-archive/2026-09-12-plan-improvements-and-fixes/plan.md`                             | `ARCHIVED` |
 | 3     | Plan: Make Art Work Cli work from global install `_backlog/4-next/plan-art-work-cli-global-install/plan.md`                  | `PLANNING` |
 | 3     | Plan: Optimize Tests and Update Knowledge `_backlog/4-next/plan-optimize-tests-update-knowledge/plan.md`                     | `DRAFT`    |
 | -     |                                                                                                                              |            |
