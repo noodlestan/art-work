@@ -24,7 +24,7 @@ const program = new Command();
 
 const logger = createLogger();
 
-program.name('art-workspace').description('Workspace orchestration CLI').version('0.0.18');
+program.name('art-workspace').description('Workspace orchestration CLI').version(__BUILD_VERSION__);
 
 program
 	.command('sanity')
