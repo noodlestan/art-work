@@ -1,5 +1,25 @@
 # CHANGELOG
 
+## 0.1.4
+
+### Added
+
+- **`--output` option:** Add `-o, --output <mode>` to all commands with `quiet` (default) and `verbose` modes. Controls whether pending operations are streamed to the console.
+- **`output.mode` configuration:** Add `output.mode` to workspace config with default `quiet`.
+- **`--workspace` option:** Add `-w, --workspace` to `pull`, `push`, `sync`, and `branch` to also apply the command to the workspace root.
+- **Version reporting:** `--version` reports CLI version with dynamic package version via `__BUILD_VERSION__`.
+
+### Fixed
+
+- **Operations report columns:** Fix off-by-one rendering where workspace operations appeared shifted. Workspace operations now display `WORKSPACE` in the repo column and `-` in the checkout column.
+- **Checkout scanning:** Restrict `pull`, `push`, and `sync` to scan only the matched checkouts instead of all checkouts.
+- **Git state detection:** Skip Git checks when `.git` is absent, preventing inherited state from parent directories.
+- **Sanity auto-sync:** `sanity --auto` now pulls before pushing (sync behaviour) instead of only pushing.
+
+### Changed
+
+- **Report formatting:** Add whitespace and underlines to report headers for better readability.
+
 ## 0.1.3
 
 ### Fix
