@@ -120,21 +120,23 @@ Additionally verify the CLI from a global installation and from the local develo
 
 ## Items:
 
-| Iteration / Instructions     | Status  |
-| ---------------------------- | ------- |
-| Iteration: Bug Fixes         | `READY` |
-| Iteration: Improve Feedback  | `READY` |
-| Iteration: Add Output Option | `READY` |
+| Iteration / Instructions         | Status  |
+| -------------------------------- | ------- |
+| Iteration: Bug Fixes             | `DONE`  |
+| Iteration: Improve Test Coverage | `DONE`  |
+| Iteration: Refactor Helpers      | `DONE`  |
+| Iteration: Improve Feedback      | `READY` |
+| Iteration: Add Output Option     | `READY` |
 
 ### Iteration: Bug Fixes
 
 **Id:** `bug-fixes`
 
-**Status:** `READY`
+**Status:** `DONE`
 
 **Purpose:** Fix existing bugs that affect checkout operations and state detection.
 
-**Description:** Fix Pull/Push/Sync matching and scanning, stale operation state, Git state detection without .git, hardcoded version reporting, operation logging, and remaining valid bugs from the BUGS table.
+**Description:** Fix Pull/Push/Sync matching and scanning, stale operation state, Git state detection without .git, operation logging, and remaining valid bugs from the BUGS table.
 
 **Changes:**
 
@@ -143,7 +145,6 @@ Additionally verify the CLI from a global installation and from the local develo
 - Add `-w, --workspace` option to apply commands on the workspace along with checkouts.
 - Fix stale reports after a successful push for Pull, Push, Sync, and Sanity (auto).
 - Update `ScanCheckoutState` to detect `hasGitDir`, report a `no git` state, and bypass Git checks when `.git` is absent.
-- Replace the hardcoded CLI version with the package version.
 
 **Dependencies:**
 
@@ -155,9 +156,7 @@ Additionally verify the CLI from a global installation and from the local develo
 | ------------------------------- | ----------------------------------- | ------------ | ---------- | ---------- |
 | `fix-checkout-matching`         | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` | `6d2cfacd` | `COMMITED` |
 | `match-workspace-checkouts-arg` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` | `39d7766e` | `COMMITED` |
-| `fix-checkout-stale-reports`    | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |            | `AUTHORED` |
-| `fix-inherited-checkout-state`  | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |            | `AUTHORED` |
-| `report-version`                | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |            | `AUTHORED` |
+| `fix-inherited-checkout-state`  | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` | `fa61ceea` | `AUTHORED` |
 
 ##### Commit: `fix-checkout-matching`
 
@@ -185,18 +184,6 @@ fix(art-work-cli): Scan the matched checkouts only; Update scans.
 build(art-work-cli): Add option to match workspace along with checkouts.
 ```
 
-##### Commit: `fix-checkout-stale-reports`
-
-**Changes:**
-
-- Fix Pull, Push, Sync, and Sanity (auto) stale reports after a successful push.
-
-**Message:**
-
-```text
-fix(art-work-cli): Update checkout scans after running pull, push, sync, and sanity commands.
-```
-
 ##### Commit: `fix-inherited-checkout-state`
 
 **Bug:**
@@ -218,16 +205,146 @@ fix(art-work-cli): Update checkout scans after running pull, push, sync, and san
 fix(art-work--cli): Skip git checks when no .git is present.
 ```
 
-##### Commit: `report-version`
+### Iteration: Improve Test Coverage
+
+**Id:** `improve-test-coverage`
+
+**Status:** `DONE`
+
+**Purpose:** Improve test coverage for checkout scanning, state detection, and operations.
+
+**Description:** Add tests for scanWorkspaceCheckout, scan states, scan utilities, and operations. Use makeCheckoutMock in command tests and new git test helpers across remaining test suites.
 
 **Changes:**
 
-- Replace the hardcoded CLI version with the package version.
+- Use `makeCheckoutMock` in command tests.
+- Use new git test helpers across remaining test suites.
+- Add tests for scan states, scan utilities, and operations.
+- Add tests for `scanWorkspaceCheckout`.
+
+**Dependencies:**
+
+- None.
+
+#### Commits:
+
+| ID                                     | Repository / Checkout / Branch      | Policy       | Hash      | Status     |
+| -------------------------------------- | ----------------------------------- | ------------ | --------- | ---------- |
+| `use-checkout-mock-commands`           | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` | `1f93cba` | `COMMITED` |
+| `use-git-helpers-remaining-suites`     | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` | `9cd6160` | `COMMITED` |
+| `add-scan-states-utilities-operations` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` | `7d73f1f` | `COMMITED` |
+| `add-scan-workspace-checkout`          | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` | `f8df230` | `COMMITED` |
+
+##### Commit: `use-checkout-mock-commands`
+
+**Changes:**
+
+- Use `makeCheckoutMock` in command tests.
 
 **Message:**
 
 ```text
-build(art-work-cli): Report CLI version on every run.
+test(art-work-cli): Use makeCheckoutMock in command tests.
+```
+
+##### Commit: `use-git-helpers-remaining-suites`
+
+**Changes:**
+
+- Use new git test helpers across remaining test suites.
+
+**Message:**
+
+```text
+test(art-work-cli): Use new git test helpers across remaining test suites.
+```
+
+##### Commit: `add-scan-states-utilities-operations`
+
+**Changes:**
+
+- Add tests for scan states, scan utilities, and operations.
+
+**Message:**
+
+```text
+test(art-work-cli): Add tests for scan states, scan utilities, and operations.
+```
+
+##### Commit: `add-scan-workspace-checkout`
+
+**Changes:**
+
+- Add tests for `scanWorkspaceCheckout`.
+
+**Message:**
+
+```text
+test(art-work-cli): Add tests for scanWorkspaceCheckout.
+```
+
+### Iteration: Refactor Helpers
+
+**Id:** `refactor-helpers`
+
+**Status:** `DONE`
+
+**Purpose:** Refactor test helpers and remove factory re-exports.
+
+**Description:** Consolidate git test helpers, use primitive args in git helpers, and remove factory re-exports from scan/types.ts.
+
+**Changes:**
+
+- Consolidate git test helpers.
+- Use primitive args in git helpers and add missing tests.
+- Remove factory re-exports from scan/types.ts.
+
+**Dependencies:**
+
+- None.
+
+#### Commits:
+
+| ID                             | Repository / Checkout / Branch      | Policy       | Hash      | Status     |
+| ------------------------------ | ----------------------------------- | ------------ | --------- | ---------- |
+| `consolidate-git-test-helpers` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` | `d48a29a` | `COMMITED` |
+| `primitive-args-git-helpers`   | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` | `38ee2ce` | `COMMITED` |
+| `remove-factory-reexports`     | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` | `c9fa170` | `COMMITED` |
+
+##### Commit: `consolidate-git-test-helpers`
+
+**Changes:**
+
+- Consolidate git test helpers.
+
+**Message:**
+
+```text
+refactor(cli/work): Consolidate git test helpers.
+```
+
+##### Commit: `primitive-args-git-helpers`
+
+**Changes:**
+
+- Use primitive args in git helpers and add missing tests.
+
+**Message:**
+
+```text
+refactor(art-work-cli): Use primitive args in git helpers and add missing tests.
+```
+
+##### Commit: `remove-factory-reexports`
+
+**Changes:**
+
+- Remove factory re-exports from scan/types.ts.
+
+**Message:**
+
+```text
+refactor(art-work-cli): Remove factory re-exports from scan/types.ts.
 ```
 
 ### Iteration: Improve Feedback
@@ -238,9 +355,13 @@ build(art-work-cli): Report CLI version on every run.
 
 **Purpose:** Make command feedback clearer and more useful.
 
-**Description:** Present a header on every run with version, workspace root, and data location, and improve operation reports to distinguish workspace, repo, and checkout.
+**Description:** Replace the hardcoded CLI version with the package version.Improve operation reports to handle workspace, repo, and checkout properly.
 
 **Changes:**
+
+1. Replace the hardcoded CLI version with the package version.
+
+2. Operation reports
 
 Examples of reports
 
@@ -273,7 +394,20 @@ Currently, workspace operations are off by one.
 
 | ID                            | Repository / Checkout / Branch      | Policy       | Hash | Status     |
 | ----------------------------- | ----------------------------------- | ------------ | ---- | ---------- |
+| `report-version`              | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `AUTHORED` |
 | `fix-repo-op-rows-off-by-one` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `AUTHORED` |
+
+##### Commit: `report-version`
+
+**Changes:**
+
+- Replace the hardcoded CLI version with the package version.
+
+**Message:**
+
+```text
+build(art-work-cli): Report CLI version on every run.
+```
 
 ##### Commit: `fix-repo-op-rows-off-by-one`
 
