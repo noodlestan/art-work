@@ -16,7 +16,9 @@ export function createLogger(): LoggerAPI {
 
 	function flush(): void {
 		for (const op of buffer) {
-			console.info(makeOperationLogLine(op, { standalone: true }).join(' | '));
+			if (op.outcome !== 'pending' || mode === 'verbose') {
+				console.info(makeOperationLogLine(op, { standalone: true }).join(' | '));
+			}
 		}
 		buffer.length = 0;
 	}
@@ -28,7 +30,7 @@ export function createLogger(): LoggerAPI {
 				return;
 			}
 
-			if (mode === 'verbose') {
+			if (op.outcome !== 'pending' || mode === 'verbose') {
 				console.info(makeOperationLogLine(op, { standalone: true }).join(' | '));
 			}
 			// quiet mode discards all pending and future pending ops
