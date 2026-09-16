@@ -11,19 +11,9 @@ const DEFAULTS: FSRecordsPath = {
 };
 
 export function normalizeRecordPaths(records: PartialWorkspaceConfig['records']): FSRecordsPath[] {
-	const paths = records?.paths;
+	const maybePaths = records?.paths;
 
-	if (!paths || paths.length === 0) {
-		return [
-			{
-				base: records?.base ?? DEFAULTS.base,
-				pattern: records?.pattern ?? DEFAULTS.pattern,
-				ignored: records?.ignored ?? DEFAULTS.ignored,
-				excluded: records?.excluded ?? DEFAULTS.excluded,
-				gitignore: records?.gitignore ?? DEFAULTS.gitignore,
-			},
-		];
-	}
+	const paths = maybePaths || [{}];
 
 	return paths.map(p => ({
 		base: p.base ?? records?.base ?? DEFAULTS.base,

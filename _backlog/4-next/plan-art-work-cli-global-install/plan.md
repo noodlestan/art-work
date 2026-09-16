@@ -65,11 +65,11 @@ Update the Art Work Cli so that the globally installed executable can locate its
 
 ### Next
 
-- Plan iterations.
+- All 4 iterations are `READY` and fully planned. Delegate Iteration: Refactor Config Semantics first — its delegation is gated on the `$ART_LIB` Plan: Add FS Records Store, Iteration: Implement FSRecordsStore being delivered (the contract is settled; only the provider code is pending).
 
 ### Blockers
 
-- Depends on `$ART_LIB` Plan: Add FS Records Store.
+- None. The contract with `$ART_LIB` Plan: Add FS Records Store is settled (types, signatures, and factory names are final). Iteration: Refactor Config Semantics has a delegation precondition: the provider's `implement-fs-records-store` iteration must be delivered first, since the instructions verify `@art-lib/fs-records` exports at runtime.
 
 ---
 
@@ -121,12 +121,12 @@ Additionally verify the CLI from a global installation and from the local develo
 
 ## Items:
 
-| Iteration / Instructions               | Status     |
-| -------------------------------------- | ---------- |
-| Iteration: Refactor Config Semantics   | `PLANNING` |
-| Iteration: Discover configuration file | `PLANNING` |
-| Iteration: Add Init command            | `PLANNING` |
-| Iteration: Update Art Work Knowledge   | `PLANNING` |
+| Iteration / Instructions               | Status  |
+| -------------------------------------- | ------- |
+| Iteration: Refactor Config Semantics   | `READY` |
+| Iteration: Discover configuration file | `READY` |
+| Iteration: Add Init command            | `READY` |
+| Iteration: Update Art Work Knowledge   | `READY` |
 
 ### Iteration: Refactor Config Semantics
 
@@ -138,7 +138,7 @@ Additionally verify the CLI from a global installation and from the local develo
 
 **Description:** Change configuration options to express `checkouts.path`, `data` (where managed records are stored), and `discovery.records` (how records are scanned for in checkouts).
 
-**Instructions:** `./plan-make-art-work-cli-work-from-global-install/instructions/refactor-config-semantics.md`
+**Instructions:** `./plan-art-work-cli-global-install/instructions/refactor-config-semantics.md`
 
 **Changes:**
 
@@ -150,7 +150,7 @@ export interface WorkspaceConfig {
   checkouts: { path: string };
   data: {
     store: FSRecordsStoreOptions;
-    template: string;
+    template: string; // WIP: purpose to be defined (default record template path?)
   };
   discover: {
     records: { paths: FSRecordsPattern[] };
@@ -161,22 +161,22 @@ export interface PartialWorkspaceConfig {
   root?: Partial<WorkspaceConfig['root']>;
   checkouts?: Partial<WorkspaceConfig['checkouts']>;
   data?: Partial<WorkspaceConfig['data']>;
-  discovery?: {
+  discover?: {
     records?: { defaults?: Partial<FSRecordsPattern>; paths?: Partial<FSRecordsPattern>[] };
   };
 }
 ```
 
-Extract `const DEFAULTS: FSRecordsPath` from `cli/work/src/config/private/normalizeRecordPaths.ts` as `DEFAULT_RECORDS_PATTERN ` in `cli/work/src/config/constants.ts`.
+Extract `const DEFAULTS: FSRecordsPattern` from `cli/work/src/config/private/normalizeRecordPaths.ts` as `DEFAULT_RECORDS_PATTERN ` in `cli/work/src/config/constants.ts`.
 
 Change `checkouts.paths` => `data.store` and update `cli/work/src/config/defineConfig.ts` with `data.store` default is `DEFAULT_RECORDS_STORE_OPTIONS` also declared in `cli/work/src/config/constants.ts`.
 
 Extract the `WorkspaceContext` interface in `cli/work/src/private/context/createWorkspaceContext.ts` to `cli/work/src/private/context/types.ts`.
 
-Add an `fsRecords: FSRecordsStore`
+Add `fsRecords: FSRecordsStore` to `WorkspaceContext`.
 
 ```ts
-Extract export interface WorkspaceContext {
+export interface WorkspaceContext {
   store: CheckoutStore;
   fsRecords: FSRecordsStore;
 }
@@ -184,12 +184,12 @@ Extract export interface WorkspaceContext {
 
 Update `createWorkspaceContext` in `cli/work/src/private/context/createWorkspaceContext.ts` to receive `(config, store, fsRecords, log)`.
 
-In `cli/work/src/index.ts` extract the config and workspace context factories into ``and `cli/work/src/private/cli/createContext.ts`.
+In `cli/work/src/index.ts` extract the config and workspace context factories into `cli/work/src/private/cli/createConfig.ts` and `cli/work/src/private/cli/createContext.ts`.
 
-In `createConfig()` create an instance of store using the `config.data.store` options.
+In `createConfig()` locate and load the config file:
 
-```
-createContext(logger,) {
+```ts
+async function createConfig(logger: Logger) {
   logger(createGenericOperation('locate-config'));
   // WIP: Config discovery next.
   logger(createGenericOperation('load-config'));
@@ -197,10 +197,10 @@ createContext(logger,) {
 }
 ```
 
-In `createContext()` create an instance of store using the `config.data.store` options.
+In `createContext()` create an instance of `FSRecordsStore` using the `config.data.store` options:
 
-```
-createContext(config, logger,) {
+```ts
+createContext(config, logger) {
   logger(createGenericOperation('create-context'));
   const store = createCheckoutStore();
   const log = createOperationsLog(logger);
@@ -211,7 +211,7 @@ createContext(config, logger,) {
 
 Update all commands to use `createContext()`
 
-Change all record management invokation of `findRecordFiles()` to use this store:
+Replace direct `findRecordFiles()` calls with `fsRecords.discoverRecordFiles()` and `fsRecords.readRecord()`:
 
 - `cli/work/src/private/resources/checkout/loadCheckoutRecords.ts`
 - `cli/work/src/private/resources/repository/loadRepositoryRecords.ts`
@@ -220,6 +220,7 @@ Change `clone` => `checkouts`:
 
 - Update `cli/work/src/config/defineConfig.ts`
 - Update all consumers.
+- Note: `checkouts.path` replaces `clone.path`; ensure init command and docs use `checkouts.path`.
 
 Change `records.paths` to `discovery.records.paths`.
 
@@ -234,7 +235,7 @@ Change all discovery invokations of `findRecordFiles()` to use the discovery con
 
 **Dependencies:**
 
-- None.
+- `$ART_LIB` Plan: Add FS Records Store — Iteration: Implement FSRecordsStore must be complete so that `FSRecordsStore`, `FSRecordsStoreOptions`, `createFSRecordsStore()`, and `FSRecordsPattern` are available.
 
 #### Commits:
 
@@ -258,9 +259,9 @@ refactor(art-work-cli): Refactor config options for better semantics.
 
 **Purpose:** Make the Art Work Cli execute independently of its source checkout when installed globally.
 
-**Description:** Make the CLI discover configuration in current working directory and parent dirs. Compile config file to an `.art` temp directory. Apply default config values if not found. In this scenario: checkouts are assumed at `checkouts` and if repos are added they are stored in `_records/repositories/`. Display copnfiguration on every run.
+**Description:** Make the CLI discover configuration in current working directory and parent dirs. Compile config file to an `.art` temp directory. Apply default config values if not found. In this scenario: checkouts are assumed at `checkouts` and if repos are added they are stored in `_records/repositories/`. Display configuration on every run.
 
-**Instructions:** `./plan-make-art-work-cli-work-from-global-install/instructions/discover-config-location.md`
+**Instructions:** `./plan-art-work-cli-global-install/instructions/discover-config-location.md`
 
 **Changes:**
 
@@ -270,7 +271,7 @@ refactor(art-work-cli): Refactor config options for better semantics.
 
 **Dependencies:**
 
-- None.
+- Iteration: Refactor Config Semantics.
 
 #### Commits:
 
@@ -312,9 +313,9 @@ build(art-work-cli): Show config options.
 
 **Purpose:** Make the Art Work Cli executable independently of its source checkout when installed globally.
 
-**Description:** Add a new `init` command that creates a configuration file with default values for `clone.path` and `checkouts.path` redeclared for a easy to use starting point.
+**Description:** Add a new `init` command that creates a configuration file with default values for `root.path` and `checkouts.path` redeclared for an easy to use starting point.
 
-**Instructions:** `./plan-make-art-work-cli-work-from-global-install/instructions/add-init-command.md`
+**Instructions:** `./plan-art-work-cli-global-install/instructions/add-init-command.md`
 
 **Changes:**
 
@@ -322,7 +323,8 @@ build(art-work-cli): Show config options.
 
 **Dependencies:**
 
-- None.
+- Iteration: Refactor Config Semantics.
+- Iteration: Discover configuration file.
 
 #### Commits:
 
@@ -340,36 +342,39 @@ build(art-work-cli): Add Init Command.
 
 ### Iteration: Update Art Work Knowledge
 
-**Id:** `add-init-command`
+**Id:** `update-art-work-knowledge`
 
 **Status:** `PLANNING`
 
-**Purpose:** Make the Art Work Cli executable independently of its source checkout when installed globally.
+**Purpose:** Update Art Work knowledge files to reflect the global-install capability and new configuration semantics.
 
-**Description:** Add a new `init` command that creates a configuration file with default values for `clone.path` and `checkouts.path` redeclared for a easy to use starting point.
+**Description:** Update architecture docs, guides, and any knowledge files in `$ART_WORK` that describe how the CLI locates configuration, operates in global vs local modes, and the shape of the workspace config.
 
-**Instructions:** `./plan-make-art-work-cli-work-from-global-install/instructions/add-init-command.md`
+**Instructions:** `./plan-art-work-cli-global-install/instructions/update-art-work-knowledge.md`
 
 **Changes:**
 
-- Add init command.
+- Update `$ART_WORK/cli/work/architecture/index.md` to document global-install execution model.
+- Update `$ART_WORK/_guide.md` with global install usage notes.
+- Update `$ART_WORK/cli/work/src/config/README.md` (or create) describing config file format and discovery.
 
 **Dependencies:**
 
-- None.
+- Iteration: Refactor Config Semantics.
+- Iteration: Discover configuration file.
 
 #### Commits:
 
-| ID                 | Repository / Checkout / Branch      | Policy       | Hash | Status        |
-| ------------------ | ----------------------------------- | ------------ | ---- | ------------- |
-| `add-init-command` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `PLACEHOLDER` |
+| ID                          | Repository / Checkout / Branch      | Policy       | Hash | Status        |
+| --------------------------- | ----------------------------------- | ------------ | ---- | ------------- |
+| `update-art-work-knowledge` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `PLACEHOLDER` |
 
-##### Commit: `add-init-command`
+##### Commit: `update-art-work-knowledge`
 
 **Message:**
 
 ```text
-build(art-work-cli): Add Init Command.
+docs(art-work-cli): Update knowledge for global install and config semantics.
 ```
 
 ---
@@ -386,19 +391,24 @@ build(art-work-cli): Add Init Command.
 
 ### Findings
 
-- None
+- The provider plan (`add-fs-records-store`) confirms `FSRecordsStore.discoverRecordFiles()` is async (`Promise<FSRecordFile[]>`) and `writeRecord(file, record, recordWrite)` accepts the record to write. The consumer contract reference reflects these signatures.
+- `FSRecordFile.searchPath` is renamed to `FSRecordFile.basePath` in the provider plan; the consumer refactor must use `basePath`.
+- The target `WorkspaceConfig` shape drops the `clone` and `output` keys. `clone` is replaced by `checkouts`; `output` is removed and its consumers must be updated.
 
 ### Decisions
 
-- None
+- Iteration: Refactor Config Semantics is marked `READY` — planning is complete and the contract with `$ART_LIB` Plan: Add FS Records Store is settled. Its delegation is gated on the provider's `implement-fs-records-store` iteration being delivered; the instructions verify `@art-lib/fs-records` exports before starting (Step 1/8).
+- Iterations: Discover configuration file, Add Init command, and Update Art Work Knowledge are marked `READY`; they depend on Iteration: Refactor Config Semantics and must be delegated in order.
+- The `output` config key is removed per the target `WorkspaceConfig` shape; consumers are updated in Iteration: Refactor Config Semantics.
 
 ### Knowledge to Update
 
-- Incliuded as an iteration.
+- Included as an iteration.
 
 ### Follow Ups
 
-- None identified.
+- Delegate Iteration: Refactor Config Semantics once the `$ART_LIB` Plan: Add FS Records Store, Iteration: Implement FSRecordsStore is delivered (delegation precondition, not a planning blocker).
+- Confirm the `data.template` purpose (currently WIP) in a later iteration.
 
 ### Feedback
 
