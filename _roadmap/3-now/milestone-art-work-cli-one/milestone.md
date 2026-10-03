@@ -4,7 +4,7 @@
 
 **Status:** `WORKING`
 
-**Template:** `$DOMAINS/roadmaps/templates/milestone.tart`
+**Template:** `$DOMAINS/milestones/templates/milestone.tart`
 
 **Skill:** `write-milestone`
 
@@ -14,7 +14,7 @@
 
 ## Mandatory Reading
 
-::READ `$DOMAINS/roadmaps/structures/milestone.art` (Structure) — Defines the milestone structure and nested types.
+::READ `$DOMAINS/milestones/structures/milestone.art` (Structure) — Defines the milestone structure and nested types.
 
 ---
 
