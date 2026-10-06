@@ -1,6 +1,6 @@
-# Art Work Cli — Configuration
+# Art Work Cli - Config
 
-The configuration system of the Art Work Cli: the `.art-workspace.mts` manifest, its structure, authoring, loading mechanism, package exports, and type safety.
+**Purpose:** Explain the configuration system of the Art Work Cli: the `.art-workspace.mts` manifest, its structure, authoring, loading mechanism, package exports, and type safety.
 
 ## Overview
 

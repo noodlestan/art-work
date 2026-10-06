@@ -38,8 +38,8 @@ Records are co-located with the resources they describe in `_records/` directori
 
 This repository maintains architecture references at:
 
-- `architecture/index.md` — repository-level architecture index.
-- `cli/work/architecture/index.md` — repository-level architecture index.
+- `architecture/index.md` — Repository-level architecture index.
+- `cli/work/architecture/index.md` — Art Work Cli architecture index.
 
 ## Workflows
 

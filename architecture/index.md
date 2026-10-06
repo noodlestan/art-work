@@ -1,4 +1,4 @@
-# Art Work Architecture
+# Architecture: Art Work
 
 ## Overview
 

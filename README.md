@@ -17,10 +17,10 @@ art-work-cli --help
 
 ### Scripts
 
-- **$** `npm run turbo build` — Build all packages.
-- **$** `npm run turbo test` — Run tests in all packages.
-- **$** `npm run turbo lint` — Lint all packages (Prettier + ESLint).
-- **$** `npm run ci` — Run all CI scripts in all packages.
+- `npm run turbo build` — Build all packages.
+- `npm run turbo test` — Run tests in all packages.
+- `npm run turbo lint` — Lint all packages (Prettier + ESLint).
+- `npm run ci` — Run all CI scripts in all packages.
 
 ## License
 

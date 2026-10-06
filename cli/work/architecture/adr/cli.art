@@ -1,4 +1,4 @@
-# Art Work Cli — Cli
+# Art Work Cli - Cli
 
 **Purpose:** Decisions about the workspace orchestration tooling — its package structure, manifest format, and data sources.
 
@@ -89,16 +89,6 @@
 **Decision:** Use `simple-git` for git operations. It provides a convenient API over git commands, handles edge cases, and reduces boilerplate. Alternative: `child_process` is zero-dep but more verbose and error-prone.
 
 **Consequences:** Adds a runtime dependency, but gains convenience and reliability. Git operations are centralized in one library, easier to test and maintain.
-
-## Decision: Build Process — @noodlestan/esbuild
-
-**Status:** Adopted
-
-**Context:** CLI needs to be compiled to executable JavaScript. Options: `@noodlestan/esbuild`, `tsc` only, `vite`.
-
-**Decision:** Use `@noodlestan/esbuild` for building the CLI. Consistent with other repos in the ecosystem, fast builds, proven toolchain. Alternative: `tsc` only is simpler but slower; `vite` is overkill for a CLI tool.
-
-**Consequences:** Consistent build process across the ecosystem. Fast builds. Requires esbuild configuration for CLI entry point.
 
 ## Decision: UI/UX — Tables + Minimal Colors
 

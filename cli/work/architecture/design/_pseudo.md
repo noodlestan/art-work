@@ -1,6 +1,6 @@
-# Pseudo: Art Work Cli
+# Art Work Cli - Pseudo
 
-Mostly useful for prototyping data structures or interactions (but these are detailed in `architecture/{topic}.md` files once settled) and for defining expectations (BDD) and logic (pseudo) for use cases. Zero real code — bodies prescribe what to do, not how to implement.
+**Purpose:** Prescribe pseudo-code and BDD expectations for the Art Work Cli use cases — zero real code; bodies prescribe what to do, not how to implement. Settled definitions live in the other design documents.
 
 ## Entry Point
 
@@ -16,7 +16,7 @@ main
 
 ## Data Structures
 
-Detailed definitions live in `architecture/context-model.md`. Symbols relevant to the use cases below:
+Detailed definitions live in `architecture/design/context-model.md`. Symbols relevant to the use cases below:
 
 - **WorkspaceContext** — single object passed to all routines: `config`, `store`, `log`
 - **CheckoutStore** — in-memory checkout identity: `addCheckout`, `getCheckoutForLocation`, `getCheckoutOfRepo`, `getCheckoutByName`, `updateCheckout`, `getAllCheckouts`
@@ -67,7 +67,7 @@ hydrate(ctx)
 
 ## Operation Logs
 
-Detailed definitions live in `architecture/operations-log.md`. Symbols relevant to the use cases below:
+Detailed definitions live in `architecture/design/operations-log.md`. Symbols relevant to the use cases below:
 
 - **OperationsLog** — append-only: `log(operation)`, `all()`, `since(ts)`, `latest(n)`
 - **Operation** — `operation` kind, `ts`, `checkout`, `outcome` (success/failure), `message()`
@@ -76,7 +76,7 @@ Detailed definitions live in `architecture/operations-log.md`. Symbols relevant 
 
 ## Reports
 
-Detailed definitions live in `architecture/reports.md`. Symbols relevant to the use cases below:
+Detailed definitions live in `architecture/design/reports.md`. Symbols relevant to the use cases below:
 
 - **Workspace Report** — `repo | location | branch | states`; header `Workspace:`; presents workspace root status (1 row only); states = `issues.join("; ")` or `-`; presented after every command that reads or mutates checkouts
 - **Checkout Report** — `repo | location | branch | states`; header `Checkouts:`; states = `issues.join("; ")` or `-`; presented after every command that reads or mutates checkouts

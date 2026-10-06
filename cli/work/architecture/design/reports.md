@@ -1,6 +1,8 @@
-# Art Work Cli — Reports
+# Art Work Cli - Reports
 
-Commands present their findings and side effects as markdown tables. Reports always show the full table — no collapsing — with a header line (e.g. `Checkouts:`) and an empty line after the table.
+**Purpose:** Describe how commands present their findings and side effects as markdown tables.
+
+Reports always show the full table — no collapsing — with a header line (e.g. `Checkouts:`) and an empty line after the table.
 
 ## Workspace Report
 

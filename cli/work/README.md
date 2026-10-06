@@ -36,15 +36,15 @@ This package is meant for use in Node.js environments. The entry point is built 
 
 ### Scripts
 
-- **$** `npm run dev` — Watch mode for development
-- **$** `npm run build` — Build the CLI package
-- **$** `npm run build:types:esm` — Generate ESM type definitions
-- **$** `npm run build:types:cjs` — Generate CJS type definitions
-- **$** `npm run lint` — Check formatting, lint, and type check
-- **$** `npm run lint:fix` — Fix formatting and lint issues
-- **$** `npm run build:clean` — Remove build artifacts
-- **$** `npm run ci` — Run CI pipeline
-- **$** `npm run test` — Run tests
+- `npm run dev` — rebuild on change
+- `npm run build` — produce the full build
+- `npm run build:clean` — remove `dist/`
+- `npm run lint` — report prettier, eslint, and `tsc --noEmit` issues
+- `npm run lint:fix` — fix formatting and lint issues
+- `npm run test` — start vitest over every test in watch mode
+- `npm run test:unit` — run the unit tests under `src/` once
+- `npm run test:integration` — run the tests under `test/` against `dist/`
+- `npm run ci` — lint, build, and run both test suites
 
 ## License
 

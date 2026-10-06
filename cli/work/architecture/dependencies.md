@@ -1,4 +1,6 @@
-# Art Work Cli - Dependencies
+# Dependencies: Art Work Cli
+
+**Purpose:** Record the dependency observations and choices behind this CLI.
 
 ## Commander
 

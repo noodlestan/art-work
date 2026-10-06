@@ -12,7 +12,7 @@ Agents SHOULD scan these files for relevant clarifications when faced with ambig
 ## Package Layout
 
 ```
-architecture/       — architecture index
+architecture/       — index, overview, dependencies, adr/, and design/ docs
 src/                — the CLI source (commands, config, shared, private)
 CHANGELOG.md
 ```
@@ -28,8 +28,8 @@ Records are co-located with the resources they describe in `_records/` directori
 
 This package maintains:
 
-- an architecture reference at `architecture/index.md`.
-- decision records at `architecture/adr`.
+- An architecture reference at `architecture/index.md`.
+- Decision records at `architecture/adr`.
 
 ## Workflows
 
@@ -60,6 +60,17 @@ Run from this package directory:
 ```bash
 npm run lint:fix # to fix formatting issues automatically
 npm run lint # to report other issues (prettier, eslint, tsc --noEmit)
-npm run test # to run all tests
-npm run build # to produce a full build
+npm run test:unit # runs the unit tests under src/
+npm run build # required before the integration tests, which spawn dist/
+npm run test:integration # runs the tests under test/ against the built bundles
+```
+
+### Operating Instructions: Verifying Completion
+
+**Instructions:**
+
+Runs automatically on pre-commit hook (from the repository root):
+
+```bash
+npm run ci # lint, build, and run both test suites
 ```

@@ -1,6 +1,6 @@
-# Art Work Cli — Operations Log
+# Art Work Cli - Operations Log
 
-The side-effect log of a command invocation.
+**Purpose:** Specify the side-effect log of a command invocation.
 
 ## OperationsLog
 

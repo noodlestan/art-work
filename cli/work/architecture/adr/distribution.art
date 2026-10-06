@@ -1,0 +1,35 @@
+# Art Work Cli - Distribution
+
+**Purpose:** Decide how this CLI is shaped for its consumers: module format, compiled output, and declarations.
+
+## Decision: Distribute Node-Compatible Compiled ESM
+
+**Status:** Adopted
+
+**Context:** The CLI must be distributed as executable JavaScript that runs directly in Node.js without requiring TypeScript or a bundler.
+
+**Decision:** Distribute the CLI as compiled, Node-compatible ESM.
+
+**Consequences:**
+
+The CLI will:
+
+- use Node-compatible ESM module semantics.
+- distribute compiled JavaScript rather than TypeScript source.
+- expose executable entry points through the package configuration.
+- declare `"type": "module"` and emit types for its API surface.
+
+
+## Decision: Use @noodlestan/esbuild and Configurations
+
+**Status:** Adopted
+
+**Context:** The CLI requires a build process capable of producing its distributable JavaScript. The ecosystem already provides `@noodlestan/esbuild` as a standard wrapper around esbuild.
+
+**Decision:** Use `@noodlestan/esbuild` and its configurations to build the CLI.
+
+**Consequences:**
+
+The CLI gets a consistent build process with other projects in the ecosystem and the speed and bundling capabilities of esbuild.
+
+Using the wrapper also establishes its configuration conventions as part of the CLI’s build process, rather than maintaining an independent esbuild setup.

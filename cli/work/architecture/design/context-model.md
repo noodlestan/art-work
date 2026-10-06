@@ -1,6 +1,6 @@
-# Art Work Cli — Context
+# Art Work Cli - Context Model
 
-The per-command data model of the Art Work Cli: `WorkspaceContext`, `CheckoutStore`, `Checkout`, the records they are built from, and the functions that scan and sync them.
+**Purpose:** Explain the per-command data model of the Art Work Cli: `WorkspaceContext`, `CheckoutStore`, `Checkout`, the records behind them, and the functions that scan and sync them.
 
 ## WorkspaceContext
 
