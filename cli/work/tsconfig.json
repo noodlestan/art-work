@@ -4,6 +4,6 @@
     "noPropertyAccessFromIndexSignature": false,
     "noUncheckedIndexedAccess": false
   },
-  "include": ["src/", "**/*.config.ts"],
+  "include": ["src/", "test/", "**/*.config.ts"],
   "exclude": ["**/node_modules/", "**/dist/", "**/coverage/"]
 }
