@@ -12,7 +12,7 @@ import { scanAllCheckoutsStates } from '../../private/store/scanAllCheckoutsStat
 import type { Checkout } from '../../private/store/types';
 
 export interface CheckoutRepositoryState {
-	target: import('../../private/store/types').Checkout;
+	target: Checkout;
 	branch: string | null;
 	issues: string[];
 	graph: ProjectGraph;

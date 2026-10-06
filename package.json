@@ -24,8 +24,8 @@
   },
   "devDependencies": {
     "@noodlestan/eslint-config": "0.0.8",
-    "@noodlestan/esbuild": "0.0.14",
-    "@noodlestan/tsconfig": "0.0.14",
+    "@noodlestan/esbuild": "0.1.0",
+    "@noodlestan/tsconfig": "0.1.0",
     "@types/node": "24.13.0",
     "@vitest/coverage-v8": "4.1.8",
     "eslint": "8.57.1",

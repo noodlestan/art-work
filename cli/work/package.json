@@ -1,6 +1,6 @@
 {
   "name": "@art-work/cli",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "CLI for discovering projects, inspecting and synchronizing checkouts, linking resources, and executing commands across them.",
   "author": "Noodlestan Collective",
   "license": "MIT",
@@ -12,16 +12,12 @@
   },
   "type": "module",
   "bin": {
-    "art-work-cli": "./dist/esm/index.mjs"
+    "art-work-cli": "./dist/index.mjs"
   },
   "exports": {
-    ".": {
-      "types": "./dist/esm/index.d.ts",
-      "import": "./dist/esm/index.mjs"
-    },
     "./config": {
-      "types": "./dist/esm/config/index.d.ts",
-      "import": "./dist/esm/config/index.mjs"
+      "types": "./dist/config/index.d.ts",
+      "import": "./dist/config/index.mjs"
     }
   },
   "files": [
@@ -35,8 +31,6 @@
     "lint:fix": "prettier . -c --write && eslint . --fix",
     "build": "esbuild-cli",
     "build:clean": "rm -rf dist",
-    "build:types:esm": "tsc --project tsconfig.esm.json",
-    "build:types:cjs": "tsc --project tsconfig.cjs.json",
     "test": "vitest run",
     "test:ci": "vitest run --coverage",
     "test:watch": "vitest",

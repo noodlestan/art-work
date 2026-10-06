@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## 0.1.5
+
+### Tooling
+
+- **Build tooling:** Adopt `@noodlestan/esbuild` 0.1.0 with a local `build.config.mjs`.
+- **Bin entry point:** The `bin` entry and package exports move accordingly.
+- **Flat output:** Bundle to `dist/` with a single `index.mjs` instead of `dist/esm/` and `dist/cjs/`.
+- **Declarations:** Emit types only for the `./config` entry point via `postBuildPlugin`. Test and CLI-internal declarations are no longer published.
+
+### Removed
+
+- **Root export:** Dropped the `"."` package export. The package is a binary; `@art-work/cli/config` is the only supported import.
+
 ## 0.1.4
 
 ### Added
