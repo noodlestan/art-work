@@ -4,7 +4,7 @@ export function presentCheckoutRepositoryState(state: CheckoutRepositoryState): 
 	console.info('');
 	console.info(`Repository:`);
 	console.info(`  name: ${state.target.repo?.name || '(unknown)'}`);
-	console.info(`  name: ${state.target.repo?.remote || '(unknown)'}`);
+	console.info(`  remote: ${state.target.repo?.remote || '(unknown)'}`);
 	if (state.issues.length > 0) {
 		console.info(`  issues: ${state.issues.join('; ')}`);
 	}
