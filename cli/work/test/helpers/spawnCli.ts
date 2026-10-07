@@ -1,24 +1,9 @@
 import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
-import { dirname, join } from 'node:path';
 import process from 'node:process';
-import { fileURLToPath } from 'node:url';
 
-const PACKAGE_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
-const BUNDLE = join(PACKAGE_ROOT, 'dist', 'index.mjs');
-const ENCODING = 'utf8';
-const BUILD_HINT = 'run `npm run build` in the @art-work/cli package first';
-
-export type CliOptions = {
-	args: string[];
-	stdin?: string;
-};
-
-export type CliResult = {
-	code: number;
-	stdout: string;
-	stderr: string;
-};
+import { BUILD_HINT, BUNDLE, ENCODING, PACKAGE_ROOT } from './constants';
+import type { TestCliOptions, TestCliResult } from './types';
 
 function readBundlePath(): string {
 	if (!existsSync(BUNDLE)) {
@@ -27,12 +12,12 @@ function readBundlePath(): string {
 	return BUNDLE;
 }
 
-export async function spawnCli(options: CliOptions): Promise<CliResult> {
+export async function spawnCli(options: TestCliOptions): Promise<TestCliResult> {
 	const bundle = readBundlePath();
 
 	return new Promise((resolve, reject) => {
 		const child = spawn(process.execPath, [bundle, ...options.args], {
-			cwd: PACKAGE_ROOT,
+			cwd: options.cwd ?? PACKAGE_ROOT,
 		});
 
 		let stdout = '';
