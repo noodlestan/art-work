@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 0.1.6
+
+### Fixed
+
+- **Repo**: Repository "remote" was mislabelled as "name".
+
 ## 0.1.5
 
 ### Tooling
