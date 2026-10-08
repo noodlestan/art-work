@@ -1,6 +1,6 @@
 # Parking Lot: Art Work Roadmap
 
-The high level briefing, principles, requirements, and milestones are in `_roadmap/_architect.md`. Milestones live under `_roadmap/` (e.g. `_roadmap/3-now/`, `_roadmap/4-next/`). This file is the roadmapping tracker and parking lot. Column convention: **ACTIONABLE** / **PENDING** / **BLOCKER** / **FOLLOW-UPS** (not in scope). No done items here — completed work is recorded in the relevant milestone and backlog plans.
+WIP tracker, structured like the session parking lot: **ACTIONABLE** (in progress now), **PENDING** (waiting), **BLOCKERS** (blocking work), **FOLLOW-UPS** (not in scope). Done items, answered questions, removed blockers, are deleted from the parking lot (tracked in milestones if applicable).
 
 ## Parking Lot
 

@@ -1,8 +1,6 @@
 # Parking Lot: Art Work Backlog
 
-The high level briefing, principles, requirements are in `_roadmap/_architect.md`. Backlog plans are derived from here.
-The plans live in `_backlog/` and contain delegatable instructions.
-This file is the tracker and parking lot. Column convention: **ACTIONABLE** / **PENDING** / **BLOCKER** / **FOLLOW-UPS** (not in scope). No done items here — completed work is recorded in `_backlog/`.
+WIP tracker, structured like the session parking lot: **ACTIONABLE** (in progress now), **PENDING** (waiting), **BLOCKERS** (blocking work), **FOLLOW-UPS** (not in scope). Done items, answered questions, removed blockers, are deleted from the parking lot (tracked in plans if applicable).
 
 ## Parking Lot
 
