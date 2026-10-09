@@ -1,15 +1,15 @@
-import type { WorkspaceContext } from '../../private/context/createWorkspaceContext';
-import { createGenericOperation } from '../../private/operations/createGenericOperation';
-import { presentCheckoutRepositoryState } from '../../private/present/presentCheckoutRepositoryState';
-import { presentPackageStateReport } from '../../private/present/presentPackageStateReport';
-import { getRepositoryCheckoutPackages } from '../../private/repositories/getRepositoryCheckoutPackages';
-import { loadCheckoutRecords } from '../../private/resources/checkout/loadCheckoutRecords';
-import { loadProjectGraph } from '../../private/resources/projectGraph/loadProjectGraph';
-import { loadRepositoryRecords } from '../../private/resources/repository/loadRepositoryRecords';
-import type { PackageStateRecord, ProjectGraph } from '../../private/resources/types';
-import { hydrateStoreFromRecords } from '../../private/store/hydrateStoreFromRecords';
-import { scanAllCheckoutsStates } from '../../private/store/scanAllCheckoutsStates';
-import type { Checkout } from '../../private/store/types';
+import type { WorkspaceContext } from '../../private/context/createWorkspaceContext.js';
+import { createGenericOperation } from '../../private/operations/createGenericOperation.js';
+import { presentCheckoutRepositoryState } from '../../private/present/presentCheckoutRepositoryState.js';
+import { presentPackageStateReport } from '../../private/present/presentPackageStateReport.js';
+import { getRepositoryCheckoutPackages } from '../../private/repositories/getRepositoryCheckoutPackages.js';
+import { loadCheckoutRecords } from '../../private/resources/checkout/loadCheckoutRecords.js';
+import { loadProjectGraph } from '../../private/resources/projectGraph/loadProjectGraph.js';
+import { loadRepositoryRecords } from '../../private/resources/repository/loadRepositoryRecords.js';
+import type { PackageStateRecord, ProjectGraph } from '../../private/resources/types.js';
+import { hydrateStoreFromRecords } from '../../private/store/hydrateStoreFromRecords.js';
+import { scanAllCheckoutsStates } from '../../private/store/scanAllCheckoutsStates.js';
+import type { Checkout } from '../../private/store/types.js';
 
 export interface CheckoutRepositoryState {
 	target: Checkout;

@@ -1,6 +1,6 @@
-import type { Checkout } from '../store/types';
+import type { Checkout } from '../store/types.js';
 
-import { formatTable } from './formatTable';
+import { formatTable } from './formatTable.js';
 
 export function presentExtraneousReport(extraneous: Checkout[]): void {
 	if (extraneous.length === 0) {

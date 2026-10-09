@@ -1,18 +1,18 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-import simpleGit from 'simple-git';
+import { simpleGit } from 'simple-git';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { getCurrentBranch } from '../../../private/git/getCurrentBranch';
-import { createCheckout } from '../../../private/store/createCheckout';
-import { makeCommandContextMock } from '../../../test/helpers/context/makeCommandContextMock';
-import { makeGitBareRepo } from '../../../test/helpers/git/makeGitBareRepo';
-import { writeRepoMockRecord } from '../../../test/helpers/records/writeRepoMockRecord';
-import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir';
-import { removeTempDirs } from '../../../test/helpers/tempDirs/removeTempDirs';
+import { getCurrentBranch } from '../../../private/git/getCurrentBranch.js';
+import { createCheckout } from '../../../private/store/createCheckout.js';
+import { makeCommandContextMock } from '../../../test/helpers/context/makeCommandContextMock.js';
+import { makeGitBareRepo } from '../../../test/helpers/git/makeGitBareRepo.js';
+import { writeRepoMockRecord } from '../../../test/helpers/records/writeRepoMockRecord.js';
+import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir.js';
+import { removeTempDirs } from '../../../test/helpers/tempDirs/removeTempDirs.js';
 
-import { cloneIfMissing } from './cloneIfMissing';
+import { cloneIfMissing } from './cloneIfMissing.js';
 
 const tempDirs: string[] = [];
 
@@ -51,7 +51,7 @@ describe('cloneIfMissing', () => {
 
 		writeRepoMockRecord(workspaceDir, 'FeatureRepo', bareDir);
 		const { loadRepositoryRecords } =
-			await import('../../../private/resources/repository/loadRepositoryRecords');
+			await import('../../../private/resources/repository/loadRepositoryRecords.js');
 		const repos = await loadRepositoryRecords(ctx);
 		const repo = repos.find(r => r.name === 'FeatureRepo');
 		expect(repo).toBeDefined();
@@ -93,7 +93,7 @@ describe('cloneIfMissing', () => {
 
 		writeRepoMockRecord(workspaceDir, 'FallbackRepo', bareDir);
 		const { loadRepositoryRecords } =
-			await import('../../../private/resources/repository/loadRepositoryRecords');
+			await import('../../../private/resources/repository/loadRepositoryRecords.js');
 		const repos = await loadRepositoryRecords(ctx);
 		const repo = repos.find(r => r.name === 'FallbackRepo');
 		expect(repo).toBeDefined();

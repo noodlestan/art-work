@@ -1,31 +1,31 @@
 import { access } from 'node:fs/promises';
 import { join } from 'node:path';
 
-import type { WorkspaceContext } from '../context/createWorkspaceContext';
-import { getBehindAheadCount } from '../git/getBehindAheadCount';
-import { getCurrentBranch } from '../git/getCurrentBranch';
-import { getRemoteBranch } from '../git/getRemoteBranch';
-import { getRemoteUrl } from '../git/getRemoteUrl';
-import { hasMergeConflicts } from '../git/hasMergeConflicts';
-import { hasRemote } from '../git/hasRemote';
-import { isDetachedHead } from '../git/isDetachedHead';
-import { isDirty } from '../git/isDirty';
-import { remoteFetch } from '../git/remoteFetch';
-import { createGenericOperation } from '../operations/createGenericOperation';
-import { createOperationFailure } from '../operations/createOperationFailure';
-import type { Checkout } from '../store/types';
+import type { WorkspaceContext } from '../context/createWorkspaceContext.js';
+import { getBehindAheadCount } from '../git/getBehindAheadCount.js';
+import { getCurrentBranch } from '../git/getCurrentBranch.js';
+import { getRemoteBranch } from '../git/getRemoteBranch.js';
+import { getRemoteUrl } from '../git/getRemoteUrl.js';
+import { hasMergeConflicts } from '../git/hasMergeConflicts.js';
+import { hasRemote } from '../git/hasRemote.js';
+import { isDetachedHead } from '../git/isDetachedHead.js';
+import { isDirty } from '../git/isDirty.js';
+import { remoteFetch } from '../git/remoteFetch.js';
+import { createGenericOperation } from '../operations/createGenericOperation.js';
+import { createOperationFailure } from '../operations/createOperationFailure.js';
+import type { Checkout } from '../store/types.js';
 
-import { createCheckoutNoClonedScan } from './private/createCheckoutNoClonedScan';
-import { createCheckoutScan } from './private/createCheckoutScan';
-import { createCommittedState } from './states/createCommittedState';
-import { createExistsState } from './states/createExistsState';
-import { createGitDirState } from './states/createGitDirState';
-import { createNoConflictsState } from './states/createNoConflictsState';
-import { createNoDetachedState } from './states/createNoDetachedState';
-import { createRemoteState } from './states/createRemoteState';
-import { createRepoState } from './states/createRepoState';
-import { createSyncState } from './states/createSyncState';
-import { createWrongRemoteState } from './states/createWrongRemoteState';
+import { createCheckoutNoClonedScan } from './private/createCheckoutNoClonedScan.js';
+import { createCheckoutScan } from './private/createCheckoutScan.js';
+import { createCommittedState } from './states/createCommittedState.js';
+import { createExistsState } from './states/createExistsState.js';
+import { createGitDirState } from './states/createGitDirState.js';
+import { createNoConflictsState } from './states/createNoConflictsState.js';
+import { createNoDetachedState } from './states/createNoDetachedState.js';
+import { createRemoteState } from './states/createRemoteState.js';
+import { createRepoState } from './states/createRepoState.js';
+import { createSyncState } from './states/createSyncState.js';
+import { createWrongRemoteState } from './states/createWrongRemoteState.js';
 
 export async function scanCheckoutState(
 	ctx: WorkspaceContext,

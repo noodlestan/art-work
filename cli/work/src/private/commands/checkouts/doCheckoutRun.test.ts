@@ -3,13 +3,13 @@ import { join } from 'node:path';
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { makeCheckoutMock } from '../../../test/helpers/checkout/makeCheckoutMock';
-import { makeCheckoutScanMock } from '../../../test/helpers/checkout/makeCheckoutScanMock';
-import { makeCommandContextMock } from '../../../test/helpers/context/makeCommandContextMock';
-import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir';
-import { removeTempDirs } from '../../../test/helpers/tempDirs/removeTempDirs';
+import { makeCheckoutMock } from '../../../test/helpers/checkout/makeCheckoutMock.js';
+import { makeCheckoutScanMock } from '../../../test/helpers/checkout/makeCheckoutScanMock.js';
+import { makeCommandContextMock } from '../../../test/helpers/context/makeCommandContextMock.js';
+import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir.js';
+import { removeTempDirs } from '../../../test/helpers/tempDirs/removeTempDirs.js';
 
-import { doCheckoutRun } from './doCheckoutRun';
+import { doCheckoutRun } from './doCheckoutRun.js';
 
 const tempDirs: string[] = [];
 

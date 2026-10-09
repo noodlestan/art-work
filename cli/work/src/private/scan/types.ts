@@ -1,4 +1,4 @@
-import type { CheckoutOp } from '../operations/types';
+import type { CheckoutOp } from '../operations/types.js';
 
 export interface CheckoutStateRepo {
 	type: 'repo';

@@ -1,7 +1,7 @@
-import type { OperationsLog } from '../log/createOperationsLog';
+import type { OperationsLog } from '../log/createOperationsLog.js';
 
-import { formatTable } from './formatTable';
-import { makeOperationLogLine } from './makeOperationLogLine';
+import { formatTable } from './formatTable.js';
+import { makeOperationLogLine } from './makeOperationLogLine.js';
 
 export function presentOperationsReport(log: OperationsLog): void {
 	const operations = log.all();

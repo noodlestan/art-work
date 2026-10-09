@@ -3,24 +3,24 @@ import { dirname, join } from 'node:path';
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { makeConfigMock } from '../../../test/helpers/context/makeConfigMock';
-import { makeRecordFileMock } from '../../../test/helpers/records/makeRecordFileMock';
+import { makeConfigMock } from '../../../test/helpers/context/makeConfigMock.js';
+import { makeRecordFileMock } from '../../../test/helpers/records/makeRecordFileMock.js';
 import {
 	writeNamespaceMockRecord,
 	writePackageMockRecord,
 	writeProjectMockRecord,
-} from '../../../test/helpers/records/writeProjectMockRecord';
-import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir';
-import { removeTempDirs } from '../../../test/helpers/tempDirs/removeTempDirs';
-import { loadNamespaceRecords } from '../namespace/loadNamespaceRecords';
-import { readNamespaceRecord } from '../namespace/readNamespaceRecord';
-import { loadPackageRecords } from '../package/loadPackageRecords';
-import { readPackageRecord } from '../package/readPackageRecord';
-import { loadProjectRecords } from '../project/loadProjectRecords';
-import { readProjectRecord } from '../project/readProjectRecord';
+} from '../../../test/helpers/records/writeProjectMockRecord.js';
+import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir.js';
+import { removeTempDirs } from '../../../test/helpers/tempDirs/removeTempDirs.js';
+import { loadNamespaceRecords } from '../namespace/loadNamespaceRecords.js';
+import { readNamespaceRecord } from '../namespace/readNamespaceRecord.js';
+import { loadPackageRecords } from '../package/loadPackageRecords.js';
+import { readPackageRecord } from '../package/readPackageRecord.js';
+import { loadProjectRecords } from '../project/loadProjectRecords.js';
+import { readProjectRecord } from '../project/readProjectRecord.js';
 
-import { consolidateProjectGraph } from './consolidateProjectGraph';
-import { loadProjectGraph } from './loadProjectGraph';
+import { consolidateProjectGraph } from './consolidateProjectGraph.js';
+import { loadProjectGraph } from './loadProjectGraph.js';
 
 const tempDirs: string[] = [];
 

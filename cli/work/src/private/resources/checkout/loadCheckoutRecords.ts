@@ -1,10 +1,10 @@
-import { findRecordFiles } from '@art-lib/fs-records';
+import { type FSRecordFile, findRecordFiles } from '@art-lib/fs-records';
 
-import type { WorkspaceContext } from '../../context/createWorkspaceContext';
-import { createGenericOperation } from '../../operations/createGenericOperation';
-import type { RepositoryCheckoutRecord, RepositoryRecord } from '../types';
+import type { WorkspaceContext } from '../../context/createWorkspaceContext.js';
+import { createGenericOperation } from '../../operations/createGenericOperation.js';
+import type { RepositoryCheckoutRecord, RepositoryRecord } from '../types.js';
 
-import { readCheckoutRecord } from './readCheckoutRecord';
+import { readCheckoutRecord } from './readCheckoutRecord.js';
 
 export async function loadCheckoutRecords(
 	ctx: WorkspaceContext,
@@ -13,7 +13,9 @@ export async function loadCheckoutRecords(
 	const searchPath = ctx.config.root.path;
 	ctx.log.log(createGenericOperation('load-checkout-records', searchPath));
 
-	const recordFiles = await findRecordFiles(ctx.config.records, searchPath, ['Checkout']);
+	const recordFiles: FSRecordFile[] = await findRecordFiles(ctx.config.records, searchPath, [
+		'Checkout',
+	]);
 	const checkouts = await Promise.all(
 		recordFiles.map(async file => {
 			const record = await readCheckoutRecord(file);

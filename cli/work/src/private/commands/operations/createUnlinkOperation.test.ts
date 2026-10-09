@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
-import { makeCheckoutMock } from '../../../test/helpers/checkout/makeCheckoutMock';
+import { makeCheckoutMock } from '../../../test/helpers/checkout/makeCheckoutMock.js';
 
-import { createUnlinkOperation } from './createUnlinkOperation';
+import { createUnlinkOperation } from './createUnlinkOperation.js';
 
 describe('createUnlinkOperation', () => {
 	it('has correct operation, outcome and message', () => {

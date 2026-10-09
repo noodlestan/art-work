@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { createCheckoutLocation } from './createCheckoutLocation';
+import { createCheckoutLocation } from './createCheckoutLocation.js';
 
 describe('createCheckoutLocation', () => {
 	it('sanitizes repo name with safePath', () => {

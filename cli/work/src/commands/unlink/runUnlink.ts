@@ -1,6 +1,6 @@
-import { createUnlinkOperation } from '../../private/commands/operations/createUnlinkOperation';
-import type { WorkspaceContext } from '../../private/context/createWorkspaceContext';
-import { createGenericOperation } from '../../private/operations/createGenericOperation';
+import { createUnlinkOperation } from '../../private/commands/operations/createUnlinkOperation.js';
+import type { WorkspaceContext } from '../../private/context/createWorkspaceContext.js';
+import { createGenericOperation } from '../../private/operations/createGenericOperation.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function runUnlink(ctx: WorkspaceContext, options: { root: string }): Promise<void> {

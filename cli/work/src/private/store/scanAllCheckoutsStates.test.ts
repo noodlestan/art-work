@@ -2,21 +2,21 @@ import { join } from 'node:path';
 
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock';
-import { advanceBareRepoByOneCommit } from '../../test/helpers/git/advanceBareRepoByOneCommit';
-import { advanceGitRepoByOneCommit } from '../../test/helpers/git/advanceGitRepoByOneCommit';
-import { makeGitBareRepo } from '../../test/helpers/git/makeGitBareRepo';
-import { makeGitRepoFromBare } from '../../test/helpers/git/makeGitRepoFromBare';
-import { writeCheckoutMockRecord } from '../../test/helpers/records/writeCheckoutMockRecord';
-import { writeRepoMockRecord } from '../../test/helpers/records/writeRepoMockRecord';
-import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir';
-import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs';
-import { loadCheckoutRecords } from '../resources/checkout/loadCheckoutRecords';
-import { loadRepositoryRecords } from '../resources/repository/loadRepositoryRecords';
+import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock.js';
+import { advanceBareRepoByOneCommit } from '../../test/helpers/git/advanceBareRepoByOneCommit.js';
+import { advanceGitRepoByOneCommit } from '../../test/helpers/git/advanceGitRepoByOneCommit.js';
+import { makeGitBareRepo } from '../../test/helpers/git/makeGitBareRepo.js';
+import { makeGitRepoFromBare } from '../../test/helpers/git/makeGitRepoFromBare.js';
+import { writeCheckoutMockRecord } from '../../test/helpers/records/writeCheckoutMockRecord.js';
+import { writeRepoMockRecord } from '../../test/helpers/records/writeRepoMockRecord.js';
+import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir.js';
+import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs.js';
+import { loadCheckoutRecords } from '../resources/checkout/loadCheckoutRecords.js';
+import { loadRepositoryRecords } from '../resources/repository/loadRepositoryRecords.js';
 
-import { createCheckout } from './createCheckout';
-import { hydrateStoreFromRecords } from './hydrateStoreFromRecords';
-import { scanAllCheckoutsStates } from './scanAllCheckoutsStates';
+import { createCheckout } from './createCheckout.js';
+import { hydrateStoreFromRecords } from './hydrateStoreFromRecords.js';
+import { scanAllCheckoutsStates } from './scanAllCheckoutsStates.js';
 
 const tempDirs: string[] = [];
 

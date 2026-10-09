@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { createGitDirState } from './createGitDirState';
+import { createGitDirState } from './createGitDirState.js';
 
 describe('createGitDirState', () => {
 	it('returns git-dir state with hasGit true', () => {

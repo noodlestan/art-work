@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock';
+import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock.js';
 
-import { runPublish } from './runPublish';
+import { runPublish } from './runPublish.js';
 
 describe('publish command', () => {
 	it('is a placeholder', async () => {

@@ -1,4 +1,4 @@
-import type { Checkout } from './types';
+import type { Checkout } from './types.js';
 
 export interface CheckoutStore {
 	addCheckout: (checkout: Checkout) => void;

@@ -1,12 +1,12 @@
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock';
-import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir';
-import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs';
-import { createPullOperation } from '../commands/operations/createPullOperation';
-import { createCheckout } from '../store/createCheckout';
+import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock.js';
+import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir.js';
+import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs.js';
+import { createPullOperation } from '../commands/operations/createPullOperation.js';
+import { createCheckout } from '../store/createCheckout.js';
 
-import { createOperationSuccess } from './createOperationSuccess';
+import { createOperationSuccess } from './createOperationSuccess.js';
 
 const tempDirs: string[] = [];
 

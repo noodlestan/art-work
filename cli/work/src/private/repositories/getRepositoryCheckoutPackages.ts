@@ -1,7 +1,7 @@
-import type { PackageStateRecord, ProjectGraph } from '../resources/types';
+import type { PackageStateRecord, ProjectGraph } from '../resources/types.js';
 
-import { createPackageStateRecord } from './createPackageStateRecord';
-import { scanPackageStateRecord } from './scanPackageStateRecord';
+import { createPackageStateRecord } from './createPackageStateRecord.js';
+import { scanPackageStateRecord } from './scanPackageStateRecord.js';
 
 export function getRepositoryCheckoutPackages(
 	checkoutPath: string,

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { createExistsState } from './createExistsState';
+import { createExistsState } from './createExistsState.js';
 
 describe('createExistsState', () => {
 	it('returns exists state with exists true', () => {

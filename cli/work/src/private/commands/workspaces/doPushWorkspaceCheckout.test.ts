@@ -1,19 +1,19 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 
-import simpleGit from 'simple-git';
+import { simpleGit } from 'simple-git';
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { makeCheckoutScanMock } from '../../../test/helpers/checkout/makeCheckoutScanMock';
-import { makeWorkspaceCheckoutMock } from '../../../test/helpers/checkout/makeWorkspaceCheckoutMock';
-import { makeCommandContextMock } from '../../../test/helpers/context/makeCommandContextMock';
-import { advanceGitRepoByOneCommit } from '../../../test/helpers/git/advanceGitRepoByOneCommit';
-import { makeGitBareRepo } from '../../../test/helpers/git/makeGitBareRepo';
-import { makeGitRepoFromBare } from '../../../test/helpers/git/makeGitRepoFromBare';
-import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir';
-import { removeTempDirs } from '../../../test/helpers/tempDirs/removeTempDirs';
+import { makeCheckoutScanMock } from '../../../test/helpers/checkout/makeCheckoutScanMock.js';
+import { makeWorkspaceCheckoutMock } from '../../../test/helpers/checkout/makeWorkspaceCheckoutMock.js';
+import { makeCommandContextMock } from '../../../test/helpers/context/makeCommandContextMock.js';
+import { advanceGitRepoByOneCommit } from '../../../test/helpers/git/advanceGitRepoByOneCommit.js';
+import { makeGitBareRepo } from '../../../test/helpers/git/makeGitBareRepo.js';
+import { makeGitRepoFromBare } from '../../../test/helpers/git/makeGitRepoFromBare.js';
+import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir.js';
+import { removeTempDirs } from '../../../test/helpers/tempDirs/removeTempDirs.js';
 
-import { doPushWorkspaceCheckout } from './doPushWorkspaceCheckout';
+import { doPushWorkspaceCheckout } from './doPushWorkspaceCheckout.js';
 
 const tempDirs: string[] = [];
 

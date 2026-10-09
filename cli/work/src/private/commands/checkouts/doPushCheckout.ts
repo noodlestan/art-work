@@ -1,10 +1,10 @@
-import type { WorkspaceContext } from '../../context/createWorkspaceContext';
-import { pushCheckout } from '../../git/pushCheckout';
-import { createOperationFailure } from '../../operations/createOperationFailure';
-import { createOperationSuccess } from '../../operations/createOperationSuccess';
-import { scanCheckoutState } from '../../scan/scanCheckoutState';
-import type { Checkout } from '../../store/createCheckout';
-import { createPushOperation } from '../operations/createPushOperation';
+import type { WorkspaceContext } from '../../context/createWorkspaceContext.js';
+import { pushCheckout } from '../../git/pushCheckout.js';
+import { createOperationFailure } from '../../operations/createOperationFailure.js';
+import { createOperationSuccess } from '../../operations/createOperationSuccess.js';
+import { scanCheckoutState } from '../../scan/scanCheckoutState.js';
+import type { Checkout } from '../../store/createCheckout.js';
+import { createPushOperation } from '../operations/createPushOperation.js';
 
 export async function doPushCheckout(
 	ctx: WorkspaceContext,

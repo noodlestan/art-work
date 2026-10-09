@@ -1,4 +1,4 @@
-import type { CheckoutStateRemote } from '../types';
+import type { CheckoutStateRemote } from '../types.js';
 
 export const createRemoteState = (
 	branch: string | null,

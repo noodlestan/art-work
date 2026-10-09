@@ -1,5 +1,5 @@
-import type { Operation } from '../operations/types';
-import { makeOperationLogLine } from '../present/makeOperationLogLine';
+import type { Operation } from '../operations/types.js';
+import { makeOperationLogLine } from '../present/makeOperationLogLine.js';
 
 export interface LoggerAPI {
 	log: (op: Operation) => void;

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { createNoConflictsState } from './createNoConflictsState';
+import { createNoConflictsState } from './createNoConflictsState.js';
 
 describe('createNoConflictsState', () => {
 	it('returns no-conflicts state with clear true', () => {

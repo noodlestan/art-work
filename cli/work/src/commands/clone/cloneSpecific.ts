@@ -1,18 +1,18 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 
-import { createCloneOperation } from '../../private/commands/operations/createCloneOperation';
-import type { WorkspaceContext } from '../../private/context/createWorkspaceContext';
-import { createOperationFailure } from '../../private/operations/createOperationFailure';
-import { presentCheckoutReport } from '../../private/present/presentCheckoutReport';
-import { presentOperationsReport } from '../../private/present/presentOperationsReport';
-import { saveCheckoutRecord } from '../../private/resources/checkout/saveCheckoutRecord';
-import type { RepositoryRecord } from '../../private/resources/types';
-import { createCheckout } from '../../private/store/createCheckout';
-import { createCheckoutLocation } from '../../private/store/createCheckoutLocation';
-import { scanAllCheckoutsStates } from '../../private/store/scanAllCheckoutsStates';
+import { createCloneOperation } from '../../private/commands/operations/createCloneOperation.js';
+import type { WorkspaceContext } from '../../private/context/createWorkspaceContext.js';
+import { createOperationFailure } from '../../private/operations/createOperationFailure.js';
+import { presentCheckoutReport } from '../../private/present/presentCheckoutReport.js';
+import { presentOperationsReport } from '../../private/present/presentOperationsReport.js';
+import { saveCheckoutRecord } from '../../private/resources/checkout/saveCheckoutRecord.js';
+import type { RepositoryRecord } from '../../private/resources/types.js';
+import { createCheckout } from '../../private/store/createCheckout.js';
+import { createCheckoutLocation } from '../../private/store/createCheckoutLocation.js';
+import { scanAllCheckoutsStates } from '../../private/store/scanAllCheckoutsStates.js';
 
-import { cloneIfMissing } from './private/cloneIfMissing';
+import { cloneIfMissing } from './private/cloneIfMissing.js';
 
 export async function cloneSpecific(
 	ctx: WorkspaceContext,

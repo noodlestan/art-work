@@ -1,8 +1,8 @@
 import { mkdirSync } from 'node:fs';
 
-import simpleGit, { type SimpleGit } from 'simple-git';
+import { type SimpleGit, simpleGit } from 'simple-git';
 
-import { makeTempDir } from '../tempDirs/makeTempDir';
+import { makeTempDir } from '../tempDirs/makeTempDir.js';
 
 /** Creates a bare git repo. */
 export async function makeGitBareRepo(

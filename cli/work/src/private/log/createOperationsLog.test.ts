@@ -1,11 +1,11 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { makeConfigMock } from '../../test/helpers/context/makeConfigMock';
-import { createCloneOperation } from '../commands/operations/createCloneOperation';
-import { createOperationSuccess } from '../operations/createOperationSuccess';
-import { createCheckout } from '../store/createCheckout';
+import { makeConfigMock } from '../../test/helpers/context/makeConfigMock.js';
+import { createCloneOperation } from '../commands/operations/createCloneOperation.js';
+import { createOperationSuccess } from '../operations/createOperationSuccess.js';
+import { createCheckout } from '../store/createCheckout.js';
 
-import { createOperationsLog } from './createOperationsLog';
+import { createOperationsLog } from './createOperationsLog.js';
 
 function makeCheckout(name: string) {
 	const config = makeConfigMock('.');

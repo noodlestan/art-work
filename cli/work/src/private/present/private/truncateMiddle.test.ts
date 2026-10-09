@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { truncateMiddle } from './truncateMiddle';
+import { truncateMiddle } from './truncateMiddle.js';
 
 describe('truncateMiddle', () => {
 	it('returns the string unchanged when shorter than the limit', () => {

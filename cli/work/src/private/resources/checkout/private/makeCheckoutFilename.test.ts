@@ -2,10 +2,10 @@ import { join } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
-import { makeConfigMock } from '../../../../test/helpers/context/makeConfigMock';
-import { makeTempDir } from '../../../../test/helpers/tempDirs/makeTempDir';
+import { makeConfigMock } from '../../../../test/helpers/context/makeConfigMock.js';
+import { makeTempDir } from '../../../../test/helpers/tempDirs/makeTempDir.js';
 
-import { makeCheckoutFilename } from './makeCheckoutFilename';
+import { makeCheckoutFilename } from './makeCheckoutFilename.js';
 
 const tempDirs: string[] = [];
 

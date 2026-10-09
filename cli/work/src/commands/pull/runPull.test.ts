@@ -3,16 +3,16 @@ import { join } from 'node:path';
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock';
-import { advanceBareRepoByOneCommit } from '../../test/helpers/git/advanceBareRepoByOneCommit';
-import { makeGitBareRepo } from '../../test/helpers/git/makeGitBareRepo';
-import { makeGitRepoFromBare } from '../../test/helpers/git/makeGitRepoFromBare';
-import { writeCheckoutMockRecord } from '../../test/helpers/records/writeCheckoutMockRecord';
-import { writeRepoMockRecord } from '../../test/helpers/records/writeRepoMockRecord';
-import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir';
-import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs';
+import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock.js';
+import { advanceBareRepoByOneCommit } from '../../test/helpers/git/advanceBareRepoByOneCommit.js';
+import { makeGitBareRepo } from '../../test/helpers/git/makeGitBareRepo.js';
+import { makeGitRepoFromBare } from '../../test/helpers/git/makeGitRepoFromBare.js';
+import { writeCheckoutMockRecord } from '../../test/helpers/records/writeCheckoutMockRecord.js';
+import { writeRepoMockRecord } from '../../test/helpers/records/writeRepoMockRecord.js';
+import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir.js';
+import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs.js';
 
-import { runPull } from './runPull';
+import { runPull } from './runPull.js';
 
 const tempDirs: string[] = [];
 

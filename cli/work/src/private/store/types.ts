@@ -1,5 +1,5 @@
-import type { CheckoutRecord, RepositoryRecord } from '../resources/types';
-import type { CheckoutScan } from '../scan/types';
+import type { CheckoutRecord, RepositoryRecord } from '../resources/types.js';
+import type { CheckoutScan } from '../scan/types.js';
 
 export interface Checkout {
 	repo?: RepositoryRecord;

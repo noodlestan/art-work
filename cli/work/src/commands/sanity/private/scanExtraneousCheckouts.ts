@@ -1,11 +1,11 @@
 import { readdir } from 'node:fs/promises';
 import { join, relative } from 'node:path';
 
-import type { WorkspaceContext } from '../../../private/context/createWorkspaceContext';
-import { createExtraneousCheckout } from '../../../private/scan/private/createExtraneousCheckout';
-import { scanCheckoutState } from '../../../private/scan/scanCheckoutState';
-import type { CheckoutStore } from '../../../private/store/createCheckoutStore';
-import type { Checkout } from '../../../private/store/types';
+import type { WorkspaceContext } from '../../../private/context/createWorkspaceContext.js';
+import { createExtraneousCheckout } from '../../../private/scan/private/createExtraneousCheckout.js';
+import { scanCheckoutState } from '../../../private/scan/scanCheckoutState.js';
+import type { CheckoutStore } from '../../../private/store/createCheckoutStore.js';
+import type { Checkout } from '../../../private/store/types.js';
 
 export async function scanExtraneousCheckouts(
 	ctx: WorkspaceContext,

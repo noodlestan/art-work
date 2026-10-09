@@ -2,12 +2,12 @@ import { join } from 'node:path';
 
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { makeConfigMock } from '../../test/helpers/context/makeConfigMock';
-import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir';
-import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs';
+import { makeConfigMock } from '../../test/helpers/context/makeConfigMock.js';
+import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir.js';
+import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs.js';
 
-import { createCheckoutStore } from './createCheckoutStore';
-import { hydrateStoreFromRecords } from './hydrateStoreFromRecords';
+import { createCheckoutStore } from './createCheckoutStore.js';
+import { hydrateStoreFromRecords } from './hydrateStoreFromRecords.js';
 
 const tempDirs: string[] = [];
 

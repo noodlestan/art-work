@@ -1,8 +1,8 @@
-import type { WorkspaceConfig } from '../../config/types';
-import type { RepositoryCheckoutRecord } from '../resources/types';
+import type { WorkspaceConfig } from '../../config/types.js';
+import type { RepositoryCheckoutRecord } from '../resources/types.js';
 
-import { createCheckout } from './createCheckout';
-import type { CheckoutStore } from './createCheckoutStore';
+import { createCheckout } from './createCheckout.js';
+import type { CheckoutStore } from './createCheckoutStore.js';
 
 export function hydrateStoreFromRecords(
 	config: WorkspaceConfig,

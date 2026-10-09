@@ -1,6 +1,6 @@
 import type { FSRecordsPath } from '@art-lib/fs-records';
 
-import type { PartialWorkspaceConfig } from '../types';
+import type { PartialWorkspaceConfig } from '../types.js';
 
 const DEFAULTS: FSRecordsPath = {
 	base: '.',
@@ -15,7 +15,7 @@ export function normalizeRecordPaths(records: PartialWorkspaceConfig['records'])
 
 	const paths = maybePaths || [{}];
 
-	return paths.map(p => ({
+	return paths.map((p: FSRecordsPath) => ({
 		base: p.base ?? records?.base ?? DEFAULTS.base,
 		pattern: p.pattern ?? records?.pattern ?? DEFAULTS.pattern,
 		ignored: p.ignored ?? records?.ignored ?? DEFAULTS.ignored,

@@ -1,4 +1,4 @@
-import simpleGit from 'simple-git';
+import { simpleGit } from 'simple-git';
 
 export async function getRemoteBranch(dir: string): Promise<string | null> {
 	const git = simpleGit(dir);

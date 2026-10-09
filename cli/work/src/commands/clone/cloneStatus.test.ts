@@ -1,10 +1,10 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock';
-import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir';
-import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs';
+import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock.js';
+import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir.js';
+import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs.js';
 
-import { cloneStatus } from './cloneStatus';
+import { cloneStatus } from './cloneStatus.js';
 
 const tempDirs: string[] = [];
 

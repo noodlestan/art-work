@@ -1,5 +1,5 @@
-import type { PublishPending } from '../../operations/types';
-import type { Checkout } from '../../store/createCheckout';
+import type { PublishPending } from '../../operations/types.js';
+import type { Checkout } from '../../store/createCheckout.js';
 
 export function createPublishOperation(
 	checkout: Checkout | undefined,

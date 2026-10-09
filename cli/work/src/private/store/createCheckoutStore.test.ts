@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
-import { makeConfigMock } from '../../test/helpers/context/makeConfigMock';
+import { makeConfigMock } from '../../test/helpers/context/makeConfigMock.js';
 
-import { createCheckout } from './createCheckout';
-import { createCheckoutStore } from './createCheckoutStore';
+import { createCheckout } from './createCheckout.js';
+import { createCheckoutStore } from './createCheckoutStore.js';
 
 describe('createCheckoutStore', () => {
 	it('addCheckout stores the provided checkout', () => {

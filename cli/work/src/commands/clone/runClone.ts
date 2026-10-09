@@ -1,12 +1,12 @@
-import type { WorkspaceContext } from '../../private/context/createWorkspaceContext';
-import { createGenericOperation } from '../../private/operations/createGenericOperation';
-import { loadCheckoutRecords } from '../../private/resources/checkout/loadCheckoutRecords';
-import { loadRepositoryRecords } from '../../private/resources/repository/loadRepositoryRecords';
-import { hydrateStoreFromRecords } from '../../private/store/hydrateStoreFromRecords';
+import type { WorkspaceContext } from '../../private/context/createWorkspaceContext.js';
+import { createGenericOperation } from '../../private/operations/createGenericOperation.js';
+import { loadCheckoutRecords } from '../../private/resources/checkout/loadCheckoutRecords.js';
+import { loadRepositoryRecords } from '../../private/resources/repository/loadRepositoryRecords.js';
+import { hydrateStoreFromRecords } from '../../private/store/hydrateStoreFromRecords.js';
 
-import { cloneAll } from './cloneAll';
-import { cloneSpecific } from './cloneSpecific';
-import { cloneStatus } from './cloneStatus';
+import { cloneAll } from './cloneAll.js';
+import { cloneSpecific } from './cloneSpecific.js';
+import { cloneStatus } from './cloneStatus.js';
 
 interface CloneOptions {
 	all?: boolean;

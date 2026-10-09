@@ -1,10 +1,10 @@
-import type { WorkspaceContext } from '../../context/createWorkspaceContext';
-import { createOrSwitchBranch } from '../../git/createOrSwitchBranch';
-import { createOperationFailure } from '../../operations/createOperationFailure';
-import { createOperationSuccess } from '../../operations/createOperationSuccess';
-import { saveCheckoutRecord } from '../../resources/checkout/saveCheckoutRecord';
-import type { Checkout } from '../../store/createCheckout';
-import { createBranchOperation } from '../operations/createBranchOperation';
+import type { WorkspaceContext } from '../../context/createWorkspaceContext.js';
+import { createOrSwitchBranch } from '../../git/createOrSwitchBranch.js';
+import { createOperationFailure } from '../../operations/createOperationFailure.js';
+import { createOperationSuccess } from '../../operations/createOperationSuccess.js';
+import { saveCheckoutRecord } from '../../resources/checkout/saveCheckoutRecord.js';
+import type { Checkout } from '../../store/createCheckout.js';
+import { createBranchOperation } from '../operations/createBranchOperation.js';
 
 export async function doBranchCheckout(
 	ctx: WorkspaceContext,

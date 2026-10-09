@@ -1,9 +1,9 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-import simpleGit, { type SimpleGit } from 'simple-git';
+import { type SimpleGit, simpleGit } from 'simple-git';
 
-import { makeTempDir } from '../tempDirs/makeTempDir';
+import { makeTempDir } from '../tempDirs/makeTempDir.js';
 
 export interface MakeGitRepoFromBareOptions {
 	/** Place the repo at a specific path instead of a tempDir-managed one. */

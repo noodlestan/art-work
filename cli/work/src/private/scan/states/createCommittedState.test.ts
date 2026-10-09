@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { createCommittedState } from './createCommittedState';
+import { createCommittedState } from './createCommittedState.js';
 
 describe('createCommittedState', () => {
 	it('returns committed state with clean true', () => {

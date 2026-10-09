@@ -1,17 +1,17 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock';
-import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir';
-import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs';
-import { createCloneOperation } from '../commands/operations/createCloneOperation';
-import { createOperationsLog } from '../log/createOperationsLog';
-import { createOperationFailure } from '../operations/createOperationFailure';
-import { createOperationSuccess } from '../operations/createOperationSuccess';
-import type { ClonePending } from '../operations/types';
-import { createCheckout } from '../store/createCheckout';
+import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock.js';
+import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir.js';
+import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs.js';
+import { createCloneOperation } from '../commands/operations/createCloneOperation.js';
+import { createOperationsLog } from '../log/createOperationsLog.js';
+import { createOperationFailure } from '../operations/createOperationFailure.js';
+import { createOperationSuccess } from '../operations/createOperationSuccess.js';
+import type { ClonePending } from '../operations/types.js';
+import { createCheckout } from '../store/createCheckout.js';
 
-import { makeOperationLogLine } from './makeOperationLogLine';
-import { presentOperationsReport } from './presentOperationsReport';
+import { makeOperationLogLine } from './makeOperationLogLine.js';
+import { presentOperationsReport } from './presentOperationsReport.js';
 
 function makeClonePendingOperationMock(): ClonePending {
 	return {

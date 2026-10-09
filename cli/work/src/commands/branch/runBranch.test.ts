@@ -2,15 +2,15 @@ import { join } from 'node:path';
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock';
-import { advanceGitRepoByOneCommit } from '../../test/helpers/git/advanceGitRepoByOneCommit';
-import { makeGitRepo } from '../../test/helpers/git/makeGitRepo';
-import { writeCheckoutMockRecord } from '../../test/helpers/records/writeCheckoutMockRecord';
-import { writeRepoMockRecord } from '../../test/helpers/records/writeRepoMockRecord';
-import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir';
-import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs';
+import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock.js';
+import { advanceGitRepoByOneCommit } from '../../test/helpers/git/advanceGitRepoByOneCommit.js';
+import { makeGitRepo } from '../../test/helpers/git/makeGitRepo.js';
+import { writeCheckoutMockRecord } from '../../test/helpers/records/writeCheckoutMockRecord.js';
+import { writeRepoMockRecord } from '../../test/helpers/records/writeRepoMockRecord.js';
+import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir.js';
+import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs.js';
 
-import { runBranch } from './runBranch';
+import { runBranch } from './runBranch.js';
 
 const tempDirs: string[] = [];
 

@@ -1,4 +1,4 @@
-import type { CheckoutStateWrongRemote } from '../types';
+import type { CheckoutStateWrongRemote } from '../types.js';
 
 export const createWrongRemoteState = (wrong: boolean): CheckoutStateWrongRemote => ({
 	type: 'wrong-remote',

@@ -1,4 +1,4 @@
-import type { Checkout } from '../store/createCheckout';
+import type { Checkout } from '../store/createCheckout.js';
 
 export type CheckoutOp =
 	| 'clone'

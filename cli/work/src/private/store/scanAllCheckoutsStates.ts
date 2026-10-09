@@ -1,7 +1,7 @@
-import { runWithConcurrency } from '../async/runWithConcurrency';
-import type { WorkspaceContext } from '../context/createWorkspaceContext';
-import { createGenericOperation } from '../operations/createGenericOperation';
-import { scanCheckoutState } from '../scan/scanCheckoutState';
+import { runWithConcurrency } from '../async/runWithConcurrency.js';
+import type { WorkspaceContext } from '../context/createWorkspaceContext.js';
+import { createGenericOperation } from '../operations/createGenericOperation.js';
+import { scanCheckoutState } from '../scan/scanCheckoutState.js';
 
 export async function scanAllCheckoutsStates(
 	ctx: WorkspaceContext,

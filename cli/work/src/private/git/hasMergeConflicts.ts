@@ -1,4 +1,4 @@
-import simpleGit from 'simple-git';
+import { simpleGit } from 'simple-git';
 
 export async function hasMergeConflicts(dir: string): Promise<boolean> {
 	const git = simpleGit(dir);

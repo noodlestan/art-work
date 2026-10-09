@@ -1,9 +1,9 @@
 import { join } from 'node:path';
 
-import type { WorkspaceConfig } from '../../config/types';
-import type { Checkout } from '../store/types';
+import type { WorkspaceConfig } from '../../config/types.js';
+import type { Checkout } from '../store/types.js';
 
-import { formatTable } from './formatTable';
+import { formatTable } from './formatTable.js';
 
 export function presentCheckoutReport(config: WorkspaceConfig, checkouts: Checkout[]): void {
 	const items = [...checkouts];

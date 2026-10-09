@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { safePath } from './safePath';
+import { safePath } from './safePath.js';
 
 describe('safePath', () => {
 	it('lowercases and replaces non-alphanumerics with hyphens', () => {

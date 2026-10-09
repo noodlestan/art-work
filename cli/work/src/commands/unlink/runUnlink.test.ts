@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock';
+import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock.js';
 
-import { runUnlink } from './runUnlink';
+import { runUnlink } from './runUnlink.js';
 
 describe('unlink command', () => {
 	it('is a placeholder', async () => {

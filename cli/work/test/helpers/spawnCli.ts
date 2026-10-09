@@ -2,8 +2,8 @@ import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import process from 'node:process';
 
-import { BUILD_HINT, BUNDLE, ENCODING, PACKAGE_ROOT } from './constants';
-import type { TestCliOptions, TestCliResult } from './types';
+import { BUILD_HINT, BUNDLE, ENCODING, PACKAGE_ROOT } from './constants.js';
+import type { TestCliOptions, TestCliResult } from './types.js';
 
 function readBundlePath(): string {
 	if (!existsSync(BUNDLE)) {

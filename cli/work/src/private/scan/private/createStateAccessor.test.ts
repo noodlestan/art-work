@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
-import { createExistsState } from '../states/createExistsState';
-import { createRepoState } from '../states/createRepoState';
+import { createExistsState } from '../states/createExistsState.js';
+import { createRepoState } from '../states/createRepoState.js';
 
-import { createStateAccessor } from './createStateAccessor';
+import { createStateAccessor } from './createStateAccessor.js';
 
 describe('createStateAccessor', () => {
 	it('returns the matching state', () => {

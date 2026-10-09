@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { createCheckoutNoClonedScan } from './createCheckoutNoClonedScan';
+import { createCheckoutNoClonedScan } from './createCheckoutNoClonedScan.js';
 
 describe('createCheckoutNoClonedScan', () => {
 	it('returns scan with not cloned issue for known repo', () => {

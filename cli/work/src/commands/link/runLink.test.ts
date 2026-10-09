@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock';
+import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock.js';
 
-import { runLink } from './runLink';
+import { runLink } from './runLink.js';
 
 describe('link command', () => {
 	it('is a placeholder', async () => {

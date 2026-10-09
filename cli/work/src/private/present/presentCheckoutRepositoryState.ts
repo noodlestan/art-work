@@ -1,4 +1,4 @@
-import type { CheckoutRepositoryState } from '../../commands/repo/runRepo';
+import type { CheckoutRepositoryState } from '../../commands/repo/runRepo.js';
 
 export function presentCheckoutRepositoryState(state: CheckoutRepositoryState): void {
 	console.info('');

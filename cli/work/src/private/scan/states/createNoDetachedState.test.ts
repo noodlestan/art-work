@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { createNoDetachedState } from './createNoDetachedState';
+import { createNoDetachedState } from './createNoDetachedState.js';
 
 describe('createNoDetachedState', () => {
 	it('returns no-detached state with attached true', () => {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { formatTable } from './formatTable';
+import { formatTable } from './formatTable.js';
 
 describe('formatTable', () => {
 	it('pads columns so headers and rows are aligned', () => {

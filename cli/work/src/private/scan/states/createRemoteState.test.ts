@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { createRemoteState } from './createRemoteState';
+import { createRemoteState } from './createRemoteState.js';
 
 describe('createRemoteState', () => {
 	it('returns remote state with branch matching expected', () => {

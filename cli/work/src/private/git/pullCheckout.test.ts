@@ -3,14 +3,14 @@ import { join } from 'node:path';
 
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { advanceBareRepoByOneCommit } from '../../test/helpers/git/advanceBareRepoByOneCommit';
-import { makeGitBareRepo } from '../../test/helpers/git/makeGitBareRepo';
-import { makeGitRepo } from '../../test/helpers/git/makeGitRepo';
-import { makeGitRepoFromBare } from '../../test/helpers/git/makeGitRepoFromBare';
-import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir';
-import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs';
+import { advanceBareRepoByOneCommit } from '../../test/helpers/git/advanceBareRepoByOneCommit.js';
+import { makeGitBareRepo } from '../../test/helpers/git/makeGitBareRepo.js';
+import { makeGitRepo } from '../../test/helpers/git/makeGitRepo.js';
+import { makeGitRepoFromBare } from '../../test/helpers/git/makeGitRepoFromBare.js';
+import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir.js';
+import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs.js';
 
-import { pullCheckout } from './pullCheckout';
+import { pullCheckout } from './pullCheckout.js';
 
 const tempDirs: string[] = [];
 

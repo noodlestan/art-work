@@ -1,10 +1,10 @@
-import type { WorkspaceConfig } from '../../../config';
-import { loadNamespaceRecords } from '../namespace/loadNamespaceRecords';
-import { loadPackageRecords } from '../package/loadPackageRecords';
-import { loadProjectRecords } from '../project/loadProjectRecords';
-import type { ProjectGraph } from '../types';
+import type { WorkspaceConfig } from '../../../config/index.js';
+import { loadNamespaceRecords } from '../namespace/loadNamespaceRecords.js';
+import { loadPackageRecords } from '../package/loadPackageRecords.js';
+import { loadProjectRecords } from '../project/loadProjectRecords.js';
+import type { ProjectGraph } from '../types.js';
 
-import { consolidateProjectGraph } from './consolidateProjectGraph';
+import { consolidateProjectGraph } from './consolidateProjectGraph.js';
 
 export async function loadProjectGraph(
 	config: WorkspaceConfig,

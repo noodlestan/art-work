@@ -1,5 +1,5 @@
-import { normalizeRecordPaths } from './private/normalizeRecordPaths';
-import type { PartialWorkspaceConfig, WorkspaceConfig } from './types';
+import { normalizeRecordPaths } from './private/normalizeRecordPaths.js';
+import type { PartialWorkspaceConfig, WorkspaceConfig } from './types.js';
 
 export function defineConfig(config: PartialWorkspaceConfig): WorkspaceConfig {
 	const clonePath = config.clone?.path || 'checkouts';

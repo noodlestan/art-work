@@ -1,7 +1,7 @@
-import { doClone } from '../../../private/commands/doClone';
-import type { WorkspaceContext } from '../../../private/context/createWorkspaceContext';
-import { scanCheckoutState } from '../../../private/scan/scanCheckoutState';
-import type { Checkout } from '../../../private/store/createCheckout';
+import { doClone } from '../../../private/commands/doClone.js';
+import type { WorkspaceContext } from '../../../private/context/createWorkspaceContext.js';
+import { scanCheckoutState } from '../../../private/scan/scanCheckoutState.js';
+import type { Checkout } from '../../../private/store/createCheckout.js';
 
 export async function cloneIfMissing(
 	ctx: WorkspaceContext,

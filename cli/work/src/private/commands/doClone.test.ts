@@ -2,13 +2,13 @@ import { join } from 'node:path';
 
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { makeCheckoutMock } from '../../test/helpers/checkout/makeCheckoutMock';
-import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock';
-import { makeGitBareRepo } from '../../test/helpers/git/makeGitBareRepo';
-import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir';
-import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs';
+import { makeCheckoutMock } from '../../test/helpers/checkout/makeCheckoutMock.js';
+import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock.js';
+import { makeGitBareRepo } from '../../test/helpers/git/makeGitBareRepo.js';
+import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir.js';
+import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs.js';
 
-import { doClone } from './doClone';
+import { doClone } from './doClone.js';
 
 const tempDirs: string[] = [];
 

@@ -1,14 +1,14 @@
-import { createCommittedState } from '../states/createCommittedState';
-import { createExistsState } from '../states/createExistsState';
-import { createGitDirState } from '../states/createGitDirState';
-import { createNoConflictsState } from '../states/createNoConflictsState';
-import { createNoDetachedState } from '../states/createNoDetachedState';
-import { createRemoteState } from '../states/createRemoteState';
-import { createRepoState } from '../states/createRepoState';
-import { createSyncState } from '../states/createSyncState';
-import type { CheckoutScan } from '../types';
+import { createCommittedState } from '../states/createCommittedState.js';
+import { createExistsState } from '../states/createExistsState.js';
+import { createGitDirState } from '../states/createGitDirState.js';
+import { createNoConflictsState } from '../states/createNoConflictsState.js';
+import { createNoDetachedState } from '../states/createNoDetachedState.js';
+import { createRemoteState } from '../states/createRemoteState.js';
+import { createRepoState } from '../states/createRepoState.js';
+import { createSyncState } from '../states/createSyncState.js';
+import type { CheckoutScan } from '../types.js';
 
-import { createCheckoutScan } from './createCheckoutScan';
+import { createCheckoutScan } from './createCheckoutScan.js';
 
 export function createCheckoutNoClonedScan(known: boolean): CheckoutScan {
 	return createCheckoutScan([

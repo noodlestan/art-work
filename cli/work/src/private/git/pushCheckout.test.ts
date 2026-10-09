@@ -1,13 +1,13 @@
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { advanceGitRepoByOneCommit } from '../../test/helpers/git/advanceGitRepoByOneCommit';
-import { makeGitBareRepo } from '../../test/helpers/git/makeGitBareRepo';
-import { makeGitRepo } from '../../test/helpers/git/makeGitRepo';
-import { makeGitRepoFromBare } from '../../test/helpers/git/makeGitRepoFromBare';
-import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir';
-import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs';
+import { advanceGitRepoByOneCommit } from '../../test/helpers/git/advanceGitRepoByOneCommit.js';
+import { makeGitBareRepo } from '../../test/helpers/git/makeGitBareRepo.js';
+import { makeGitRepo } from '../../test/helpers/git/makeGitRepo.js';
+import { makeGitRepoFromBare } from '../../test/helpers/git/makeGitRepoFromBare.js';
+import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir.js';
+import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs.js';
 
-import { pushCheckout } from './pushCheckout';
+import { pushCheckout } from './pushCheckout.js';
 
 const tempDirs: string[] = [];
 

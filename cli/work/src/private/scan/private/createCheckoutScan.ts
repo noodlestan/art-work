@@ -1,7 +1,7 @@
-import type { CheckoutOp } from '../../operations/types';
-import type { CheckoutScan, CheckoutState } from '../types';
+import type { CheckoutOp } from '../../operations/types.js';
+import type { CheckoutScan, CheckoutState } from '../types.js';
 
-import { createStateAccessor } from './createStateAccessor';
+import { createStateAccessor } from './createStateAccessor.js';
 
 export function createCheckoutScan(states: CheckoutState[]): CheckoutScan {
 	const state = createStateAccessor(states);

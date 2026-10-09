@@ -1,6 +1,6 @@
 import { rm } from 'node:fs/promises';
 
-import { delay } from '../delay';
+import { delay } from '../delay.js';
 
 export async function resilientRemoveDir(dir: string): Promise<void> {
 	for (const timeout of [1, 25, 250]) {

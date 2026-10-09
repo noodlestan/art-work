@@ -1,5 +1,5 @@
-import type { ClonePending } from '../../operations/types';
-import type { Checkout } from '../../store/createCheckout';
+import type { ClonePending } from '../../operations/types.js';
+import type { Checkout } from '../../store/createCheckout.js';
 
 export function createCloneOperation(checkout: Checkout | undefined): ClonePending {
 	return {

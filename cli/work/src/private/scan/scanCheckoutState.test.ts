@@ -3,17 +3,17 @@ import { join } from 'node:path';
 
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock';
-import { advanceBareRepoByOneCommit } from '../../test/helpers/git/advanceBareRepoByOneCommit';
-import { makeGitBareRepo } from '../../test/helpers/git/makeGitBareRepo';
-import { makeGitRepo } from '../../test/helpers/git/makeGitRepo';
-import { makeGitRepoFromBare } from '../../test/helpers/git/makeGitRepoFromBare';
-import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir';
-import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs';
-import type { RepositoryRecord } from '../resources/types';
-import { createCheckout } from '../store/createCheckout';
+import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock.js';
+import { advanceBareRepoByOneCommit } from '../../test/helpers/git/advanceBareRepoByOneCommit.js';
+import { makeGitBareRepo } from '../../test/helpers/git/makeGitBareRepo.js';
+import { makeGitRepo } from '../../test/helpers/git/makeGitRepo.js';
+import { makeGitRepoFromBare } from '../../test/helpers/git/makeGitRepoFromBare.js';
+import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir.js';
+import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs.js';
+import type { RepositoryRecord } from '../resources/types.js';
+import { createCheckout } from '../store/createCheckout.js';
 
-import { scanCheckoutState } from './scanCheckoutState';
+import { scanCheckoutState } from './scanCheckoutState.js';
 
 const tempDirs: string[] = [];
 

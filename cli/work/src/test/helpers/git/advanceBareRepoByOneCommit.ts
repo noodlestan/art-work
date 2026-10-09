@@ -1,5 +1,5 @@
-import { commitGitRepoFile } from './private/commitGitRepoFile';
-import { makeGitCloneOfRepo } from './private/makeGitCloneOfRepo';
+import { commitGitRepoFile } from './private/commitGitRepoFile.js';
+import { makeGitCloneOfRepo } from './private/makeGitCloneOfRepo.js';
 
 /**
  * Advances a bare repo by one commit. The only way to push to a bare repo is

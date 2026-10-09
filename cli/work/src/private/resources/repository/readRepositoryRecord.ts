@@ -1,6 +1,6 @@
 import { type FSRecordFile, readRecordFileContent } from '@art-lib/fs-records';
 
-import type { RepositoryRecord } from '../types';
+import type { RepositoryRecord } from '../types.js';
 
 export async function readRepositoryRecord(file: FSRecordFile): Promise<RepositoryRecord | null> {
 	const fileWithContents = file.content ? file : await readRecordFileContent(file);

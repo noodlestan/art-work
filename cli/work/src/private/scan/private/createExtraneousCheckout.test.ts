@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
-import { makeCommandContextMock } from '../../../test/helpers/context/makeCommandContextMock';
-import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir';
+import { makeCommandContextMock } from '../../../test/helpers/context/makeCommandContextMock.js';
+import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir.js';
 
-import { createExtraneousCheckout } from './createExtraneousCheckout';
+import { createExtraneousCheckout } from './createExtraneousCheckout.js';
 
 describe('createExtraneousCheckout', () => {
 	it('creates a checkout with the given location and empty branch', () => {

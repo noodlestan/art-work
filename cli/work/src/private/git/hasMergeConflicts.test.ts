@@ -1,10 +1,10 @@
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { makeGitRepo } from '../../test/helpers/git/makeGitRepo';
-import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir';
-import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs';
+import { makeGitRepo } from '../../test/helpers/git/makeGitRepo.js';
+import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir.js';
+import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs.js';
 
-import { hasMergeConflicts } from './hasMergeConflicts';
+import { hasMergeConflicts } from './hasMergeConflicts.js';
 
 const tempDirs: string[] = [];
 

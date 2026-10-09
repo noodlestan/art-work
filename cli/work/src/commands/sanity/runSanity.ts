@@ -1,18 +1,18 @@
-import { scanWorkspaceCheckout } from '../../private/commands/workspaces/scanWorkspaceCheckout';
-import { syncWorkspaceCheckout } from '../../private/commands/workspaces/syncWorkspaceCheckout';
-import type { WorkspaceContext } from '../../private/context/createWorkspaceContext';
-import { createGenericOperation } from '../../private/operations/createGenericOperation';
-import { presentCheckoutReport } from '../../private/present/presentCheckoutReport';
-import { presentExtraneousReport } from '../../private/present/presentExtraneousReport';
-import { presentOperationsReport } from '../../private/present/presentOperationsReport';
-import { presentWorkspaceReport } from '../../private/present/presentWorkspaceReport';
-import { loadCheckoutRecords } from '../../private/resources/checkout/loadCheckoutRecords';
-import { loadRepositoryRecords } from '../../private/resources/repository/loadRepositoryRecords';
-import { hydrateStoreFromRecords } from '../../private/store/hydrateStoreFromRecords';
-import { scanAllCheckoutsStates } from '../../private/store/scanAllCheckoutsStates';
+import { scanWorkspaceCheckout } from '../../private/commands/workspaces/scanWorkspaceCheckout.js';
+import { syncWorkspaceCheckout } from '../../private/commands/workspaces/syncWorkspaceCheckout.js';
+import type { WorkspaceContext } from '../../private/context/createWorkspaceContext.js';
+import { createGenericOperation } from '../../private/operations/createGenericOperation.js';
+import { presentCheckoutReport } from '../../private/present/presentCheckoutReport.js';
+import { presentExtraneousReport } from '../../private/present/presentExtraneousReport.js';
+import { presentOperationsReport } from '../../private/present/presentOperationsReport.js';
+import { presentWorkspaceReport } from '../../private/present/presentWorkspaceReport.js';
+import { loadCheckoutRecords } from '../../private/resources/checkout/loadCheckoutRecords.js';
+import { loadRepositoryRecords } from '../../private/resources/repository/loadRepositoryRecords.js';
+import { hydrateStoreFromRecords } from '../../private/store/hydrateStoreFromRecords.js';
+import { scanAllCheckoutsStates } from '../../private/store/scanAllCheckoutsStates.js';
 
-import { scanExtraneousCheckouts } from './private/scanExtraneousCheckouts';
-import { syncCheckouts } from './private/syncCheckouts';
+import { scanExtraneousCheckouts } from './private/scanExtraneousCheckouts.js';
+import { syncCheckouts } from './private/syncCheckouts.js';
 
 export async function runSanity(
 	ctx: WorkspaceContext,

@@ -3,12 +3,12 @@ import { dirname, join } from 'node:path';
 
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { makeRecordFileMock } from '../../../test/helpers/records/makeRecordFileMock';
-import { writeRepoMockRecord } from '../../../test/helpers/records/writeRepoMockRecord';
-import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir';
-import { removeTempDirs } from '../../../test/helpers/tempDirs/removeTempDirs';
+import { makeRecordFileMock } from '../../../test/helpers/records/makeRecordFileMock.js';
+import { writeRepoMockRecord } from '../../../test/helpers/records/writeRepoMockRecord.js';
+import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir.js';
+import { removeTempDirs } from '../../../test/helpers/tempDirs/removeTempDirs.js';
 
-import { readRepositoryRecord } from './readRepositoryRecord';
+import { readRepositoryRecord } from './readRepositoryRecord.js';
 
 export const tempDirs: string[] = [];
 

@@ -1,5 +1,5 @@
 {
-  "extends": "@noodlestan/tsconfig/cli/tsconfig.json",
+  "extends": "@noodlestan/tsconfig/esbuild/tsconfig.json",
   "compilerOptions": {
     "noPropertyAccessFromIndexSignature": false,
     "noUncheckedIndexedAccess": false

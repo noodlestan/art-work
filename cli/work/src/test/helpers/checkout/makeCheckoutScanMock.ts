@@ -1,14 +1,14 @@
-import { createCheckoutScan } from '../../../private/scan/private/createCheckoutScan';
-import { createCommittedState } from '../../../private/scan/states/createCommittedState';
-import { createExistsState } from '../../../private/scan/states/createExistsState';
-import { createGitDirState } from '../../../private/scan/states/createGitDirState';
-import { createNoConflictsState } from '../../../private/scan/states/createNoConflictsState';
-import { createNoDetachedState } from '../../../private/scan/states/createNoDetachedState';
-import { createRemoteState } from '../../../private/scan/states/createRemoteState';
-import { createRepoState } from '../../../private/scan/states/createRepoState';
-import { createSyncState } from '../../../private/scan/states/createSyncState';
-import { createWrongRemoteState } from '../../../private/scan/states/createWrongRemoteState';
-import type { CheckoutScan } from '../../../private/scan/types';
+import { createCheckoutScan } from '../../../private/scan/private/createCheckoutScan.js';
+import { createCommittedState } from '../../../private/scan/states/createCommittedState.js';
+import { createExistsState } from '../../../private/scan/states/createExistsState.js';
+import { createGitDirState } from '../../../private/scan/states/createGitDirState.js';
+import { createNoConflictsState } from '../../../private/scan/states/createNoConflictsState.js';
+import { createNoDetachedState } from '../../../private/scan/states/createNoDetachedState.js';
+import { createRemoteState } from '../../../private/scan/states/createRemoteState.js';
+import { createRepoState } from '../../../private/scan/states/createRepoState.js';
+import { createSyncState } from '../../../private/scan/states/createSyncState.js';
+import { createWrongRemoteState } from '../../../private/scan/states/createWrongRemoteState.js';
+import type { CheckoutScan } from '../../../private/scan/types.js';
 
 export type CheckoutScanScenario = 'default' | 'ahead' | 'behind' | 'uncommitted' | 'no-remote';
 

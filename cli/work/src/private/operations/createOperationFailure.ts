@@ -1,4 +1,4 @@
-import type { OperationFailure, OperationPending } from './types';
+import type { OperationFailure, OperationPending } from './types.js';
 
 function formatRawError(raw: string): string {
 	const lines = raw

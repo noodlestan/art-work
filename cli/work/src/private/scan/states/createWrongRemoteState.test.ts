@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { createWrongRemoteState } from './createWrongRemoteState';
+import { createWrongRemoteState } from './createWrongRemoteState.js';
 
 describe('createWrongRemoteState', () => {
 	it('returns wrong-remote state with wrong true', () => {

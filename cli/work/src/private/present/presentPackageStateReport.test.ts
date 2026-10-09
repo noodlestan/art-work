@@ -1,9 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { Checkout } from '../../private/store/createCheckout';
-import { makeCheckoutScanMock } from '../../test/helpers/checkout/makeCheckoutScanMock';
+import type { Checkout } from '../../private/store/createCheckout.js';
+import { makeCheckoutScanMock } from '../../test/helpers/checkout/makeCheckoutScanMock.js';
 
-import { presentPackageStateReport } from './presentPackageStateReport';
+import { presentPackageStateReport } from './presentPackageStateReport.js';
 
 afterEach(() => {
 	vi.restoreAllMocks();

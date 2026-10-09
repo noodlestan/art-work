@@ -1,3 +1,3 @@
-export { defineConfig } from './defineConfig';
-export { loadWorkspaceConfig } from './loadWorkspaceConfig';
-export type { WorkspaceConfig } from './types';
+export { defineConfig } from './defineConfig.js';
+export { loadWorkspaceConfig } from './loadWorkspaceConfig.js';
+export type { WorkspaceConfig } from './types.js';

@@ -1,10 +1,10 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 
-import type { WorkspaceConfig } from '../../../config/types';
-import type { CheckoutRecord } from '../types';
+import type { WorkspaceConfig } from '../../../config/types.js';
+import type { CheckoutRecord } from '../types.js';
 
-import { makeCheckoutFilename } from './private/makeCheckoutFilename';
+import { makeCheckoutFilename } from './private/makeCheckoutFilename.js';
 
 const HARDCODED_TEMPLATE = `# Module
 

@@ -1,20 +1,20 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 
-import simpleGit from 'simple-git';
+import { simpleGit } from 'simple-git';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { makeCheckoutMock } from '../../../test/helpers/checkout/makeCheckoutMock';
-import { makeCheckoutScanMock } from '../../../test/helpers/checkout/makeCheckoutScanMock';
-import { makeCommandContextMock } from '../../../test/helpers/context/makeCommandContextMock';
-import { advanceBareRepoByOneCommit } from '../../../test/helpers/git/advanceBareRepoByOneCommit';
-import { makeGitBareRepo } from '../../../test/helpers/git/makeGitBareRepo';
-import { makeGitRepoFromBare } from '../../../test/helpers/git/makeGitRepoFromBare';
-import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir';
-import { removeTempDirs } from '../../../test/helpers/tempDirs/removeTempDirs';
-import { scanCheckoutState } from '../../scan/scanCheckoutState';
+import { makeCheckoutMock } from '../../../test/helpers/checkout/makeCheckoutMock.js';
+import { makeCheckoutScanMock } from '../../../test/helpers/checkout/makeCheckoutScanMock.js';
+import { makeCommandContextMock } from '../../../test/helpers/context/makeCommandContextMock.js';
+import { advanceBareRepoByOneCommit } from '../../../test/helpers/git/advanceBareRepoByOneCommit.js';
+import { makeGitBareRepo } from '../../../test/helpers/git/makeGitBareRepo.js';
+import { makeGitRepoFromBare } from '../../../test/helpers/git/makeGitRepoFromBare.js';
+import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir.js';
+import { removeTempDirs } from '../../../test/helpers/tempDirs/removeTempDirs.js';
+import { scanCheckoutState } from '../../scan/scanCheckoutState.js';
 
-import { doPullCheckout } from './doPullCheckout';
+import { doPullCheckout } from './doPullCheckout.js';
 
 const tempDirs: string[] = [];
 

@@ -1,10 +1,10 @@
-import type { WorkspaceContext } from '../../context/createWorkspaceContext';
-import { runCommandInDirectory } from '../../exec/runCommandInDirectory';
-import { createOperationFailure } from '../../operations/createOperationFailure';
-import { createOperationSuccess } from '../../operations/createOperationSuccess';
-import { scanCheckoutState } from '../../scan/scanCheckoutState';
-import type { Checkout } from '../../store/createCheckout';
-import { createCheckoutRunOperation } from '../operations/createCheckoutRunOperation';
+import type { WorkspaceContext } from '../../context/createWorkspaceContext.js';
+import { runCommandInDirectory } from '../../exec/runCommandInDirectory.js';
+import { createOperationFailure } from '../../operations/createOperationFailure.js';
+import { createOperationSuccess } from '../../operations/createOperationSuccess.js';
+import { scanCheckoutState } from '../../scan/scanCheckoutState.js';
+import type { Checkout } from '../../store/createCheckout.js';
+import { createCheckoutRunOperation } from '../operations/createCheckoutRunOperation.js';
 
 export async function doCheckoutRun(
 	ctx: WorkspaceContext,

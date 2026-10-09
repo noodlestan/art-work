@@ -1,13 +1,13 @@
-import type { WorkspaceContext } from '../context/createWorkspaceContext';
-import { cloneCheckout } from '../git/cloneCheckout';
-import { getCurrentBranch } from '../git/getCurrentBranch';
-import { createOperationFailure } from '../operations/createOperationFailure';
-import { createOperationSuccess } from '../operations/createOperationSuccess';
-import { saveCheckoutRecord } from '../resources/checkout/saveCheckoutRecord';
-import { scanCheckoutState } from '../scan/scanCheckoutState';
-import type { Checkout } from '../store/createCheckout';
+import type { WorkspaceContext } from '../context/createWorkspaceContext.js';
+import { cloneCheckout } from '../git/cloneCheckout.js';
+import { getCurrentBranch } from '../git/getCurrentBranch.js';
+import { createOperationFailure } from '../operations/createOperationFailure.js';
+import { createOperationSuccess } from '../operations/createOperationSuccess.js';
+import { saveCheckoutRecord } from '../resources/checkout/saveCheckoutRecord.js';
+import { scanCheckoutState } from '../scan/scanCheckoutState.js';
+import type { Checkout } from '../store/createCheckout.js';
 
-import { createCloneOperation } from './operations/createCloneOperation';
+import { createCloneOperation } from './operations/createCloneOperation.js';
 
 export async function doClone(ctx: WorkspaceContext, checkout: Checkout): Promise<Checkout | null> {
 	if (!checkout.repo) return null;

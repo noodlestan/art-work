@@ -1,4 +1,4 @@
-import type { PackageRecord, ProjectGraph } from '../types';
+import type { PackageRecord, ProjectGraph } from '../types.js';
 
 export function findPackage(
 	graph: ProjectGraph,

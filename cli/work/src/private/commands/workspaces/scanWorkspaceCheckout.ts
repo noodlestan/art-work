@@ -1,7 +1,7 @@
-import type { WorkspaceContext } from '../../context/createWorkspaceContext';
-import { scanCheckoutState } from '../../scan/scanCheckoutState';
-import type { Checkout } from '../../store/createCheckout';
-import { createCheckout } from '../../store/createCheckout';
+import type { WorkspaceContext } from '../../context/createWorkspaceContext.js';
+import { scanCheckoutState } from '../../scan/scanCheckoutState.js';
+import type { Checkout } from '../../store/createCheckout.js';
+import { createCheckout } from '../../store/createCheckout.js';
 
 export async function scanWorkspaceCheckout(
 	ctx: WorkspaceContext,

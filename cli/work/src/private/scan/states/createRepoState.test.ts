@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { createRepoState } from './createRepoState';
+import { createRepoState } from './createRepoState.js';
 
 describe('createRepoState', () => {
 	it('returns repo state with known true', () => {

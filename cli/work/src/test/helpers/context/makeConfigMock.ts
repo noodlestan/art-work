@@ -1,4 +1,4 @@
-import type { WorkspaceConfig } from '../../../config';
+import type { WorkspaceConfig } from '../../../config/index.js';
 
 export function makeConfigMock(
 	rootPath: string,

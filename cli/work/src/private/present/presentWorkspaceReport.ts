@@ -1,4 +1,4 @@
-import type { Checkout } from '../store/types';
+import type { Checkout } from '../store/types.js';
 
 export function presentWorkspaceReport(workspace?: Checkout): void {
 	if (!workspace) {

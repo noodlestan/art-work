@@ -2,8 +2,8 @@ import { cpSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { makeGitRepo } from '../../src/test/helpers/git/makeGitRepo';
-import { makeTempDir } from '../../src/test/helpers/tempDirs/makeTempDir';
+import { makeGitRepo } from '../../src/test/helpers/git/makeGitRepo.js';
+import { makeTempDir } from '../../src/test/helpers/tempDirs/makeTempDir.js';
 
 const TEST_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const FIXTURE = join(TEST_ROOT, 'fixture-repo');

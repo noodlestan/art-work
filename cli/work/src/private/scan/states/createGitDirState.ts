@@ -1,4 +1,4 @@
-import type { CheckoutStateGitDir } from '../types';
+import type { CheckoutStateGitDir } from '../types.js';
 
 export const createGitDirState = (hasGit: boolean): CheckoutStateGitDir => ({
 	type: 'git-dir',

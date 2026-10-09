@@ -1,8 +1,8 @@
-import type { WorkspaceContext } from '../../context/createWorkspaceContext';
-import type { Checkout } from '../../store/createCheckout';
+import type { WorkspaceContext } from '../../context/createWorkspaceContext.js';
+import type { Checkout } from '../../store/createCheckout.js';
 
-import { doPullWorkspaceCheckout } from './doPullWorkspaceCheckout';
-import { doPushWorkspaceCheckout } from './doPushWorkspaceCheckout';
+import { doPullWorkspaceCheckout } from './doPullWorkspaceCheckout.js';
+import { doPushWorkspaceCheckout } from './doPushWorkspaceCheckout.js';
 
 export async function syncWorkspaceCheckout(ctx: WorkspaceContext): Promise<Checkout | null> {
 	const pulled = await doPullWorkspaceCheckout(ctx);

@@ -1,12 +1,12 @@
 import path, { join } from 'node:path';
 
-import type { WorkspaceConfig } from '../../config';
-import type { RepositoryRecord } from '../resources/types';
+import type { WorkspaceConfig } from '../../config/index.js';
+import type { RepositoryRecord } from '../resources/types.js';
 
-import { safePath } from './safePath';
-import type { Checkout } from './types';
+import { safePath } from './safePath.js';
+import type { Checkout } from './types.js';
 
-export type { Checkout } from './types';
+export type { Checkout } from './types.js';
 
 export function createCheckout(
 	config: WorkspaceConfig,

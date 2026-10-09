@@ -1,11 +1,11 @@
-import simpleGit from 'simple-git';
+import { simpleGit } from 'simple-git';
 
-import type { WorkspaceContext } from '../../context/createWorkspaceContext';
-import { createOperationFailure } from '../../operations/createOperationFailure';
-import { createOperationSuccess } from '../../operations/createOperationSuccess';
-import { scanCheckoutState } from '../../scan/scanCheckoutState';
-import type { Checkout } from '../../store/createCheckout';
-import { createPullOperation } from '../operations/createPullOperation';
+import type { WorkspaceContext } from '../../context/createWorkspaceContext.js';
+import { createOperationFailure } from '../../operations/createOperationFailure.js';
+import { createOperationSuccess } from '../../operations/createOperationSuccess.js';
+import { scanCheckoutState } from '../../scan/scanCheckoutState.js';
+import type { Checkout } from '../../store/createCheckout.js';
+import { createPullOperation } from '../operations/createPullOperation.js';
 
 export async function doPullWorkspaceCheckout(ctx: WorkspaceContext): Promise<Checkout | null> {
 	const workspace = ctx.workspace;

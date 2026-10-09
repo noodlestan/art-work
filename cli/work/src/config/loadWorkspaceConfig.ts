@@ -4,8 +4,8 @@ import { pathToFileURL } from 'node:url';
 
 import { build } from 'esbuild';
 
-import { defineConfig } from './defineConfig';
-import type { PartialWorkspaceConfig, WorkspaceConfig } from './types';
+import { defineConfig } from './defineConfig.js';
+import type { PartialWorkspaceConfig, WorkspaceConfig } from './types.js';
 
 const MANIFEST_FILE = '.art-workspace.mts';
 const TEMP_FILE = '.art-workspace-bundle.mjs';

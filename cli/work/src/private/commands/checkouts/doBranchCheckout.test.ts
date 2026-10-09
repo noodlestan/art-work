@@ -1,16 +1,16 @@
 import { join } from 'node:path';
 
-import simpleGit from 'simple-git';
+import { simpleGit } from 'simple-git';
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { makeCheckoutMock } from '../../../test/helpers/checkout/makeCheckoutMock';
-import { makeCommandContextMock } from '../../../test/helpers/context/makeCommandContextMock';
-import { makeGitBareRepo } from '../../../test/helpers/git/makeGitBareRepo';
-import { makeGitRepoFromBare } from '../../../test/helpers/git/makeGitRepoFromBare';
-import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir';
-import { removeTempDirs } from '../../../test/helpers/tempDirs/removeTempDirs';
+import { makeCheckoutMock } from '../../../test/helpers/checkout/makeCheckoutMock.js';
+import { makeCommandContextMock } from '../../../test/helpers/context/makeCommandContextMock.js';
+import { makeGitBareRepo } from '../../../test/helpers/git/makeGitBareRepo.js';
+import { makeGitRepoFromBare } from '../../../test/helpers/git/makeGitRepoFromBare.js';
+import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir.js';
+import { removeTempDirs } from '../../../test/helpers/tempDirs/removeTempDirs.js';
 
-import { doBranchCheckout } from './doBranchCheckout';
+import { doBranchCheckout } from './doBranchCheckout.js';
 
 const tempDirs: string[] = [];
 

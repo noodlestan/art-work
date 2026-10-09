@@ -3,7 +3,7 @@ import { EventEmitter } from 'node:events';
 
 import { describe, expect, it, vi } from 'vitest';
 
-import { runCommandInDirectory } from './runCommandInDirectory';
+import { runCommandInDirectory } from './runCommandInDirectory.js';
 
 vi.mock('node:child_process', async importOriginal => {
 	const actual = await importOriginal<typeof import('node:child_process')>();

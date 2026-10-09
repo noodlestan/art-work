@@ -4,12 +4,12 @@ import { join } from 'node:path';
 
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { removeTempDirs } from '../src/test/helpers/tempDirs/removeTempDirs';
+import { removeTempDirs } from '../src/test/helpers/tempDirs/removeTempDirs.js';
 
-import { ENCODING, PACKAGE_ROOT } from './helpers/constants';
-import { setupWorkspace } from './helpers/setupWorkspace';
-import { spawnCli } from './helpers/spawnCli';
-import { type TestCliResult } from './helpers/types';
+import { ENCODING, PACKAGE_ROOT } from './helpers/constants.js';
+import { setupWorkspace } from './helpers/setupWorkspace.js';
+import { spawnCli } from './helpers/spawnCli.js';
+import { type TestCliResult } from './helpers/types.js';
 
 const tempDirs: string[] = [];
 

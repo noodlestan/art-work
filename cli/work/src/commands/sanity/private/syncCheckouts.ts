@@ -1,6 +1,6 @@
-import { runWithConcurrency } from '../../../private/async/runWithConcurrency';
-import { doPushCheckout } from '../../../private/commands/checkouts/doPushCheckout';
-import type { WorkspaceContext } from '../../../private/context/createWorkspaceContext';
+import { runWithConcurrency } from '../../../private/async/runWithConcurrency.js';
+import { doPushCheckout } from '../../../private/commands/checkouts/doPushCheckout.js';
+import type { WorkspaceContext } from '../../../private/context/createWorkspaceContext.js';
 
 export async function syncCheckouts(ctx: WorkspaceContext): Promise<void> {
 	await runWithConcurrency(ctx.store.getAllCheckouts(), 4, async checkout => {

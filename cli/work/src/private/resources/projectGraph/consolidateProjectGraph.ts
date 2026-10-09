@@ -1,4 +1,4 @@
-import type { NamespaceRecord, PackageRecord, ProjectGraph, ProjectRecord } from '../types';
+import type { NamespaceRecord, PackageRecord, ProjectGraph, ProjectRecord } from '../types.js';
 
 export function consolidateProjectGraph(
 	projects: ProjectRecord[],

@@ -1,6 +1,6 @@
-import simpleGit, { type SimpleGit } from 'simple-git';
+import { type SimpleGit, simpleGit } from 'simple-git';
 
-import { makeTempDir } from '../../tempDirs/makeTempDir';
+import { makeTempDir } from '../../tempDirs/makeTempDir.js';
 
 /** Clones a repo and configures the clone. */
 export async function makeGitCloneOfRepo(

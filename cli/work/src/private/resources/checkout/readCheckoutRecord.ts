@@ -1,6 +1,6 @@
 import { type FSRecordFile, readRecordFileContent } from '@art-lib/fs-records';
 
-import type { CheckoutRecord } from '../types';
+import type { CheckoutRecord } from '../types.js';
 
 export async function readCheckoutRecord(file: FSRecordFile): Promise<CheckoutRecord | null> {
 	const fileWithContents = file.content ? file : await readRecordFileContent(file);

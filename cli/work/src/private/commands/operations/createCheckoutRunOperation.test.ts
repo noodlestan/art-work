@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
-import { makeCheckoutMock } from '../../../test/helpers/checkout/makeCheckoutMock';
+import { makeCheckoutMock } from '../../../test/helpers/checkout/makeCheckoutMock.js';
 
-import { createCheckoutRunOperation } from './createCheckoutRunOperation';
+import { createCheckoutRunOperation } from './createCheckoutRunOperation.js';
 
 describe('createCheckoutRunOperation', () => {
 	it('has correct operation, outcome and message', () => {

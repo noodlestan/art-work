@@ -2,23 +2,23 @@
 
 import { Command } from 'commander';
 
-import { runBranch } from './commands/branch/runBranch';
-import { runCheckoutsRun } from './commands/checkouts/runCheckoutsRun';
-import { runClone } from './commands/clone/runClone';
-import { runLink } from './commands/link/runLink';
-import { runPublish } from './commands/publish/runPublish';
-import { runPull } from './commands/pull/runPull';
-import { runPush } from './commands/push/runPush';
-import { runRepo } from './commands/repo/runRepo';
-import { runSanity } from './commands/sanity/runSanity';
-import { runSync } from './commands/sync/runSync';
-import { runUnlink } from './commands/unlink/runUnlink';
-import { loadWorkspaceConfig } from './config/loadWorkspaceConfig';
-import { createWorkspaceContext } from './private/context/createWorkspaceContext';
-import { createOperationsLog } from './private/log/createOperationsLog';
-import { createLogger } from './private/logger/createLogger';
-import { createGenericOperation } from './private/operations/createGenericOperation';
-import { createCheckoutStore } from './private/store/createCheckoutStore';
+import { runBranch } from './commands/branch/runBranch.js';
+import { runCheckoutsRun } from './commands/checkouts/runCheckoutsRun.js';
+import { runClone } from './commands/clone/runClone.js';
+import { runLink } from './commands/link/runLink.js';
+import { runPublish } from './commands/publish/runPublish.js';
+import { runPull } from './commands/pull/runPull.js';
+import { runPush } from './commands/push/runPush.js';
+import { runRepo } from './commands/repo/runRepo.js';
+import { runSanity } from './commands/sanity/runSanity.js';
+import { runSync } from './commands/sync/runSync.js';
+import { runUnlink } from './commands/unlink/runUnlink.js';
+import { loadWorkspaceConfig } from './config/loadWorkspaceConfig.js';
+import { createWorkspaceContext } from './private/context/createWorkspaceContext.js';
+import { createOperationsLog } from './private/log/createOperationsLog.js';
+import { createLogger } from './private/logger/createLogger.js';
+import { createGenericOperation } from './private/operations/createGenericOperation.js';
+import { createCheckoutStore } from './private/store/createCheckoutStore.js';
 
 const program = new Command();
 

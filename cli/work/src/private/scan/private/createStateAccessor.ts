@@ -1,4 +1,4 @@
-import type { CheckoutScan, CheckoutState, CheckoutStateOf, CheckoutStateType } from '../types';
+import type { CheckoutScan, CheckoutState, CheckoutStateOf, CheckoutStateType } from '../types.js';
 
 export function createStateAccessor(states: CheckoutState[]): CheckoutScan['state'] {
 	return <T extends CheckoutStateType>(type: T): CheckoutStateOf<T> => {

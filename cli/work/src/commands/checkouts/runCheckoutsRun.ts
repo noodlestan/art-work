@@ -1,14 +1,14 @@
-import { runWithConcurrency } from '../../private/async/runWithConcurrency';
-import { doCheckoutRun } from '../../private/commands/checkouts/doCheckoutRun';
-import type { WorkspaceContext } from '../../private/context/createWorkspaceContext';
-import { createGenericOperation } from '../../private/operations/createGenericOperation';
-import { createOperationFailure } from '../../private/operations/createOperationFailure';
-import { presentCheckoutReport } from '../../private/present/presentCheckoutReport';
-import { presentOperationsReport } from '../../private/present/presentOperationsReport';
-import { loadCheckoutRecords } from '../../private/resources/checkout/loadCheckoutRecords';
-import { loadRepositoryRecords } from '../../private/resources/repository/loadRepositoryRecords';
-import { scanCheckoutState } from '../../private/scan/scanCheckoutState';
-import { hydrateStoreFromRecords } from '../../private/store/hydrateStoreFromRecords';
+import { runWithConcurrency } from '../../private/async/runWithConcurrency.js';
+import { doCheckoutRun } from '../../private/commands/checkouts/doCheckoutRun.js';
+import type { WorkspaceContext } from '../../private/context/createWorkspaceContext.js';
+import { createGenericOperation } from '../../private/operations/createGenericOperation.js';
+import { createOperationFailure } from '../../private/operations/createOperationFailure.js';
+import { presentCheckoutReport } from '../../private/present/presentCheckoutReport.js';
+import { presentOperationsReport } from '../../private/present/presentOperationsReport.js';
+import { loadCheckoutRecords } from '../../private/resources/checkout/loadCheckoutRecords.js';
+import { loadRepositoryRecords } from '../../private/resources/repository/loadRepositoryRecords.js';
+import { scanCheckoutState } from '../../private/scan/scanCheckoutState.js';
+import { hydrateStoreFromRecords } from '../../private/store/hydrateStoreFromRecords.js';
 
 export async function runCheckoutsRun(
 	ctx: WorkspaceContext,

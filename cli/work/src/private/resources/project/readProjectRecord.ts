@@ -1,6 +1,6 @@
 import { type FSRecordFile, readRecordFileContent } from '@art-lib/fs-records';
 
-import type { ProjectRecord } from '../types';
+import type { ProjectRecord } from '../types.js';
 
 export async function readProjectRecord(file: FSRecordFile): Promise<ProjectRecord | null> {
 	const fileWithContents = file.content ? file : await readRecordFileContent(file);
@@ -8,7 +8,7 @@ export async function readProjectRecord(file: FSRecordFile): Promise<ProjectReco
 		return null;
 	}
 
-	const content = fileWithContents.content;
+	const content: string = fileWithContents.content;
 
 	const nameMatch = content.match(/## Project:\s*(.+)/);
 	if (!nameMatch) {

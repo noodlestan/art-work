@@ -1,20 +1,20 @@
 import { existsSync, mkdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-import simpleGit from 'simple-git';
+import { simpleGit } from 'simple-git';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { loadCheckoutRecords } from '../../private/resources/checkout/loadCheckoutRecords';
-import { loadRepositoryRecords } from '../../private/resources/repository/loadRepositoryRecords';
-import { hydrateStoreFromRecords } from '../../private/store/hydrateStoreFromRecords';
-import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock';
-import { makeGitBareRepo } from '../../test/helpers/git/makeGitBareRepo';
-import { writeCheckoutMockRecord } from '../../test/helpers/records/writeCheckoutMockRecord';
-import { writeRepoMockRecord } from '../../test/helpers/records/writeRepoMockRecord';
-import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir';
-import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs';
+import { loadCheckoutRecords } from '../../private/resources/checkout/loadCheckoutRecords.js';
+import { loadRepositoryRecords } from '../../private/resources/repository/loadRepositoryRecords.js';
+import { hydrateStoreFromRecords } from '../../private/store/hydrateStoreFromRecords.js';
+import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock.js';
+import { makeGitBareRepo } from '../../test/helpers/git/makeGitBareRepo.js';
+import { writeCheckoutMockRecord } from '../../test/helpers/records/writeCheckoutMockRecord.js';
+import { writeRepoMockRecord } from '../../test/helpers/records/writeRepoMockRecord.js';
+import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir.js';
+import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs.js';
 
-import { cloneSpecific } from './cloneSpecific';
+import { cloneSpecific } from './cloneSpecific.js';
 
 const tempDirs: string[] = [];
 

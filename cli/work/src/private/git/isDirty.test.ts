@@ -3,11 +3,11 @@ import { join } from 'node:path';
 
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { makeGitRepo } from '../../test/helpers/git/makeGitRepo';
-import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir';
-import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs';
+import { makeGitRepo } from '../../test/helpers/git/makeGitRepo.js';
+import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir.js';
+import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs.js';
 
-import { isDirty } from './isDirty';
+import { isDirty } from './isDirty.js';
 
 const tempDirs: string[] = [];
 

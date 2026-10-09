@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { createSyncState } from './createSyncState';
+import { createSyncState } from './createSyncState.js';
 
 describe('createSyncState', () => {
 	it('returns sync state with zero delta', () => {

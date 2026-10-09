@@ -1,6 +1,6 @@
 import { execSync } from 'node:child_process';
 
-import type { PackageRecord, PackageStateRecord } from '../resources/types';
+import type { PackageRecord, PackageStateRecord } from '../resources/types.js';
 
 export function scanPackageStateRecord(pkg: PackageRecord, record: PackageStateRecord): void {
 	if (record.version !== null && record.version !== '0.0.0') {

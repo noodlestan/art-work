@@ -1,4 +1,4 @@
-import type { OperationPending, OperationSuccess } from './types';
+import type { OperationPending, OperationSuccess } from './types.js';
 
 export function createOperationSuccess<T extends OperationPending>(
 	pending: T,

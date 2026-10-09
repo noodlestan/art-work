@@ -4,19 +4,19 @@ import { join } from 'node:path';
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock';
-import { makeGitRepo } from '../../test/helpers/git/makeGitRepo';
-import { writeCheckoutMockRecord } from '../../test/helpers/records/writeCheckoutMockRecord';
+import { makeCommandContextMock } from '../../test/helpers/context/makeCommandContextMock.js';
+import { makeGitRepo } from '../../test/helpers/git/makeGitRepo.js';
+import { writeCheckoutMockRecord } from '../../test/helpers/records/writeCheckoutMockRecord.js';
 import {
 	writeNamespaceMockRecord,
 	writePackageMockRecord,
 	writeProjectMockRecord,
-} from '../../test/helpers/records/writeProjectMockRecord';
-import { writeRepoMockRecord } from '../../test/helpers/records/writeRepoMockRecord';
-import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir';
-import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs';
+} from '../../test/helpers/records/writeProjectMockRecord.js';
+import { writeRepoMockRecord } from '../../test/helpers/records/writeRepoMockRecord.js';
+import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir.js';
+import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs.js';
 
-import { runRepo } from './runRepo';
+import { runRepo } from './runRepo.js';
 
 vi.mock('node:child_process', async importOriginal => {
 	const actual = await importOriginal<typeof import('node:child_process')>();

@@ -1,5 +1,5 @@
-import type { BranchPending } from '../../operations/types';
-import type { Checkout } from '../../store/createCheckout';
+import type { BranchPending } from '../../operations/types.js';
+import type { Checkout } from '../../store/createCheckout.js';
 
 export function createBranchOperation(checkout: Checkout, branch: string): BranchPending {
 	return {

@@ -1,6 +1,6 @@
-import type { OperationBase } from '../operations/types';
+import type { OperationBase } from '../operations/types.js';
 
-import { truncateMiddle } from './private/truncateMiddle';
+import { truncateMiddle } from './private/truncateMiddle.js';
 
 export function makeOperationLogLine(
 	op: OperationBase,

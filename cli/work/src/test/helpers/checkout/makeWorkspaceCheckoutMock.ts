@@ -1,6 +1,6 @@
-import type { Checkout } from '../../../private/store/createCheckout';
+import type { Checkout } from '../../../private/store/createCheckout.js';
 
-import { makeCheckoutScanMock } from './makeCheckoutScanMock';
+import { makeCheckoutScanMock } from './makeCheckoutScanMock.js';
 
 export function makeWorkspaceCheckoutMock(path: string, overrides?: Partial<Checkout>): Checkout {
 	return {

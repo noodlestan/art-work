@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
 
-import { makeConfigMock } from '../../test/helpers/context/makeConfigMock';
-import { createOperationsLog } from '../log/createOperationsLog';
-import { createCheckoutStore } from '../store/createCheckoutStore';
+import { makeConfigMock } from '../../test/helpers/context/makeConfigMock.js';
+import { createOperationsLog } from '../log/createOperationsLog.js';
+import { createCheckoutStore } from '../store/createCheckoutStore.js';
 
-import { createWorkspaceContext } from './createWorkspaceContext';
+import { createWorkspaceContext } from './createWorkspaceContext.js';
 
 describe('createWorkspaceContext', () => {
 	it('creates context with config, root, store, and log', () => {

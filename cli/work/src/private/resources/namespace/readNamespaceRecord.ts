@@ -1,6 +1,6 @@
 import { type FSRecordFile, readRecordFileContent } from '@art-lib/fs-records';
 
-import type { NamespaceRecord } from '../types';
+import type { NamespaceRecord } from '../types.js';
 
 export async function readNamespaceRecord(file: FSRecordFile): Promise<NamespaceRecord | null> {
 	const fileWithContents = file.content ? file : await readRecordFileContent(file);
@@ -8,7 +8,7 @@ export async function readNamespaceRecord(file: FSRecordFile): Promise<Namespace
 		return null;
 	}
 
-	const content = fileWithContents.content;
+	const content: string = fileWithContents.content;
 
 	const nameMatch = content.match(/## Namespace:\s*(.+)/);
 	if (!nameMatch) {

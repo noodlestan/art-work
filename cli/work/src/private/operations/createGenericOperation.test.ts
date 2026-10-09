@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { createGenericOperation } from './createGenericOperation';
+import { createGenericOperation } from './createGenericOperation.js';
 
 describe('createGenericOperation', () => {
 	it('sets operation and data', () => {

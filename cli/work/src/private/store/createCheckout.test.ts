@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
-import { makeConfigMock } from '../../test/helpers/context/makeConfigMock';
+import { makeConfigMock } from '../../test/helpers/context/makeConfigMock.js';
 
-import { createCheckout } from './createCheckout';
+import { createCheckout } from './createCheckout.js';
 
 describe('createCheckout', () => {
 	it('factory defaults', () => {

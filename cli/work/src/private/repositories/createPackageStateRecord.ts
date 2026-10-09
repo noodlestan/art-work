@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-import type { PackageRecord, PackageStateRecord } from '../resources/types';
+import type { PackageRecord, PackageStateRecord } from '../resources/types.js';
 
 export function createPackageStateRecord(
 	checkoutPath: string,

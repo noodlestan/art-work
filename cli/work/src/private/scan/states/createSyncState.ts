@@ -1,4 +1,4 @@
-import type { CheckoutStateSync } from '../types';
+import type { CheckoutStateSync } from '../types.js';
 
 export const createSyncState = (
 	delta: number,

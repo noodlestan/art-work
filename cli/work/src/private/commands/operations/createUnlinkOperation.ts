@@ -1,5 +1,5 @@
-import type { UnlinkPending } from '../../operations/types';
-import type { Checkout } from '../../store/createCheckout';
+import type { UnlinkPending } from '../../operations/types.js';
+import type { Checkout } from '../../store/createCheckout.js';
 
 export function createUnlinkOperation(
 	checkout: Checkout | undefined,

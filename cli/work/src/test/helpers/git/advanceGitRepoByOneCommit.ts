@@ -1,6 +1,6 @@
 import { simpleGit } from 'simple-git';
 
-import { commitGitRepoFile } from './private/commitGitRepoFile';
+import { commitGitRepoFile } from './private/commitGitRepoFile.js';
 
 /** Writes a file in the repo and commits it. */
 export async function advanceGitRepoByOneCommit(

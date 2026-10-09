@@ -1,4 +1,4 @@
-import type { OperationPending } from './types';
+import type { OperationPending } from './types.js';
 
 function formatData(data: unknown): string {
 	return data ? JSON.stringify(data) : '';
