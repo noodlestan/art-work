@@ -2,7 +2,7 @@
 
 **ID:** `add-config-cache`
 
-**Status:** `DRAFT`
+**Status:** `READY`
 
 **Template:** `.agents/domains/plans/templates/plan.tart`
 
@@ -28,7 +28,7 @@
 
 ## Summary
 
-Move the compiled config bundle out of the workspace root into `node_modules/.art-work/`, reuse it while the config sources are unchanged, and add `--no-config-cache` to force a rebuild — touching only config loading, CLI option plumbing, their tests, and the config architecture knowledge.
+Move the compiled config bundle out of the workspace root into `node_modules/.art-work/`, reuse it while the config sources are unchanged, add `--no-config-cache` to force a rebuild, and document both — touching config loading, CLI option plumbing, their tests, the package README, and the config architecture knowledge.
 
 ## Context
 
@@ -60,13 +60,13 @@ Move the compiled config bundle out of the workspace root into `node_modules/.ar
 
 ## Scope
 
-Changes confined to config loading and CLI option plumbing in `$ART_WORK/cli/work/src/config/` and `$ART_WORK/cli/work/src/index.ts`, their unit tests, and the config architecture knowledge. No change to the config schema, config discovery, or command behaviour beyond skipping the esbuild build when the cache is valid.
+Changes confined to config loading and CLI option plumbing in `$ART_WORK/cli/work/src/config/` and `$ART_WORK/cli/work/src/index.ts`, their unit and integration tests, the package `$ART_WORK/cli/work/README.md`, and the config architecture knowledge. No change to the config schema, config discovery, or command behaviour beyond skipping the esbuild build when the cache is valid.
 
 ## Work
 
 ### Next
 
-- Refine the 3 `DRAFT` iterations (`plan more`), then generate their instructions (`write instructions`) before delegating.
+- Delegate Iteration: Move Config Bundle To Cache first (`./instructions/move-config-bundle-to-cache.md`); the remaining 3 iterations follow in order.
 
 ### Blockers
 
@@ -78,7 +78,7 @@ Changes confined to config loading and CLI option plumbing in `$ART_WORK/cli/wor
 
 ### Setting Up
 
-**Purpose:** Prepare the execution environment. Operation of Workflow: Executing Work, defined in `$DOMAINS/work/workflows/executing-work/ops/setting-up.art`.
+**Purpose:** Prepare the execution environment. Operation of Workflow: Executing Work, defined in `$DOMAINS/work/workflows/executing-work/setting-up/operation.art`.
 
 **Instructions:** (From `$WORKSPACE/_guide.md`)
 
@@ -92,7 +92,7 @@ Do NOT run `npm install` inside `$ART_WORK` — a local `node_modules` there sha
 
 ### Writing Commit Message
 
-**Purpose:** Write standardized message according to context conventions. Operation of Workflow: Planning Work, defined in `$DOMAINS/work/workflows/planning-work/ops/writing-commit-message.art`.
+**Purpose:** Write standardized message according to context conventions. Operation of Workflow: Planning Work, defined in `$DOMAINS/work/workflows/planning-work/writing-commit-message/operation.art`.
 
 **Instructions:** (From `$WORKSPACE/_guide.md`)
 
@@ -102,7 +102,7 @@ Do NOT run `npm install` inside `$ART_WORK` — a local `node_modules` there sha
 
 ### Verifying Completion
 
-**Purpose:** Confirms that the work item has been completed and satisfies its intended outcome. Operation of Workflow: Executing Work, defined in `$DOMAINS/work/workflows/executing-work/ops/verifying-completion.art`.
+**Purpose:** Confirms that the work item has been completed and satisfies its intended outcome. Operation of Workflow: Executing Work, defined in `$DOMAINS/work/workflows/executing-work/verifying-completion/operation.art`.
 
 **Instructions:** (From `$ART_WORK/_guide.md`)
 
@@ -120,19 +120,24 @@ All steps MUST pass. No `it.todo()` tests may remain.
 
 | Iteration / Instructions               | Status  |
 | -------------------------------------- | ------- |
-| Iteration: Move Config Bundle To Cache | `DRAFT` |
-| Iteration: Cache Config By Source Hash | `DRAFT` |
-| Iteration: Add No Config Cache Flag    | `DRAFT` |
+| Iteration: Move Config Bundle To Cache | `READY` |
+| Iteration: Cache Config By Source Hash | `READY` |
+| Iteration: Add No Config Cache Flag    | `READY` |
+| Iteration: Update Config Knowledge     | `READY` |
 
 ### Iteration: Move Config Bundle To Cache
 
 **Id:** `move-config-bundle-to-cache`
 
-**Status:** `DRAFT`
+**Status:** `READY`
 
 **Purpose:** Stop writing the compiled configuration bundle into the workspace root.
 
 **Description:** Relocate the esbuild output from `.art-workspace-bundle.mjs` at the workspace root into `node_modules/.art-work/`, and stop producing the root-level file.
+
+**Instructions Mode:** `INSTRUCTIONS_SELF_CONTAINED_FILE`
+
+**Instructions:** `./instructions/move-config-bundle-to-cache.md`
 
 **Changes:**
 
@@ -151,9 +156,9 @@ In `$ART_WORK/cli/work/src/config/`:
 
 #### Commits:
 
-| ID                            | Repository / Checkout / Branch      | Policy       | Hash | Status  |
-| ----------------------------- | ----------------------------------- | ------------ | ---- | ------- |
-| `move-config-bundle-to-cache` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `DRAFT` |
+| ID                            | Repository / Checkout / Branch      | Policy       | Hash | Status     |
+| ----------------------------- | ----------------------------------- | ------------ | ---- | ---------- |
+| `move-config-bundle-to-cache` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `AUTHORED` |
 
 ##### Commit: `move-config-bundle-to-cache`
 
@@ -167,11 +172,15 @@ build(art-work-cli): Move compiled config into `node_modules/.art-work`.
 
 **Id:** `cache-config-by-source-hash`
 
-**Status:** `DRAFT`
+**Status:** `READY`
 
 **Purpose:** Reuse the cached compilation while the configuration sources are unchanged.
 
 **Description:** Record change-tracking metadata beside the compiled bundle and skip the esbuild build when every recorded input still hashes the same.
+
+**Instructions Mode:** `INSTRUCTIONS_SELF_CONTAINED_FILE`
+
+**Instructions:** `./instructions/cache-config-by-source-hash.md`
 
 **Changes:**
 
@@ -196,7 +205,15 @@ In `$ART_WORK/cli/work/src/config/`:
   4. Otherwise import the cached bundle and skip `build()` entirely.
 - Record every file from `metafile.inputs`, not only the manifest, so a change to an imported file invalidates the cache too.
 - Prefer content hashes over mtime: mtimes reset on `git checkout`, restores, and container binds.
-- Report the decision (reused / rebuilt) through the operation log so each run shows whether the cache was used.
+- Log the decision (reused / rebuilt) with `console.info` — the module has no logger dependency; introducing one is out of scope.
+
+In `$ART_WORK/cli/work/src/config/loadWorkspaceConfig.test.ts`:
+
+- Valid cache → a second call imports the bundle and does **not** call `build()` (spy on `esbuild.build`).
+- Edited manifest → rebuilds and rewrites `config.cache.json`.
+- Edited file imported by the manifest → rebuilds (proves `metafile.inputs` coverage).
+- Missing bundle, missing `config.cache.json`, unparseable metadata, and `version` mismatch → rebuild.
+- Unreadable cache directory → warns and still returns a config (no throw).
 
 **Dependencies:**
 
@@ -204,9 +221,9 @@ In `$ART_WORK/cli/work/src/config/`:
 
 #### Commits:
 
-| ID                            | Repository / Checkout / Branch      | Policy       | Hash | Status  |
-| ----------------------------- | ----------------------------------- | ------------ | ---- | ------- |
-| `cache-config-by-source-hash` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `DRAFT` |
+| ID                            | Repository / Checkout / Branch      | Policy       | Hash | Status     |
+| ----------------------------- | ----------------------------------- | ------------ | ---- | ---------- |
+| `cache-config-by-source-hash` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `AUTHORED` |
 
 ##### Commit: `cache-config-by-source-hash`
 
@@ -220,30 +237,42 @@ build(art-work-cli): Reuse compiled config when sources are unchanged.
 
 **Id:** `add-no-config-cache-flag`
 
-**Status:** `DRAFT`
+**Status:** `READY`
 
 **Purpose:** Let an operator force a config recompile for a single invocation.
 
 **Description:** Add a `--no-config-cache` option that bypasses the cached compilation, rebuilds, and refreshes the cache before the command runs.
+
+**Instructions Mode:** `INSTRUCTIONS_SELF_CONTAINED_FILE`
+
+**Instructions:** `./instructions/add-no-config-cache-flag.md`
 
 **Changes:**
 
 In `$ART_WORK/cli/work/src/index.ts`:
 
 - Declare `--no-config-cache` on the program. Commander's `--no-<name>` idiom gives `configCache: true` by default and `false` when the flag is passed.
-- Confirm the flag is accepted where operators expect it. If Commander rejects it after the subcommand, either document `art-work --no-config-cache <command>` or call `program.enablePositionalOptions()`.
+- Confirm the flag is accepted where operators expect it. If Commander rejects it after the subcommand, either document it as a program-level option (before the subcommand) or call `program.enablePositionalOptions()`.
 - Thread the value into every command action's `loadWorkspaceConfig(root)` call via `command.optsWithGlobals()`.
 
 In `$ART_WORK/cli/work/src/config/loadWorkspaceConfig.ts`:
 
 - Extend the signature to `loadWorkspaceConfig(rootPath, options?: { cache?: boolean })`.
 - When `options.cache === false`: skip the cache read, rebuild, overwrite the bundle and metadata, then import.
-- Emit an operation through the logger when the cache is bypassed so the behaviour is visible in the run.
+- Log the bypass with `console.info` so the behaviour is visible in the run.
 
 In `$ART_WORK/cli/work/src/config/loadWorkspaceConfig.test.ts`:
 
 - Assert the default honours a valid cache (second call does not rebuild).
 - Assert the bypass flag rebuilds and refreshes `config.cache.json`.
+
+In `$ART_WORK/cli/work/test/config.test.ts` (new integration test, alongside `integration.test.ts`):
+
+- Two runs against an unchanged manifest → the second run reuses the cache.
+- Editing `.art-workspace.mts` between runs → the next run rebuilds.
+- `--no-config-cache` → rebuilds and refreshes `config.cache.json`.
+- The cache is created under `<workspace root>/node_modules/.art-work/` and never at the workspace root.
+- Teardown removes any cache written by the run (extend the `tempDirs` cleanup).
 
 **Dependencies:**
 
@@ -251,9 +280,9 @@ In `$ART_WORK/cli/work/src/config/loadWorkspaceConfig.test.ts`:
 
 #### Commits:
 
-| ID                         | Repository / Checkout / Branch      | Policy       | Hash | Status  |
-| -------------------------- | ----------------------------------- | ------------ | ---- | ------- |
-| `add-no-config-cache-flag` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `DRAFT` |
+| ID                         | Repository / Checkout / Branch      | Policy       | Hash | Status     |
+| -------------------------- | ----------------------------------- | ------------ | ---- | ---------- |
+| `add-no-config-cache-flag` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `AUTHORED` |
 
 ##### Commit: `add-no-config-cache-flag`
 
@@ -261,6 +290,79 @@ In `$ART_WORK/cli/work/src/config/loadWorkspaceConfig.test.ts`:
 
 ```text
 build(art-work-cli): Add `--no-config-cache` flag.
+```
+
+### Iteration: Update Config Knowledge
+
+**Id:** `update-config-knowledge`
+
+**Status:** `READY`
+
+**Purpose:** Document the config cache and the `--no-config-cache` flag for users and maintainers.
+
+**Description:** Add user-facing config and options sections to the package README, and a Cache subsection to the config design doc covering location, automatic invalidation, and manual busting.
+
+**Instructions Mode:** `INSTRUCTIONS_SELF_CONTAINED_FILE`
+
+**Instructions:** `./instructions/update-config-knowledge.md`
+
+**Changes:**
+
+In `$ART_WORK/cli/work/README.md`:
+
+- Add `## Config` immediately after the `## Installation` section (before `## Usage`), with a sample manifest:
+
+```ts
+import { defineConfig } from '@art-work/cli/config';
+
+export default defineConfig({
+  clone: {
+    path: 'checkouts',
+  },
+  checkouts: {
+    path: '_records/checkouts',
+    template: '.agents/domains/workspace/templates/checkout.art.njk',
+  },
+  records: {
+    base: '_records',
+    gitignore: false,
+  },
+});
+```
+
+- Add `## Options` after the `### Commands` list (before `## Development`), with one entry:
+
+```md
+- `--no-config-cache` — Ignore the config cache, recompile the config, and refresh the cache for this run.
+```
+
+In `$ART_WORK/cli/work/architecture/design/config.md`:
+
+- Add `### Cache` under `## Overview` (before `## Configuration Structure`), covering three points:
+  - **Where** — `<workspace root>/node_modules/.art-work/` holds `config.bundle.mjs` and `config.cache.json`.
+  - **Automatic invalidation** — `config.cache.json` records a sha256 per esbuild input; a changed, missing, or unreadable input, a missing bundle, unparseable metadata, or a `version` mismatch triggers a rebuild.
+  - **Manual bust** — run any command with `--no-config-cache`, or delete `node_modules/.art-work/`.
+
+In `$ART_WORK/cli/work/src/`:
+
+- No unit test changes — documentation only.
+
+**Dependencies:**
+
+- Iteration: Add No Config Cache Flag.
+
+#### Commits:
+
+| ID                        | Repository / Checkout / Branch      | Policy       | Hash | Status     |
+| ------------------------- | ----------------------------------- | ------------ | ---- | ---------- |
+| `update-config-knowledge` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `AUTHORED` |
+
+##### Commit: `update-config-knowledge`
+
+**Message:**
+
+```text
+docs(art-work-cli): Document config cache and no-config-cache option.
 ```
 
 ---
@@ -288,15 +390,18 @@ build(art-work-cli): Add `--no-config-cache` flag.
 - **Content hash, not timestamp** — sha256 over every esbuild input (from `metafile`) invalidates correctly when an imported file changes; mtimes are unreliable across checkouts and restores.
 - **Degrade gracefully** — a missing or unwritable cache falls back to compiling without caching; caching never fails a run.
 - **Bypass refreshes the cache** — `--no-config-cache` rebuilds and rewrites the metadata so the next run is warm.
+- **Instructions mode per iteration** — all 4 iterations are `INSTRUCTIONS_SELF_CONTAINED_FILE`. The Plan Iterations rule routes an iteration to file mode when it has 3+ commit steps or needs code samples / file-by-file detail; Update Config Knowledge qualifies on the latter. Every iteration carries a generated `./instructions/{id}.md`.
+- **Integration coverage lives with the flag** — `cli/work/test/config.test.ts` proves cross-process reuse, invalidation, and bypass; unit tests in `loadWorkspaceConfig.test.ts` cover the branch logic.
 
 ### Knowledge to Update
 
-- **`$ART_WORK/cli/work/architecture/design/config.md`** — Loading Mechanism steps 3–4 now target the cache directory, plus the invalidation rule.
-- **`$ART_WORK/cli/work/architecture/adr/cli.art`** — "Runtime Config Loading — esbuild Bundle-at-Runtime": record the cache location and bypass flag.
+- **`cli/work/README.md` and `cli/work/architecture/design/config.md`** — delivered by Iteration: Update Config Knowledge.
+- **`cli/work/architecture/adr/cli.art`** — "Runtime Config Loading — esbuild Bundle-at-Runtime" does not yet record the cache location or the bypass flag; not covered by an iteration.
 
 ### Follow Ups
 
 - **Reconcile `plan-art-work-cli-global-install`** — align its `compile-config-to-temp-dir` commit with the `node_modules/.art-work/` location decided here.
+- **README sample schema drift** — the sample uses the current `clone` / `checkouts` / `records` shape; re-verify it after `plan-art-work-cli-global-install`, Iteration: Refactor Config Semantics changes the schema.
 - **Workspace `.gitignore` cleanup** — drop the stale `.art-workspace-bundle.mjs` entry from workspace `.gitignore` files (outside `$ART_WORK`).
 
 ### Feedback
