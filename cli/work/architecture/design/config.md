@@ -8,6 +8,12 @@ The workspace configuration is a TypeScript module (`.art-workspace.mts`) at the
 
 The config is **manually authored, not generated**. The config points the CLI at the record discovery pattern.
 
+### Cache
+
+- **Where** — the compiled bundle and its metadata are cached under `<workspace root>/node_modules/.art-work/`: `config.bundle.mjs` (the bundled manifest) and `config.cache.json` (the cache metadata).
+- **Automatic invalidation** — `config.cache.json` records a sha256 hash per esbuild `metafile.inputs` entry. The cached bundle is reused only while every recorded input still exists and hashes to the same value; a changed, missing, or unreadable input, a missing `config.bundle.mjs`, unparseable metadata, or a `version` mismatch in the metadata triggers a rebuild.
+- **Manual bust** — run any command with `--no-config-cache`, or delete `node_modules/.art-work/`.
+
 ## Configuration Structure
 
 ```typescript

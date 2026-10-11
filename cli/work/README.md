@@ -10,6 +10,26 @@
 npm install -g @art-work/cli
 ```
 
+## Config
+
+```ts
+import { defineConfig } from '@art-work/cli/config';
+
+export default defineConfig({
+  clone: {
+    path: 'checkouts',
+  },
+  checkouts: {
+    path: '_records/checkouts',
+    template: '.agents/domains/workspace/templates/checkout.art.njk',
+  },
+  records: {
+    base: '_records',
+    gitignore: false,
+  },
+});
+```
+
 ## Usage
 
 ```bash
@@ -27,6 +47,10 @@ art-work-cli --help
 - `branch` — Branch across multitple checkouts.
 - `link` — Symlink packages for local dev.
 - `repo` — List repositories and their packages.
+
+## Options
+
+- `--no-config-cache` — Ignore the config cache, recompile the config, and refresh the cache for this run.
 
 ## Development
 
