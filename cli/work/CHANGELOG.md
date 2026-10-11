@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## 0.2.0
+
+### Added
+
+- **Config Cache**: Move compiled config into `node_modules/.art-work`.
+- **Config Cache**: Reuse compiled config when sources are unchanged. Bypass if sources changed.
+- **`--no-config-cache` flag**: Force skip config cache.
+
+### Fixed
+
+- **Checkout Scan** unborn HEAD resulted in `No` branch because `getCurrentBranch` was resolving branch with `symbolic-ref`.
+
+## Refactored
+
+- Adopt **Typescript Conventions**: extracted constants, import from barrel where available.
+- Adopt **Unit-test Conventions**: test case descriptions; extracted constants, spy function naming.
+
 ## 0.1.6
 
 ### Fixed
@@ -41,7 +58,7 @@
 
 ## 0.1.3
 
-### Fix
+### Fixed
 
 - **Checkouts Run** command did not allow executing commands with quotes. Example: "git commit -m 'fix ...'".
 
