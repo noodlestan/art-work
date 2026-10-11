@@ -1,5 +1,17 @@
 import type { FSRecordsPath } from '@art-lib/fs-records';
 
+export type ConfigCacheInput = {
+	path: string;
+	hash: string;
+};
+
+export type ConfigCacheMeta = {
+	version: number;
+	compiledAt: string;
+	manifest: string;
+	inputs: ConfigCacheInput[];
+};
+
 export interface WorkspaceConfig {
 	root: { path: string };
 	clone: { path: string };

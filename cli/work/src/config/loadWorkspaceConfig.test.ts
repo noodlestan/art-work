@@ -1,14 +1,28 @@
-import { existsSync, writeFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { existsSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { build } from 'esbuild';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { makeTempDir } from '../test/helpers/tempDirs/makeTempDir.js';
 import { removeTempDirs } from '../test/helpers/tempDirs/removeTempDirs.js';
 
-import { resolveBundlePath, resolveCacheDir } from './cache.js';
+import { resolveBundlePath, resolveCacheDir, resolveMetaPath } from './cache.js';
+import type { ConfigCacheMeta } from './types.js';
 
 import { loadWorkspaceConfig } from './index.js';
+
+vi.mock('esbuild', async importOriginal => {
+	const actual = await importOriginal<typeof import('esbuild')>();
+
+	return {
+		...actual,
+		build: vi.fn(actual.build),
+	};
+});
+
+const buildMock = vi.mocked(build);
 
 const SOME_CONFIG = JSON.stringify({
 	clone: { path: 'clone-path' },
@@ -17,7 +31,27 @@ const SOME_CONFIG = JSON.stringify({
 	records: { pattern: '*.art' },
 });
 
+const CHANGED_CONFIG = JSON.stringify({
+	clone: { path: 'changed-clone-path' },
+	root: {},
+	checkouts: { path: 'checkouts-path', template: 'checkouts-template' },
+	records: { pattern: '*.art' },
+});
+
 const tempDirs: string[] = [];
+
+function readCacheMeta(tempDir: string): ConfigCacheMeta {
+	return JSON.parse(readFileSync(resolveMetaPath(tempDir), 'utf8'));
+}
+
+function sha256(content: string): string {
+	return createHash('sha256').update(content).digest('hex');
+}
+
+beforeEach(() => {
+	buildMock.mockClear();
+	vi.spyOn(console, 'info').mockImplementation(() => {});
+});
 
 afterEach(async () => {
 	await removeTempDirs(tempDirs);
@@ -98,5 +132,172 @@ describe('loadWorkspaceConfig', () => {
 		writeFileSync(join(tempDir, '.art-workspace.mts'), "throw new Error('boom');\n");
 
 		await expect(loadWorkspaceConfig(tempDir)).rejects.toThrow(/\.art-workspace\.mts/);
+	});
+
+	it('WHEN the manifest fails to bundle it reports the manifest path', async () => {
+		const tempDir = makeTempDir(tempDirs);
+		writeFileSync(join(tempDir, '.art-workspace.mts'), 'export default {{{');
+
+		await expect(loadWorkspaceConfig(tempDir)).rejects.toThrow(/\.art-workspace\.mts/);
+	});
+
+	it('GIVEN a successful load it records a sha256 for every bundled input', async () => {
+		const tempDir = makeTempDir(tempDirs);
+		const manifestPath = join(tempDir, '.art-workspace.mts');
+		writeFileSync(manifestPath, `export default ${SOME_CONFIG}`);
+
+		await loadWorkspaceConfig(tempDir);
+
+		const cacheMeta = readCacheMeta(tempDir);
+
+		expect(cacheMeta.version).toBe(1);
+		expect(cacheMeta.manifest).toBe(manifestPath);
+		expect(cacheMeta.inputs).toEqual([
+			{ path: '.art-workspace.mts', hash: sha256(readFileSync(manifestPath, 'utf8')) },
+		]);
+	});
+
+	it('GIVEN a valid cache a second load reuses the bundle without building', async () => {
+		const tempDir = makeTempDir(tempDirs);
+		writeFileSync(join(tempDir, '.art-workspace.mts'), `export default ${SOME_CONFIG}`);
+
+		await loadWorkspaceConfig(tempDir);
+
+		const config = await loadWorkspaceConfig(tempDir);
+
+		expect(buildMock).toHaveBeenCalledTimes(1);
+		expect(vi.mocked(console.info)).toHaveBeenCalledWith('config: reused cached bundle');
+		expect(config.clone.path).toBe('clone-path');
+	});
+
+	it('GIVEN the manifest changed a load rebuilds and rewrites the cache metadata', async () => {
+		const tempDir = makeTempDir(tempDirs);
+		const manifestPath = join(tempDir, '.art-workspace.mts');
+		writeFileSync(manifestPath, `export default ${SOME_CONFIG}`);
+
+		await loadWorkspaceConfig(tempDir);
+
+		buildMock.mockClear();
+		writeFileSync(manifestPath, `export default ${CHANGED_CONFIG}`);
+
+		await loadWorkspaceConfig(tempDir);
+
+		expect(buildMock).toHaveBeenCalledTimes(1);
+		expect(readCacheMeta(tempDir).inputs).toEqual([
+			{ path: '.art-workspace.mts', hash: sha256(readFileSync(manifestPath, 'utf8')) },
+		]);
+	});
+
+	it('GIVEN a file imported by the manifest changed a load rebuilds', async () => {
+		const tempDir = makeTempDir(tempDirs);
+		const manifestPath = join(tempDir, '.art-workspace.mts');
+		const settingsPath = join(tempDir, 'settings.mts');
+		writeFileSync(settingsPath, "export const clonePath = 'first-clone';\n");
+		writeFileSync(
+			manifestPath,
+			[
+				"import { clonePath } from './settings.mts';",
+				'',
+				'export default {',
+				'	clone: { path: clonePath },',
+				'	root: {},',
+				"	checkouts: { path: 'checkouts-path', template: 'checkouts-template' },",
+				"	records: { pattern: '*.art' },",
+				'};',
+				'',
+			].join('\n'),
+		);
+
+		await loadWorkspaceConfig(tempDir);
+
+		buildMock.mockClear();
+		writeFileSync(settingsPath, "export const clonePath = 'second-clone';\n");
+
+		await loadWorkspaceConfig(tempDir);
+
+		expect(buildMock).toHaveBeenCalledTimes(1);
+		expect(readCacheMeta(tempDir).inputs).toEqual(
+			expect.arrayContaining([
+				{ path: 'settings.mts', hash: sha256(readFileSync(settingsPath, 'utf8')) },
+			]),
+		);
+	});
+
+	it('GIVEN the bundle is missing a load rebuilds', async () => {
+		const tempDir = makeTempDir(tempDirs);
+		writeFileSync(join(tempDir, '.art-workspace.mts'), `export default ${SOME_CONFIG}`);
+
+		await loadWorkspaceConfig(tempDir);
+
+		rmSync(resolveBundlePath(tempDir));
+		buildMock.mockClear();
+
+		await loadWorkspaceConfig(tempDir);
+
+		expect(buildMock).toHaveBeenCalledTimes(1);
+		expect(existsSync(resolveBundlePath(tempDir))).toBe(true);
+	});
+
+	it('GIVEN the cache metadata is missing a load rebuilds', async () => {
+		const tempDir = makeTempDir(tempDirs);
+		writeFileSync(join(tempDir, '.art-workspace.mts'), `export default ${SOME_CONFIG}`);
+
+		await loadWorkspaceConfig(tempDir);
+
+		rmSync(resolveMetaPath(tempDir));
+		buildMock.mockClear();
+
+		await loadWorkspaceConfig(tempDir);
+
+		expect(buildMock).toHaveBeenCalledTimes(1);
+		expect(existsSync(resolveMetaPath(tempDir))).toBe(true);
+	});
+
+	it('GIVEN the cache metadata is unparseable a load rebuilds', async () => {
+		const tempDir = makeTempDir(tempDirs);
+		writeFileSync(join(tempDir, '.art-workspace.mts'), `export default ${SOME_CONFIG}`);
+
+		await loadWorkspaceConfig(tempDir);
+
+		writeFileSync(resolveMetaPath(tempDir), '{not-json');
+		buildMock.mockClear();
+
+		await loadWorkspaceConfig(tempDir);
+
+		expect(buildMock).toHaveBeenCalledTimes(1);
+	});
+
+	it('GIVEN the cache metadata version mismatches a load rebuilds', async () => {
+		const tempDir = makeTempDir(tempDirs);
+		writeFileSync(join(tempDir, '.art-workspace.mts'), `export default ${SOME_CONFIG}`);
+
+		await loadWorkspaceConfig(tempDir);
+
+		const cacheMeta = readCacheMeta(tempDir);
+		writeFileSync(resolveMetaPath(tempDir), JSON.stringify({ ...cacheMeta, version: 2 }));
+		buildMock.mockClear();
+
+		await loadWorkspaceConfig(tempDir);
+
+		expect(buildMock).toHaveBeenCalledTimes(1);
+	});
+
+	it('GIVEN a recorded input is missing a load rebuilds', async () => {
+		const tempDir = makeTempDir(tempDirs);
+		writeFileSync(join(tempDir, '.art-workspace.mts'), `export default ${SOME_CONFIG}`);
+
+		await loadWorkspaceConfig(tempDir);
+
+		const cacheMeta = readCacheMeta(tempDir);
+		const ghostInput = { path: 'ghost.mts', hash: 'deadbeef' };
+		writeFileSync(
+			resolveMetaPath(tempDir),
+			JSON.stringify({ ...cacheMeta, inputs: [...cacheMeta.inputs, ghostInput] }),
+		);
+		buildMock.mockClear();
+
+		await loadWorkspaceConfig(tempDir);
+
+		expect(buildMock).toHaveBeenCalledTimes(1);
 	});
 });
