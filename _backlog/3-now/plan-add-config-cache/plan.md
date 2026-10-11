@@ -2,7 +2,7 @@
 
 **ID:** `add-config-cache`
 
-**Status:** `READY`
+**Status:** `WORKING`
 
 **Template:** `.agents/domains/plans/templates/plan.tart`
 
@@ -406,4 +406,5 @@ docs(art-work-cli): Document config cache and no-config-cache option.
 
 ### Feedback
 
-- None.
+- **Commit sections lack `**Repository:**`** — `commit.tart` renders `Repository` + `Message` per `##### Commit:`; the 4 commit sections carry only the message. No worker impact — the repository is listed in the Commits tables and in the instruction files.
+- **Optional template sections not rendered** — `Resource Types in Scope`, `Workflows` / `Workflow Operations`, `Execution Context`; template completeness only, no worker impact.
