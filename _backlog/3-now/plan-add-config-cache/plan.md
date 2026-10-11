@@ -66,7 +66,7 @@ Changes confined to config loading and CLI option plumbing in `$ART_WORK/cli/wor
 
 ### Next
 
-- Delegate Iteration: Move Config Bundle To Cache first (`./instructions/move-config-bundle-to-cache.md`); the remaining 3 iterations follow in order.
+- Delegate Iteration: Cache Config By Source Hash (`./instructions/cache-config-by-source-hash.md`); Iteration: Add No Config Cache Flag and Iteration: Update Config Knowledge follow in order.
 
 ### Blockers
 
@@ -120,7 +120,7 @@ All steps MUST pass. No `it.todo()` tests may remain.
 
 | Iteration / Instructions               | Status  |
 | -------------------------------------- | ------- |
-| Iteration: Move Config Bundle To Cache | `READY` |
+| Iteration: Move Config Bundle To Cache | `DONE`  |
 | Iteration: Cache Config By Source Hash | `READY` |
 | Iteration: Add No Config Cache Flag    | `READY` |
 | Iteration: Update Config Knowledge     | `READY` |
@@ -129,7 +129,7 @@ All steps MUST pass. No `it.todo()` tests may remain.
 
 **Id:** `move-config-bundle-to-cache`
 
-**Status:** `READY`
+**Status:** `DONE`
 
 **Purpose:** Stop writing the compiled configuration bundle into the workspace root.
 
@@ -138,6 +138,8 @@ All steps MUST pass. No `it.todo()` tests may remain.
 **Instructions Mode:** `INSTRUCTIONS_SELF_CONTAINED_FILE`
 
 **Instructions:** `./instructions/move-config-bundle-to-cache.md`
+
+**Report:** `./instructions/move-config-bundle-to-cache__report.md`
 
 **Changes:**
 
@@ -156,9 +158,9 @@ In `$ART_WORK/cli/work/src/config/`:
 
 #### Commits:
 
-| ID                            | Repository / Checkout / Branch      | Policy       | Hash | Status     |
-| ----------------------------- | ----------------------------------- | ------------ | ---- | ---------- |
-| `move-config-bundle-to-cache` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `AUTHORED` |
+| ID                            | Repository / Checkout / Branch      | Policy       | Hash      | Status      |
+| ----------------------------- | ----------------------------------- | ------------ | --------- | ----------- |
+| `move-config-bundle-to-cache` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` | `8821977` | `COMMITTED` |
 
 ##### Commit: `move-config-bundle-to-cache`
 
@@ -376,6 +378,7 @@ docs(art-work-cli): Document config cache and no-config-cache option.
 
 ### Evidence
 
+- **Iteration 1 delivered** — `8821977` moved the compiled bundle into `node_modules/.art-work/` with graceful degradation and best-effort legacy root cleanup; `npm run ci` green (343 unit + 22 integration).
 - **Cache reuse observable** — run any command twice in `$WORKSPACE`; the second run reports reuse and leaves `node_modules/.art-work/config.bundle.mjs` untouched.
 
 ### Findings
