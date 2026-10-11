@@ -300,4 +300,45 @@ describe('loadWorkspaceConfig', () => {
 
 		expect(buildMock).toHaveBeenCalledTimes(1);
 	});
+
+	it('GIVEN a valid cache the default honours it and a cache false call rebuilds', async () => {
+		const tempDir = makeTempDir(tempDirs);
+		writeFileSync(join(tempDir, '.art-workspace.mts'), `export default ${SOME_CONFIG}`);
+
+		await loadWorkspaceConfig(tempDir);
+
+		buildMock.mockClear();
+		const reused = await loadWorkspaceConfig(tempDir);
+
+		expect(buildMock).not.toHaveBeenCalled();
+		expect(reused.clone.path).toBe('clone-path');
+
+		const rebuilt = await loadWorkspaceConfig(tempDir, { cache: false });
+
+		expect(buildMock).toHaveBeenCalledTimes(1);
+		expect(rebuilt.clone.path).toBe('clone-path');
+		expect(vi.mocked(console.info)).toHaveBeenCalledWith('config: cache bypassed,rebuilt bundle');
+	});
+
+	it('GIVEN the cache option is false a load refreshes the cache metadata', async () => {
+		const tempDir = makeTempDir(tempDirs);
+		const manifestPath = join(tempDir, '.art-workspace.mts');
+		writeFileSync(manifestPath, `export default ${SOME_CONFIG}`);
+
+		await loadWorkspaceConfig(tempDir);
+
+		const staleMeta = {
+			...readCacheMeta(tempDir),
+			inputs: [{ path: '.art-workspace.mts', hash: 'deadbeef' }],
+		};
+		writeFileSync(resolveMetaPath(tempDir), JSON.stringify(staleMeta));
+		buildMock.mockClear();
+
+		await loadWorkspaceConfig(tempDir, { cache: false });
+
+		expect(buildMock).toHaveBeenCalledTimes(1);
+		expect(readCacheMeta(tempDir).inputs).toEqual([
+			{ path: '.art-workspace.mts', hash: sha256(readFileSync(manifestPath, 'utf8')) },
+		]);
+	});
 });

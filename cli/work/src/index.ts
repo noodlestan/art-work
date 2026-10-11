@@ -26,25 +26,31 @@ const logger = createLogger();
 
 program.name('art-workspace').description('Workspace orchestration CLI').version(__BUILD_VERSION__);
 
+program.option('--no-config-cache', 'Ignore the config cache and recompile the config');
+
 program
 	.command('sanity')
 	.description('Check git status across all repos')
 	.option('-a, --auto', 'push clean unpushed repos')
 	.option('-r, --refetch', 'fetch ahead/behind data from remote')
 	.option('-o, --output <mode>', 'One of quiet|verbose')
-	.action(async (options: { auto?: boolean; refetch?: boolean; output?: string }) => {
-		const root = process.cwd();
-		logger.log(createGenericOperation('boot'));
-		const config = await loadWorkspaceConfig(root);
-		const store = createCheckoutStore();
-		const log = createOperationsLog(logger.log);
-		const ctx = createWorkspaceContext(config, store, log);
-		logger.setOutputMode(options.output || config.output.mode);
+	.action(
+		async (options: { auto?: boolean; refetch?: boolean; output?: string }, command: Command) => {
+			const root = process.cwd();
+			logger.log(createGenericOperation('boot'));
+			const config = await loadWorkspaceConfig(root, {
+				cache: command.optsWithGlobals().configCache !== false,
+			});
+			const store = createCheckoutStore();
+			const log = createOperationsLog(logger.log);
+			const ctx = createWorkspaceContext(config, store, log);
+			logger.setOutputMode(options.output || config.output.mode);
 
-		const auto = options.auto ?? false;
-		const refetch = options.refetch ?? false;
-		await runSanity(ctx, { auto, refetch });
-	});
+			const auto = options.auto ?? false;
+			const refetch = options.refetch ?? false;
+			await runSanity(ctx, { auto, refetch });
+		},
+	);
 
 program
 	.command('clone')
@@ -58,10 +64,13 @@ program
 			repoName: string | undefined,
 			checkoutInput: string | undefined,
 			options: { all?: boolean; output?: string },
+			command: Command,
 		) => {
 			const root = process.cwd();
 			logger.log(createGenericOperation('boot'));
-			const config = await loadWorkspaceConfig(root);
+			const config = await loadWorkspaceConfig(root, {
+				cache: command.optsWithGlobals().configCache !== false,
+			});
 			const store = createCheckoutStore();
 			const log = createOperationsLog(logger.log);
 			const ctx = createWorkspaceContext(config, store, log);
@@ -82,10 +91,16 @@ program
 	.option('-a, --all', 'Apply to all checkouts')
 	.option('-o, --output <mode>', 'One of quiet|verbose')
 	.action(
-		async (branch: string, options: { checkouts?: string[]; all?: boolean; output?: string }) => {
+		async (
+			branch: string,
+			options: { checkouts?: string[]; all?: boolean; output?: string },
+			command: Command,
+		) => {
 			const root = process.cwd();
 			logger.log(createGenericOperation('boot'));
-			const config = await loadWorkspaceConfig(root);
+			const config = await loadWorkspaceConfig(root, {
+				cache: command.optsWithGlobals().configCache !== false,
+			});
 			const store = createCheckoutStore();
 			const log = createOperationsLog(logger.log);
 			const ctx = createWorkspaceContext(config, store, log);
@@ -106,15 +121,20 @@ program
 	.option('-w, --workspace', 'Also apply the command to the workspace root')
 	.option('-o, --output <mode>', 'One of quiet|verbose')
 	.action(
-		async (options: {
-			checkouts?: string[];
-			all?: boolean;
-			workspace?: boolean;
-			output?: string;
-		}) => {
+		async (
+			options: {
+				checkouts?: string[];
+				all?: boolean;
+				workspace?: boolean;
+				output?: string;
+			},
+			command: Command,
+		) => {
 			const root = process.cwd();
 			logger.log(createGenericOperation('boot'));
-			const config = await loadWorkspaceConfig(root);
+			const config = await loadWorkspaceConfig(root, {
+				cache: command.optsWithGlobals().configCache !== false,
+			});
 			const store = createCheckoutStore();
 			const log = createOperationsLog(logger.log);
 			const ctx = createWorkspaceContext(config, store, log);
@@ -139,15 +159,20 @@ program
 	.option('-w, --workspace', 'Also apply the command to the workspace root')
 	.option('-o, --output <mode>', 'One of quiet|verbose')
 	.action(
-		async (options: {
-			checkouts?: string[];
-			all?: boolean;
-			workspace?: boolean;
-			output?: string;
-		}) => {
+		async (
+			options: {
+				checkouts?: string[];
+				all?: boolean;
+				workspace?: boolean;
+				output?: string;
+			},
+			command: Command,
+		) => {
 			const root = process.cwd();
 			logger.log(createGenericOperation('boot'));
-			const config = await loadWorkspaceConfig(root);
+			const config = await loadWorkspaceConfig(root, {
+				cache: command.optsWithGlobals().configCache !== false,
+			});
 			const store = createCheckoutStore();
 			const log = createOperationsLog(logger.log);
 			const ctx = createWorkspaceContext(config, store, log);
@@ -172,15 +197,20 @@ program
 	.option('-w, --workspace', 'Also apply the command to the workspace root')
 	.option('-o, --output <mode>', 'One of quiet|verbose')
 	.action(
-		async (options: {
-			checkouts?: string[];
-			all?: boolean;
-			workspace?: boolean;
-			output?: string;
-		}) => {
+		async (
+			options: {
+				checkouts?: string[];
+				all?: boolean;
+				workspace?: boolean;
+				output?: string;
+			},
+			command: Command,
+		) => {
 			const root = process.cwd();
 			logger.log(createGenericOperation('boot'));
-			const config = await loadWorkspaceConfig(root);
+			const config = await loadWorkspaceConfig(root, {
+				cache: command.optsWithGlobals().configCache !== false,
+			});
 			const store = createCheckoutStore();
 			const log = createOperationsLog(logger.log);
 			const ctx = createWorkspaceContext(config, store, log);
@@ -207,16 +237,26 @@ program
 	.option('-a, --all', 'Apply to all checkouts')
 	.option('-o, --output <mode>', 'One of quiet|verbose')
 	.action(
-		async (command: string, options: { checkouts?: string[]; all?: boolean; output?: string }) => {
+		async (
+			shellCommand: string,
+			options: { checkouts?: string[]; all?: boolean; output?: string },
+			command: Command,
+		) => {
 			const root = process.cwd();
 			logger.log(createGenericOperation('boot'));
-			const config = await loadWorkspaceConfig(root);
+			const config = await loadWorkspaceConfig(root, {
+				cache: command.optsWithGlobals().configCache !== false,
+			});
 			const store = createCheckoutStore();
 			const log = createOperationsLog(logger.log);
 			const ctx = createWorkspaceContext(config, store, log);
 			logger.setOutputMode(options.output || config.output.mode);
 
-			await runCheckoutsRun(ctx, { command, checkouts: options.checkouts, all: options.all });
+			await runCheckoutsRun(ctx, {
+				command: shellCommand,
+				checkouts: options.checkouts,
+				all: options.all,
+			});
 		},
 	);
 
@@ -225,10 +265,12 @@ program
 	.description('List checkout resources')
 	.argument('[checkouts...]', 'checkout locations to list (default: all checkouts)')
 	.option('-o, --output <mode>', 'One of quiet|verbose')
-	.action(async (locations: string[], options: { output?: string }) => {
+	.action(async (locations: string[], options: { output?: string }, command: Command) => {
 		const root = process.cwd();
 		logger.log(createGenericOperation('boot'));
-		const config = await loadWorkspaceConfig(root);
+		const config = await loadWorkspaceConfig(root, {
+			cache: command.optsWithGlobals().configCache !== false,
+		});
 		const store = createCheckoutStore();
 		const log = createOperationsLog(logger.log);
 		const ctx = createWorkspaceContext(config, store, log);
@@ -241,10 +283,12 @@ program
 	.command('link')
 	.description('Link packages for local dev')
 	.option('-o, --output <mode>', 'One of quiet|verbose')
-	.action(async (options: { output?: string }) => {
+	.action(async (options: { output?: string }, command: Command) => {
 		const root = process.cwd();
 		logger.log(createGenericOperation('boot'));
-		const config = await loadWorkspaceConfig(root);
+		const config = await loadWorkspaceConfig(root, {
+			cache: command.optsWithGlobals().configCache !== false,
+		});
 		const store = createCheckoutStore();
 		const log = createOperationsLog(logger.log);
 		const ctx = createWorkspaceContext(config, store, log);
@@ -257,10 +301,12 @@ program
 	.command('unlink')
 	.description('Unlink packages')
 	.option('-o, --output <mode>', 'One of quiet|verbose')
-	.action(async (options: { output?: string }) => {
+	.action(async (options: { output?: string }, command: Command) => {
 		const root = process.cwd();
 		logger.log(createGenericOperation('boot'));
-		const config = await loadWorkspaceConfig(root);
+		const config = await loadWorkspaceConfig(root, {
+			cache: command.optsWithGlobals().configCache !== false,
+		});
 		const store = createCheckoutStore();
 		const log = createOperationsLog(logger.log);
 		const ctx = createWorkspaceContext(config, store, log);
@@ -274,10 +320,12 @@ program
 	.description('Publish packages')
 	.option('-a, --auto', 'auto-publish')
 	.option('-o, --output <mode>', 'One of quiet|verbose')
-	.action(async (options: { auto?: boolean; output?: string }) => {
+	.action(async (options: { auto?: boolean; output?: string }, command: Command) => {
 		const root = process.cwd();
 		logger.log(createGenericOperation('boot'));
-		const config = await loadWorkspaceConfig(root);
+		const config = await loadWorkspaceConfig(root, {
+			cache: command.optsWithGlobals().configCache !== false,
+		});
 		const store = createCheckoutStore();
 		const log = createOperationsLog(logger.log);
 		const ctx = createWorkspaceContext(config, store, log);
