@@ -66,7 +66,7 @@ Changes confined to config loading and CLI option plumbing in `$ART_WORK/cli/wor
 
 ### Next
 
-- Delegate Iteration: Cache Config By Source Hash (`./instructions/cache-config-by-source-hash.md`); Iteration: Add No Config Cache Flag and Iteration: Update Config Knowledge follow in order.
+- Delegate Iteration: Add No Config Cache Flag (`./instructions/add-no-config-cache-flag.md`); Iteration: Update Config Knowledge follows.
 
 ### Blockers
 
@@ -121,7 +121,7 @@ All steps MUST pass. No `it.todo()` tests may remain.
 | Iteration / Instructions               | Status  |
 | -------------------------------------- | ------- |
 | Iteration: Move Config Bundle To Cache | `DONE`  |
-| Iteration: Cache Config By Source Hash | `READY` |
+| Iteration: Cache Config By Source Hash | `DONE`  |
 | Iteration: Add No Config Cache Flag    | `READY` |
 | Iteration: Update Config Knowledge     | `READY` |
 
@@ -174,7 +174,7 @@ build(art-work-cli): Move compiled config into `node_modules/.art-work`.
 
 **Id:** `cache-config-by-source-hash`
 
-**Status:** `READY`
+**Status:** `DONE`
 
 **Purpose:** Reuse the cached compilation while the configuration sources are unchanged.
 
@@ -183,6 +183,8 @@ build(art-work-cli): Move compiled config into `node_modules/.art-work`.
 **Instructions Mode:** `INSTRUCTIONS_SELF_CONTAINED_FILE`
 
 **Instructions:** `./instructions/cache-config-by-source-hash.md`
+
+**Report:** `./instructions/cache-config-by-source-hash__report.md`
 
 **Changes:**
 
@@ -223,9 +225,9 @@ In `$ART_WORK/cli/work/src/config/loadWorkspaceConfig.test.ts`:
 
 #### Commits:
 
-| ID                            | Repository / Checkout / Branch      | Policy       | Hash | Status     |
-| ----------------------------- | ----------------------------------- | ------------ | ---- | ---------- |
-| `cache-config-by-source-hash` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `AUTHORED` |
+| ID                            | Repository / Checkout / Branch      | Policy       | Hash      | Status      |
+| ----------------------------- | ----------------------------------- | ------------ | --------- | ----------- |
+| `cache-config-by-source-hash` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` | `d68a57f` | `COMMITTED` |
 
 ##### Commit: `cache-config-by-source-hash`
 
@@ -378,6 +380,7 @@ docs(art-work-cli): Document config cache and no-config-cache option.
 
 ### Evidence
 
+- **Iteration 2 delivered** — `d68a57f` records sha256 per `metafile.inputs` in `config.cache.json` and skips `build()` while sources are unchanged; reuse/invalidation verified in unit tests and in vivo; `npm run ci` green (353 unit + 22 integration).
 - **Iteration 1 delivered** — `8821977` moved the compiled bundle into `node_modules/.art-work/` with graceful degradation and best-effort legacy root cleanup; `npm run ci` green (343 unit + 22 integration).
 - **Cache reuse observable** — run any command twice in `$WORKSPACE`; the second run reports reuse and leaves `node_modules/.art-work/config.bundle.mjs` untouched.
 
@@ -410,4 +413,7 @@ docs(art-work-cli): Document config cache and no-config-cache option.
 ### Feedback
 
 - **Commit sections lack `**Repository:**`** — `commit.tart` renders `Repository` + `Message` per `##### Commit:`; the 4 commit sections carry only the message. No worker impact — the repository is listed in the Commits tables and in the instruction files.
+- **In-process re-import is cached (iter 2)** — after a rebuild, `import()` of the same bundle URL returns Node's cached module; one-shot CLI unaffected, deferred (content-hash import URL) unless long-lived processes need it.
+- **Metafile paths are realpaths (iter 2)** — cache metadata anchors the workspace-root-relative conversion on `realpathSync(rootPath)` (symlinked temp/workdir paths).
+- **Iteration 4 can be precise (iter 2)** — the `### Cache` doc can state the sha256 per esbuild `metafile.inputs` and the `config: reused cached bundle` / `config: rebuilt bundle` decision logs.
 - **Optional template sections not rendered** — `Resource Types in Scope`, `Workflows` / `Workflow Operations`, `Execution Context`; template completeness only, no worker impact.
