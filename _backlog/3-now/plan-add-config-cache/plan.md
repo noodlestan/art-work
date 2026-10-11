@@ -66,7 +66,7 @@ Changes confined to config loading and CLI option plumbing in `$ART_WORK/cli/wor
 
 ### Next
 
-- Delegate Iteration: Add No Config Cache Flag (`./instructions/add-no-config-cache-flag.md`); Iteration: Update Config Knowledge follows.
+- Delegate Iteration: Update Config Knowledge (`./instructions/update-config-knowledge.md`) — the last iteration.
 
 ### Blockers
 
@@ -122,7 +122,7 @@ All steps MUST pass. No `it.todo()` tests may remain.
 | -------------------------------------- | ------- |
 | Iteration: Move Config Bundle To Cache | `DONE`  |
 | Iteration: Cache Config By Source Hash | `DONE`  |
-| Iteration: Add No Config Cache Flag    | `READY` |
+| Iteration: Add No Config Cache Flag    | `DONE`  |
 | Iteration: Update Config Knowledge     | `READY` |
 
 ### Iteration: Move Config Bundle To Cache
@@ -241,7 +241,7 @@ build(art-work-cli): Reuse compiled config when sources are unchanged.
 
 **Id:** `add-no-config-cache-flag`
 
-**Status:** `READY`
+**Status:** `DONE`
 
 **Purpose:** Let an operator force a config recompile for a single invocation.
 
@@ -250,6 +250,8 @@ build(art-work-cli): Reuse compiled config when sources are unchanged.
 **Instructions Mode:** `INSTRUCTIONS_SELF_CONTAINED_FILE`
 
 **Instructions:** `./instructions/add-no-config-cache-flag.md`
+
+**Report:** `./instructions/add-no-config-cache-flag__report.md`
 
 **Changes:**
 
@@ -284,9 +286,9 @@ In `$ART_WORK/cli/work/test/config.test.ts` (new integration test, alongside `in
 
 #### Commits:
 
-| ID                         | Repository / Checkout / Branch      | Policy       | Hash | Status     |
-| -------------------------- | ----------------------------------- | ------------ | ---- | ---------- |
-| `add-no-config-cache-flag` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `AUTHORED` |
+| ID                         | Repository / Checkout / Branch      | Policy       | Hash      | Status      |
+| -------------------------- | ----------------------------------- | ------------ | --------- | ----------- |
+| `add-no-config-cache-flag` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` | `9548943` | `COMMITTED` |
 
 ##### Commit: `add-no-config-cache-flag`
 
@@ -380,6 +382,7 @@ docs(art-work-cli): Document config cache and no-config-cache option.
 
 ### Evidence
 
+- **Iteration 3 delivered** — `9548943` added `--no-config-cache` (program-level, accepted before or after the subcommand), threaded through all 11 config-load call sites; bypass rebuilds and refreshes the cache; `test/config.test.ts` proves cross-process reuse, invalidation, and bypass; `npm run ci` green (355 unit + 26 integration).
 - **Iteration 2 delivered** — `d68a57f` records sha256 per `metafile.inputs` in `config.cache.json` and skips `build()` while sources are unchanged; reuse/invalidation verified in unit tests and in vivo; `npm run ci` green (353 unit + 22 integration).
 - **Iteration 1 delivered** — `8821977` moved the compiled bundle into `node_modules/.art-work/` with graceful degradation and best-effort legacy root cleanup; `npm run ci` green (343 unit + 22 integration).
 - **Cache reuse observable** — run any command twice in `$WORKSPACE`; the second run reports reuse and leaves `node_modules/.art-work/config.bundle.mjs` untouched.
@@ -413,6 +416,9 @@ docs(art-work-cli): Document config cache and no-config-cache option.
 ### Feedback
 
 - **Commit sections lack `**Repository:**`** — `commit.tart` renders `Repository` + `Message` per `##### Commit:`; the 4 commit sections carry only the message. No worker impact — the repository is listed in the Commits tables and in the instruction files.
+- **Bypass log string is verbatim (iter 3)** — `config: cache bypassed,rebuilt bundle` (no space after the comma) exactly as the instructions wrote it; one-character fix if unintended.
+- **`checkouts run` argument renamed (iter 3)** — the action's shell-command argument is now `shellCommand` to free `command` for the commander `Command`.
+- **Manifest assertions need `toContain` (iter 3)** — the spawned CLI resolves macOS `/var` → `/private/var`, so `config.cache.json`'s `manifest` path differs from the test's `tempDir` prefix.
 - **In-process re-import is cached (iter 2)** — after a rebuild, `import()` of the same bundle URL returns Node's cached module; one-shot CLI unaffected, deferred (content-hash import URL) unless long-lived processes need it.
 - **Metafile paths are realpaths (iter 2)** — cache metadata anchors the workspace-root-relative conversion on `realpathSync(rootPath)` (symlinked temp/workdir paths).
 - **Iteration 4 can be precise (iter 2)** — the `### Cache` doc can state the sha256 per esbuild `metafile.inputs` and the `config: reused cached bundle` / `config: rebuilt bundle` decision logs.
