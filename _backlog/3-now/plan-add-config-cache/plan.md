@@ -66,7 +66,7 @@ Changes confined to config loading and CLI option plumbing in `$ART_WORK/cli/wor
 
 ### Next
 
-- Delegate Iteration: Update Config Knowledge (`./instructions/update-config-knowledge.md`) — the last iteration.
+- All 4 iterations delivered and integrated (`8821977`, `d68a57f`, `9548943`, `298d6dc`). Mark the plan `DONE` and move it to `done` (changelog + archive) when ready.
 
 ### Blockers
 
@@ -118,12 +118,12 @@ All steps MUST pass. No `it.todo()` tests may remain.
 
 ## Items:
 
-| Iteration / Instructions               | Status  |
-| -------------------------------------- | ------- |
-| Iteration: Move Config Bundle To Cache | `DONE`  |
-| Iteration: Cache Config By Source Hash | `DONE`  |
-| Iteration: Add No Config Cache Flag    | `DONE`  |
-| Iteration: Update Config Knowledge     | `READY` |
+| Iteration / Instructions               | Status |
+| -------------------------------------- | ------ |
+| Iteration: Move Config Bundle To Cache | `DONE` |
+| Iteration: Cache Config By Source Hash | `DONE` |
+| Iteration: Add No Config Cache Flag    | `DONE` |
+| Iteration: Update Config Knowledge     | `DONE` |
 
 ### Iteration: Move Config Bundle To Cache
 
@@ -302,7 +302,7 @@ build(art-work-cli): Add `--no-config-cache` flag.
 
 **Id:** `update-config-knowledge`
 
-**Status:** `READY`
+**Status:** `DONE`
 
 **Purpose:** Document the config cache and the `--no-config-cache` flag for users and maintainers.
 
@@ -311,6 +311,8 @@ build(art-work-cli): Add `--no-config-cache` flag.
 **Instructions Mode:** `INSTRUCTIONS_SELF_CONTAINED_FILE`
 
 **Instructions:** `./instructions/update-config-knowledge.md`
+
+**Report:** `./instructions/update-config-knowledge__report.md`
 
 **Changes:**
 
@@ -359,9 +361,9 @@ In `$ART_WORK/cli/work/src/`:
 
 #### Commits:
 
-| ID                        | Repository / Checkout / Branch      | Policy       | Hash | Status     |
-| ------------------------- | ----------------------------------- | ------------ | ---- | ---------- |
-| `update-config-knowledge` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `AUTHORED` |
+| ID                        | Repository / Checkout / Branch      | Policy       | Hash      | Status      |
+| ------------------------- | ----------------------------------- | ------------ | --------- | ----------- |
+| `update-config-knowledge` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` | `298d6dc` | `COMMITTED` |
 
 ##### Commit: `update-config-knowledge`
 
@@ -382,6 +384,7 @@ docs(art-work-cli): Document config cache and no-config-cache option.
 
 ### Evidence
 
+- **Iteration 4 delivered** — `298d6dc` documented the cache in `cli/work/README.md` (`## Config`, `## Options`) and `cli/work/architecture/design/config.md` (`### Cache`: location, sha256-per-input invalidation, manual bust); `npm run ci` green (355 unit + 26 integration).
 - **Iteration 3 delivered** — `9548943` added `--no-config-cache` (program-level, accepted before or after the subcommand), threaded through all 11 config-load call sites; bypass rebuilds and refreshes the cache; `test/config.test.ts` proves cross-process reuse, invalidation, and bypass; `npm run ci` green (355 unit + 26 integration).
 - **Iteration 2 delivered** — `d68a57f` records sha256 per `metafile.inputs` in `config.cache.json` and skips `build()` while sources are unchanged; reuse/invalidation verified in unit tests and in vivo; `npm run ci` green (353 unit + 22 integration).
 - **Iteration 1 delivered** — `8821977` moved the compiled bundle into `node_modules/.art-work/` with graceful degradation and best-effort legacy root cleanup; `npm run ci` green (343 unit + 22 integration).
