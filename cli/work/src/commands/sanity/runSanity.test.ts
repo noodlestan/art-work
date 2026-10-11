@@ -31,7 +31,7 @@ beforeEach(() => {
 });
 
 describe('sanity command', () => {
-	it('reports "not cloned" for a missing checkout', async () => {
+	it('WHEN a checkout is missing it reports "not cloned"', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = await makeCommandContextMock(workspaceDir);
 
@@ -48,7 +48,7 @@ describe('sanity command', () => {
 		expect(ops.length).toEqual(0);
 	});
 
-	it('shows repo status when all repos are clean', async () => {
+	it('WHEN all repos are clean it shows repo status', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const ctx = await makeCommandContextMock(workspaceDir);
@@ -72,7 +72,7 @@ describe('sanity command', () => {
 		expect(ops.length).toEqual(0);
 	});
 
-	it('shows dirty repo with issues', async () => {
+	it('WHEN the repo is dirty it shows the repo with issues', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const ctx = await makeCommandContextMock(workspaceDir);
@@ -94,7 +94,7 @@ describe('sanity command', () => {
 		expect(ops.length).toEqual(0);
 	});
 
-	it('shows clean unpushed repo without --auto', async () => {
+	it('WHEN it runs without --auto it shows a clean unpushed repo', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const ctx = await makeCommandContextMock(workspaceDir);
@@ -116,7 +116,7 @@ describe('sanity command', () => {
 		expect(ops.length).toEqual(0);
 	});
 
-	it('pushes clean unpushed repo with --auto', async () => {
+	it('WHEN --auto is set it pushes the clean unpushed repo', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const ctx = await makeCommandContextMock(workspaceDir);
@@ -143,7 +143,7 @@ describe('sanity command', () => {
 		expect(ops[0].message()).toEqual('to origin/main');
 	});
 
-	it('does not push dirty repo with --auto', async () => {
+	it('WHEN --auto is set it does not push a dirty repo', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const ctx = await makeCommandContextMock(workspaceDir);
@@ -166,7 +166,7 @@ describe('sanity command', () => {
 		expect(ops.length).toEqual(0);
 	});
 
-	it('surfaces detached HEAD', async () => {
+	it('WHEN HEAD is detached it surfaces detached HEAD', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const ctx = await makeCommandContextMock(workspaceDir);
@@ -192,7 +192,7 @@ describe('sanity command', () => {
 		expect(ops.length).toEqual(0);
 	});
 
-	it('surfaces merge conflicts', async () => {
+	it('WHEN a merge conflict exists it surfaces merge conflicts', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const ctx = await makeCommandContextMock(workspaceDir);
@@ -236,7 +236,7 @@ describe('sanity command', () => {
 		expect(ops.length).toEqual(0);
 	});
 
-	it('filters "unknown project" from workspace report output', async () => {
+	it('WHEN the report is printed it filters "unknown project" from the workspace output', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const ctx = await makeCommandContextMock(workspaceDir);
@@ -250,18 +250,18 @@ describe('sanity command', () => {
 		writeRepoMockRecord(workspaceDir, 'Green', bareDir);
 		writeCheckoutMockRecord(workspaceDir, 'Green', 'Green', 'green');
 
-		const spy = vi.spyOn(console, 'info').mockImplementation(() => {});
+		const infoSpy = vi.spyOn(console, 'info').mockImplementation(() => {});
 
 		await runSanity(ctx, { auto: false });
 
-		const output = spy.mock.calls.map(c => c[0]).join('\n');
+		const output = infoSpy.mock.calls.map(c => c[0]).join('\n');
 		const workspaceSection = output.split('Workspace:')[1]?.split('Checkouts:')[0] || '';
 		expect(workspaceSection).not.toContain('unknown project');
 
 		vi.restoreAllMocks();
 	});
 
-	it('reports "unknown project" for a checkout with missing repo record', async () => {
+	it('WHEN the repo record is missing it reports "unknown project"', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const ctx = await makeCommandContextMock(workspaceDir);
@@ -281,7 +281,7 @@ describe('sanity command', () => {
 		expect(ops.length).toEqual(0);
 	});
 
-	it('shows extraneous directories in the Extraneous Report', async () => {
+	it('WHEN a directory is untracked it appears in the Extraneous Report', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const ctx = await makeCommandContextMock(workspaceDir);
@@ -290,18 +290,18 @@ describe('sanity command', () => {
 		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
 		await advanceGitRepoByOneCommit(repoDir, 'file.txt');
 
-		const spy = vi.spyOn(console, 'info').mockImplementation(() => {});
+		const infoSpy = vi.spyOn(console, 'info').mockImplementation(() => {});
 
 		await runSanity(ctx, { auto: false });
 
-		const output = spy.mock.calls.map(c => c[0]).join('\n');
+		const output = infoSpy.mock.calls.map(c => c[0]).join('\n');
 		expect(output).toContain('Untracked:');
 		expect(output).toContain('orphan');
 
 		vi.restoreAllMocks();
 	});
 
-	it('presents workspace report before checkout report', async () => {
+	it('WHEN both reports are printed the workspace report comes before the checkout report', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const ctx = await makeCommandContextMock(workspaceDir);
@@ -327,7 +327,7 @@ describe('sanity command', () => {
 		vi.restoreAllMocks();
 	});
 
-	it('detects the workspace root is behind origin', async () => {
+	it('WHEN the workspace root is behind origin it detects the behind state', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const ctx = await makeCommandContextMock(workspaceDir);
@@ -342,7 +342,7 @@ describe('sanity command', () => {
 		expect(ctx.workspace?.scan?.issues()).toContain('1 commit behind');
 	});
 
-	it('syncs the workspace root with --auto when behind and clean', async () => {
+	it('WHEN the workspace root is behind and clean it syncs with --auto', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const ctx = await makeCommandContextMock(workspaceDir);
@@ -363,7 +363,7 @@ describe('sanity command', () => {
 		expect(ops[1].outcome).toEqual('success');
 	});
 
-	it('does not pull the workspace root with --auto when dirty', async () => {
+	it('WHEN the workspace root is dirty it does not pull with --auto', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const ctx = await makeCommandContextMock(workspaceDir);
@@ -380,7 +380,7 @@ describe('sanity command', () => {
 		expect(ctx.log.all()).toHaveLength(0);
 	});
 
-	it('logs failure and continues with other operations when the workspace pull fails', async () => {
+	it('WHEN the workspace pull fails it logs the failure and continues', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const ctx = await makeCommandContextMock(workspaceDir);
@@ -420,7 +420,7 @@ describe('sanity command', () => {
 		expect(ops[1].outcome).toEqual('success');
 	});
 
-	it('with refetch=true detects behind state for checkouts', async () => {
+	it('WHEN refetch is true it detects the behind state for checkouts', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const ctx = await makeCommandContextMock(workspaceDir);

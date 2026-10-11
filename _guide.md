@@ -74,11 +74,8 @@ Roadmaps live with the CLI they describe, one per package:
 
 ### Planning Work
 
-Backlogs live with the CLI they describe, one per package:
-
-- `cli/work/_backlog/` — subdirectories such as `3-now`, `4-next`, and `6-plan`.
-- The short-term focus is captured in `cli/work/_backlog/_parking-lot.md`.
-- Planning coordination and constraints are captured in `cli/work/_backlog/_architect.md`.
+- The backlog lives at `_backlog/` with subdirectories such as `/3-now` and `/4-next/`.
+- The short-term focus is captured in `_backlog/_parking-lot.md`.
 
 ## Operating Instructions
 

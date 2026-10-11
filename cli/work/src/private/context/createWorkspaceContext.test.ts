@@ -7,7 +7,7 @@ import { createCheckoutStore } from '../store/createCheckoutStore.js';
 import { createWorkspaceContext } from './createWorkspaceContext.js';
 
 describe('createWorkspaceContext', () => {
-	it('creates context with config, root, store, and log', () => {
+	it('WHEN a context is created it has the config, root, store, and log', () => {
 		const config = makeConfigMock('.');
 		const store = createCheckoutStore();
 		const log = createOperationsLog();

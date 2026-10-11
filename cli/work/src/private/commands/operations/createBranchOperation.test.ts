@@ -5,7 +5,7 @@ import { makeCheckoutMock } from '../../../test/helpers/checkout/makeCheckoutMoc
 import { createBranchOperation } from './createBranchOperation.js';
 
 describe('createBranchOperation', () => {
-	it('has correct operation, outcome and message', () => {
+	it('WHEN a branch operation is created it has correct operation, outcome and message', () => {
 		const checkout = makeCheckoutMock();
 		const pending = createBranchOperation(checkout, 'feat/x');
 		expect(pending.operation).toBe('branch');

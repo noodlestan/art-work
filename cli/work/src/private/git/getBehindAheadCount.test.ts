@@ -16,7 +16,7 @@ afterEach(async () => {
 });
 
 describe('getBehindAheadCount', () => {
-	it('returns both ahead and behind when the branch has diverged from origin', async () => {
+	it('FOR a branch that has diverged from origin it returns both ahead and behind', async () => {
 		const dir = makeTempDir(tempDirs);
 		const { git } = await makeGitRepo(tempDirs, { dir });
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
@@ -39,7 +39,7 @@ describe('getBehindAheadCount', () => {
 		expect(result.behind).toBe(1);
 	});
 
-	it('returns ahead > 0, behind = 0 when only ahead', async () => {
+	it('FOR a branch that is only ahead it returns ahead > 0 and behind = 0', async () => {
 		const dir = makeTempDir(tempDirs);
 		const { git } = await makeGitRepo(tempDirs, { dir });
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
@@ -54,7 +54,7 @@ describe('getBehindAheadCount', () => {
 		expect(result.behind).toBe(0);
 	});
 
-	it('returns behind > 0, ahead = 0 when only behind (local tracking ref updated)', async () => {
+	it('FOR a branch that is only behind it returns behind > 0 and ahead = 0', async () => {
 		const dir = makeTempDir(tempDirs);
 		const { git } = await makeGitRepo(tempDirs, { dir });
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
@@ -74,7 +74,7 @@ describe('getBehindAheadCount', () => {
 		expect(result.ahead).toBe(0);
 	});
 
-	it('returns 0/0 when up to date', async () => {
+	it('FOR an up to date branch it returns 0 ahead and 0 behind', async () => {
 		const dir = makeTempDir(tempDirs);
 		const { git } = await makeGitRepo(tempDirs, { dir });
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
@@ -88,7 +88,7 @@ describe('getBehindAheadCount', () => {
 		expect(result.behind).toBe(0);
 	});
 
-	it('returns 0/0 fallback when the remote is unreachable (no remote)', async () => {
+	it('FOR an unreachable remote it returns the 0/0 fallback', async () => {
 		const dir = makeTempDir(tempDirs);
 		await makeGitRepo(tempDirs, { dir });
 		await advanceGitRepoByOneCommit(dir, 'file.txt');
@@ -99,7 +99,7 @@ describe('getBehindAheadCount', () => {
 		expect(result.behind).toBe(0);
 	});
 
-	it('returns ahead > 0, behind = 0 for a new branch with no remote counterpart', async () => {
+	it('FOR a new branch with no remote counterpart it returns ahead > 0 and behind = 0', async () => {
 		const dir = makeTempDir(tempDirs);
 		await makeGitRepo(tempDirs, { dir });
 		await advanceGitRepoByOneCommit(dir, 'file.txt');

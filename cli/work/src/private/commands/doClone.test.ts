@@ -17,7 +17,7 @@ afterEach(async () => {
 });
 
 describe('doClone', () => {
-	it('clones a checkout and returns the updated state', async () => {
+	it('WHEN the clone succeeds it clones the checkout and returns the updated state', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
@@ -35,7 +35,7 @@ describe('doClone', () => {
 		expect(ctx.log.all()[0].outcome).toBe('success');
 	});
 
-	it('logs failure and returns null when clone fails', async () => {
+	it('WHEN the clone fails it logs the failure and returns null', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const checkout = makeCheckoutMock({
@@ -50,7 +50,7 @@ describe('doClone', () => {
 		expect(ctx.log.all()[0].outcome).toBe('failure');
 	});
 
-	it('returns null when checkout has no repo', async () => {
+	it('WHEN the checkout has no repo it returns null', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const checkout = makeCheckoutMock();

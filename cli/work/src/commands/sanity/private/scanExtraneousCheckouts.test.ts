@@ -16,7 +16,7 @@ afterEach(async () => {
 });
 
 describe('scanExtraneousCheckouts', () => {
-	it('empty checkouts dir returns no extraneous entries', async () => {
+	it('WHEN the checkouts dir is empty it returns no extraneous entries', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(tempDir);
 		mkdirSync(join(tempDir, ctx.config.clone.path), { recursive: true });
@@ -27,7 +27,7 @@ describe('scanExtraneousCheckouts', () => {
 		expect(extraneous).toHaveLength(0);
 	});
 
-	it('does not flag known checkouts as extraneous', async () => {
+	it('WHEN a checkout is known it is not flagged as extraneous', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(tempDir);
 		const checkoutsPath = join(tempDir, ctx.config.clone.path);

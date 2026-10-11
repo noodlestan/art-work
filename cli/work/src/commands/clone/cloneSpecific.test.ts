@@ -24,19 +24,19 @@ afterEach(async () => {
 });
 
 describe('cloneSpecific', () => {
-	it('unknown repo logs failure containing unknown repo', async () => {
+	it('WHEN the repo is unknown it logs a failure containing unknown repo', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
-		const spy = vi.spyOn(ctx.log, 'log');
+		const logSpy = vi.spyOn(ctx.log, 'log');
 
 		await cloneSpecific(ctx, [], 'nope');
 
-		expect(spy).toHaveBeenCalledTimes(1);
-		const op = spy.mock.calls[0][0];
+		expect(logSpy).toHaveBeenCalledTimes(1);
+		const op = logSpy.mock.calls[0][0];
 		expect(op.message()).toContain('unknown repo "nope"');
 	});
 
-	it('clones a missing repo and creates the checkout record', async () => {
+	it('WHEN the repo is missing it clones it and creates the checkout record', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 
@@ -56,7 +56,7 @@ describe('cloneSpecific', () => {
 		expect(content).toContain('**Location:** `one`');
 	});
 
-	it('creates second checkout when repo already exists at different location', async () => {
+	it('WHEN the repo exists at another location it creates a second checkout', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 
@@ -79,7 +79,7 @@ describe('cloneSpecific', () => {
 		expect(content).toContain('**Location:** `foo-bar`');
 	});
 
-	it('clone with custom location uses correct name and path', async () => {
+	it('WHEN a custom location is given it uses the correct name and path', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 
@@ -97,7 +97,7 @@ describe('cloneSpecific', () => {
 		expect(checkout?.path).toBe(join(workspaceDir, ctx.config.clone.path, 'foo-bar'));
 	});
 
-	it('clone without location uses repo name as name and path', async () => {
+	it('WHEN no location is given it uses the repo name as name and path', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 
@@ -115,7 +115,7 @@ describe('cloneSpecific', () => {
 		expect(checkout?.path).toBe(join(workspaceDir, ctx.config.clone.path, 'foo'));
 	});
 
-	it('logs failure when the location is already used by a different checkout', async () => {
+	it('WHEN the location is already used it logs a failure', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		writeRepoMockRecord(workspaceDir, 'One', 'git@example.com:one.git');
@@ -132,7 +132,7 @@ describe('cloneSpecific', () => {
 		expect(ops[0].message()).toContain("location one-custom is already used by checkout 'Two'.");
 	});
 
-	it('logs failure when target directory already exists on disk', async () => {
+	it('WHEN the target directory exists on disk it logs a failure', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		writeRepoMockRecord(workspaceDir, 'One', 'git@example.com:one.git');

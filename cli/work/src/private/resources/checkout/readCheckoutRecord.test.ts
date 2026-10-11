@@ -25,7 +25,7 @@ beforeEach(() => {
 });
 
 describe('readCheckoutRecord', () => {
-	it('saves and reads a checkout record round-trip', async () => {
+	it('WHEN a checkout record is saved it is read back in a round-trip', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const config = makeConfigMock(tempDir);
 		const file = join(tempDir, 'test.art');
@@ -37,7 +37,7 @@ describe('readCheckoutRecord', () => {
 		expect(read).toEqual(data);
 	});
 
-	it('returns null for a missing file', async () => {
+	it('WHEN the file is missing it returns null', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const file = join(tempDir, 'missing.art');
 
@@ -46,7 +46,7 @@ describe('readCheckoutRecord', () => {
 		expect(read).toBeNull();
 	});
 
-	it('returns null when kind heading is absent', async () => {
+	it('WHEN the kind heading is absent it returns null', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const file = join(tempDir, 'noheading.art');
 		writeFileSync(file, '# Module\n\n**Location:** `checkouts/test`\n\n**Branch:** `main`\n');
@@ -56,12 +56,12 @@ describe('readCheckoutRecord', () => {
 		expect(read).toBeNull();
 	});
 
-	it('warns and uses defaults for malformed lines', async () => {
+	it('WHEN the record has malformed lines it warns and uses defaults', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const file = join(tempDir, 'malformed.art');
 		writeFileSync(file, '# Module\n\n## Checkout: Test\n\n**Location:** `checkouts/test`\n');
 
-		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
 		const read = await readCheckoutRecord(makeRecordFileMock(tempDir, file));
 
@@ -70,6 +70,6 @@ describe('readCheckoutRecord', () => {
 		expect(read.name).toBe('Test');
 		expect(read.location).toBe('checkouts/test');
 		expect(read.branch).toBe('main');
-		expect(warn).toHaveBeenCalledWith(expect.stringContaining('missing branch'));
+		expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('missing branch'));
 	});
 });

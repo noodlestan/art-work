@@ -23,7 +23,7 @@ afterEach(async () => {
 });
 
 describe('doPullCheckout', () => {
-	it('pulls a behind checkout and returns the updated state', async () => {
+	it('WHEN the checkout is behind it pulls and returns the updated state', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
@@ -52,7 +52,7 @@ describe('doPullCheckout', () => {
 		expect(ctx.log.all()[0].outcome).toBe('success');
 	});
 
-	it('logs failure and returns null when the pull fails', async () => {
+	it('WHEN the pull fails it logs failure and returns null', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
@@ -76,7 +76,7 @@ describe('doPullCheckout', () => {
 		expect(ctx.log.all()[0].outcome).toBe('failure');
 	});
 
-	it('emits a pending pull before the pull side effect', async () => {
+	it('WHEN the pull runs it emits a pending operation before the side effect', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);

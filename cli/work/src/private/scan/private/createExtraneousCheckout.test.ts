@@ -6,7 +6,7 @@ import { makeTempDir } from '../../../test/helpers/tempDirs/makeTempDir.js';
 import { createExtraneousCheckout } from './createExtraneousCheckout.js';
 
 describe('createExtraneousCheckout', () => {
-	it('creates a checkout with the given location and empty branch', () => {
+	it('WHEN a location is given it creates a checkout with an empty branch', () => {
 		const workspaceDir = makeTempDir([]);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const checkout = createExtraneousCheckout(ctx.config, 'orphan');

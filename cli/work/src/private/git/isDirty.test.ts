@@ -16,7 +16,7 @@ afterEach(async () => {
 });
 
 describe('isDirty', () => {
-	it('returns false for clean repo', async () => {
+	it('FOR a clean repo it returns false', async () => {
 		const dir = makeTempDir(tempDirs);
 		await makeGitRepo(tempDirs, { dir });
 
@@ -25,7 +25,7 @@ describe('isDirty', () => {
 		expect(dirty).toBe(false);
 	});
 
-	it('returns true for dirty repo', async () => {
+	it('FOR a dirty repo it returns true', async () => {
 		const dir = makeTempDir(tempDirs);
 		await makeGitRepo(tempDirs, { dir });
 		writeFileSync(join(dir, 'new.txt'), 'new');

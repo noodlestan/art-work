@@ -25,7 +25,7 @@ afterEach(async () => {
 });
 
 describe('scanAllCheckoutsStates', () => {
-	it('no-op on an empty store', async () => {
+	it('WHEN the store is empty it is a no-op', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 
@@ -34,7 +34,7 @@ describe('scanAllCheckoutsStates', () => {
 		expect(ctx.store.getAllCheckouts()).toHaveLength(0);
 	});
 
-	it('scans all checkouts and updates the store for each', async () => {
+	it('WHEN the store has checkouts it scans all and updates each', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 
@@ -56,7 +56,7 @@ describe('scanAllCheckoutsStates', () => {
 		}
 	});
 
-	it('preserves checkout order from getAllCheckouts', async () => {
+	it('WHEN scanning, the checkout order from getAllCheckouts is preserved', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 
@@ -71,7 +71,7 @@ describe('scanAllCheckoutsStates', () => {
 		expect(result.map(c => c.record.location)).toEqual(locations);
 	});
 
-	it('with refetch=true detects behind state after remote advances', async () => {
+	it('WHEN refetch is true it detects behind state after remote advances', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);

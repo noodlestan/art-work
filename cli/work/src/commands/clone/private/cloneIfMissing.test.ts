@@ -22,7 +22,7 @@ afterEach(async () => {
 });
 
 describe('cloneIfMissing', () => {
-	it('checkout without a repo returns null', async () => {
+	it('WHEN a checkout has no repo it returns null', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const checkout = createCheckout(ctx.config, 'orphan');
@@ -32,7 +32,7 @@ describe('cloneIfMissing', () => {
 		expect(result).toBeNull();
 	});
 
-	it('clones and checks out the recorded branch when it exists on remote', async () => {
+	it('WHEN the recorded branch exists on remote it clones and checks it out', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 
@@ -76,7 +76,7 @@ describe('cloneIfMissing', () => {
 		expect(content).toContain('feature-branch');
 	});
 
-	it('falls back to default branch when recorded branch does not exist on remote', async () => {
+	it('WHEN the recorded branch is missing it falls back to the default branch', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 

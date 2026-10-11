@@ -5,7 +5,7 @@ import { makeCheckoutMock } from '../../../test/helpers/checkout/makeCheckoutMoc
 import { createPublishOperation } from './createPublishOperation.js';
 
 describe('createPublishOperation', () => {
-	it('has correct operation, outcome and message', () => {
+	it('WHEN the factory is called it builds the correct operation, outcome and message', () => {
 		const checkout = makeCheckoutMock();
 		const pending = createPublishOperation(checkout, '@scope/pkg', '1.2.3');
 		expect(pending.operation).toBe('publish');

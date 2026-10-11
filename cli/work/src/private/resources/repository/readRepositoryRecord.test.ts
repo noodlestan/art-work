@@ -26,7 +26,7 @@ beforeEach(() => {
 });
 
 describe('readRepositoryRecord', () => {
-	it('parses name, remote, purpose, description, and consumers from a record file', async () => {
+	it('WHEN a record file is read it parses name, remote, purpose, description and consumers', async () => {
 		const tempDir = makeTempDir(tempDirs);
 
 		writeRepoMockRecord(tempDir, 'Artificial', `git@github.com:noodlestan/artificial.git`);
@@ -43,14 +43,14 @@ describe('readRepositoryRecord', () => {
 		expect(record.description).toBe(undefined);
 	});
 
-	it('returns null for a missing file', async () => {
+	it('WHEN the record file is missing it returns null', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const record = await readRepositoryRecord(makeRecordFile(join(tempDir, 'missing.art')));
 
 		expect(record).toBeNull();
 	});
 
-	it('returns null when kind heading is absent', async () => {
+	it('WHEN the kind heading is absent it returns null', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const file = join(tempDir, 'noheading.art');
 		writeFileSync(
@@ -63,18 +63,18 @@ describe('readRepositoryRecord', () => {
 		expect(record).toBeNull();
 	});
 
-	it('warns and uses defaults for missing remote', async () => {
+	it('WHEN the remote is missing it warns and uses defaults', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const file = join(tempDir, 'norepo.art');
 		writeFileSync(file, '# Module\n\n## Repository: NoRemote\n\n**Purpose:** test\n');
 
-		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 		const record = await readRepositoryRecord(makeRecordFile(file));
 
 		expect(record).not.toBeNull();
 		if (!record) return;
 		expect(record.name).toBe('NoRemote');
 		expect(record.remote).toBe('');
-		expect(warn).toHaveBeenCalledWith(expect.stringContaining('missing remote'));
+		expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('missing remote'));
 	});
 });

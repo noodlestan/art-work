@@ -27,7 +27,7 @@ afterEach(async () => {
 });
 
 describe('checkouts run command', () => {
-	it('prints the usage message and runs nothing when neither -c nor --all is provided', async () => {
+	it('WHEN neither -c nor --all is provided it prints usage and runs nothing', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
@@ -48,7 +48,7 @@ describe('checkouts run command', () => {
 		expect(console.error).toHaveBeenCalledWith(expect.stringContaining('Usage: Use '));
 	});
 
-	it('runs the command in every checkout when --all is provided', async () => {
+	it('WHEN --all is provided it runs the command in every checkout', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: artBare } = await makeGitBareRepo(tempDirs);
@@ -73,7 +73,7 @@ describe('checkouts run command', () => {
 		expect(runOps.map(op => op.outcome)).toEqual(['success', 'success']);
 	});
 
-	it('runs only in checkouts matching the pattern', async () => {
+	it('WHEN a pattern is provided it runs only in matching checkouts', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: artBare } = await makeGitBareRepo(tempDirs);
@@ -99,7 +99,7 @@ describe('checkouts run command', () => {
 		expect(runOps[0].outcome).toBe('success');
 	});
 
-	it('logs a failure operation per checkout when the command exits non-zero', async () => {
+	it('WHEN the command exits non-zero it logs a failure operation per checkout', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: artBare } = await makeGitBareRepo(tempDirs);
@@ -122,7 +122,7 @@ describe('checkouts run command', () => {
 		expect(String(runOps[0].message())).toContain('Exit code: 1');
 	});
 
-	it('warns and executes nothing when no checkout matches the pattern', async () => {
+	it('WHEN no checkout matches the pattern it warns and executes nothing', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 
@@ -131,7 +131,7 @@ describe('checkouts run command', () => {
 		expect(ctx.log.all().filter(op => op.operation === 'run')).toHaveLength(0);
 	});
 
-	it('logs a failure operation for a recorded-but-not-cloned checkout', async () => {
+	it('WHEN a checkout is recorded but not cloned it logs a failure operation', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 

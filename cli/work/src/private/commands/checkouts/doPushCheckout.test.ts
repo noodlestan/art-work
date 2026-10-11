@@ -19,7 +19,7 @@ afterEach(async () => {
 });
 
 describe('doPushCheckout', () => {
-	it('pushing a checkout with no remote logs a failure operation', async () => {
+	it('WHEN the checkout has no remote pushing logs a failure operation', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const repoDir = join(workspaceDir, ctx.config.clone.path, 'my-repo');

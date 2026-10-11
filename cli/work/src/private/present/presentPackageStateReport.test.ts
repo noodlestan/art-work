@@ -23,7 +23,7 @@ describe('presentPackageStateReport', () => {
 		};
 	});
 
-	it('presents a table with package, version, published, and states columns', () => {
+	it('WHEN states are present it prints a table with the expected columns', () => {
 		presentPackageStateReport(checkout, [
 			{
 				canonicalName: '@artisans/art-mantras',
@@ -45,14 +45,14 @@ describe('presentPackageStateReport', () => {
 		expect(output).toContain('states');
 	});
 
-	it('handles empty package states', () => {
+	it('WHEN the package list is empty nothing is printed', () => {
 		presentPackageStateReport(checkout, []);
 
 		const calls = (console.info as ReturnType<typeof vi.fn>).mock.calls;
 		expect(calls).toHaveLength(0);
 	});
 
-	it('shows "no package.json" state', () => {
+	it('WHEN a package has the no package.json state it shows it', () => {
 		presentPackageStateReport(checkout, [
 			{
 				canonicalName: '@artisans/art-mantras',
@@ -67,7 +67,7 @@ describe('presentPackageStateReport', () => {
 		expect(output).toContain('no package.json');
 	});
 
-	it('shows "npm info failed" state', () => {
+	it('WHEN a package has the npm info failed state it shows it', () => {
 		presentPackageStateReport(checkout, [
 			{
 				canonicalName: '@artisans/art-mantras',

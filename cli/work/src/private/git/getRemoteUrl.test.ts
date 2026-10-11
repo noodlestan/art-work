@@ -15,7 +15,7 @@ afterEach(async () => {
 });
 
 describe('getRemoteUrl', () => {
-	it('returns the remote URL for a repo with origin', async () => {
+	it('WHEN the repo has origin it returns the remote URL', async () => {
 		const dir = makeTempDir(tempDirs);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		await makeGitRepoFromBare(tempDirs, bareDir, { dir });
@@ -25,7 +25,7 @@ describe('getRemoteUrl', () => {
 		expect(url).toBe(bareDir);
 	});
 
-	it('returns null for a repo with no remote', async () => {
+	it('WHEN the repo has no remote it returns null', async () => {
 		const dir = makeTempDir(tempDirs);
 		await makeGitRepo(tempDirs, { dir });
 
@@ -34,7 +34,7 @@ describe('getRemoteUrl', () => {
 		expect(url).toBeNull();
 	});
 
-	it('returns null for a non-git directory', async () => {
+	it('WHEN the directory is not a git repo it returns null', async () => {
 		const dir = makeTempDir(tempDirs);
 
 		const url = await getRemoteUrl(dir);

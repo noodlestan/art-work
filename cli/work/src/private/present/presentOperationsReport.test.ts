@@ -43,17 +43,17 @@ beforeEach(() => {
 });
 
 describe('presentOperationsReport', () => {
-	it('no output when the log is empty', () => {
-		const spy = vi.spyOn(console, 'info').mockImplementation(() => {});
+	it('WHEN the log is empty it prints no output', () => {
+		const infoSpy = vi.spyOn(console, 'info').mockImplementation(() => {});
 		const log = createOperationsLog();
 
 		presentOperationsReport(log);
 
-		expect(spy).not.toHaveBeenCalled();
+		expect(infoSpy).not.toHaveBeenCalled();
 	});
 
-	it('prints Operations Report: when operations exist', () => {
-		const spy = vi.spyOn(console, 'info').mockImplementation(() => {});
+	it('WHEN operations exist it prints Operations:', () => {
+		const infoSpy = vi.spyOn(console, 'info').mockImplementation(() => {});
 		const log = createOperationsLog();
 		const tempDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(tempDir);
@@ -65,19 +65,19 @@ describe('presentOperationsReport', () => {
 
 		presentOperationsReport(log);
 
-		expect(spy).toHaveBeenCalledWith('Operations:');
+		expect(infoSpy).toHaveBeenCalledWith('Operations:');
 	});
 });
 
 describe('makeOperationLogLine', () => {
-	it('renders a pending line with ⏳', () => {
+	it('FOR a pending operation it renders a line with ⏳', () => {
 		const line = makeOperationLogLine(makeClonePendingOperationMock());
 
 		expect(line[0]).toBe('⏳');
 		expect(line).toEqual(['⏳', '-', '-', 'clone', 'cloning my-repo', '']);
 	});
 
-	it('renders a success line with 🟢', () => {
+	it('FOR a successful operation it renders a line with 🟢', () => {
 		const tempDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(tempDir);
 		const checkout = createCheckout(ctx.config, 'my-repo', {
@@ -91,7 +91,7 @@ describe('makeOperationLogLine', () => {
 		expect(line).toEqual(['🟢', 'MyRepo', 'my-repo', 'clone', 'to my-repo', '0']);
 	});
 
-	it('renders a failure line with 🔴', () => {
+	it('FOR a failed operation it renders a line with 🔴', () => {
 		const line = makeOperationLogLine(
 			createOperationFailure(createCloneOperation(undefined), new Error('boom')),
 		);

@@ -16,7 +16,7 @@ afterEach(async () => {
 });
 
 describe('saveCheckoutRecord', () => {
-	it('saved record contains expected markers', async () => {
+	it('WHEN a record is saved it contains the expected markers', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const config = makeConfigMock(tempDir);
 		const file = join(tempDir, 'test.art');
@@ -30,7 +30,7 @@ describe('saveCheckoutRecord', () => {
 		expect(content).toContain('**Branch:** `main`');
 	});
 
-	it('renders from the template file when config and root are provided', async () => {
+	it('WHEN config and root are provided it renders from the template file', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const config = makeConfigMock(tempDir);
 		const file = join(tempDir, '_records/test.art');
@@ -43,7 +43,7 @@ describe('saveCheckoutRecord', () => {
 		expect(content).toContain('**Location:** `checkouts/artificial`');
 	});
 
-	it('falls back to hardcoded template when template file is missing', async () => {
+	it('WHEN the template file is missing it falls back to the hardcoded template', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const config = makeConfigMock(tempDir);
 		const file = join(tempDir, '_records/test.art');
@@ -56,7 +56,7 @@ describe('saveCheckoutRecord', () => {
 		expect(content).toContain('**Location:** `checkouts/artificial`');
 	});
 
-	it('generates filename when no explicit file is provided', async () => {
+	it('WHEN no explicit file is provided it generates the filename', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const config = makeConfigMock(tempDir);
 		const data = { name: 'My Checkout', location: 'checkouts/my-checkout', branch: 'main' };

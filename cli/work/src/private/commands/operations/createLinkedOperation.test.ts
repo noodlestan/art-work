@@ -5,7 +5,7 @@ import { makeCheckoutMock } from '../../../test/helpers/checkout/makeCheckoutMoc
 import { createLinkedOperation } from './createLinkedOperation.js';
 
 describe('createLinkedOperation', () => {
-	it('has correct operation, outcome and message', () => {
+	it('WHEN a linked operation is created it has the correct operation, outcome, and message', () => {
 		const checkout = makeCheckoutMock();
 		const pending = createLinkedOperation(checkout, '@scope/pkg', '1.2.3');
 		expect(pending.operation).toBe('linked');

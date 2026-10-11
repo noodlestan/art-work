@@ -22,7 +22,7 @@ afterEach(async () => {
 });
 
 describe('scanCheckoutState', () => {
-	it('missing dir returns an exists state and a not-cloned issue', async () => {
+	it('WHEN the dir is missing it returns an exists state and a not-cloned issue', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const checkout = createCheckout(ctx.config, 'nope');
@@ -35,7 +35,7 @@ describe('scanCheckoutState', () => {
 		expect(result.scan?.should('clone')).toBe(true);
 	});
 
-	it('empty record branch does not produce wrong-branch issue', async () => {
+	it('WHEN the record branch is empty no wrong-branch issue is produced', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const checkoutDir = join(workspaceDir, ctx.config.clone.path, 'extraneous');
@@ -48,7 +48,7 @@ describe('scanCheckoutState', () => {
 		expect(result.scan?.issues()).not.toContain('wrong branch');
 	});
 
-	it('record branch matching actual branch does not produce wrong-branch issue', async () => {
+	it('WHEN the record branch matches the actual branch no wrong-branch issue is produced', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const checkoutDir = join(workspaceDir, ctx.config.clone.path, 'myrepo');
@@ -60,7 +60,7 @@ describe('scanCheckoutState', () => {
 		expect(result.scan?.issues()).not.toContain('wrong branch');
 	});
 
-	it('record branch mismatching actual branch produces wrong-branch issue', async () => {
+	it('WHEN the record branch mismatches the actual branch it produces a wrong-branch issue', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const checkoutDir = join(workspaceDir, ctx.config.clone.path, 'myrepo');
@@ -72,7 +72,7 @@ describe('scanCheckoutState', () => {
 		expect(result.scan?.issues()).toContain('wrong branch');
 	});
 
-	it('record remote matching actual remote does not produce wrong-remote issue', async () => {
+	it('WHEN the record remote matches the actual remote no wrong-remote issue is produced', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
@@ -89,7 +89,7 @@ describe('scanCheckoutState', () => {
 		expect(result.scan?.issues()).not.toContain('wrong remote');
 	});
 
-	it('record remote mismatching actual remote produces wrong-remote issue', async () => {
+	it('WHEN the record remote mismatches the actual remote it produces a wrong-remote issue', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
@@ -106,7 +106,7 @@ describe('scanCheckoutState', () => {
 		expect(result.scan?.issues()).toContain('wrong remote');
 	});
 
-	it('cheap scan reports no behind when tracking ref is stale; refetch reports behind', async () => {
+	it('WHEN the tracking ref is stale a cheap scan reports no behind and a refetch reports behind', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
@@ -131,7 +131,7 @@ describe('scanCheckoutState', () => {
 		expect(refreshed.scan?.state('sync').behind).toBe(1);
 	});
 
-	it('reports a no-git state when the checkout dir has no .git', async () => {
+	it('WHEN the checkout dir has no .git it reports a no-git state', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const checkout = createCheckout(ctx.config, 'norepo', undefined, '');
@@ -143,7 +143,7 @@ describe('scanCheckoutState', () => {
 		expect(result.scan?.issues()).toContain('no git');
 	});
 
-	it('reports a git-dir state when the checkout dir has a .git', async () => {
+	it('WHEN the checkout dir has a .git it reports a git-dir state', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const checkoutDir = join(workspaceDir, ctx.config.clone.path, 'myrepo');

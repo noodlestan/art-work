@@ -38,7 +38,7 @@ afterEach(async () => {
 });
 
 describe('readProjectRecord', () => {
-	it('parses a valid project record', async () => {
+	it('WHEN the project file is valid it parses the record', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		writeProjectMockRecord(tempDir, 'Artificial', {
 			remote: 'git@example.com:artificial.git',
@@ -56,12 +56,12 @@ describe('readProjectRecord', () => {
 		expect(record?.namespaceNames).toEqual(['Art Domains', 'Art Tools']);
 	});
 
-	it('returns null for a missing file', async () => {
+	it('WHEN the file is missing it returns null', async () => {
 		const record = await readProjectRecord(makeRecordFile('/nonexistent/file.art'));
 		expect(record).toBeNull();
 	});
 
-	it('returns null for an invalid file', async () => {
+	it('WHEN the file is invalid it returns null', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const file = join(tempDir, 'bad.art');
 		writeFileSync(file, 'no project heading here');
@@ -72,7 +72,7 @@ describe('readProjectRecord', () => {
 });
 
 describe('loadProjectRecords', () => {
-	it('discovers project records from _records/ directory', async () => {
+	it('WHEN records exist in _records/ it discovers project records', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		writeProjectMockRecord(tempDir, 'Project A', { path: '.' });
 		writeProjectMockRecord(tempDir, 'Project B', { path: 'b' });
@@ -83,13 +83,13 @@ describe('loadProjectRecords', () => {
 		expect(records.map(r => r.name).sort()).toEqual(['Project A', 'Project B']);
 	});
 
-	it('returns empty array for a missing checkout path', async () => {
+	it('WHEN the checkout path is missing it returns an empty array', async () => {
 		const config = makeConfigMock('/nonexistent/checkout');
 		const records = await loadProjectRecords(config, '/nonexistent/checkout');
 		expect(records).toEqual([]);
 	});
 
-	it('filters out invalid records', async () => {
+	it('WHEN the directory contains invalid records it filters them out', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		writeProjectMockRecord(tempDir, 'Good', { path: '.' });
 
@@ -104,7 +104,7 @@ describe('loadProjectRecords', () => {
 });
 
 describe('readNamespaceRecord', () => {
-	it('parses a valid namespace record', async () => {
+	it('WHEN the namespace file is valid it parses the record', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		writeNamespaceMockRecord(tempDir, 'Art Domains', {
 			path: 'artisans',
@@ -121,12 +121,12 @@ describe('readNamespaceRecord', () => {
 		expect(record?.packageNames).toEqual(['Art Mantras', 'Art Tools']);
 	});
 
-	it('returns null for a missing file', async () => {
+	it('WHEN the file is missing it returns null', async () => {
 		const record = await readNamespaceRecord(makeRecordFile('/nonexistent/file.art'));
 		expect(record).toBeNull();
 	});
 
-	it('returns null for an invalid file', async () => {
+	it('WHEN the file is invalid it returns null', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const file = join(tempDir, 'bad.art');
 		writeFileSync(file, 'no namespace heading here');
@@ -137,7 +137,7 @@ describe('readNamespaceRecord', () => {
 });
 
 describe('loadNamespaceRecords', () => {
-	it('discovers namespace records from _records/ directory', async () => {
+	it('WHEN records exist in _records/ it discovers namespace records', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		writeNamespaceMockRecord(tempDir, 'NS A', { path: 'a' });
 		writeNamespaceMockRecord(tempDir, 'NS B', { path: 'b' });
@@ -148,13 +148,13 @@ describe('loadNamespaceRecords', () => {
 		expect(records.map(r => r.name).sort()).toEqual(['NS A', 'NS B']);
 	});
 
-	it('returns empty array for a missing checkout path', async () => {
+	it('WHEN the checkout path is missing it returns an empty array', async () => {
 		const config = makeConfigMock('/nonexistent/checkout');
 		const records = await loadNamespaceRecords(config, '/nonexistent/checkout');
 		expect(records).toEqual([]);
 	});
 
-	it('filters out invalid records', async () => {
+	it('WHEN the directory contains invalid records it filters them out', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		writeNamespaceMockRecord(tempDir, 'Good', { path: '.' });
 
@@ -169,7 +169,7 @@ describe('loadNamespaceRecords', () => {
 });
 
 describe('readPackageRecord', () => {
-	it('parses a valid package record', async () => {
+	it('WHEN the package file is valid it parses the record', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		writePackageMockRecord(tempDir, 'Art Mantras', {
 			canonicalName: '@artisans/art-mantras',
@@ -186,12 +186,12 @@ describe('readPackageRecord', () => {
 		expect(record?.path).toBe('apps/art-mantras');
 	});
 
-	it('returns null for a missing file', async () => {
+	it('WHEN the file is missing it returns null', async () => {
 		const record = await readPackageRecord(makeRecordFile('/nonexistent/file.art'));
 		expect(record).toBeNull();
 	});
 
-	it('returns null for an invalid file', async () => {
+	it('WHEN the file is invalid it returns null', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const file = join(tempDir, 'bad.art');
 		writeFileSync(file, 'no package heading here');
@@ -202,7 +202,7 @@ describe('readPackageRecord', () => {
 });
 
 describe('loadPackageRecords', () => {
-	it('discovers package records from _records/ directory', async () => {
+	it('WHEN records exist in _records/ it discovers package records', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		writePackageMockRecord(tempDir, 'Pkg A', { path: 'a' });
 		writePackageMockRecord(tempDir, 'Pkg B', { path: 'b' });
@@ -213,13 +213,13 @@ describe('loadPackageRecords', () => {
 		expect(records.map(r => r.name).sort()).toEqual(['Pkg A', 'Pkg B']);
 	});
 
-	it('returns empty array for a missing checkout path', async () => {
+	it('WHEN the checkout path is missing it returns an empty array', async () => {
 		const config = makeConfigMock('/nonexistent/checkout');
 		const records = await loadPackageRecords(config, '/nonexistent/checkout');
 		expect(records).toEqual([]);
 	});
 
-	it('filters out invalid records', async () => {
+	it('WHEN the directory contains invalid records it filters them out', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		writePackageMockRecord(tempDir, 'Good', { path: '.' });
 
@@ -234,7 +234,7 @@ describe('loadPackageRecords', () => {
 });
 
 describe('consolidateProjectGraph', () => {
-	it('links projects to namespaces correctly', () => {
+	it('WHEN consolidating it links projects to namespaces', () => {
 		const projects = [
 			{ kind: 'project' as const, name: 'Artificial', path: '.', namespaceNames: ['Art Domains'] },
 		];
@@ -249,7 +249,7 @@ describe('consolidateProjectGraph', () => {
 		expect(graph.warnings).toEqual([]);
 	});
 
-	it('links namespaces to packages correctly', () => {
+	it('WHEN consolidating it links namespaces to packages', () => {
 		const projects = [
 			{ kind: 'project' as const, name: 'Artificial', path: '.', namespaceNames: ['Art Domains'] },
 		];
@@ -277,7 +277,7 @@ describe('consolidateProjectGraph', () => {
 		expect(graph.warnings).toEqual([]);
 	});
 
-	it('generates warnings for missing namespaces', () => {
+	it('WHEN a project references a missing namespace it warns', () => {
 		const projects = [
 			{ kind: 'project' as const, name: 'Artificial', path: '.', namespaceNames: ['Missing'] },
 		];
@@ -287,7 +287,7 @@ describe('consolidateProjectGraph', () => {
 		expect(graph.warnings).toContain('unknown namespace: Missing');
 	});
 
-	it('generates warnings for missing packages', () => {
+	it('WHEN a namespace references a missing package it warns', () => {
 		const projects = [
 			{ kind: 'project' as const, name: 'Artificial', path: '.', namespaceNames: ['Art Domains'] },
 		];
@@ -307,7 +307,7 @@ describe('consolidateProjectGraph', () => {
 });
 
 describe('loadProjectGraph', () => {
-	it('loads a complete project graph from _records/', async () => {
+	it('WHEN all record kinds exist it loads a complete project graph', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		writeProjectMockRecord(tempDir, 'Artificial', {
 			path: '.',
@@ -332,7 +332,7 @@ describe('loadProjectGraph', () => {
 		expect(graph.warnings).toEqual([]);
 	});
 
-	it('ignores decoy .art files that are not project/namespace/package records', async () => {
+	it('WHEN _records/ contains decoy .art files it ignores them', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		writeProjectMockRecord(tempDir, 'Real', { path: '.' });
 
@@ -354,7 +354,7 @@ describe('loadProjectGraph', () => {
 		expect(graph.warnings).toEqual([]);
 	});
 
-	it('handles missing records directory', async () => {
+	it('WHEN the _records/ directory is missing it returns an empty graph', async () => {
 		const config = makeConfigMock('/nonexistent/checkout');
 		const graph = await loadProjectGraph(config, '/nonexistent/checkout');
 
@@ -364,7 +364,7 @@ describe('loadProjectGraph', () => {
 		expect(graph.warnings).toEqual([]);
 	});
 
-	it('picks up records from nested _records/ directories', async () => {
+	it('WHEN records live in nested _records/ dirs it picks them up', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const nestedDir = join(tempDir, 'libs/parser');
 		mkdirSync(join(nestedDir, '_records'), { recursive: true });

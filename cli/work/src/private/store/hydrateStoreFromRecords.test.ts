@@ -16,7 +16,7 @@ afterEach(async () => {
 });
 
 describe('hydrateStoreFromRecords', () => {
-	it('populates the store with a checkout per record', () => {
+	it('WHEN records are hydrated the store gets a checkout per record', () => {
 		const tempDir = makeTempDir(tempDirs);
 		const config = makeConfigMock(tempDir);
 		const store = createCheckoutStore();
@@ -41,7 +41,7 @@ describe('hydrateStoreFromRecords', () => {
 		expect(store.getCheckoutForLocation('beta')?.record.branch).toBe('develop');
 	});
 
-	it('copies filename from record into checkout', () => {
+	it('WHEN a record is hydrated the filename is copied into the checkout', () => {
 		const tempDir = makeTempDir(tempDirs);
 		const config = makeConfigMock(tempDir);
 		const store = createCheckoutStore();
@@ -61,7 +61,7 @@ describe('hydrateStoreFromRecords', () => {
 		expect(checkout?.filename).toBe(filename);
 	});
 
-	it('new checkouts created via hydrate carry the source filename', () => {
+	it('WHEN hydrate creates a new checkout it carries the source filename', () => {
 		const tempDir = makeTempDir(tempDirs);
 		const config = makeConfigMock(tempDir);
 		const store = createCheckoutStore();

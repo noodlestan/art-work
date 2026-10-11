@@ -15,12 +15,12 @@ afterEach(() => {
 });
 
 describe('publish command', () => {
-	it('is a placeholder', async () => {
-		const info = vi.spyOn(console, 'info').mockImplementation(() => {});
+	it('WHEN runPublish runs, it logs its TODO status message', async () => {
+		const infoSpy = vi.spyOn(console, 'info').mockImplementation(() => {});
 		const ctx = makeCommandContextMock('/tmp');
 
 		await runPublish(ctx, { root: '/tmp' });
 
-		expect(info).toHaveBeenCalledWith('publish command - TODO');
+		expect(infoSpy).toHaveBeenCalledWith('publish command - TODO');
 	});
 });

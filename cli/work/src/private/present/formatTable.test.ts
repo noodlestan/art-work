@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { formatTable } from './formatTable.js';
 
 describe('formatTable', () => {
-	it('pads columns so headers and rows are aligned', () => {
+	it('WHEN formatting rows it pads columns so headers and rows are aligned', () => {
 		const headers = ['Name', 'Value'];
 		const rows = [
 			['abc', '12'],

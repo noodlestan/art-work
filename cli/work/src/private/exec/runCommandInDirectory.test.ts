@@ -11,7 +11,7 @@ vi.mock('node:child_process', async importOriginal => {
 });
 
 describe('runCommandInDirectory', () => {
-	it('resolves with output when command exits successfully', async () => {
+	it('WHEN the command exits successfully it resolves with output', async () => {
 		const mockChild = Object.assign(new EventEmitter(), {
 			stdout: new EventEmitter(),
 			stderr: new EventEmitter(),
@@ -28,7 +28,7 @@ describe('runCommandInDirectory', () => {
 		expect(result.error).toBe('');
 	});
 
-	it('resolves with error output and non-zero code when command fails', async () => {
+	it('WHEN the command fails it resolves with error output and a non-zero code', async () => {
 		const mockChild = Object.assign(new EventEmitter(), {
 			stdout: new EventEmitter(),
 			stderr: new EventEmitter(),

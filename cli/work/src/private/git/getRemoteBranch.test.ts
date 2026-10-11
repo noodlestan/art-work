@@ -15,7 +15,7 @@ afterEach(async () => {
 });
 
 describe('getRemoteBranch', () => {
-	it('returns null when the branch has no remote counterpart', async () => {
+	it('WHEN the branch has no remote counterpart it returns null', async () => {
 		const dir = makeTempDir(tempDirs);
 		await makeGitRepo(tempDirs, { dir });
 		await advanceGitRepoByOneCommit(dir, 'file.txt');
@@ -25,7 +25,7 @@ describe('getRemoteBranch', () => {
 		expect(remote).toBeNull();
 	});
 
-	it('returns the remote branch name when it exists on origin', async () => {
+	it('WHEN the branch exists on origin it returns the remote branch name', async () => {
 		const dir = makeTempDir(tempDirs);
 		const { git } = await makeGitRepo(tempDirs, { dir });
 		await advanceGitRepoByOneCommit(dir, 'file.txt');

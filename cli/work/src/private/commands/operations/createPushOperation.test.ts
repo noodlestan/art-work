@@ -5,7 +5,7 @@ import { makeCheckoutMock } from '../../../test/helpers/checkout/makeCheckoutMoc
 import { createPushOperation } from './createPushOperation.js';
 
 describe('createPushOperation', () => {
-	it('has correct operation, outcome and message', () => {
+	it('WHEN a push operation is created it has correct operation, outcome and message', () => {
 		const checkout = makeCheckoutMock();
 		const pending = createPushOperation(checkout, 'main');
 		expect(pending.operation).toBe('push');

@@ -19,7 +19,7 @@ afterEach(async () => {
 });
 
 describe('pullCheckout', () => {
-	it('pulls updates from origin', async () => {
+	it('WHEN origin has updates it pulls them into the repo', async () => {
 		const dir = makeTempDir(tempDirs);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		await makeGitRepoFromBare(tempDirs, bareDir, { dir });
@@ -30,7 +30,7 @@ describe('pullCheckout', () => {
 		expect(existsSync(join(dir, 'origin.txt'))).toBe(true);
 	});
 
-	it('throws when pull fails', async () => {
+	it('WHEN the pull fails it throws', async () => {
 		const dir = makeTempDir(tempDirs);
 		await makeGitRepo(tempDirs, { commit: true, dir });
 

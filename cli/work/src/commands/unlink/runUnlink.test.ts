@@ -15,12 +15,12 @@ afterEach(() => {
 });
 
 describe('unlink command', () => {
-	it('is a placeholder', async () => {
-		const info = vi.spyOn(console, 'info').mockImplementation(() => {});
+	it('FOR the unlink command it is a placeholder', async () => {
+		const infoSpy = vi.spyOn(console, 'info').mockImplementation(() => {});
 		const ctx = makeCommandContextMock('/tmp');
 
 		await runUnlink(ctx, { root: '/tmp' });
 
-		expect(info).toHaveBeenCalledWith('unlink command - TODO');
+		expect(infoSpy).toHaveBeenCalledWith('unlink command - TODO');
 	});
 });

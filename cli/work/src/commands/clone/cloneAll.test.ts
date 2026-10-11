@@ -13,7 +13,7 @@ afterEach(async () => {
 });
 
 describe('cloneAll', () => {
-	it('no-op with an empty repos list', async () => {
+	it('WHEN the repos list is empty it is a no-op', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(tempDir);
 

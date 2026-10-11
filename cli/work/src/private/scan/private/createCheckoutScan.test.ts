@@ -13,7 +13,7 @@ import { createWrongRemoteState } from '../states/createWrongRemoteState.js';
 import { createCheckoutScan } from './createCheckoutScan.js';
 
 describe('createCheckoutScan', () => {
-	it('issues returns empty array for a clean in-sync checkout', () => {
+	it('WHEN a checkout is clean and synchronized with origin, its scan reports no issues', () => {
 		const scan = createCheckoutScan([
 			createRepoState(true),
 			createGitDirState(true),
@@ -28,7 +28,7 @@ describe('createCheckoutScan', () => {
 		expect(scan.issues()).toEqual([]);
 	});
 
-	it('issues flags unknown project when repo is not known', () => {
+	it('WHEN the repository is unknown, the scan reports an unknown project', () => {
 		const scan = createCheckoutScan([
 			createRepoState(false),
 			createGitDirState(true),
@@ -43,7 +43,7 @@ describe('createCheckoutScan', () => {
 		expect(scan.issues()).toContain('unknown project');
 	});
 
-	it('issues returns not cloned when checkout does not exist', () => {
+	it('WHEN the checkout directory is missing, the scan reports it as not cloned', () => {
 		const scan = createCheckoutScan([
 			createRepoState(true),
 			createGitDirState(false),
@@ -58,7 +58,7 @@ describe('createCheckoutScan', () => {
 		expect(scan.issues()).toContain('not cloned');
 	});
 
-	it('issues flags no git when git-dir is missing', () => {
+	it('WHEN the checkout has no Git directory, the scan reports no Git repository', () => {
 		const scan = createCheckoutScan([
 			createRepoState(true),
 			createGitDirState(false),
@@ -73,7 +73,7 @@ describe('createCheckoutScan', () => {
 		expect(scan.issues()).toContain('no git');
 	});
 
-	it('issues flags wrong branch when branch does not match expected', () => {
+	it('WHEN the current branch differs from the expected branch, the scan reports a wrong branch', () => {
 		const scan = createCheckoutScan([
 			createRepoState(true),
 			createGitDirState(true),
@@ -88,7 +88,7 @@ describe('createCheckoutScan', () => {
 		expect(scan.issues()).toContain('wrong branch');
 	});
 
-	it('issues flags detached HEAD', () => {
+	it('WHEN HEAD is detached, the scan reports detached HEAD', () => {
 		const scan = createCheckoutScan([
 			createRepoState(true),
 			createGitDirState(true),
@@ -103,7 +103,7 @@ describe('createCheckoutScan', () => {
 		expect(scan.issues()).toContain('detached HEAD');
 	});
 
-	it('issues flags merge conflicts', () => {
+	it('WHEN the checkout has merge conflicts, the scan reports them', () => {
 		const scan = createCheckoutScan([
 			createRepoState(true),
 			createGitDirState(true),
@@ -118,7 +118,7 @@ describe('createCheckoutScan', () => {
 		expect(scan.issues()).toContain('merge conflicts');
 	});
 
-	it('issues flags no remote', () => {
+	it('WHEN the remote is missing, the scan reports no remote', () => {
 		const scan = createCheckoutScan([
 			createRepoState(true),
 			createGitDirState(true),
@@ -133,7 +133,7 @@ describe('createCheckoutScan', () => {
 		expect(scan.issues()).toContain('no remote');
 	});
 
-	it('issues flags wrong remote', () => {
+	it('WHEN the checkout remote differs from the expected remote, the scan reports a mismatch', () => {
 		const scan = createCheckoutScan([
 			createRepoState(true),
 			createGitDirState(true),
@@ -148,7 +148,7 @@ describe('createCheckoutScan', () => {
 		expect(scan.issues()).toContain('wrong remote');
 	});
 
-	it('issues flags uncommitted files', () => {
+	it('WHEN the checkout has uncommitted changes, the scan reports uncommitted files', () => {
 		const scan = createCheckoutScan([
 			createRepoState(true),
 			createGitDirState(true),
@@ -163,7 +163,7 @@ describe('createCheckoutScan', () => {
 		expect(scan.issues()).toContain('uncommitted files');
 	});
 
-	it('issues flags ahead commits', () => {
+	it('WHEN the checkout is ahead by two commits, the scan reports two commits ahead', () => {
 		const scan = createCheckoutScan([
 			createRepoState(true),
 			createGitDirState(true),
@@ -178,7 +178,7 @@ describe('createCheckoutScan', () => {
 		expect(scan.issues()).toContain('2 commits ahead');
 	});
 
-	it('issues flags behind commit singular', () => {
+	it('WHEN the checkout is behind by one commit, the scan reports one commit behind', () => {
 		const scan = createCheckoutScan([
 			createRepoState(true),
 			createGitDirState(true),
@@ -193,7 +193,7 @@ describe('createCheckoutScan', () => {
 		expect(scan.issues()).toContain('1 commit behind');
 	});
 
-	it('can clone when checkout does not exist', () => {
+	it('WHEN the checkout does not exist the scan can clone', () => {
 		const scan = createCheckoutScan([
 			createRepoState(true),
 			createGitDirState(false),
@@ -209,7 +209,7 @@ describe('createCheckoutScan', () => {
 		expect(scan.can('pull')).toBe(false);
 	});
 
-	it('can branch when exists and attached', () => {
+	it('WHEN the checkout exists and is attached the scan can branch', () => {
 		const scan = createCheckoutScan([
 			createRepoState(true),
 			createGitDirState(true),
@@ -224,7 +224,7 @@ describe('createCheckoutScan', () => {
 		expect(scan.can('branch')).toBe(true);
 	});
 
-	it('cannot branch when detached', () => {
+	it('WHEN the head is detached the scan cannot branch', () => {
 		const scan = createCheckoutScan([
 			createRepoState(true),
 			createGitDirState(true),
@@ -239,7 +239,7 @@ describe('createCheckoutScan', () => {
 		expect(scan.can('branch')).toBe(false);
 	});
 
-	it('should clone when checkout does not exist', () => {
+	it('WHEN the checkout does not exist the scan should clone', () => {
 		const scan = createCheckoutScan([
 			createRepoState(true),
 			createGitDirState(false),
@@ -254,7 +254,7 @@ describe('createCheckoutScan', () => {
 		expect(scan.should('clone')).toBe(true);
 	});
 
-	it('should pull when behind', () => {
+	it('WHEN the checkout is behind the scan should pull', () => {
 		const scan = createCheckoutScan([
 			createRepoState(true),
 			createGitDirState(true),
@@ -270,7 +270,7 @@ describe('createCheckoutScan', () => {
 		expect(scan.should('push')).toBe(false);
 	});
 
-	it('should push when ahead', () => {
+	it('WHEN the checkout is ahead the scan should push', () => {
 		const scan = createCheckoutScan([
 			createRepoState(true),
 			createGitDirState(true),

@@ -5,7 +5,7 @@ import { makeConfigMock } from '../../test/helpers/context/makeConfigMock.js';
 import { createCheckout } from './createCheckout.js';
 
 describe('createCheckout', () => {
-	it('factory defaults', () => {
+	it('GIVEN no overrides it applies the factory defaults', () => {
 		const config = makeConfigMock('.');
 		const checkout = createCheckout(config, 'target');
 
@@ -17,7 +17,7 @@ describe('createCheckout', () => {
 		expect(checkout.record.branch).toBe('main');
 	});
 
-	it('creates a checkout based on repo', () => {
+	it('WHEN a repo is provided it creates a checkout based on the repo', () => {
 		const config = makeConfigMock('.');
 		const repo = { name: 'Foo Bar', remote: 'git@example.com:foo-bar.git' };
 		const checkout = createCheckout(config, 'fix-test', repo);
@@ -30,7 +30,7 @@ describe('createCheckout', () => {
 		expect(checkout.record.branch).toBe('main');
 	});
 
-	it('creates a checkout with a branch', () => {
+	it('WHEN a branch is provided it creates a checkout with that branch', () => {
 		const config = makeConfigMock('.');
 		const repo = { name: 'Foo Bar', remote: 'git@example.com:foo-bar.git' };
 		const checkout = createCheckout(config, 'fix-test', repo, 'branch-name');
@@ -41,7 +41,7 @@ describe('createCheckout', () => {
 		expect(checkout.record.branch).toBe('branch-name');
 	});
 
-	it('creates a checkout based on repo, target, and custom name', () => {
+	it('WHEN repo, target and custom name are provided it creates the checkout', () => {
 		const config = makeConfigMock('.');
 		const repo = { name: 'Foo Bar', remote: 'git@example.com:foo-bar.git' };
 		const checkout = createCheckout(config, 'fix-test', repo, undefined, 'Checkout Name');

@@ -26,7 +26,7 @@ afterEach(async () => {
 });
 
 describe('branch command', () => {
-	it('prints the usage message and runs nothing when neither -c nor --all is provided', async () => {
+	it('WHEN neither -c nor --all is provided it prints usage and runs nothing', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 
@@ -43,7 +43,7 @@ describe('branch command', () => {
 		expect(console.error).toHaveBeenCalledWith(expect.stringContaining('Usage: Use '));
 	});
 
-	it('creates and checks out a new branch in a single specified checkout', async () => {
+	it('WHEN a single checkout is specified it creates and checks out a new branch', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const repoDir = join(workspaceDir, ctx.config.clone.path, 'one');
@@ -65,7 +65,7 @@ describe('branch command', () => {
 		expect(ops[0].message()).toBe('created feat/x');
 	});
 
-	it('branches all checkouts when none are specified', async () => {
+	it('WHEN no checkouts are specified it branches all checkouts', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		await makeGitRepo(tempDirs, { dir: join(workspaceDir, ctx.config.clone.path, 'alpha') });
@@ -85,7 +85,7 @@ describe('branch command', () => {
 		expect(ctx.store.getCheckoutOfRepo('Beta')?.record.branch).toBe('feat/x');
 	});
 
-	it('warns and skips when pattern matches no checkouts', async () => {
+	it('WHEN the pattern matches no checkouts it warns and skips', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		await makeGitRepo(tempDirs, {
@@ -102,7 +102,7 @@ describe('branch command', () => {
 		expect(console.warn).toHaveBeenCalledWith('no checkout matches pattern: "Nope"');
 	});
 
-	it('logs a failure and continues when a checkout is not cloned', async () => {
+	it('WHEN a checkout is not cloned it logs a failure and continues', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		await makeGitRepo(tempDirs, {
@@ -125,7 +125,7 @@ describe('branch command', () => {
 		expect(ctx.store.getCheckoutOfRepo('Good')?.record.branch).toBe('main');
 	});
 
-	it('branches a checkout with no matching repository', async () => {
+	it('WHEN a checkout has no matching repository it still branches it', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		await makeGitRepo(tempDirs, { dir: join(workspaceDir, ctx.config.clone.path, 'conv') });
@@ -143,7 +143,7 @@ describe('branch command', () => {
 		expect(ctx.log.all()[0].message()).toBe('created feat/x');
 	});
 
-	it('switches to an existing branch', async () => {
+	it('WHEN the branch already exists it switches to it', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const repoDir = join(workspaceDir, ctx.config.clone.path, 'one');
@@ -164,7 +164,7 @@ describe('branch command', () => {
 		expect(ctx.store.getCheckoutOfRepo('One')?.record.branch).toBe('feat/x');
 	});
 
-	it('branches checkouts matching wildcard pattern', async () => {
+	it('WHEN the pattern is a wildcard it branches the matching checkouts', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		await makeGitRepo(tempDirs, { dir: join(workspaceDir, ctx.config.clone.path, 'alpha') });
@@ -185,7 +185,7 @@ describe('branch command', () => {
 		expect(ctx.store.getCheckoutOfRepo('Beta')?.record.branch).toBe('main');
 	});
 
-	it('warns and skips when pattern matches no checkouts', async () => {
+	it('WHEN the pattern matches no checkouts it warns and skips', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		await makeGitRepo(tempDirs, { dir: join(workspaceDir, ctx.config.clone.path, 'alpha') });

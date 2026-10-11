@@ -28,7 +28,7 @@ afterEach(async () => {
 });
 
 describe('pull command', () => {
-	it('prints the usage message and runs nothing when neither -c nor --all is provided', async () => {
+	it('WHEN neither -c nor --all is provided it prints usage and runs nothing', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 
@@ -45,7 +45,7 @@ describe('pull command', () => {
 		expect(console.error).toHaveBeenCalledWith(expect.stringContaining('Usage: Use '));
 	});
 
-	it('pulls checkouts behind even when the local tracking ref is stale', async () => {
+	it('WHEN the local tracking ref is stale it still pulls checkouts behind', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
@@ -70,7 +70,7 @@ describe('pull command', () => {
 		expect(existsSync(join(repoDir, 'origin.txt'))).toBe(true);
 	});
 
-	it('skips dirty checkouts', async () => {
+	it('WHEN a checkout is dirty it skips it', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
@@ -90,7 +90,7 @@ describe('pull command', () => {
 		expect(ctx.log.all()).toHaveLength(0);
 	});
 
-	it('pulls checkouts already up to date', async () => {
+	it('WHEN a checkout is already up to date it still pulls it', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
@@ -111,7 +111,7 @@ describe('pull command', () => {
 		expect(ops[0].outcome).toBe('success');
 	});
 
-	it('pulls a clean checkout up to date with origin', async () => {
+	it('WHEN a clean checkout is behind origin it pulls it up to date', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
@@ -133,7 +133,7 @@ describe('pull command', () => {
 		expect(ops[0].outcome).toBe('success');
 	});
 
-	it('skips checkouts not cloned', async () => {
+	it('WHEN a checkout is not cloned it skips it', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 
@@ -148,7 +148,7 @@ describe('pull command', () => {
 		expect(ctx.log.all()).toHaveLength(0);
 	});
 
-	it('does not pull the workspace root without the workspace option', async () => {
+	it('WHEN the workspace option is missing it does not pull the workspace root', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
@@ -162,7 +162,7 @@ describe('pull command', () => {
 		expect(ctx.log.all()).toHaveLength(0);
 	});
 
-	it('pulls the workspace root when it is behind and clean with the workspace option', async () => {
+	it('WHEN the workspace option is set it pulls the workspace root when behind', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);

@@ -6,7 +6,7 @@ import { createCheckout } from './createCheckout.js';
 import { createCheckoutStore } from './createCheckoutStore.js';
 
 describe('createCheckoutStore', () => {
-	it('addCheckout stores the provided checkout', () => {
+	it('WHEN a checkout is added it stores the provided checkout', () => {
 		const config = makeConfigMock('.');
 		const store = createCheckoutStore();
 		const repo = { name: 'Foo Bar', remote: 'git@example.com:test.git' };
@@ -21,7 +21,7 @@ describe('createCheckoutStore', () => {
 		expect(checkout?.record.location).toBe('fix-test');
 	});
 
-	it('addCheckout rejects duplicate checkouts', () => {
+	it('WHEN a duplicate checkout is added it rejects it', () => {
 		const config = makeConfigMock('.');
 		const store = createCheckoutStore();
 		const repo = { name: 'Foo Bar', remote: 'git@example.com:test.git' };
@@ -38,7 +38,7 @@ describe('createCheckoutStore', () => {
 		expect(checkouts[0]?.record.name).toBe('one');
 	});
 
-	it('getCheckoutByName', () => {
+	it('WHEN a checkout exists, getCheckoutByName returns it by its full name', () => {
 		const config = makeConfigMock('.');
 		const store = createCheckoutStore();
 		const repo = { name: 'Foo Bar', remote: 'git@example.com:test.git' };
@@ -51,7 +51,7 @@ describe('createCheckoutStore', () => {
 		expect(checkout?.repo?.name).toBe('Foo Bar');
 	});
 
-	it('getCheckoutForLocation', () => {
+	it('WHEN a checkout exists, getCheckoutForLocation returns it by its location', () => {
 		const config = makeConfigMock('.');
 		const store = createCheckoutStore();
 		const repo = { name: 'Foo Bar', remote: 'git@example.com:test.git' };
@@ -64,7 +64,7 @@ describe('createCheckoutStore', () => {
 		expect(checkout?.repo?.name).toBe('Foo Bar');
 	});
 
-	it('getCheckoutOfRepo is case-insensitive', () => {
+	it('WHEN the repo name differs in case getCheckoutOfRepo still matches', () => {
 		const config = makeConfigMock('.');
 		const store = createCheckoutStore();
 		const repo = { name: 'Foo Bar', remote: 'git@example.com:test.git' };
@@ -76,7 +76,7 @@ describe('createCheckoutStore', () => {
 		expect(store.getCheckoutOfRepo('foo bar')).toBeDefined();
 	});
 
-	it('updateCheckout replaces existing checkout', () => {
+	it('WHEN a checkout is updated it replaces the existing checkout', () => {
 		const config = makeConfigMock('.');
 		const store = createCheckoutStore();
 		const repo = { name: 'Foo Bar', remote: 'git@example.com:test.git' };
@@ -90,7 +90,7 @@ describe('createCheckoutStore', () => {
 		expect(store.getCheckoutForLocation('fix-test')).toBeDefined();
 	});
 
-	it('updateCheckout replaces by location', () => {
+	it('WHEN a checkout is updated it replaces by location', () => {
 		const config = makeConfigMock('.');
 		const store = createCheckoutStore();
 		const repo = { name: 'Foo Bar', remote: 'git@example.com:test.git' };
@@ -106,7 +106,7 @@ describe('createCheckoutStore', () => {
 		expect(checkouts[0].record.location).toBe('fix-test');
 	});
 
-	it('getCheckoutsByPattern exact name match', () => {
+	it('FOR an exact name pattern it returns the matching checkout', () => {
 		const config = makeConfigMock('.');
 		const store = createCheckoutStore();
 		const repo = { name: 'Foo Bar', remote: 'git@example.com:test.git' };
@@ -118,7 +118,7 @@ describe('createCheckoutStore', () => {
 		expect(results[0].record.location).toBe('fix-test');
 	});
 
-	it('getCheckoutsByPattern exact location match', () => {
+	it('FOR an exact location pattern it returns the matching checkout', () => {
 		const config = makeConfigMock('.');
 		const store = createCheckoutStore();
 		const repo = { name: 'Foo Bar', remote: 'git@example.com:test.git' };
@@ -130,7 +130,7 @@ describe('createCheckoutStore', () => {
 		expect(results[0].record.location).toBe('fix-test');
 	});
 
-	it('getCheckoutsByPattern exact match fails with warning', () => {
+	it('FOR an exact pattern with no match it warns and returns nothing', () => {
 		const config = makeConfigMock('.');
 		const store = createCheckoutStore();
 		const repo = { name: 'Foo Bar', remote: 'git@example.com:test.git' };
@@ -141,7 +141,7 @@ describe('createCheckoutStore', () => {
 		expect(results).toHaveLength(0);
 	});
 
-	it('getCheckoutsByPattern wildcard name match', () => {
+	it('FOR a wildcard name pattern it returns the matching checkout', () => {
 		const config = makeConfigMock('.');
 		const store = createCheckoutStore();
 		const repo = { name: 'Foo Bar', remote: 'git@example.com:test.git' };
@@ -153,7 +153,7 @@ describe('createCheckoutStore', () => {
 		expect(results[0].record.location).toBe('fix-test');
 	});
 
-	it('getCheckoutsByPattern wildcard location match', () => {
+	it('FOR a wildcard location pattern it returns the matching checkouts', () => {
 		const config = makeConfigMock('.');
 		const store = createCheckoutStore();
 		const repo = { name: 'Foo Bar', remote: 'git@example.com:test.git' };
@@ -166,7 +166,7 @@ describe('createCheckoutStore', () => {
 		expect(results).toHaveLength(2);
 	});
 
-	it('getCheckoutsByPattern mixed patterns deduplication', () => {
+	it('FOR mixed patterns it returns the deduplicated matches', () => {
 		const config = makeConfigMock('.');
 		const store = createCheckoutStore();
 		const repo = { name: 'Foo Bar', remote: 'git@example.com:test.git' };
@@ -179,7 +179,7 @@ describe('createCheckoutStore', () => {
 		expect(results).toHaveLength(2);
 	});
 
-	it('getCheckoutsByPattern case-insensitive', () => {
+	it('FOR a pattern differing in case it returns the matching checkout', () => {
 		const config = makeConfigMock('.');
 		const store = createCheckoutStore();
 		const repo = { name: 'Foo Bar', remote: 'git@example.com:test.git' };
@@ -191,7 +191,7 @@ describe('createCheckoutStore', () => {
 		expect(results[0].record.location).toBe('fix-test');
 	});
 
-	it('getCheckoutsByPattern multiple checkouts one pattern matches two deduplication', () => {
+	it('FOR a wildcard matching two checkouts it returns both deduplicated', () => {
 		const config = makeConfigMock('.');
 		const store = createCheckoutStore();
 		const repo = { name: 'Foo Bar', remote: 'git@example.com:test.git' };

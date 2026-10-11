@@ -13,7 +13,7 @@ afterEach(async () => {
 });
 
 describe('syncCheckouts', () => {
-	it('no-op when the store has no checkouts', async () => {
+	it('WHEN the store has no checkouts it is a no-op', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(tempDir);
 

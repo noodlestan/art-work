@@ -5,7 +5,7 @@ import { makeCheckoutMock } from '../../../test/helpers/checkout/makeCheckoutMoc
 import { createPullOperation } from './createPullOperation.js';
 
 describe('createPullOperation', () => {
-	it('has correct operation, outcome and message', () => {
+	it('WHEN a pull operation is created it has correct operation, outcome and message', () => {
 		const checkout = makeCheckoutMock();
 		const pending = createPullOperation(checkout, 'main');
 		expect(pending.operation).toBe('pull');

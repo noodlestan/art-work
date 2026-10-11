@@ -13,7 +13,7 @@ afterEach(async () => {
 });
 
 describe('hasMergeConflicts', () => {
-	it('returns false for clean repo', async () => {
+	it('WHEN the repo is clean it returns false', async () => {
 		const dir = makeTempDir(tempDirs);
 		await makeGitRepo(tempDirs, { dir });
 

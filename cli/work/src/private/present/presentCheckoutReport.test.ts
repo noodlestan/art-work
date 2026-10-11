@@ -20,13 +20,13 @@ beforeEach(() => {
 });
 
 describe('presentCheckoutReport', () => {
-	it('calls console.info with Checkouts:', () => {
-		const spy = vi.spyOn(console, 'info').mockImplementation(() => {});
+	it('WHEN the report runs it calls console.info with Checkouts:', () => {
+		const infoSpy = vi.spyOn(console, 'info').mockImplementation(() => {});
 		const tempDir = makeTempDir(tempDirs);
 		const config = makeConfigMock(tempDir);
 
 		presentCheckoutReport(config, []);
 
-		expect(spy).toHaveBeenCalledWith('Checkouts:');
+		expect(infoSpy).toHaveBeenCalledWith('Checkouts:');
 	});
 });

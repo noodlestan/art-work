@@ -22,7 +22,7 @@ afterEach(async () => {
 });
 
 describe('doPushWorkspaceCheckout', () => {
-	it('pushes the workspace root when clean and ahead', async () => {
+	it('WHEN the workspace root is clean and ahead it pushes it', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		await makeGitRepoFromBare(tempDirs, bareDir, { dir: workspaceDir });
@@ -48,7 +48,7 @@ describe('doPushWorkspaceCheckout', () => {
 		expect(ops[0].outcome).toEqual('success');
 	});
 
-	it('pushes the workspace root when up to date', async () => {
+	it('WHEN the workspace root is up to date it pushes it', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		await makeGitRepoFromBare(tempDirs, bareDir, { dir: workspaceDir });
@@ -68,7 +68,7 @@ describe('doPushWorkspaceCheckout', () => {
 		expect(ops[0].outcome).toEqual('success');
 	});
 
-	it('skips when the workspace is dirty', async () => {
+	it('WHEN the workspace is dirty it skips the push', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(
 			workspaceDir,
@@ -82,7 +82,7 @@ describe('doPushWorkspaceCheckout', () => {
 		expect(ctx.log.all()).toHaveLength(0);
 	});
 
-	it('throws when there is no workspace checkout', async () => {
+	it('WHEN there is no workspace checkout it throws', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 
@@ -90,7 +90,7 @@ describe('doPushWorkspaceCheckout', () => {
 		expect(ctx.log.all()).toHaveLength(0);
 	});
 
-	it('logs failure and continues when the push fails', async () => {
+	it('WHEN the push fails it logs the failure and continues', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		await makeGitRepoFromBare(tempDirs, bareDir, { dir: workspaceDir });

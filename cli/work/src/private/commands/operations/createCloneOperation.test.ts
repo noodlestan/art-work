@@ -5,7 +5,7 @@ import { makeCheckoutMock } from '../../../test/helpers/checkout/makeCheckoutMoc
 import { createCloneOperation } from './createCloneOperation.js';
 
 describe('createCloneOperation', () => {
-	it('has correct operation, outcome and message with checkout', () => {
+	it('WHEN a checkout is provided the operation outcome and message are correct', () => {
 		const checkout = makeCheckoutMock();
 		const pending = createCloneOperation(checkout);
 		expect(pending.operation).toBe('clone');
@@ -14,7 +14,7 @@ describe('createCloneOperation', () => {
 		expect(pending.message()).toContain('my-repo');
 	});
 
-	it('falls back to unknown location when checkout is undefined', () => {
+	it('WHEN the checkout is undefined it falls back to the unknown location', () => {
 		const pending = createCloneOperation(undefined);
 		expect(pending.operation).toBe('clone');
 		expect(pending.location).toBe('unknown');

@@ -20,13 +20,13 @@ beforeEach(() => {
 });
 
 describe('cloneStatus', () => {
-	it('runs without error on an empty store', async () => {
-		const spy = vi.spyOn(console, 'info').mockImplementation(() => {});
+	it('WHEN the store is empty, clone status prints an empty checkout report', async () => {
+		const infoSpy = vi.spyOn(console, 'info').mockImplementation(() => {});
 		const tempDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(tempDir);
 
 		await cloneStatus(ctx);
 
-		expect(spy).toHaveBeenCalled();
+		expect(infoSpy).toHaveBeenCalledWith('Checkouts:');
 	});
 });

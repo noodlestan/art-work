@@ -3,7 +3,7 @@ import { relative, resolve } from 'node:path';
 
 import type { ConfigCacheMeta } from '../types.js';
 
-import { CACHE_META_VERSION } from './cache/resolveMetaPath.js';
+import { CACHE_META_VERSION } from './cache/constants.js';
 import { hashConfigInputs } from './hashConfigInputs.js';
 
 export async function makeConfigCacheMeta(

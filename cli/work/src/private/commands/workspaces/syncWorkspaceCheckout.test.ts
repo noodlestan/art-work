@@ -22,7 +22,7 @@ afterEach(async () => {
 });
 
 describe('syncWorkspaceCheckout', () => {
-	it('pulls then pushes the workspace root and re-scans with refetch', async () => {
+	it('WHEN the workspace is synced it pulls then pushes and re-scans with refetch', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		await makeGitRepoFromBare(tempDirs, bareDir, { dir: workspaceDir });
@@ -53,7 +53,7 @@ describe('syncWorkspaceCheckout', () => {
 		expect(ops[1].outcome).toBe('success');
 	});
 
-	it('skips pull when workspace cannot pull', async () => {
+	it('WHEN the workspace cannot pull it skips the pull', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		await makeGitRepoFromBare(tempDirs, bareDir, { dir: workspaceDir });
@@ -71,7 +71,7 @@ describe('syncWorkspaceCheckout', () => {
 		expect(ops.some(o => o.operation === 'push')).toBe(true);
 	});
 
-	it('throws when there is no workspace in context', async () => {
+	it('WHEN there is no workspace in context it throws', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 

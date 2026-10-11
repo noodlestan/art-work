@@ -25,7 +25,7 @@ afterEach(async () => {
 });
 
 describe('doCheckoutRun', () => {
-	it('when checkout does not exist logs a failure and returns null', async () => {
+	it('WHEN the checkout does not exist it logs a failure and returns null', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const checkout = makeCheckoutMock({
@@ -41,7 +41,7 @@ describe('doCheckoutRun', () => {
 		expect(ops[0].message()).toContain('checkout not cloned');
 	});
 
-	it('when checkout exists runs the command and logs success', async () => {
+	it('WHEN the checkout exists it runs the command and logs success', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const checkoutDir = join(workspaceDir, 'checkout');
@@ -58,7 +58,7 @@ describe('doCheckoutRun', () => {
 		expect(ops.some(op => op.outcome === 'success')).toBe(true);
 	});
 
-	it('when command exits with non-zero code logs a failure with the exit code', async () => {
+	it('WHEN the command exits non-zero it logs a failure with the exit code', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const checkoutDir = join(workspaceDir, 'checkout');
@@ -76,7 +76,7 @@ describe('doCheckoutRun', () => {
 		expect(failure?.message()).toContain('Exit code: 1');
 	});
 
-	it('when successful command produces no output prints [No output]', async () => {
+	it('WHEN a successful command produces no output it prints [No output]', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const checkoutDir = join(workspaceDir, 'checkout');
@@ -94,7 +94,7 @@ describe('doCheckoutRun', () => {
 		expect(infoOutput).toContain('[No output]');
 	});
 
-	it('when successful command returns stdout only prints output', async () => {
+	it('WHEN a successful command returns stdout only it prints output', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const checkoutDir = join(workspaceDir, 'checkout');
@@ -113,7 +113,7 @@ describe('doCheckoutRun', () => {
 		expect(infoOutput).toContain('hello');
 	});
 
-	it('when successful command returns both stdout and stderr prints output and error', async () => {
+	it('WHEN a command returns stdout and stderr it prints output and error', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const checkoutDir = join(workspaceDir, 'checkout');
@@ -137,7 +137,7 @@ describe('doCheckoutRun', () => {
 		expect(errorOutput).toContain('err');
 	});
 
-	it('when unsuccessful command returns stderr prints error label and stderr', async () => {
+	it('WHEN an unsuccessful command returns stderr it prints label and stderr', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const checkoutDir = join(workspaceDir, 'checkout');

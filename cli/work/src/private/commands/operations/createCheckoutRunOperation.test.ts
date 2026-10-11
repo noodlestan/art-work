@@ -5,7 +5,7 @@ import { makeCheckoutMock } from '../../../test/helpers/checkout/makeCheckoutMoc
 import { createCheckoutRunOperation } from './createCheckoutRunOperation.js';
 
 describe('createCheckoutRunOperation', () => {
-	it('has correct operation, outcome and message', () => {
+	it('WHEN created for a command it has the correct operation, outcome and message', () => {
 		const checkout = makeCheckoutMock();
 		const pending = createCheckoutRunOperation(checkout, 'npm test');
 		expect(pending.operation).toBe('run');

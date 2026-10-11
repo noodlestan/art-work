@@ -17,7 +17,7 @@ afterEach(async () => {
 });
 
 describe('cloneCheckout', () => {
-	it('clones a repo from a bare', async () => {
+	it('WHEN the source is a bare repo it clones the repo from it', async () => {
 		const dir = makeTempDir(tempDirs);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 
@@ -26,7 +26,7 @@ describe('cloneCheckout', () => {
 		expect(existsSync(`${dir}/.git`)).toBe(true);
 	});
 
-	it('clones and checks out the specified branch', async () => {
+	it('WHEN a branch is specified it clones and checks it out', async () => {
 		const dir = makeTempDir(tempDirs);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const workDir = makeTempDir(tempDirs);
@@ -41,7 +41,7 @@ describe('cloneCheckout', () => {
 		expect(branch.trim()).toBe('feature');
 	});
 
-	it('succeeds even when branch does not exist on remote', async () => {
+	it('WHEN the branch does not exist on remote it still succeeds', async () => {
 		const dir = makeTempDir(tempDirs);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 

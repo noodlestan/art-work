@@ -14,7 +14,7 @@ afterEach(async () => {
 });
 
 describe('hasLocalBranch', () => {
-	it('returns true when the branch exists locally', async () => {
+	it('WHEN the branch exists locally it returns true', async () => {
 		const dir = makeTempDir(tempDirs);
 		const { git } = await makeGitRepo(tempDirs, { dir });
 		await advanceGitRepoByOneCommit(dir, 'file.txt');
@@ -25,7 +25,7 @@ describe('hasLocalBranch', () => {
 		expect(exists).toBe(true);
 	});
 
-	it('returns false when the branch does not exist locally', async () => {
+	it('WHEN the branch does not exist locally it returns false', async () => {
 		const dir = makeTempDir(tempDirs);
 		await makeGitRepo(tempDirs, { dir });
 

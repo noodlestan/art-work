@@ -24,7 +24,7 @@ beforeEach(() => {
 });
 
 describe('loadCheckouts', () => {
-	it('loads checkouts with repos resolved by name', async () => {
+	it('WHEN checkouts are loaded the repos are resolved by name', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(tempDir);
 
@@ -45,7 +45,7 @@ describe('loadCheckouts', () => {
 		expect(checkouts[1].filename).toBe(join(tempDir, '_records/b-checkout.art'));
 	});
 
-	it('includes an extraneous checkout for an unknown repo', async () => {
+	it('WHEN a checkout references an unknown repo it is included as extraneous', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(tempDir);
 
@@ -67,7 +67,7 @@ describe('loadCheckouts', () => {
 		expect(unknown?.filename).toBe(join(tempDir, '_records/unknown-checkout.art'));
 	});
 
-	it('skips a checkout record with an empty name', async () => {
+	it('WHEN a checkout record has an empty name it is skipped', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(tempDir);
 
@@ -75,14 +75,14 @@ describe('loadCheckouts', () => {
 		mkdirSync(dir, { recursive: true });
 		writeFileSync(join(dir, 'unnamed.art'), '# Module\n\n## Checkout: \n');
 
-		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 		const checkouts = await loadCheckoutRecords(ctx, []);
 
 		expect(checkouts).toEqual([]);
-		expect(warn).toHaveBeenCalledWith(expect.stringContaining('skipped'));
+		expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('skipped'));
 	});
 
-	it('returns an empty list for an empty checkouts dir', async () => {
+	it('WHEN the checkouts dir is empty it returns an empty list', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(tempDir);
 
@@ -93,7 +93,7 @@ describe('loadCheckouts', () => {
 		expect(checkouts).toEqual([]);
 	});
 
-	it('returns the source file path as filename for each loaded record', async () => {
+	it('WHEN records are loaded the source file path is returned as filename', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(tempDir);
 

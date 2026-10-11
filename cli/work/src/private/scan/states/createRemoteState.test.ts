@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { createRemoteState } from './createRemoteState.js';
 
 describe('createRemoteState', () => {
-	it('returns remote state with branch matching expected', () => {
+	it('WHEN the branch matches expected it returns the remote state', () => {
 		const state = createRemoteState('main', 'main', true);
 		expect(state.type).toBe('remote');
 		expect(state.branch).toBe('main');
@@ -11,7 +11,7 @@ describe('createRemoteState', () => {
 		expect(state.hasRemote).toBe(true);
 	});
 
-	it('returns remote state with no branch and no remote', () => {
+	it('WHEN no remote is configured it returns a state with no branch and no remote', () => {
 		const state = createRemoteState(null, 'main', false);
 		expect(state.type).toBe('remote');
 		expect(state.branch).toBeNull();

@@ -6,13 +6,13 @@ import { createRepoState } from '../states/createRepoState.js';
 import { createStateAccessor } from './createStateAccessor.js';
 
 describe('createStateAccessor', () => {
-	it('returns the matching state', () => {
+	it('WHEN the requested state is present it returns the matching state', () => {
 		const accessor = createStateAccessor([createRepoState(true), createExistsState(true)]);
 		expect(accessor('repo').known).toBe(true);
 		expect(accessor('exists').exists).toBe(true);
 	});
 
-	it('throws when state type is missing', () => {
+	it('WHEN the requested state type is missing it throws', () => {
 		const accessor = createStateAccessor([createRepoState(true)]);
 		expect(() => accessor('exists')).toThrow('missing checkout state: exists');
 	});

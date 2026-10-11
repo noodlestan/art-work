@@ -13,7 +13,7 @@ afterEach(async () => {
 });
 
 describe('hasRemote', () => {
-	it('returns false for repo with no remote', async () => {
+	it('WHEN the repo has no remote it returns false', async () => {
 		const dir = makeTempDir(tempDirs);
 		await makeGitRepo(tempDirs, { dir });
 

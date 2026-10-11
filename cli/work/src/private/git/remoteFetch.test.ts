@@ -15,7 +15,7 @@ afterEach(async () => {
 });
 
 describe('remoteFetch', () => {
-	it('fetches from origin without throwing', async () => {
+	it('WHEN the remote is reachable it fetches from origin without throwing', async () => {
 		const dir = makeTempDir(tempDirs);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		await makeGitRepoFromBare(tempDirs, bareDir, { dir });
@@ -23,7 +23,7 @@ describe('remoteFetch', () => {
 		await expect(remoteFetch(dir)).resolves.toBeUndefined();
 	});
 
-	it('swallows error when remote is unreachable', async () => {
+	it('WHEN the remote is unreachable it swallows the error', async () => {
 		const dir = makeTempDir(tempDirs);
 		await makeGitRepo(tempDirs, { commit: true, dir });
 

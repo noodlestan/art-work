@@ -5,7 +5,7 @@ import { makeCheckoutMock } from '../../../test/helpers/checkout/makeCheckoutMoc
 import { createUnlinkOperation } from './createUnlinkOperation.js';
 
 describe('createUnlinkOperation', () => {
-	it('has correct operation, outcome and message', () => {
+	it('WHEN created for a package it has the correct operation, outcome and message', () => {
 		const checkout = makeCheckoutMock();
 		const pending = createUnlinkOperation(checkout, '@scope/pkg', '1.2.3');
 		expect(pending.operation).toBe('unlink');

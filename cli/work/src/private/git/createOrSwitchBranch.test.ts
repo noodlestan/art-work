@@ -14,7 +14,7 @@ afterEach(async () => {
 });
 
 describe('createOrSwitchBranch', () => {
-	it('creates a branch in a working repo', async () => {
+	it('WHEN the branch does not exist it creates it in a working repo', async () => {
 		const dir = makeTempDir(tempDirs);
 		const { git } = await makeGitRepo(tempDirs, { dir });
 		await advanceGitRepoByOneCommit(dir, 'file.txt');
@@ -26,7 +26,7 @@ describe('createOrSwitchBranch', () => {
 		expect(branch.trim()).toBe('feat/x');
 	});
 
-	it('switches to an existing branch on second call', async () => {
+	it('WHEN the branch already exists it switches to it on the second call', async () => {
 		const dir = makeTempDir(tempDirs);
 		await makeGitRepo(tempDirs, { dir });
 		await advanceGitRepoByOneCommit(dir, 'file.txt');

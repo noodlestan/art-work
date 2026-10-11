@@ -28,7 +28,7 @@ afterEach(async () => {
 });
 
 describe('clone command', () => {
-	it('clones a missing repo and creates the checkout record', async () => {
+	it('WHEN a repo is missing the clone creates it and the checkout record', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 
@@ -48,7 +48,7 @@ describe('clone command', () => {
 		expect(content).toContain('**Branch:** `main`');
 	});
 
-	it('reports issues for a dirty checkout', async () => {
+	it('WHEN the checkout is dirty it reports issues', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
@@ -65,7 +65,7 @@ describe('clone command', () => {
 		expect(output).toContain('uncommitted files');
 	});
 
-	it('reports current branch even if different from checkout record', async () => {
+	it('WHEN the branch differs from the checkout record it reports the current branch', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
@@ -83,7 +83,7 @@ describe('clone command', () => {
 		expect(output).toContain('feature');
 	});
 
-	it('errors for an unknown repo name', async () => {
+	it('WHEN the repo name is unknown it reports an error', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 
@@ -95,7 +95,7 @@ describe('clone command', () => {
 		expect(ops[0].message()).toContain('Unknown');
 	});
 
-	it('clones all repos when --all is passed', async () => {
+	it('WHEN --all is passed it clones all repos', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: bareDir1 } = await makeGitBareRepo(tempDirs);
@@ -112,7 +112,7 @@ describe('clone command', () => {
 		expect(existsSync(checkoutDir2)).toBe(true);
 	});
 
-	it('resolves default location and branch when no checkout override exists', async () => {
+	it('WHEN no checkout override exists it resolves the default location and branch', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
@@ -125,7 +125,7 @@ describe('clone command', () => {
 		expect(existsSync(checkoutDir)).toBe(true);
 	});
 
-	it('uses target location when specified', async () => {
+	it('WHEN a target location is specified it uses it', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
@@ -138,7 +138,7 @@ describe('clone command', () => {
 		expect(existsSync(checkoutDir)).toBe(true);
 	});
 
-	it('creates checkout named Artificial-foo when cloning Artificial to foo', async () => {
+	it('WHEN Artificial is cloned to foo it creates the checkout Artificial-foo', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
@@ -157,7 +157,7 @@ describe('clone command', () => {
 		expect(content).toContain('**Location:** `artificial-foo`');
 	});
 
-	it('is idempotent when cloning an existing checkout', async () => {
+	it('WHEN an existing checkout is cloned again it is idempotent', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
@@ -171,7 +171,7 @@ describe('clone command', () => {
 		expect(output).toContain('checkouts/artificial');
 	});
 
-	it('allows multiple checkouts of the same repo with different locations', async () => {
+	it('WHEN the same repo is cloned to different locations it allows multiple checkouts', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);

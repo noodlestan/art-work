@@ -5,12 +5,10 @@ import { join } from 'node:path';
 import { build } from 'esbuild';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { makeConfigCachePaths } from '../test/helpers/config/makeConfigCachePaths.js';
 import { makeTempDir } from '../test/helpers/tempDirs/makeTempDir.js';
 import { removeTempDirs } from '../test/helpers/tempDirs/removeTempDirs.js';
 
-import { resolveBundlePath } from './private/cache/resolveBundlePath.js';
-import { resolveCacheDir } from './private/cache/resolveCacheDir.js';
-import { resolveMetaPath } from './private/cache/resolveMetaPath.js';
 import type { ConfigCacheMeta } from './types.js';
 
 import { loadWorkspaceConfig } from './index.js';
@@ -43,7 +41,8 @@ const CHANGED_CONFIG = JSON.stringify({
 const tempDirs: string[] = [];
 
 function readCacheMeta(tempDir: string): ConfigCacheMeta {
-	return JSON.parse(readFileSync(resolveMetaPath(tempDir), 'utf8'));
+	const { metaPath } = makeConfigCachePaths(tempDir);
+	return JSON.parse(readFileSync(metaPath, 'utf8'));
 }
 
 function sha256(content: string): string {
@@ -63,7 +62,7 @@ afterEach(async () => {
 });
 
 describe('loadWorkspaceConfig', () => {
-	it('loads default config when config is missing', async () => {
+	it('WHEN the config is missing it loads the default config', async () => {
 		const tempDir = makeTempDir(tempDirs);
 
 		const config = await loadWorkspaceConfig(tempDir);
@@ -74,18 +73,18 @@ describe('loadWorkspaceConfig', () => {
 		expect(config.records.paths[0].pattern).toBe('*.art');
 	});
 
-	it('warns when the config is missing', async () => {
+	it('WHEN the config is missing it warns and still returns a config', async () => {
 		const tempDir = makeTempDir(tempDirs);
-		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
 		const config = await loadWorkspaceConfig(tempDir);
 
-		expect(warn).toHaveBeenCalled();
+		expect(warnSpy).toHaveBeenCalled();
 		expect(config.clone.path).toBe('checkouts');
 		expect(config.records.paths[0].pattern).toBe('*.art');
 	});
 
-	it('returns loaded config when config is present', async () => {
+	it('WHEN the config is present it returns the loaded config', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		writeFileSync(join(tempDir, '.art-workspace.mts'), `export default ${SOME_CONFIG}`);
 
@@ -99,11 +98,12 @@ describe('loadWorkspaceConfig', () => {
 
 	it('GIVEN a successful load it writes the bundle into the cache and skips the root-level file', async () => {
 		const tempDir = makeTempDir(tempDirs);
+		const { bundlePath } = makeConfigCachePaths(tempDir);
 		writeFileSync(join(tempDir, '.art-workspace.mts'), `export default ${SOME_CONFIG}`);
 
 		await loadWorkspaceConfig(tempDir);
 
-		expect(existsSync(resolveBundlePath(tempDir))).toBe(true);
+		expect(existsSync(bundlePath)).toBe(true);
 		expect(existsSync(join(tempDir, '.art-workspace-bundle.mjs'))).toBe(false);
 	});
 
@@ -120,18 +120,19 @@ describe('loadWorkspaceConfig', () => {
 
 	it('WHEN the cache directory cannot be created it warns and still returns a config', async () => {
 		const tempDir = makeTempDir(tempDirs);
+		const { cacheDir } = makeConfigCachePaths(tempDir);
 		writeFileSync(join(tempDir, '.art-workspace.mts'), `export default ${SOME_CONFIG}`);
 		writeFileSync(join(tempDir, 'node_modules'), 'not-a-directory');
-		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
 		const config = await loadWorkspaceConfig(tempDir);
 
-		expect(warn).toHaveBeenCalledWith(expect.stringContaining(resolveCacheDir(tempDir)));
+		expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining(cacheDir));
 		expect(config.clone.path).toBe('clone-path');
 		expect(config.records.paths[0].pattern).toBe('*.art');
 	});
 
-	it('reports the manifest path when the manifest throws on import', async () => {
+	it('WHEN the manifest throws on import it reports the manifest path', async () => {
 		const tempDir = makeTempDir(tempDirs);
 		writeFileSync(join(tempDir, '.art-workspace.mts'), "throw new Error('boom');\n");
 
@@ -231,41 +232,44 @@ describe('loadWorkspaceConfig', () => {
 
 	it('GIVEN the bundle is missing a load rebuilds', async () => {
 		const tempDir = makeTempDir(tempDirs);
+		const { bundlePath } = makeConfigCachePaths(tempDir);
 		writeFileSync(join(tempDir, '.art-workspace.mts'), `export default ${SOME_CONFIG}`);
 
 		await loadWorkspaceConfig(tempDir);
 
-		rmSync(resolveBundlePath(tempDir));
+		rmSync(bundlePath);
 		buildMock.mockClear();
 
 		await loadWorkspaceConfig(tempDir);
 
 		expect(buildMock).toHaveBeenCalledTimes(1);
-		expect(existsSync(resolveBundlePath(tempDir))).toBe(true);
+		expect(existsSync(bundlePath)).toBe(true);
 	});
 
 	it('GIVEN the cache metadata is missing a load rebuilds', async () => {
 		const tempDir = makeTempDir(tempDirs);
+		const { metaPath } = makeConfigCachePaths(tempDir);
 		writeFileSync(join(tempDir, '.art-workspace.mts'), `export default ${SOME_CONFIG}`);
 
 		await loadWorkspaceConfig(tempDir);
 
-		rmSync(resolveMetaPath(tempDir));
+		rmSync(metaPath);
 		buildMock.mockClear();
 
 		await loadWorkspaceConfig(tempDir);
 
 		expect(buildMock).toHaveBeenCalledTimes(1);
-		expect(existsSync(resolveMetaPath(tempDir))).toBe(true);
+		expect(existsSync(metaPath)).toBe(true);
 	});
 
 	it('GIVEN the cache metadata is unparseable a load rebuilds', async () => {
 		const tempDir = makeTempDir(tempDirs);
+		const { metaPath } = makeConfigCachePaths(tempDir);
 		writeFileSync(join(tempDir, '.art-workspace.mts'), `export default ${SOME_CONFIG}`);
 
 		await loadWorkspaceConfig(tempDir);
 
-		writeFileSync(resolveMetaPath(tempDir), '{not-json');
+		writeFileSync(metaPath, '{not-json');
 		buildMock.mockClear();
 
 		await loadWorkspaceConfig(tempDir);
@@ -275,13 +279,14 @@ describe('loadWorkspaceConfig', () => {
 
 	it('GIVEN the cache metadata version mismatches a load rebuilds', async () => {
 		const tempDir = makeTempDir(tempDirs);
+		const { metaPath } = makeConfigCachePaths(tempDir);
 		writeFileSync(join(tempDir, '.art-workspace.mts'), `export default ${SOME_CONFIG}`);
 
 		await loadWorkspaceConfig(tempDir);
 
 		const cacheMeta = readCacheMeta(tempDir);
 		const config = JSON.stringify({ ...cacheMeta, version: 2 });
-		writeFileSync(resolveMetaPath(tempDir), config);
+		writeFileSync(metaPath, config);
 		buildMock.mockClear();
 
 		await loadWorkspaceConfig(tempDir);
@@ -291,6 +296,7 @@ describe('loadWorkspaceConfig', () => {
 
 	it('GIVEN a recorded input is missing a load rebuilds', async () => {
 		const tempDir = makeTempDir(tempDirs);
+		const { metaPath } = makeConfigCachePaths(tempDir);
 		writeFileSync(join(tempDir, '.art-workspace.mts'), `export default ${SOME_CONFIG}`);
 
 		await loadWorkspaceConfig(tempDir);
@@ -298,7 +304,7 @@ describe('loadWorkspaceConfig', () => {
 		const cacheMeta = readCacheMeta(tempDir);
 		const ghostInput = { path: 'ghost.mts', hash: 'deadbeef' };
 		const config = JSON.stringify({ ...cacheMeta, inputs: [...cacheMeta.inputs, ghostInput] });
-		writeFileSync(resolveMetaPath(tempDir), config);
+		writeFileSync(metaPath, config);
 		buildMock.mockClear();
 
 		await loadWorkspaceConfig(tempDir);
@@ -329,6 +335,7 @@ describe('loadWorkspaceConfig', () => {
 
 	it('GIVEN the cache option is false a load refreshes the cache metadata', async () => {
 		const tempDir = makeTempDir(tempDirs);
+		const { metaPath } = makeConfigCachePaths(tempDir);
 		const manifestPath = join(tempDir, '.art-workspace.mts');
 		writeFileSync(manifestPath, `export default ${SOME_CONFIG}`);
 
@@ -338,7 +345,7 @@ describe('loadWorkspaceConfig', () => {
 			...readCacheMeta(tempDir),
 			inputs: [{ path: '.art-workspace.mts', hash: 'deadbeef' }],
 		};
-		writeFileSync(resolveMetaPath(tempDir), JSON.stringify(staleMeta));
+		writeFileSync(metaPath, JSON.stringify(staleMeta));
 		buildMock.mockClear();
 
 		await loadWorkspaceConfig(tempDir, { cache: false });

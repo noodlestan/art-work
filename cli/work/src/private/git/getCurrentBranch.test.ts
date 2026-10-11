@@ -17,7 +17,7 @@ afterEach(async () => {
 });
 
 describe('getCurrentBranch', () => {
-	it('returns the current branch name', async () => {
+	it('WHEN HEAD is on a branch it returns the current branch name', async () => {
 		const dir = makeTempDir(tempDirs);
 		await makeGitRepo(tempDirs, { dir });
 		const git = simpleGit(dir);
@@ -28,7 +28,7 @@ describe('getCurrentBranch', () => {
 		expect(branch).toBe('feature');
 	});
 
-	it('returns the unborn branch name on an empty repository', async () => {
+	it('WHEN the repository has no commits it returns the unborn branch name', async () => {
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		await simpleGit(bareDir).raw(['symbolic-ref', 'HEAD', 'refs/heads/main']);
 
@@ -40,7 +40,7 @@ describe('getCurrentBranch', () => {
 		expect(branch).toBe('main');
 	});
 
-	it('returns - on error', async () => {
+	it('WHEN the lookup fails it returns a dash', async () => {
 		const dir = makeTempDir(tempDirs);
 
 		const branch = await getCurrentBranch(dir);

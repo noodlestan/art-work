@@ -88,7 +88,7 @@ describe('repo command', () => {
 		return checkoutDir;
 	}
 
-	it("lists a single checkout's packages", async () => {
+	it('WHEN a single checkout is listed it lists the checkout packages', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		await setupCheckoutWithPackages(workspaceDir, ctx);
@@ -105,7 +105,7 @@ describe('repo command', () => {
 		expect(output).not.toContain('@standard-ui/demo-app');
 	});
 
-	it('defaults to all checkouts when none specified', async () => {
+	it('WHEN no locations are specified it defaults to all checkouts', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const dir1 = join(workspaceDir, ctx.config.clone.path, 'artificial');
@@ -191,7 +191,7 @@ describe('repo command', () => {
 		expect(warnCalls).not.toContain('unknown checkout');
 	});
 
-	it('identifies checkout without project records', async () => {
+	it('WHEN a checkout has no project records, its report lists that issue', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const checkoutDir = join(workspaceDir, ctx.config.clone.path, 'purrception');
@@ -206,7 +206,7 @@ describe('repo command', () => {
 		expect(output).toContain('issues: no project records');
 	});
 
-	it('groups each repository report with its package report', async () => {
+	it('WHEN repositories have packages it groups each repository report with its package report', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const dir1 = join(workspaceDir, ctx.config.clone.path, 'artificial');
@@ -265,7 +265,7 @@ describe('repo command', () => {
 		expect(repoIdx2).toBeLessThan(pkgIdx2);
 	});
 
-	it('unknown checkout warns and skips', async () => {
+	it('WHEN the checkout is unknown it warns and skips', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 
@@ -277,7 +277,7 @@ describe('repo command', () => {
 		expect(warnCalls).toContain('unknown checkout: unknown');
 	});
 
-	it('identifies project referencing a missing namespace', async () => {
+	it('WHEN a project references a missing namespace, the command warns about that namespace', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const checkoutDir = join(workspaceDir, ctx.config.clone.path, 'artificial');
@@ -300,7 +300,7 @@ describe('repo command', () => {
 		expect(warnCalls).toContain('unknown namespace: Missing');
 	});
 
-	it('identifies namespace referencing a missing package', async () => {
+	it('WHEN a namespace references a missing package, the command warns about that package', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const checkoutDir = join(workspaceDir, ctx.config.clone.path, 'artificial');
@@ -327,7 +327,7 @@ describe('repo command', () => {
 		expect(warnCalls).toContain('unknown package: Missing');
 	});
 
-	it('identifies packages with no package.json', async () => {
+	it('WHEN a package has no package.json, the report notes it without querying npm', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const checkoutDir = join(workspaceDir, ctx.config.clone.path, 'artificial');
@@ -362,7 +362,7 @@ describe('repo command', () => {
 		expect(execSync).not.toHaveBeenCalled();
 	});
 
-	it('identifies packages where npm info fails', async () => {
+	it('WHEN npm info fails for a package, the report shows its version as unknown', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		await setupCheckoutWithPackages(workspaceDir, ctx);

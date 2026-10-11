@@ -5,7 +5,7 @@ import { makeConfigMock } from '../test/helpers/context/makeConfigMock.js';
 import { defineConfig } from './index.js';
 
 describe('defineConfig', () => {
-	it('returns the input config unchanged', () => {
+	it('WHEN a config is defined it returns the input config unchanged', () => {
 		const config = makeConfigMock('.');
 
 		expect(defineConfig(config)).toEqual(config);

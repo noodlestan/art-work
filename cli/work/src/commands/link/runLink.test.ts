@@ -15,12 +15,12 @@ afterEach(() => {
 });
 
 describe('link command', () => {
-	it('is a placeholder', async () => {
-		const info = vi.spyOn(console, 'info').mockImplementation(() => {});
+	it('WHEN runLink runs, it logs its TODO status message', async () => {
+		const infoSpy = vi.spyOn(console, 'info').mockImplementation(() => {});
 		const ctx = makeCommandContextMock('/tmp');
 
 		await runLink(ctx, { root: '/tmp' });
 
-		expect(info).toHaveBeenCalledWith('link command - TODO');
+		expect(infoSpy).toHaveBeenCalledWith('link command - TODO');
 	});
 });

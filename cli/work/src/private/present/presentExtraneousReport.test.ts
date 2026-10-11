@@ -26,20 +26,20 @@ beforeEach(() => {
 });
 
 describe('presentExtraneousReport', () => {
-	it('no output when no extraneous checkouts', () => {
-		const spy = vi.spyOn(console, 'info').mockImplementation(() => {});
+	it('WHEN there are no extraneous checkouts it prints no output', () => {
+		const infoSpy = vi.spyOn(console, 'info').mockImplementation(() => {});
 
 		presentExtraneousReport([]);
 
-		expect(spy).not.toHaveBeenCalled();
+		expect(infoSpy).not.toHaveBeenCalled();
 	});
 
-	it('prints Untracked: when extraneous exist', () => {
-		const spy = vi.spyOn(console, 'info').mockImplementation(() => {});
+	it('WHEN extraneous checkouts exist it prints Untracked', () => {
+		const infoSpy = vi.spyOn(console, 'info').mockImplementation(() => {});
 		const extraneous = [makeCheckout()];
 
 		presentExtraneousReport(extraneous);
 
-		expect(spy).toHaveBeenCalledWith('Untracked:');
+		expect(infoSpy).toHaveBeenCalledWith('Untracked:');
 	});
 });

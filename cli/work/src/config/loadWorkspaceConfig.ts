@@ -25,9 +25,11 @@ const DEFAULT_CONFIG: PartialWorkspaceConfig = {
 	},
 };
 
+type LoadWorkspaceConfigOptions = { cache?: boolean; verbose?: boolean };
+
 export async function loadWorkspaceConfig(
 	rootPath: string,
-	options?: { cache?: boolean; verbose?: boolean },
+	options?: LoadWorkspaceConfigOptions,
 ): Promise<WorkspaceConfig> {
 	const manifestPath = join(rootPath, MANIFEST_FILE);
 

@@ -25,7 +25,7 @@ function makePullPending() {
 }
 
 describe('createOperationSuccess', () => {
-	it('preserves message from the pending, sets outcome/finishedTs', () => {
+	it('WHEN a success is created from a pending operation, it preserves the message and sets completion metadata', () => {
 		const pending = makePullPending();
 		const success = createOperationSuccess(pending);
 
@@ -36,12 +36,12 @@ describe('createOperationSuccess', () => {
 		expect(success.timing()).toBeGreaterThanOrEqual(0);
 	});
 
-	it('uses the message override when provided', () => {
+	it('WHEN an override is provided it uses it as the message', () => {
 		const success = createOperationSuccess(makePullPending(), 'switched to feat/x');
 		expect(success.message()).toBe('switched to feat/x');
 	});
 
-	it('clones the pending data (checkout present)', () => {
+	it('GIVEN the pending has a checkout it clones the pending data', () => {
 		const success = createOperationSuccess(makePullPending());
 		expect(success.checkout?.repo?.name).toBe('MyRepo');
 	});

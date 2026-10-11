@@ -10,7 +10,7 @@ import { makeCheckoutFilename } from './makeCheckoutFilename.js';
 const tempDirs: string[] = [];
 
 describe('makeCheckoutFilename', () => {
-	it('derives slug from checkout name', () => {
+	it('WHEN a filename is made it derives the slug from the checkout name', () => {
 		const tempDir = makeTempDir(tempDirs);
 		const config = makeConfigMock(tempDir);
 		const data = { name: 'Artificial', location: 'checkouts/artificial', branch: 'main' };
@@ -20,7 +20,7 @@ describe('makeCheckoutFilename', () => {
 		expect(result).toBe(join(tempDir, '_records/artificial-checkout.art'));
 	});
 
-	it('normalizes spaces to dashes', () => {
+	it('WHEN the name contains spaces it normalizes them to dashes', () => {
 		const tempDir = makeTempDir(tempDirs);
 		const config = makeConfigMock(tempDir);
 		const data = { name: 'My Checkout', location: 'checkouts/my-checkout', branch: 'main' };
@@ -30,7 +30,7 @@ describe('makeCheckoutFilename', () => {
 		expect(result).toBe(join(tempDir, '_records/my-checkout-checkout.art'));
 	});
 
-	it('lowercases the name', () => {
+	it('WHEN the name has mixed case it lowercases it', () => {
 		const tempDir = makeTempDir(tempDirs);
 		const config = makeConfigMock(tempDir);
 		const data = { name: 'UPPER CASE', location: 'checkouts/upper-case', branch: 'main' };
@@ -40,7 +40,7 @@ describe('makeCheckoutFilename', () => {
 		expect(result).toBe(join(tempDir, '_records/upper-case-checkout.art'));
 	});
 
-	it('uses config root path and checkouts path', () => {
+	it('WHEN a filename is made it uses the config root and checkouts paths', () => {
 		const tempDir = makeTempDir(tempDirs);
 		const config = makeConfigMock(tempDir);
 		const data = { name: 'Foo', location: 'checkouts/foo', branch: 'main' };

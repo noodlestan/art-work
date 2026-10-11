@@ -16,21 +16,21 @@ beforeEach(() => {
 });
 
 describe('presentWorkspaceReport', () => {
-	it('prints Workspace: header and field list', () => {
-		const spy = vi.spyOn(console, 'info').mockImplementation(() => {});
+	it('WHEN a workspace is presented it prints the header and field list', () => {
+		const infoSpy = vi.spyOn(console, 'info').mockImplementation(() => {});
 
 		presentWorkspaceReport(makeWorkspaceCheckoutMock('/tmp'));
 
-		expect(spy).toHaveBeenCalledWith('Workspace:');
-		expect(spy).toHaveBeenCalledWith(expect.stringContaining('remote:'));
-		expect(spy).toHaveBeenCalledWith(expect.stringContaining('path:'));
-		expect(spy).toHaveBeenCalledWith(expect.stringContaining('branch:'));
-		expect(spy).toHaveBeenCalledWith(expect.stringContaining('issues:'));
-		expect(spy).toHaveBeenCalledWith(expect.stringContaining('main'));
+		expect(infoSpy).toHaveBeenCalledWith('Workspace:');
+		expect(infoSpy).toHaveBeenCalledWith(expect.stringContaining('remote:'));
+		expect(infoSpy).toHaveBeenCalledWith(expect.stringContaining('path:'));
+		expect(infoSpy).toHaveBeenCalledWith(expect.stringContaining('branch:'));
+		expect(infoSpy).toHaveBeenCalledWith(expect.stringContaining('issues:'));
+		expect(infoSpy).toHaveBeenCalledWith(expect.stringContaining('main'));
 	});
 
-	it('prints issues in issues field', () => {
-		const spy = vi.spyOn(console, 'info').mockImplementation(() => {});
+	it('WHEN the workspace has issues it prints them in the issues field', () => {
+		const infoSpy = vi.spyOn(console, 'info').mockImplementation(() => {});
 
 		presentWorkspaceReport(
 			makeWorkspaceCheckoutMock('/tmp', {
@@ -38,11 +38,13 @@ describe('presentWorkspaceReport', () => {
 			}),
 		);
 
-		expect(spy).toHaveBeenCalledWith(expect.stringContaining('uncommitted files; 1 commit ahead'));
+		expect(infoSpy).toHaveBeenCalledWith(
+			expect.stringContaining('uncommitted files; 1 commit ahead'),
+		);
 	});
 
-	it('renders the behind issue in the issues field', () => {
-		const spy = vi.spyOn(console, 'info').mockImplementation(() => {});
+	it('WHEN the workspace is behind it renders the behind issue', () => {
+		const infoSpy = vi.spyOn(console, 'info').mockImplementation(() => {});
 
 		presentWorkspaceReport(
 			makeWorkspaceCheckoutMock('/tmp', {
@@ -50,19 +52,19 @@ describe('presentWorkspaceReport', () => {
 			}),
 		);
 
-		expect(spy).toHaveBeenCalledWith(expect.stringContaining('1 commit behind'));
+		expect(infoSpy).toHaveBeenCalledWith(expect.stringContaining('1 commit behind'));
 	});
 
-	it('returns early when workspace is undefined', () => {
-		const spy = vi.spyOn(console, 'info').mockImplementation(() => {});
+	it('WHEN the workspace is undefined it returns early', () => {
+		const infoSpy = vi.spyOn(console, 'info').mockImplementation(() => {});
 
 		presentWorkspaceReport(undefined);
 
-		expect(spy).not.toHaveBeenCalledWith('Workspace:');
+		expect(infoSpy).not.toHaveBeenCalledWith('Workspace:');
 	});
 
-	it('shows "none" for remote when workspace has no remote', () => {
-		const spy = vi.spyOn(console, 'info').mockImplementation(() => {});
+	it('WHEN the workspace has no remote it shows none for remote', () => {
+		const infoSpy = vi.spyOn(console, 'info').mockImplementation(() => {});
 
 		presentWorkspaceReport(
 			makeWorkspaceCheckoutMock('/tmp', {
@@ -70,6 +72,6 @@ describe('presentWorkspaceReport', () => {
 			}),
 		);
 
-		expect(spy).toHaveBeenCalledWith(expect.stringContaining('remote: none'));
+		expect(infoSpy).toHaveBeenCalledWith(expect.stringContaining('remote: none'));
 	});
 });

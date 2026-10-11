@@ -14,7 +14,7 @@ afterEach(async () => {
 });
 
 describe('scanWorkspaceCheckout', () => {
-	it('scans the workspace root and sets ctx.workspace', async () => {
+	it('WHEN the workspace root exists it scans it and sets ctx.workspace', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		await makeGitRepo(tempDirs, { dir: workspaceDir });
 		const ctx = makeCommandContextMock(workspaceDir);
@@ -29,7 +29,7 @@ describe('scanWorkspaceCheckout', () => {
 		expect(result?.scan?.state('git-dir').hasGit).toBe(true);
 	});
 
-	it('re-scans with refetch when requested', async () => {
+	it('WHEN a refetch is requested it re-scans with refetch', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		await makeGitRepo(tempDirs, { dir: workspaceDir });
 		const ctx = makeCommandContextMock(workspaceDir);
@@ -41,7 +41,7 @@ describe('scanWorkspaceCheckout', () => {
 		expect(result?.scan?.state('exists').exists).toBe(true);
 	});
 
-	it('returns not-cloned scan when workspace root has no git', async () => {
+	it('WHEN the workspace root has no git it returns a not-cloned scan', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 

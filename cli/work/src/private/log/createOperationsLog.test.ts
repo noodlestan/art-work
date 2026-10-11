@@ -34,7 +34,7 @@ function makePendingOperation() {
 }
 
 describe('createOperationsLog', () => {
-	it('logs an operation', () => {
+	it('WHEN an operation is logged it is recorded', () => {
 		const operations = createOperationsLog();
 
 		operations.log(makeResolvedClone('test'));
@@ -45,13 +45,13 @@ describe('createOperationsLog', () => {
 		expect(ops[0].checkout?.repo?.name).toBe('test');
 	});
 
-	it('returns empty array when no operations', () => {
+	it('WHEN no operations are logged it returns an empty array', () => {
 		const operations = createOperationsLog();
 
 		expect(operations.all()).toEqual([]);
 	});
 
-	it('since filters by timestamp', async () => {
+	it('WHEN since() receives a timestamp, it returns only operations logged afterward', async () => {
 		const operations = createOperationsLog();
 		operations.log(makeResolvedClone('a'));
 		const before = new Date(Date.now() + 10);
@@ -63,7 +63,7 @@ describe('createOperationsLog', () => {
 		expect(ops[0].checkout?.repo?.name).toBe('b');
 	});
 
-	it('latest returns last n operations', () => {
+	it('WHEN latest() receives a limit, it returns that many most recent operations', () => {
 		const operations = createOperationsLog();
 		operations.log(makeResolvedClone('a'));
 		operations.log(makeResolvedClone('b'));
@@ -75,7 +75,7 @@ describe('createOperationsLog', () => {
 		expect(ops[1].checkout?.repo?.name).toBe('c');
 	});
 
-	it('streams a pending operation to the logger without storing it', () => {
+	it('WHEN an operation is pending it is streamed to the logger without being stored', () => {
 		const logger = vi.fn();
 		const operations = createOperationsLog(logger);
 

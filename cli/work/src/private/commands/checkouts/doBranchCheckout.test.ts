@@ -19,7 +19,7 @@ afterEach(async () => {
 });
 
 describe('doBranchCheckout', () => {
-	it('creates a new branch and returns the updated checkout', async () => {
+	it('WHEN given a branch name it creates the branch and returns the updated checkout', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
@@ -42,7 +42,7 @@ describe('doBranchCheckout', () => {
 		expect(ctx.log.all()[0].outcome).toBe('success');
 	});
 
-	it('logs failure and returns null when branch creation fails', async () => {
+	it('WHEN branch creation fails it logs failure and returns null', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const checkout = makeCheckoutMock({ path: '/nonexistent' });

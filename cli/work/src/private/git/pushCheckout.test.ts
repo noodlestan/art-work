@@ -16,7 +16,7 @@ afterEach(async () => {
 });
 
 describe('pushCheckout', () => {
-	it('pushes a local commit to origin', async () => {
+	it('WHEN the checkout has a local commit it pushes it to origin', async () => {
 		const dir = makeTempDir(tempDirs);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		await makeGitRepoFromBare(tempDirs, bareDir, { dir });
@@ -25,7 +25,7 @@ describe('pushCheckout', () => {
 		await pushCheckout(dir, 'main');
 	});
 
-	it('throws when push fails', async () => {
+	it('WHEN the push fails it throws', async () => {
 		const dir = makeTempDir(tempDirs);
 		await makeGitRepo(tempDirs, { commit: true, dir });
 
