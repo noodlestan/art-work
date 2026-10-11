@@ -40,6 +40,7 @@ program
 			logger.log(createGenericOperation('boot'));
 			const config = await loadWorkspaceConfig(root, {
 				cache: command.optsWithGlobals().configCache !== false,
+				verbose: options.output === 'verbose',
 			});
 			const store = createCheckoutStore();
 			const log = createOperationsLog(logger.log);
@@ -70,6 +71,7 @@ program
 			logger.log(createGenericOperation('boot'));
 			const config = await loadWorkspaceConfig(root, {
 				cache: command.optsWithGlobals().configCache !== false,
+				verbose: options.output === 'verbose',
 			});
 			const store = createCheckoutStore();
 			const log = createOperationsLog(logger.log);
@@ -100,6 +102,7 @@ program
 			logger.log(createGenericOperation('boot'));
 			const config = await loadWorkspaceConfig(root, {
 				cache: command.optsWithGlobals().configCache !== false,
+				verbose: options.output === 'verbose',
 			});
 			const store = createCheckoutStore();
 			const log = createOperationsLog(logger.log);
@@ -134,6 +137,7 @@ program
 			logger.log(createGenericOperation('boot'));
 			const config = await loadWorkspaceConfig(root, {
 				cache: command.optsWithGlobals().configCache !== false,
+				verbose: options.output === 'verbose',
 			});
 			const store = createCheckoutStore();
 			const log = createOperationsLog(logger.log);
@@ -172,6 +176,7 @@ program
 			logger.log(createGenericOperation('boot'));
 			const config = await loadWorkspaceConfig(root, {
 				cache: command.optsWithGlobals().configCache !== false,
+				verbose: options.output === 'verbose',
 			});
 			const store = createCheckoutStore();
 			const log = createOperationsLog(logger.log);
@@ -210,6 +215,7 @@ program
 			logger.log(createGenericOperation('boot'));
 			const config = await loadWorkspaceConfig(root, {
 				cache: command.optsWithGlobals().configCache !== false,
+				verbose: options.output === 'verbose',
 			});
 			const store = createCheckoutStore();
 			const log = createOperationsLog(logger.log);
@@ -246,6 +252,7 @@ program
 			logger.log(createGenericOperation('boot'));
 			const config = await loadWorkspaceConfig(root, {
 				cache: command.optsWithGlobals().configCache !== false,
+				verbose: options.output === 'verbose',
 			});
 			const store = createCheckoutStore();
 			const log = createOperationsLog(logger.log);
@@ -270,6 +277,7 @@ program
 		logger.log(createGenericOperation('boot'));
 		const config = await loadWorkspaceConfig(root, {
 			cache: command.optsWithGlobals().configCache !== false,
+			verbose: options.output === 'verbose',
 		});
 		const store = createCheckoutStore();
 		const log = createOperationsLog(logger.log);
@@ -288,6 +296,7 @@ program
 		logger.log(createGenericOperation('boot'));
 		const config = await loadWorkspaceConfig(root, {
 			cache: command.optsWithGlobals().configCache !== false,
+			verbose: options.output === 'verbose',
 		});
 		const store = createCheckoutStore();
 		const log = createOperationsLog(logger.log);
@@ -306,6 +315,7 @@ program
 		logger.log(createGenericOperation('boot'));
 		const config = await loadWorkspaceConfig(root, {
 			cache: command.optsWithGlobals().configCache !== false,
+			verbose: options.output === 'verbose',
 		});
 		const store = createCheckoutStore();
 		const log = createOperationsLog(logger.log);
@@ -325,6 +335,7 @@ program
 		logger.log(createGenericOperation('boot'));
 		const config = await loadWorkspaceConfig(root, {
 			cache: command.optsWithGlobals().configCache !== false,
+			verbose: options.output === 'verbose',
 		});
 		const store = createCheckoutStore();
 		const log = createOperationsLog(logger.log);

@@ -1,10 +1,11 @@
 import { existsSync } from 'node:fs';
 
-import { resolveBundlePath, resolveMetaPath } from '../cache.js';
 import type { ConfigCacheInput } from '../types.js';
 
-import { hashConfigInputs } from './hashConfigInputs.js';
+import { resolveBundlePath } from './cache/resolveBundlePath.js';
+import { resolveMetaPath } from './cache/resolveMetaPath.js';
 import { readConfigCacheMeta } from './readConfigCacheMeta.js';
+import { tryHashConfigInputs } from './tryHashConfigInputs.js';
 
 function hasUnchangedInputs(
 	recordedInputs: ConfigCacheInput[],
@@ -18,7 +19,8 @@ function hasUnchangedInputs(
 }
 
 export async function findReusableBundlePath(rootPath: string): Promise<string | null> {
-	const cacheMeta = await readConfigCacheMeta(resolveMetaPath(rootPath));
+	const metaPath = resolveMetaPath(rootPath);
+	const cacheMeta = await readConfigCacheMeta(metaPath);
 
 	if (cacheMeta === null) {
 		return null;
@@ -30,14 +32,10 @@ export async function findReusableBundlePath(rootPath: string): Promise<string |
 		return null;
 	}
 
-	let currentInputs: ConfigCacheInput[];
+	const inputPaths = cacheMeta.inputs.map(input => input.path);
+	const currentInputs = await tryHashConfigInputs(rootPath, inputPaths);
 
-	try {
-		currentInputs = await hashConfigInputs(
-			rootPath,
-			cacheMeta.inputs.map(input => input.path),
-		);
-	} catch {
+	if (!currentInputs) {
 		return null;
 	}
 

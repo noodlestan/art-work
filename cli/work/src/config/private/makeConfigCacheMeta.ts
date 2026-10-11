@@ -1,9 +1,9 @@
 import { realpathSync } from 'node:fs';
 import { relative, resolve } from 'node:path';
 
-import { CACHE_META_VERSION } from '../cache.js';
 import type { ConfigCacheMeta } from '../types.js';
 
+import { CACHE_META_VERSION } from './cache/resolveMetaPath.js';
 import { hashConfigInputs } from './hashConfigInputs.js';
 
 export async function makeConfigCacheMeta(
@@ -15,6 +15,7 @@ export async function makeConfigCacheMeta(
 	const inputPaths = metafileInputPaths.map(inputPath =>
 		relative(realRootPath, resolve(inputPath)),
 	);
+
 	const inputs = await hashConfigInputs(rootPath, inputPaths);
 
 	return {

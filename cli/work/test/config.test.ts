@@ -42,17 +42,20 @@ function output(result: TestCliResult): string {
 }
 
 describe('cli config cache', () => {
-	it('WHEN run twice against an unchanged manifest, the second run reuses the cache', async () => {
+	it('WHEN run repeatedly against an unchanged manifest, only -o verbose logs the cache reuse', async () => {
 		const root = await setupWorkspace(tempDirs);
 		trackConfigCacheDir(root);
 
 		const firstRun = await spawnCli({ args: ['sanity'], cwd: root });
-		const secondRun = await spawnCli({ args: ['sanity'], cwd: root });
+		const verboseRun = await spawnCli({ args: ['sanity', '-o', 'verbose'], cwd: root });
+		const silentRun = await spawnCli({ args: ['sanity'], cwd: root });
 
 		expect(firstRun.code).toBe(0);
-		expect(output(firstRun)).not.toContain('config: reused cached bundle');
-		expect(secondRun.code).toBe(0);
-		expect(output(secondRun)).toContain('config: reused cached bundle');
+		expect(output(firstRun)).not.toContain('[config] reused cached bundle');
+		expect(verboseRun.code).toBe(0);
+		expect(output(verboseRun)).toContain('[config] reused cached bundle');
+		expect(silentRun.code).toBe(0);
+		expect(output(silentRun)).not.toContain('[config] reused cached bundle');
 	});
 
 	it('WHEN the manifest is edited between runs, the next run rebuilds the bundle', async () => {
@@ -66,8 +69,8 @@ describe('cli config cache', () => {
 		const result = await spawnCli({ args: ['sanity'], cwd: root });
 
 		expect(result.code).toBe(0);
-		expect(output(result)).toContain('config: rebuilt bundle');
-		expect(output(result)).not.toContain('config: reused cached bundle');
+		expect(output(result)).toContain('[config] rebuilt bundle');
+		expect(output(result)).not.toContain('[config] reused cached bundle');
 	});
 
 	it('WHEN --no-config-cache is given, the run rebuilds and refreshes the cache', async () => {
@@ -83,7 +86,7 @@ describe('cli config cache', () => {
 		const refreshedMeta = JSON.parse(readFileSync(metaPath, 'utf8')) as ConfigCacheMeta;
 
 		expect(result.code).toBe(0);
-		expect(output(result)).toContain('config: cache bypassed,rebuilt bundle');
+		expect(output(result)).toContain('[config] cache bypassed, rebuilt bundle');
 		expect(refreshedMeta.manifest).toContain(MANIFEST_FILE);
 		expect(refreshedMeta.inputs).toEqual([{ path: MANIFEST_FILE, hash: expect.any(String) }]);
 	});

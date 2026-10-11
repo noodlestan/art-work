@@ -1,7 +1,8 @@
 import { readFile } from 'node:fs/promises';
 
-import { CACHE_META_VERSION } from '../cache.js';
 import type { ConfigCacheInput, ConfigCacheMeta } from '../types.js';
+
+import { CACHE_META_VERSION } from './cache/resolveMetaPath.js';
 
 function isConfigCacheInput(value: unknown): value is ConfigCacheInput {
 	if (typeof value !== 'object' || value === null) {

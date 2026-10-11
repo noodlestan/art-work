@@ -5,8 +5,9 @@ import { join } from 'node:path';
 
 import { build } from 'esbuild';
 
-import { resolveBundlePath, resolveCacheDir, resolveMetaPath } from '../cache.js';
-
+import { resolveBundlePath } from './cache/resolveBundlePath.js';
+import { resolveCacheDir } from './cache/resolveCacheDir.js';
+import { resolveMetaPath } from './cache/resolveMetaPath.js';
 import { formatError } from './formatError.js';
 import { makeConfigCacheMeta } from './makeConfigCacheMeta.js';
 
@@ -41,7 +42,7 @@ export async function compileConfigBundle(rootPath: string, manifestPath: string
 		);
 	}
 
-	console.info('config: rebuilt bundle');
+	console.info('⚙️ [config] rebuilt bundle');
 
 	const bundleContent = output.outputFiles[0].text;
 	const cacheBundlePath = resolveBundlePath(rootPath);
@@ -49,18 +50,15 @@ export async function compileConfigBundle(rootPath: string, manifestPath: string
 	try {
 		await mkdir(resolveCacheDir(rootPath), { recursive: true });
 		writeFileSync(cacheBundlePath, bundleContent);
-		const cacheMeta = await makeConfigCacheMeta(
-			rootPath,
-			manifestPath,
-			Object.keys(output.metafile.inputs),
-		);
+		const inputKeys = Object.keys(output.metafile.inputs);
+		const cacheMeta = await makeConfigCacheMeta(rootPath, manifestPath, inputKeys);
 		writeFileSync(resolveMetaPath(rootPath), JSON.stringify(cacheMeta, null, '\t'));
 
 		return cacheBundlePath;
 	} catch (error) {
-		console.warn(
-			`Failed to write config cache at ${cacheBundlePath}: ${formatError(error)}; Falling back to temp bundle.`,
-		);
+		const formattedError = formatError(error);
+		const message = `Failed to write config cache at ${cacheBundlePath}: ${formattedError}; Falling back to temp bundle.`;
+		console.warn(message);
 		const fallbackBundlePath = join(tmpdir(), FALLBACK_BUNDLE_FILE);
 		writeFileSync(fallbackBundlePath, bundleContent);
 

@@ -8,7 +8,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { makeTempDir } from '../test/helpers/tempDirs/makeTempDir.js';
 import { removeTempDirs } from '../test/helpers/tempDirs/removeTempDirs.js';
 
-import { resolveBundlePath, resolveCacheDir, resolveMetaPath } from './cache.js';
+import { resolveBundlePath } from './private/cache/resolveBundlePath.js';
+import { resolveCacheDir } from './private/cache/resolveCacheDir.js';
+import { resolveMetaPath } from './private/cache/resolveMetaPath.js';
 import type { ConfigCacheMeta } from './types.js';
 
 import { loadWorkspaceConfig } from './index.js';
@@ -166,7 +168,11 @@ describe('loadWorkspaceConfig', () => {
 		const config = await loadWorkspaceConfig(tempDir);
 
 		expect(buildMock).toHaveBeenCalledTimes(1);
-		expect(vi.mocked(console.info)).toHaveBeenCalledWith('config: reused cached bundle');
+		expect(vi.mocked(console.info)).not.toHaveBeenCalledWith('⚙️ [config] reused cached bundle');
+
+		await loadWorkspaceConfig(tempDir, { verbose: true });
+
+		expect(vi.mocked(console.info)).toHaveBeenCalledWith('⚙️ [config] reused cached bundle');
 		expect(config.clone.path).toBe('clone-path');
 	});
 
@@ -193,20 +199,18 @@ describe('loadWorkspaceConfig', () => {
 		const manifestPath = join(tempDir, '.art-workspace.mts');
 		const settingsPath = join(tempDir, 'settings.mts');
 		writeFileSync(settingsPath, "export const clonePath = 'first-clone';\n");
-		writeFileSync(
-			manifestPath,
-			[
-				"import { clonePath } from './settings.mts';",
-				'',
-				'export default {',
-				'	clone: { path: clonePath },',
-				'	root: {},',
-				"	checkouts: { path: 'checkouts-path', template: 'checkouts-template' },",
-				"	records: { pattern: '*.art' },",
-				'};',
-				'',
-			].join('\n'),
-		);
+		const config = [
+			"import { clonePath } from './settings.mts';",
+			'',
+			'export default {',
+			'	clone: { path: clonePath },',
+			'	root: {},',
+			"	checkouts: { path: 'checkouts-path', template: 'checkouts-template' },",
+			"	records: { pattern: '*.art' },",
+			'};',
+			'',
+		].join('\n');
+		writeFileSync(manifestPath, config);
 
 		await loadWorkspaceConfig(tempDir);
 
@@ -274,7 +278,8 @@ describe('loadWorkspaceConfig', () => {
 		await loadWorkspaceConfig(tempDir);
 
 		const cacheMeta = readCacheMeta(tempDir);
-		writeFileSync(resolveMetaPath(tempDir), JSON.stringify({ ...cacheMeta, version: 2 }));
+		const config = JSON.stringify({ ...cacheMeta, version: 2 });
+		writeFileSync(resolveMetaPath(tempDir), config);
 		buildMock.mockClear();
 
 		await loadWorkspaceConfig(tempDir);
@@ -290,10 +295,8 @@ describe('loadWorkspaceConfig', () => {
 
 		const cacheMeta = readCacheMeta(tempDir);
 		const ghostInput = { path: 'ghost.mts', hash: 'deadbeef' };
-		writeFileSync(
-			resolveMetaPath(tempDir),
-			JSON.stringify({ ...cacheMeta, inputs: [...cacheMeta.inputs, ghostInput] }),
-		);
+		const config = JSON.stringify({ ...cacheMeta, inputs: [...cacheMeta.inputs, ghostInput] });
+		writeFileSync(resolveMetaPath(tempDir), config);
 		buildMock.mockClear();
 
 		await loadWorkspaceConfig(tempDir);
@@ -317,7 +320,9 @@ describe('loadWorkspaceConfig', () => {
 
 		expect(buildMock).toHaveBeenCalledTimes(1);
 		expect(rebuilt.clone.path).toBe('clone-path');
-		expect(vi.mocked(console.info)).toHaveBeenCalledWith('config: cache bypassed,rebuilt bundle');
+		expect(vi.mocked(console.info)).toHaveBeenCalledWith(
+			'⚙️ [config] cache bypassed, rebuilt bundle',
+		);
 	});
 
 	it('GIVEN the cache option is false a load refreshes the cache metadata', async () => {

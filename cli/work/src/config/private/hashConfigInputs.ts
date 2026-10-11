@@ -8,14 +8,13 @@ export async function hashConfigInputs(
 	rootPath: string,
 	inputPaths: string[],
 ): Promise<ConfigCacheInput[]> {
-	return Promise.all(
-		inputPaths.map(async inputPath => {
-			const bytes = await readFile(resolve(rootPath, inputPath));
-
-			return {
-				path: inputPath,
-				hash: createHash('sha256').update(bytes).digest('hex'),
-			};
-		}),
-	);
+	const cacheInputPromises = inputPaths.map(async inputPath => {
+		const bytes = await readFile(resolve(rootPath, inputPath));
+		const hash = createHash('sha256').update(bytes).digest('hex');
+		return {
+			path: inputPath,
+			hash,
+		};
+	});
+	return Promise.all(cacheInputPromises);
 }

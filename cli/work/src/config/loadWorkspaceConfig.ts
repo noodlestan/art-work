@@ -27,12 +27,12 @@ const DEFAULT_CONFIG: PartialWorkspaceConfig = {
 
 export async function loadWorkspaceConfig(
 	rootPath: string,
-	options?: { cache?: boolean },
+	options?: { cache?: boolean; verbose?: boolean },
 ): Promise<WorkspaceConfig> {
 	const manifestPath = join(rootPath, MANIFEST_FILE);
 
 	if (!existsSync(manifestPath)) {
-		console.warn(`${MANIFEST_FILE} not found at ${rootPath}; Using default config.`);
+		console.warn(`🟨 ${MANIFEST_FILE} not found at ${rootPath}; Using default config.`);
 		return defineConfig({ ...DEFAULT_CONFIG, root: { path: rootPath } });
 	}
 
@@ -44,14 +44,14 @@ export async function loadWorkspaceConfig(
 		reusableBundlePath = await findReusableBundlePath(rootPath);
 	}
 
-	if (reusableBundlePath !== null) {
-		console.info('config: reused cached bundle');
+	if (reusableBundlePath !== null && options?.verbose) {
+		console.info('⚙️ [config] reused cached bundle');
 	}
 
 	const bundlePath = reusableBundlePath ?? (await compileConfigBundle(rootPath, manifestPath));
 
 	if (!useCache) {
-		console.info('config: cache bypassed,rebuilt bundle');
+		console.info('⚙️ [config] cache bypassed, rebuilt bundle');
 	}
 
 	removeLegacyBundle(rootPath);
