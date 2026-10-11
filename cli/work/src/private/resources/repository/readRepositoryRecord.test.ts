@@ -1,7 +1,7 @@
 import { writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { makeRecordFileMock } from '../../../test/helpers/records/makeRecordFileMock.js';
 import { writeRepoMockRecord } from '../../../test/helpers/records/writeRepoMockRecord.js';
@@ -17,6 +17,12 @@ const makeRecordFile = (filename: string) => makeRecordFileMock(dirname(filename
 afterEach(async () => {
 	await removeTempDirs(tempDirs);
 	vi.restoreAllMocks();
+});
+
+beforeEach(() => {
+	vi.spyOn(console, 'info').mockImplementation(() => {});
+	vi.spyOn(console, 'warn').mockImplementation(() => {});
+	vi.spyOn(console, 'error').mockImplementation(() => {});
 });
 
 describe('readRepositoryRecord', () => {

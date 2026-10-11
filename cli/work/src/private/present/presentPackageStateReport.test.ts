@@ -14,6 +14,8 @@ describe('presentPackageStateReport', () => {
 
 	beforeEach(() => {
 		vi.spyOn(console, 'info').mockImplementation(() => {});
+		vi.spyOn(console, 'warn').mockImplementation(() => {});
+		vi.spyOn(console, 'error').mockImplementation(() => {});
 		checkout = {
 			record: { name: 'Artificial', location: 'artificial', branch: 'main' },
 			path: '/tmp/artificial',

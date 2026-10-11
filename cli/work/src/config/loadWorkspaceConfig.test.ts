@@ -53,6 +53,8 @@ function sha256(content: string): string {
 beforeEach(() => {
 	buildMock.mockClear();
 	vi.spyOn(console, 'info').mockImplementation(() => {});
+	vi.spyOn(console, 'warn').mockImplementation(() => {});
+	vi.spyOn(console, 'error').mockImplementation(() => {});
 });
 
 afterEach(async () => {

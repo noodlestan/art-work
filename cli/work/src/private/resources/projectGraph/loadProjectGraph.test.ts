@@ -27,7 +27,9 @@ const tempDirs: string[] = [];
 const makeRecordFile = (filename: string) => makeRecordFileMock(dirname(filename), filename);
 
 beforeEach(() => {
+	vi.spyOn(console, 'info').mockImplementation(() => {});
 	vi.spyOn(console, 'warn').mockImplementation(() => {});
+	vi.spyOn(console, 'error').mockImplementation(() => {});
 });
 
 afterEach(async () => {

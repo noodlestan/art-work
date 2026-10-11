@@ -1,7 +1,7 @@
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { makeConfigMock } from '../../../test/helpers/context/makeConfigMock.js';
 import { makeRecordFileMock } from '../../../test/helpers/records/makeRecordFileMock.js';
@@ -16,6 +16,12 @@ const tempDirs: string[] = [];
 afterEach(async () => {
 	await removeTempDirs(tempDirs);
 	vi.restoreAllMocks();
+});
+
+beforeEach(() => {
+	vi.spyOn(console, 'info').mockImplementation(() => {});
+	vi.spyOn(console, 'warn').mockImplementation(() => {});
+	vi.spyOn(console, 'error').mockImplementation(() => {});
 });
 
 describe('readCheckoutRecord', () => {

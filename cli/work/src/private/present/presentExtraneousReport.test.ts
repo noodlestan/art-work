@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { makeCheckoutScanMock } from '../../test/helpers/checkout/makeCheckoutScanMock.js';
 import type { Checkout } from '../store/createCheckout.js';
@@ -18,6 +18,12 @@ function makeCheckout(overrides?: Partial<Checkout>): Checkout {
 		...overrides,
 	};
 }
+
+beforeEach(() => {
+	vi.spyOn(console, 'info').mockImplementation(() => {});
+	vi.spyOn(console, 'warn').mockImplementation(() => {});
+	vi.spyOn(console, 'error').mockImplementation(() => {});
+});
 
 describe('presentExtraneousReport', () => {
 	it('no output when no extraneous checkouts', () => {
