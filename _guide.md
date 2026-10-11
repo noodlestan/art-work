@@ -2,9 +2,9 @@
 
 > Host and manage the Art Work orchestration tools and applications, and their planning artefacts.
 
-Monorepo containing the Art Work orchestration tools and applications, and their planning artefacts.
+Monorepo containing the Art Work orchestration tools and applications. Hosts more than one CLI under `cli/`, and each CLI owns its own roadmap and backlog.
 
-Uses Workflow: Planning Work with one backlog per package, coordinating with Workflow: Roadmapping from one project-wide roadmap.
+Uses Workflow: Planning Work with one backlog per CLI package, coordinating with Workflow: Roadmapping from one roadmap per CLI package.
 
 ## Recommended Reading
 
@@ -18,11 +18,10 @@ Agents SHOULD scan these files for relevant clarifications when faced with ambig
 
 ```
 _guide.md           — this file
-_backlog/           — plans, instructions, reports
 _records/           — project, repository, namespace, and license records
 architecture/       — repository-level architecture documentation
-cli/                — CLI packages
-cli/work            — `@art-work/cli`
+cli/                — CLI packages; each owns its _roadmap/ and _backlog/
+cli/work            — `@art-work/cli`, plus _roadmap/ and _backlog/
 ```
 
 ## Records Management
@@ -67,15 +66,19 @@ Projects in this repository use the following workflows:
 
 ### Roadmapping
 
-- The roadmap lives at `_roadmap/` with subdirectories such as `/3-now` and `/4-next/`.
-- The short-term roadmapping focus is captured in `_roadmap/_parking-lot.md`.
-- The requirements, use cases, and principles are captured in `_roadmap/_architect.md`.
+Roadmaps live with the CLI they describe, one per package:
+
+- `cli/work/_roadmap/` — subdirectories such as `3-now`, `4-next`, `6-plan`, `8-discovery`, and `9-inbox`.
+- The short-term roadmapping focus is captured in `cli/work/_roadmap/_parking-lot.md`.
+- The requirements, use cases, and principles are captured in `cli/work/_roadmap/_architect.md`.
 
 ### Planning Work
 
-- The backlog lives at `_backlog/` with subdirectories such as `/3-now` and `/4-next/`.
-- The short-term focus is captured in `_backlog/_parking-lot.md`.
-- Planning coordination and constraints are captured in `_backlog/_architect.md`.
+Backlogs live with the CLI they describe, one per package:
+
+- `cli/work/_backlog/` — subdirectories such as `3-now`, `4-next`, and `6-plan`.
+- The short-term focus is captured in `cli/work/_backlog/_parking-lot.md`.
+- Planning coordination and constraints are captured in `cli/work/_backlog/_architect.md`.
 
 ## Operating Instructions
 

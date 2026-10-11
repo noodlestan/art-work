@@ -6,17 +6,16 @@ WIP tracker, structured like the session parking lot: **ACTIONABLE** (in progres
 
 ### ACTIONABLE
 
-- **Generate the architecture briefing** — draft `_roadmap/_architect.md` with the forward-looking plan: why, principles, NFRs, definitions, conventions, milestones, and follow-ups.
+- None.
 
-### Plan: Generate Art Lib Roadmap
-
-- **Create milestone `mvp-art-records`** — use Art JS libs to read and write art files.
-- **Create milestone `mvp-workspace-website`** — define the minimal workspace website milestone.
-- **Create milestone `mvp-workspace-docs`** — define the minimal workspace documentation milestone.
+- **Create plan `migrate-planning-and-knowledge`** — in `_backlog/4-next/` to migrate rest of `_roadmap` and `_backlog` from monorepo root.
+- **Create milestone `mvp-art-records`** — in `6-plan/` to use Art JS libs to read and write art files.
+- **Create milestone `mvp-art-work-website`** — publish a minimal website.
+- **Create milestone `mvp-art-work-docs`** — define the minimal documentation milestone. Use library to extract API docs. Candidates: `@purrception/lang-ts` extract (might need rebuilding/republishing), `https://github.com/xberg-io/tree-sitter-language-pack` (language agnostic). Evaluate: migrate `@purrception/lang-ts` to use treesitter and just do the classification/bundling for the symbol resolution and type resolution use cases.
 - **Create milestone `reactive-and-persistent`** — dev mode; requires refactoring for reactivity, adding a watcher, keyboard commands, an operation queue, and streaming commands in the UI.
-- **Create milestone `tech-debt`** — To start tracking debt and defining interventions.
 - **Create milestone `optimizations`** — hashing and caching.
-- **Create milestone `terminal-ui`** — static display terminal UI with live checkout states, ops, stream, and queue.
+- **Create milestone `terminal-ui-poc`** — static display terminal UI with live checkout states, ops, stream, and queue.
+- **Create milestone `art-work-9000`** in `9-inbox/` to capture long term ideas.
 
 ### PENDING
 

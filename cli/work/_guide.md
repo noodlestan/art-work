@@ -12,6 +12,10 @@ Agents SHOULD scan these files for relevant clarifications when faced with ambig
 ## Package Layout
 
 ```
+_guide.md           — this file
+_roadmap/           — this CLI's roadmap: milestones by stage
+_backlog/           — this CLI's backlog: plans, instructions, reports
+_records/           — package and deployment records
 architecture/       — index, overview, dependencies, adr/, and design/ docs
 src/                — the CLI source (commands, config, shared, private)
 CHANGELOG.md
@@ -39,11 +43,27 @@ This package follows strict conventions.
 
 ## Workflows
 
-This project uses the following workflows:
+This CLI uses the following workflows:
 
-| Workflow / Path                                                       | Purpose                                          |
-| --------------------------------------------------------------------- | ------------------------------------------------ |
-| **Deploying** `$DOMAINS/deployments/workflows/deploying/workflow.art` | Organizes deployment of artefacts in operations. |
+| Workflow / Path                                                            | Purpose                                                                                           |
+| -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| **Roadmapping** `$DOMAINS/roadmaps/workflows/roadmapping/workflow.art`     | Organize roadmap creation and maintenance.                                                        |
+| **Planning Work** `$DOMAINS/work/workflows/planning-work/workflow.art`     | Create and manage work item lifecycles, collecting operational instructions according to context. |
+| **Delegating Work** `$DOMAINS/work/workflows/delegating-work/workflow.art` | Organize work delegation to sub-agents with validation, execution, and verification.              |
+| **Executing Work** `$DOMAINS/work/workflows/executing-work/workflow.art`   | Organize work execution by sub-agents to produce completed, verified outcomes and feedback.       |
+| **Deploying** `$DOMAINS/deployments/workflows/deploying/workflow.art`      | Organizes deployment of artefacts in operations.                                                  |
+
+### Roadmapping
+
+- This CLI's roadmap lives at `_roadmap/` with subdirectories such as `3-now`, `4-next`, `6-plan`, `8-discovery`, and `9-inbox`.
+- The short-term roadmapping focus is captured in `_roadmap/_parking-lot.md`.
+- The requirements, use cases, and principles are captured in `_roadmap/_architect.md`.
+
+### Planning Work
+
+- This CLI's backlog lives at `_backlog/` with subdirectories such as `3-now`, `4-next`, and `6-plan`.
+- The short-term focus is captured in `_backlog/_parking-lot.md`.
+- Planning coordination and constraints are captured in `_backlog/_architect.md`.
 
 ## Operating Instructions
 
