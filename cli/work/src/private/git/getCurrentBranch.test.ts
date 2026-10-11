@@ -1,6 +1,9 @@
+import { join } from 'node:path';
+
 import { simpleGit } from 'simple-git';
 import { afterEach, describe, expect, it } from 'vitest';
 
+import { makeGitBareRepo } from '../../test/helpers/git/makeGitBareRepo.js';
 import { makeGitRepo } from '../../test/helpers/git/makeGitRepo.js';
 import { makeTempDir } from '../../test/helpers/tempDirs/makeTempDir.js';
 import { removeTempDirs } from '../../test/helpers/tempDirs/removeTempDirs.js';
@@ -23,6 +26,18 @@ describe('getCurrentBranch', () => {
 		const branch = await getCurrentBranch(dir);
 
 		expect(branch).toBe('feature');
+	});
+
+	it('returns the unborn branch name on an empty repository', async () => {
+		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
+		await simpleGit(bareDir).raw(['symbolic-ref', 'HEAD', 'refs/heads/main']);
+
+		const cloneDir = join(makeTempDir(tempDirs), 'clone');
+		await simpleGit('').clone(bareDir, cloneDir);
+
+		const branch = await getCurrentBranch(cloneDir);
+
+		expect(branch).toBe('main');
 	});
 
 	it('returns - on error', async () => {
