@@ -1,14 +1,18 @@
 import { existsSync, writeFileSync } from 'node:fs';
+import { mkdir, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 import { build } from 'esbuild';
 
+import { resolveBundlePath, resolveCacheDir } from './cache.js';
 import { defineConfig } from './defineConfig.js';
 import type { PartialWorkspaceConfig, WorkspaceConfig } from './types.js';
 
 const MANIFEST_FILE = '.art-workspace.mts';
-const TEMP_FILE = '.art-workspace-bundle.mjs';
+const LEGACY_BUNDLE_FILE = '.art-workspace-bundle.mjs';
+const FALLBACK_BUNDLE_FILE = 'art-work-config-bundle.mjs';
 
 const DEFAULT_CONFIG: PartialWorkspaceConfig = {
 	clone: { path: 'checkouts' },
@@ -64,11 +68,32 @@ export async function loadWorkspaceConfig(rootPath: string): Promise<WorkspaceCo
 		);
 	}
 
-	const tempFile = join(rootPath, TEMP_FILE);
-	writeFileSync(tempFile, output.outputFiles[0].text);
+	const bundleContent = output.outputFiles[0].text;
+	const cacheBundlePath = resolveBundlePath(rootPath);
+	let bundlePath = cacheBundlePath;
 
 	try {
-		const loaded = await import(pathToFileURL(tempFile).href);
+		await mkdir(resolveCacheDir(rootPath), { recursive: true });
+		writeFileSync(cacheBundlePath, bundleContent);
+	} catch (error) {
+		console.warn(
+			`Failed to write config cache at ${cacheBundlePath}: ${formatError(error)}; Falling back to temp bundle.`,
+		);
+		bundlePath = join(tmpdir(), FALLBACK_BUNDLE_FILE);
+		writeFileSync(bundlePath, bundleContent);
+	}
+
+	const legacyBundlePath = join(rootPath, LEGACY_BUNDLE_FILE);
+	if (existsSync(legacyBundlePath)) {
+		try {
+			await rm(legacyBundlePath, { force: true });
+		} catch {
+			// Best-effort cleanup of the legacy root-level bundle; never fail on it.
+		}
+	}
+
+	try {
+		const loaded = await import(pathToFileURL(bundlePath).href);
 		const config = loaded.default as PartialWorkspaceConfig;
 		return defineConfig({ ...config, root: { path: rootPath } });
 	} catch (error) {
