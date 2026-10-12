@@ -18,7 +18,7 @@
 #### Files changed
 
 - `cli/work/README.md` — Added `## Config` (with `defineConfig` sample manifest) after `## Installation`, before `## Usage`; added `## Options` (with the `--no-config-cache` entry) after the `### Commands` list, before `## Development`.
-- `cli/work/architecture/design/config.md` — Added `### Cache` under `## Overview`, before `## Configuration Structure`, documenting location (`<workspace root>/node_modules/.art-work/` holding `config.bundle.mjs` and `config.cache.json`), automatic invalidation (sha256 per esbuild `metafile.inputs`; changed/missing/unreadable input, missing bundle, unparseable metadata, or `version` mismatch triggers rebuild), and manual bust (`--no-config-cache` or deleting the cache dir).
+- `cli/work/knowledge/design/config.md` — Added `### Cache` under `## Overview`, before `## Configuration Structure`, documenting location (`<workspace root>/node_modules/.art-work/` holding `config.bundle.mjs` and `config.cache.json`), automatic invalidation (sha256 per esbuild `metafile.inputs`; changed/missing/unreadable input, missing bundle, unparseable metadata, or `version` mismatch triggers rebuild), and manual bust (`--no-config-cache` or deleting the cache dir).
 
 Documented behaviour verified against `src/config/loadWorkspaceConfig.ts` and its private helpers (`cache.ts`, `findReusableBundlePath.ts`, `readConfigCacheMeta.ts`, `hashConfigInputs.ts`) plus the `--no-config-cache` option in `src/index.ts`. No unit test changes — documentation only.
 

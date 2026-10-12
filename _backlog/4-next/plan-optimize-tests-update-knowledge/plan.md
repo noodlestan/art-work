@@ -10,7 +10,7 @@
 
 **Purpose:** Audit test overlap, simplify expensive tests, fill coverage gaps, and remap architecture knowledge.
 
-**Description:** Analyse the test suite for overlap between layers, identify untested units, redesign the test strategy to reduce expensive git fixture usage, and update architecture knowledge files to reflect the current command/operation/git/scan layering.
+**Description:** Analyse the test suite for overlap between layers, identify untested units, redesign the test strategy to reduce expensive git fixture usage, and update knowledge files to reflect the current command/operation/git/scan layering.
 
 ## Mandatory Reading
 
@@ -53,9 +53,9 @@ Audit test overlap across command layers, eliminate redundant git fixture setups
 
 ### Knowledge
 
-::READ `$ART_WORK/cli/work/architecture/commands.md` (Model) — Command surface, BDD, edge cases. Relevant for Iterations 2, 3, 4.
+::READ `$ART_WORK/cli/work/knowledge/commands.md` (Model) — Command surface, BDD, edge cases. Relevant for Iterations 2, 3, 4.
 
-::READ `$ART_WORK/cli/work/architecture/index.md` (Model) — Execution model, data model, reports. Relevant for all iterations.
+::READ `$ART_WORK/cli/work/knowledge/index.md` (Model) — Execution model, data model, reports. Relevant for all iterations.
 
 ## Scope
 
@@ -199,7 +199,7 @@ docs(tests): audit test coverage, overlap, and gaps
 
 **Status:** `DRAFT`
 
-**Purpose:** Sync `cli/work/architecture/commands.md` with current implementation.
+**Purpose:** Sync `cli/work/knowledge/commands.md` with current implementation.
 
 **Description:** Review all implemented commands against `commands.md`. Update BDD scenarios, edge cases, and implementation status. Remove stale references. Ensure commands.md accurately reflects the current command surface.
 
@@ -207,7 +207,7 @@ docs(tests): audit test coverage, overlap, and gaps
 
 **Changes:**
 
-In `$ART_WORK/cli/work/architecture/commands.md`:
+In `$ART_WORK/cli/work/knowledge/commands.md`:
 
 1. Update **Implementation Status** section to reflect current state.
 2. Review each command's BDD — add missing scenarios discovered during testing (e.g., `checkouts run` inner flags after `--`).
@@ -304,17 +304,17 @@ test(commands): rewrite run tests as focused orchestration tests
 
 **Changes:**
 
-1. **Create `cli/work/architecture/operations.md`**
+1. **Create `cli/work/knowledge/operations.md`**
    - Document the `do*` operation layer: logic, gates, side effects (store updates, logging), error handling.
    - List each `do*` function, its guards, and what it delegates to.
    - Map operations to commands (which command calls which operation).
 
-2. **Create `cli/work/architecture/git.md`**
+2. **Create `cli/work/knowledge/git.md`**
    - Document the `private/git/` layer: pure git wrappers, signatures, error handling.
    - List each helper, what it wraps, and what it returns.
    - Note which helpers take `Checkout` vs primitives (post-refactor).
 
-3. **Create `cli/work/architecture/scan.md`**
+3. **Create `cli/work/knowledge/scan.md`**
    - Document the scan layer: `scanCheckoutState`, `scanWorkspaceCheckout`, `scanAllCheckoutsStates`.
    - What they scan, what states they produce, how they use `remoteFetch`.
    - Note performance implications (fetching on every scan).
@@ -416,10 +416,10 @@ test: add missing tests and adopt mock patterns
 
 ### Knowledge to Update
 
-- `cli/work/architecture/commands.md` — Iteration 2.
-- `cli/work/architecture/operations.md` — Iteration 4 (new file).
-- `cli/work/architecture/git.md` — Iteration 4 (new file).
-- `cli/work/architecture/scan.md` — Iteration 4 (new file).
+- `cli/work/knowledge/commands.md` — Iteration 2.
+- `cli/work/knowledge/operations.md` — Iteration 4 (new file).
+- `cli/work/knowledge/git.md` — Iteration 4 (new file).
+- `cli/work/knowledge/scan.md` — Iteration 4 (new file).
 
 ### Follow Ups
 

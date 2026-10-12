@@ -54,7 +54,7 @@ Add hashing and caching to the CLI's expensive paths so repeated runs over an un
 
 ### Knowledge
 
-::READ `$ART_WORK_CLI/architecture/index.md` (Model) — Scan layer, operations, and the report model that exposes cache decisions. Relevant for Planning Work Item.
+::READ `$ART_WORK_CLI/knowledge/index.md` (Model) — Scan layer, operations, and the report model that exposes cache decisions. Relevant for Planning Work Item.
 
 ::READ `$ART_WORK/_guide.md` (Guide) — Repository setup and verification. Relevant for Setting Up, Verifying Completion.
 
@@ -188,7 +188,7 @@ All steps MUST pass. No `it.todo()` tests may remain.
 
 ### Knowledge to Update
 
-- `$ART_WORK_CLI/architecture/index.md` — document the caching model once Phase 2 lands.
+- `$ART_WORK_CLI/knowledge/index.md` — document the caching model once Phase 2 lands.
 
 ### Follow Ups
 

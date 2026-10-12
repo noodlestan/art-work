@@ -52,9 +52,9 @@ This section lists the documentation and reference files the sub-agent needs to 
 - RULE: You MUST follow any links under `## Mandatory Reading` sections found in the listed files.
 - RULE: If you are unable to read a file linked under `## Mandatory Reading` you must stop and REPORT A BLOCKER.
 
-- config design: `$ART_WORK/cli/work/architecture/design/config.md` (Loading Mechanism)
+- config design: `$ART_WORK/cli/work/knowledge/design/config.md` (Loading Mechanism)
 - config loader: `$ART_WORK/cli/work/src/config/loadWorkspaceConfig.ts` (current manifest/temp file handling)
-- architecture: `$ART_WORK/cli/work/architecture/index.md`
+- knowledge: `$ART_WORK/cli/work/knowledge/index.md`
 - guide: `$WORKSPACE/_guide.md`
 - Conventions: Typescript — `$ART_WORK/node_modules/@noodlestan/conventions-typescript/art/index.md`
 - Conventions: Unit Tests — `$ART_WORK/node_modules/@noodlestan/conventions-unit-tests/art/index.md`

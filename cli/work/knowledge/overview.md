@@ -21,9 +21,9 @@ An ecosystem spans multiple independent repositories (`artificial`, `purrception
 ## Definitions
 
 - **Workspace:** A **meta-repo** that provides context for humans and agents alike (knowledge, references, instructions) and tools to work simultaneously across repositories. Example: `noodlestan/workspace`.
-- **Update records** — synchronise checkout records with the filesystem: create records for new checkouts, update records for moved checkouts, remove records for deleted checkouts. Idempotent. See `architecture/design/context-model.md`.
-- **Repo identity** — repos are identified by name, case-insensitive; package names are interchangeable with repo names. See `architecture/design/context-model.md`.
-- **Reports** — Table presented after every command that touches checkouts (checkout, operations, extraneus, ...). See `architecture/design/reports.md`.
+- **Update records** — synchronise checkout records with the filesystem: create records for new checkouts, update records for moved checkouts, remove records for deleted checkouts. Idempotent. See `knowledge/design/context-model.md`.
+- **Repo identity** — repos are identified by name, case-insensitive; package names are interchangeable with repo names. See `knowledge/design/context-model.md`.
+- **Reports** — Table presented after every command that touches checkouts (checkout, operations, extraneus, ...). See `knowledge/design/reports.md`.
 
 ## Use Cases
 
@@ -44,7 +44,7 @@ An ecosystem spans multiple independent repositories (`artificial`, `purrception
 The workspace owns:
 
 - **Records** — Workspace config and repository and checkouts records (source of truth). Example: `$WORKSPACE/_records/`
-- **Config** — The `.art-workspace.mts` module at the workspace root, defines paths (records, templates, checkouts), importable by tools. See `architecture/design/config.md`.
+- **Config** — The `.art-workspace.mts` module at the workspace root, defines paths (records, templates, checkouts), importable by tools. See `knowledge/design/config.md`.
 - **Context** — Agent instructions and reference material. Example: `$WORKSPACE/.agents/`, `$WORKSPACE/reference/`.
 - **Checkouts** — The cloned repositories under a checkout path, whose state is scanned from git and tracked in records. Examples: `checkouts/{checkout-name}`.
 

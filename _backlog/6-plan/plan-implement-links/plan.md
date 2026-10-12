@@ -53,10 +53,10 @@ Implement the links command as a read-only scan of symlinks across the workspace
 ### Knowledge
 
 ::READ `_roadmap/_architect.md` (Briefing) — Workspace principles, NFRs, milestones. Relevant for Planning Work Item.
-::READ `architecture/commands.md` (Design) — Designed behaviour and BDD scenarios for Links. Relevant for Planning Work Item.
-::READ `architecture/_pseudo.md` (Pseudo-code) — Pseudo-code contract for links command (incl. `scanNodeModules`). Relevant for Planning Work Item.
-::READ `architecture/context-model.md` (Model) — WorkspaceContext, CheckoutStore, project records. Relevant for Planning Work Item.
-::READ `architecture/reports.md` (Reports) — Symlink Report format. Relevant for Planning Work Item.
+::READ `knowledge/commands.md` (Design) — Designed behaviour and BDD scenarios for Links. Relevant for Planning Work Item.
+::READ `knowledge/_pseudo.md` (Pseudo-code) — Pseudo-code contract for links command (incl. `scanNodeModules`). Relevant for Planning Work Item.
+::READ `knowledge/context-model.md` (Model) — WorkspaceContext, CheckoutStore, project records. Relevant for Planning Work Item.
+::READ `knowledge/reports.md` (Reports) — Symlink Report format. Relevant for Planning Work Item.
 
 ## Scope
 

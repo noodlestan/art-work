@@ -52,10 +52,10 @@ This section lists the documentation and reference files the sub-agent needs to 
 - RULE: You MUST follow any links under `## Mandatory Reading` sections found in the listed files.
 - RULE: If you are unable to read a file linked under `## Mandatory Reading` you must stop and REPORT A BLOCKER.
 
-- config design: `$ART_WORK/cli/work/architecture/design/config.md`
+- config design: `$ART_WORK/cli/work/knowledge/design/config.md`
 - package README: `$ART_WORK/cli/work/README.md`
 - config loader: `$ART_WORK/cli/work/src/config/loadWorkspaceConfig.ts` (source of truth for cache behaviour)
-- architecture: `$ART_WORK/cli/work/architecture/index.md`
+- knowledge: `$ART_WORK/cli/work/knowledge/index.md`
 - guide: `$WORKSPACE/_guide.md`
 
 ---
@@ -148,7 +148,7 @@ export default defineConfig({
 
 **Goal:** maintainers know where the cache lives and how it is invalidated.
 
-In `$ART_WORK/cli/work/architecture/design/config.md`, add `### Cache` under `## Overview` (before `## Configuration Structure`) covering three points:
+In `$ART_WORK/cli/work/knowledge/design/config.md`, add `### Cache` under `## Overview` (before `## Configuration Structure`) covering three points:
 
 - **Where** — `<workspace root>/node_modules/.art-work/` holds `config.bundle.mjs` and `config.cache.json`.
 - **Automatic invalidation** — `config.cache.json` records a sha256 per esbuild input; a changed, missing, or unreadable input, a missing bundle, unparseable metadata, or a `version` mismatch triggers a rebuild.

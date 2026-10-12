@@ -27,7 +27,7 @@
 
 ## Summary
 
-Update 8 architecture knowledge resource files to reflect implemented commands (pull, push, sync), planned configuration changes, and updated function signatures.
+Update 8 knowledge resource files to reflect implemented commands (pull, push, sync), planned configuration changes, and updated function signatures.
 
 ## Context
 
@@ -51,17 +51,17 @@ Update 8 architecture knowledge resource files to reflect implemented commands (
 
 ### Knowledge
 
-::READ `$PROJECT/architecture/index.md` (Architecture) — CLI execution model and data model. Relevant for Planning Work Item.
-::READ `$PROJECT/architecture/config.md` (Config) — WorkspaceConfig interface. Relevant for Planning Work Item.
-::READ `$PROJECT/architecture/context-model.md` (Model) — Reader organization and record functions. Relevant for Planning Work Item.
-::READ `$PROJECT/architecture/commands.md` (Commands) — Command surface and implementation status. Relevant for Planning Work Item.
-::READ `$PROJECT/architecture/operations-log.md` (Operations) — Operation kinds. Relevant for Planning Work Item.
-::READ `$PROJECT/architecture/_pseudo.md` (Pseudo) — Pseudo-code contracts. Relevant for Planning Work Item.
-::READ `$PROJECT/architecture/reports.md` (Reports) — Report formats. Relevant for Planning Work Item.
+::READ `$PROJECT/knowledge/index.md` (Architecture) — CLI execution model and data model. Relevant for Planning Work Item.
+::READ `$PROJECT/knowledge/config.md` (Config) — WorkspaceConfig interface. Relevant for Planning Work Item.
+::READ `$PROJECT/knowledge/context-model.md` (Model) — Reader organization and record functions. Relevant for Planning Work Item.
+::READ `$PROJECT/knowledge/commands.md` (Commands) — Command surface and implementation status. Relevant for Planning Work Item.
+::READ `$PROJECT/knowledge/operations-log.md` (Operations) — Operation kinds. Relevant for Planning Work Item.
+::READ `$PROJECT/knowledge/_pseudo.md` (Pseudo) — Pseudo-code contracts. Relevant for Planning Work Item.
+::READ `$PROJECT/knowledge/reports.md` (Reports) — Report formats. Relevant for Planning Work Item.
 
 ## Scope
 
-Update 8 architecture files in `$PROJECT/architecture/` to reflect the current state of the codebase.
+Update 8 architecture files in `$PROJECT/knowledge/` to reflect the current state of the codebase.
 
 ## Work
 
@@ -105,7 +105,7 @@ Delegate the first `DRAFT` iteration: `update-architecture-index`.
 
 **Status:** `DRAFT`
 
-**Purpose:** Update `architecture/index.md` to reflect implemented commands and current milestone.
+**Purpose:** Update `knowledge/index.md` to reflect implemented commands and current milestone.
 
 **Description:** Replace stale plan reference with current milestone, update CLI execution model to show implemented vs planned commands, review data model consistency.
 
@@ -128,7 +128,7 @@ Delegate the first `DRAFT` iteration: `update-architecture-index`.
 
 **Status:** `DRAFT`
 
-**Purpose:** Update `architecture/config.md` to reflect planned WorkspaceConfig restructuring.
+**Purpose:** Update `knowledge/config.md` to reflect planned WorkspaceConfig restructuring.
 
 **Description:** Update the WorkspaceConfig interface to show the planned shape, update authoring example, add transition note.
 
@@ -148,7 +148,7 @@ Delegate the first `DRAFT` iteration: `update-architecture-index`.
 
 **Status:** `DRAFT`
 
-**Purpose:** Update `architecture/context-model.md` to reflect actual reader organization and function signatures.
+**Purpose:** Update `knowledge/context-model.md` to reflect actual reader organization and function signatures.
 
 **Description:** Update directory tree, saveCheckoutRecord signature, loadProjectGraph, and Checkout interface.
 
@@ -171,7 +171,7 @@ Delegate the first `DRAFT` iteration: `update-architecture-index`.
 
 **Status:** `DRAFT`
 
-**Purpose:** Update `architecture/commands.md` to reflect implemented command status.
+**Purpose:** Update `knowledge/commands.md` to reflect implemented command status.
 
 **Description:** Update command surface table and implementation status section.
 
@@ -192,13 +192,13 @@ Delegate the first `DRAFT` iteration: `update-architecture-index`.
 
 **Status:** `DRAFT`
 
-**Purpose:** Update `architecture/operations-log.md` to include `pull` operation kind.
+**Purpose:** Update `knowledge/operations-log.md` to include `pull` operation kind.
 
 **Description:** Add pull to operation kinds and verify operation factory exports.
 
 **Changes:**
 
-- Update `architecture/operations-log.md` to document `pending` as an outcome and the streaming/logger concept (feedback from `plan-log-process-as-it-happens`).
+- Update `knowledge/operations-log.md` to document `pending` as an outcome and the streaming/logger concept (feedback from `plan-log-process-as-it-happens`).
 - Add `pull` to the operation kinds list.
 - Verify the `Operation` kind field matches what `src/private/operations/` actually exports.
 - Confirm no other new operation kinds were introduced.
@@ -213,7 +213,7 @@ Delegate the first `DRAFT` iteration: `update-architecture-index`.
 
 **Status:** `DRAFT`
 
-**Purpose:** Update `architecture/_pseudo.md` to reflect current function signatures and add missing pseudo-code.
+**Purpose:** Update `knowledge/_pseudo.md` to reflect current function signatures and add missing pseudo-code.
 
 **Description:** Add resolveCheckoutByName, update saveCheckoutRecord, add pull command pseudo-code, review pull/push/sync pseudo-code.
 
@@ -240,7 +240,7 @@ Delegate the first `DRAFT` iteration: `update-architecture-index`.
 
 **Status:** `DRAFT`
 
-**Purpose:** Verify `architecture/reports.md` matches actual presentation code.
+**Purpose:** Verify `knowledge/reports.md` matches actual presentation code.
 
 **Description:** Verify report formats match `src/private/present/` implementations.
 
@@ -260,7 +260,7 @@ Delegate the first `DRAFT` iteration: `update-architecture-index`.
 
 **Status:** `DRAFT`
 
-**Purpose:** Verify `architecture/records/adr/*` is streamlined and reflects
+**Purpose:** Verify `knowledge/records/adr/*` is streamlined and reflects
 
 **Description:** Verify report formats match `src/private/present/` implementations.
 
@@ -268,7 +268,7 @@ Delegate the first `DRAFT` iteration: `update-architecture-index`.
 
 Notes for planner: explore the current ADRs, apply the rules below and refine concrete instructions.
 
-Update rules for `cli/workspace/architecture/records/adr/*`
+Update rules for `cli/workspace/knowledge/records/adr/*`
 
 - Remove any decision related exclusively to initial migration steps.
 - Remove from any other decision any context that describes previous unfinshjed state, reword it to be independent.

@@ -52,7 +52,7 @@ This section lists the documentation and reference files the sub-agent needs to 
 - RULE: You MUST follow any links under `## Mandatory Reading` sections found in the listed files.
 - RULE: If you are unable to read a file linked under `## Mandatory Reading` you must stop and REPORT A BLOCKER.
 
-- architecture: `$ART_WORK/cli/work/architecture/index.md`
+- knowledge: `$ART_WORK/cli/work/knowledge/index.md`
 - briefing: `$ART_WORK/_roadmap/_architect.md`
 - guide: `$ART_WORK/_guide.md`
 
@@ -107,7 +107,7 @@ Additionally verify the CLI from a global installation and from the local develo
 
 This section summarises the changes to be made in this iteration.
 
-- Step 1 / 3 — Update architecture docs and guide
+- Step 1 / 3 — Update knowledge and guide
 - Step 2 / 3 — Update config README
 - Step 3 / 3 — Commit `update-art-work-knowledge`
 
@@ -115,9 +115,9 @@ This section summarises the changes to be made in this iteration.
 
 This section contains the detailed steps to execute, including commit steps.
 
-### Step `1 / 3` — Update architecture docs and guide
+### Step `1 / 3` — Update knowledge and guide
 
-Update `$ART_WORK/cli/work/architecture/index.md` to document the global-install execution model: how the CLI locates configuration (current working directory and parent dirs), how it operates in global vs local modes, and the new workspace config shape (`root`, `checkouts`, `data.store`, `discover.records`).
+Update `$ART_WORK/cli/work/knowledge/index.md` to document the global-install execution model: how the CLI locates configuration (current working directory and parent dirs), how it operates in global vs local modes, and the new workspace config shape (`root`, `checkouts`, `data.store`, `discover.records`).
 
 Update `$ART_WORK/_guide.md` with global install usage notes, including how to run the CLI from a global installation and how to use the `init` command to set up a fresh workspace.
 
@@ -150,7 +150,7 @@ This section describes how to confirm the iteration is completed and ready for b
 **Instructions:**
 
 - Verify that commits have been executed and pushed (or not pushed) according to the commit's policy.
-- Verify that `$ART_WORK/cli/work/architecture/index.md` documents the global-install execution model and the new config shape.
+- Verify that `$ART_WORK/cli/work/knowledge/index.md` documents the global-install execution model and the new config shape.
 - Verify that `$ART_WORK/_guide.md` includes global install usage notes.
 - Verify that `$ART_WORK/cli/work/src/config/README.md` describes the config file format and discovery.
 - Verify that no references to the old config names (`clone`, `records`) remain in the updated knowledge files.

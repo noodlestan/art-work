@@ -56,7 +56,7 @@ Make the Art Work Cli read and write `.art` files through the Art JS libraries s
 
 ### Knowledge
 
-::READ `$ART_WORK_CLI/architecture/index.md` (Model) — Command surface, data model, and record loading. Relevant for Planning Work Item.
+::READ `$ART_WORK_CLI/knowledge/index.md` (Model) — Command surface, data model, and record loading. Relevant for Planning Work Item.
 
 ::READ `$ART_WORK/_guide.md` (Guide) — Repository setup and verification. Relevant for Setting Up, Verifying Completion.
 
@@ -190,7 +190,7 @@ All steps MUST pass. No `it.todo()` tests may remain.
 
 ### Knowledge to Update
 
-- `$ART_WORK_CLI/architecture/index.md` — document the records substrate once Phase 2 lands.
+- `$ART_WORK_CLI/knowledge/index.md` — document the records substrate once Phase 2 lands.
 
 ### Follow Ups
 

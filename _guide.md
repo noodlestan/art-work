@@ -17,11 +17,11 @@ Agents SHOULD scan these files for relevant clarifications when faced with ambig
 ## Repository Layout
 
 ```
-_guide.md           — this file
-_records/           — project, repository, namespace, and license records
-architecture/       — repository-level architecture documentation
-cli/                — CLI packages; each owns its _roadmap/ and _backlog/
-cli/work            — `@art-work/cli`, plus _roadmap/ and _backlog/
+_guide.md        — this file
+_records/        — project, repository, namespace, and license records
+knowledge/       — repository-level knowledge documentation
+cli/             — CLI packages; each owns its _roadmap/ and _backlog/
+cli/work         — `@art-work/cli`, plus _roadmap/ and _backlog/
 ```
 
 ## Records Management
@@ -35,10 +35,10 @@ Records are co-located with the resources they describe in `_records/` directori
 
 ## Knowledge References
 
-This repository maintains architecture references at:
+This repository maintains knowledge references at:
 
-- `architecture/index.md` — Repository-level architecture index.
-- `cli/work/architecture/index.md` — Art Work Cli architecture index.
+- `knowledge/index.md` — Repository-level knowledge index.
+- `cli/work/knowledge/index.md` — Art Work Cli knowledge index.
 
 ## Conventions
 

@@ -53,10 +53,10 @@ Implement the link command for local package symlinking, supporting scoped packa
 ### Knowledge
 
 ::READ `_roadmap/_architect.md` (Briefing) — Workspace principles, NFRs, milestones. Relevant for Planning Work Item.
-::READ `architecture/commands.md` (Design) — Designed behaviour and BDD scenarios for Link. Relevant for Planning Work Item.
-::READ `architecture/_pseudo.md` (Pseudo-code) — Pseudo-code contract for link command. Relevant for Planning Work Item.
-::READ `architecture/context-model.md` (Model) — WorkspaceContext, CheckoutStore, project records. Relevant for Planning Work Item.
-::READ `architecture/reports.md` (Reports) — Operations Report format. Relevant for Planning Work Item.
+::READ `knowledge/commands.md` (Design) — Designed behaviour and BDD scenarios for Link. Relevant for Planning Work Item.
+::READ `knowledge/_pseudo.md` (Pseudo-code) — Pseudo-code contract for link command. Relevant for Planning Work Item.
+::READ `knowledge/context-model.md` (Model) — WorkspaceContext, CheckoutStore, project records. Relevant for Planning Work Item.
+::READ `knowledge/reports.md` (Reports) — Operations Report format. Relevant for Planning Work Item.
 
 ## Scope
 

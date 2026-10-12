@@ -55,7 +55,7 @@ Make the Art Work Cli executable and operational when installed globally, while 
 
 ::READ `$ART_WORK/_roadmap/_architect.md` (Briefing) — Workspace principles, NFRs, milestones. Relevant for Planning Work Item.
 
-::READ `$ART_WORK/cli/work/architecture/index.md` (Model) — Package layout, publishing, and execution model. Relevant for Planning Work Item.
+::READ `$ART_WORK/cli/work/knowledge/index.md` (Model) — Package layout, publishing, and execution model. Relevant for Planning Work Item.
 
 ## Scope
 
@@ -354,7 +354,7 @@ build(art-work-cli): Add Init Command.
 
 **Changes:**
 
-- Update `$ART_WORK/cli/work/architecture/index.md` to document global-install execution model.
+- Update `$ART_WORK/cli/work/knowledge/index.md` to document global-install execution model.
 - Update `$ART_WORK/_guide.md` with global install usage notes.
 - Update `$ART_WORK/cli/work/src/config/README.md` (or create) describing config file format and discovery.
 

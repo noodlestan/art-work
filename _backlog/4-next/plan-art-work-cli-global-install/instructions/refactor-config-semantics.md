@@ -53,7 +53,7 @@ This section lists the documentation and reference files the sub-agent needs to 
 - RULE: You MUST follow any links under `## Mandatory Reading` sections found in the listed files.
 - RULE: If you are unable to read a file linked under `## Mandatory Reading` you must stop and REPORT A BLOCKER.
 
-- architecture: `$ART_WORK/cli/work/architecture/index.md`
+- knowledge: `$ART_WORK/cli/work/knowledge/index.md`
 - briefing: `$ART_WORK/_roadmap/_architect.md`
 - provider contract: `$ART_LIB` Plan: Add FS Records Store — Iteration: Implement FSRecordsStore (`$WORKSPACE/checkouts/art-lib-planning/_backlog/4-next/add-fs-records-store/plan.md`). This iteration depends on the `FSRecordsStore`, `FSRecordsStoreOptions`, `FSRecordsPattern`, and `createFSRecordsStore()` symbols being available from `@art-lib/fs-records`.
 

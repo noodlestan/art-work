@@ -7,7 +7,7 @@ The Art Work Cli package (`@art-work/cli`, binary `art-work-cli`) orchestrates c
 Agents SHOULD scan these files for relevant clarifications when faced with ambiguity or omissions that may result from missing definitions.
 
 - `_guide.md` — the Art Work Cli overview, plan workflow, and agent interactions.
-- `architecture/index.md` — use cases, principles, decision records, and designs for the commands, configuration, context model, operations, reports, and dependencies.
+- `knowledge/index.md` — use cases, principles, decision records, and designs for the commands, configuration, context model, operations, reports, and dependencies.
 
 ## Package Layout
 
@@ -16,7 +16,7 @@ _guide.md           — this file
 _roadmap/           — this CLI's roadmap: milestones by stage
 _backlog/           — this CLI's backlog: plans, instructions, reports
 _records/           — package and deployment records
-architecture/       — index, overview, dependencies, adr/, and design/ docs
+knowledge/       — index, overview, dependencies, adr/, and design/ docs
 src/                — the CLI source (commands, config, shared, private)
 CHANGELOG.md
 ```
@@ -32,8 +32,8 @@ Records are co-located with the resources they describe in `_records/` directori
 
 This package maintains:
 
-- An architecture reference at `architecture/index.md`.
-- Decision records at `architecture/adr`.
+- A knowledge reference at `knowledge/index.md`.
+- Decision records at `knowledge/adr`.
 
 ## Conventions
 

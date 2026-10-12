@@ -55,7 +55,7 @@ Decide the minimal documentation set for the CLI and the extraction library that
 
 ### Knowledge
 
-::READ `$ART_WORK_CLI/architecture/index.md` (Model) — The knowledge surface this milestone must cover. Relevant for Planning Work Item.
+::READ `$ART_WORK_CLI/knowledge/index.md` (Model) — The knowledge surface this milestone must cover. Relevant for Planning Work Item.
 
 ::READ `$ART_WORK/_guide.md` (Guide) — Repository setup and verification. Relevant for Setting Up, Verifying Completion.
 
@@ -189,7 +189,7 @@ All steps MUST pass. No `it.todo()` tests may remain.
 
 ### Knowledge to Update
 
-- `$ART_WORK_CLI/architecture/index.md` — record the docs extraction decision once Phase 2 lands.
+- `$ART_WORK_CLI/knowledge/index.md` — record the docs extraction decision once Phase 2 lands.
 
 ### Follow Ups
 

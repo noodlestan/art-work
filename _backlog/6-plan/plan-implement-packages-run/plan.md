@@ -53,10 +53,10 @@ Implement a `packages run` command that runs an arbitrary shell command across p
 ### Knowledge
 
 ::READ `_roadmap/_architect.md` (Briefing) — Workspace principles, NFRs, milestones. Relevant for Planning Work Item.
-::READ `architecture/commands.md` (Design) — TBD — command surface to be designed.
-::READ `architecture/_pseudo.md` (Pseudo-code) — TBD — pseudo-code contract to be drafted.
-::READ `architecture/context-model.md` (Model) — WorkspaceContext, CheckoutStore, project records. Relevant for Planning Work Item.
-::READ `architecture/reports.md` (Reports) — Operations Report format. Relevant for Planning Work Item.
+::READ `knowledge/commands.md` (Design) — TBD — command surface to be designed.
+::READ `knowledge/_pseudo.md` (Pseudo-code) — TBD — pseudo-code contract to be drafted.
+::READ `knowledge/context-model.md` (Model) — WorkspaceContext, CheckoutStore, project records. Relevant for Planning Work Item.
+::READ `knowledge/reports.md` (Reports) — Operations Report format. Relevant for Planning Work Item.
 
 ## Scope
 
@@ -242,7 +242,7 @@ test(packages-run): add package command tests
 
 ### Knowledge to Update
 
-- `architecture/commands.md` — document the new `packages run` command.
+- `knowledge/commands.md` — document the new `packages run` command.
 
 ### Follow Ups
 

@@ -28,7 +28,7 @@
 
 ## Summary
 
-Move the compiled config bundle out of the workspace root into `node_modules/.art-work/`, reuse it while the config sources are unchanged, add `--no-config-cache` to force a rebuild, and document both — touching config loading, CLI option plumbing, their tests, the package README, and the config architecture knowledge.
+Move the compiled config bundle out of the workspace root into `node_modules/.art-work/`, reuse it while the config sources are unchanged, add `--no-config-cache` to force a rebuild, and document both — touching config loading, CLI option plumbing, their tests, the package README, and the config knowledge.
 
 ## Context
 
@@ -54,13 +54,13 @@ Move the compiled config bundle out of the workspace root into `node_modules/.ar
 
 ### Knowledge
 
-::READ `$ART_WORK/cli/work/architecture/design/config.md` (Model) — Loading mechanism: esbuild bundle-at-runtime. Relevant for all iterations.
+::READ `$ART_WORK/cli/work/knowledge/design/config.md` (Model) — Loading mechanism: esbuild bundle-at-runtime. Relevant for all iterations.
 
 ::READ `$WORKSPACE/_guide.md` (Guide) — Workspace setup and verification. Relevant for Setting Up, Verifying Step.
 
 ## Scope
 
-Changes confined to config loading and CLI option plumbing in `$ART_WORK/cli/work/src/config/` and `$ART_WORK/cli/work/src/index.ts`, their unit and integration tests, the package `$ART_WORK/cli/work/README.md`, and the config architecture knowledge. No change to the config schema, config discovery, or command behaviour beyond skipping the esbuild build when the cache is valid.
+Changes confined to config loading and CLI option plumbing in `$ART_WORK/cli/work/src/config/` and `$ART_WORK/cli/work/src/index.ts`, their unit and integration tests, the package `$ART_WORK/cli/work/README.md`, and the config knowledge. No change to the config schema, config discovery, or command behaviour beyond skipping the esbuild build when the cache is valid.
 
 ## Work
 
@@ -344,7 +344,7 @@ export default defineConfig({
 - `--no-config-cache` — Ignore the config cache, recompile the config, and refresh the cache for this run.
 ```
 
-In `$ART_WORK/cli/work/architecture/design/config.md`:
+In `$ART_WORK/cli/work/knowledge/design/config.md`:
 
 - Add `### Cache` under `## Overview` (before `## Configuration Structure`), covering three points:
   - **Where** — `<workspace root>/node_modules/.art-work/` holds `config.bundle.mjs` and `config.cache.json`.
@@ -384,7 +384,7 @@ docs(art-work-cli): Document config cache and no-config-cache option.
 
 ### Evidence
 
-- **Iteration 4 delivered** — `298d6dc` documented the cache in `cli/work/README.md` (`## Config`, `## Options`) and `cli/work/architecture/design/config.md` (`### Cache`: location, sha256-per-input invalidation, manual bust); `npm run ci` green (355 unit + 26 integration).
+- **Iteration 4 delivered** — `298d6dc` documented the cache in `cli/work/README.md` (`## Config`, `## Options`) and `cli/work/knowledge/design/config.md` (`### Cache`: location, sha256-per-input invalidation, manual bust); `npm run ci` green (355 unit + 26 integration).
 - **Iteration 3 delivered** — `9548943` added `--no-config-cache` (program-level, accepted before or after the subcommand), threaded through all 11 config-load call sites; bypass rebuilds and refreshes the cache; `test/config.test.ts` proves cross-process reuse, invalidation, and bypass; `npm run ci` green (355 unit + 26 integration).
 - **Iteration 2 delivered** — `d68a57f` records sha256 per `metafile.inputs` in `config.cache.json` and skips `build()` while sources are unchanged; reuse/invalidation verified in unit tests and in vivo; `npm run ci` green (353 unit + 22 integration).
 - **Iteration 1 delivered** — `8821977` moved the compiled bundle into `node_modules/.art-work/` with graceful degradation and best-effort legacy root cleanup; `npm run ci` green (343 unit + 22 integration).
@@ -407,8 +407,8 @@ docs(art-work-cli): Document config cache and no-config-cache option.
 
 ### Knowledge to Update
 
-- **`cli/work/README.md` and `cli/work/architecture/design/config.md`** — delivered by Iteration: Update Config Knowledge.
-- **`cli/work/architecture/adr/cli.art`** — "Runtime Config Loading — esbuild Bundle-at-Runtime" does not yet record the cache location or the bypass flag; not covered by an iteration.
+- **`cli/work/README.md` and `cli/work/knowledge/design/config.md`** — delivered by Iteration: Update Config Knowledge.
+- **`cli/work/knowledge/adr/cli.art`** — "Runtime Config Loading — esbuild Bundle-at-Runtime" does not yet record the cache location or the bypass flag; not covered by an iteration.
 
 ### Follow Ups
 

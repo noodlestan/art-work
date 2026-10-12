@@ -54,7 +54,7 @@ Build a static-display terminal UI — live checkout states, an operations panel
 
 ### Knowledge
 
-::READ `$ART_WORK_CLI/architecture/index.md` (Model) — Present layer, operations log, and report model. Relevant for Planning Work Item.
+::READ `$ART_WORK_CLI/knowledge/index.md` (Model) — Present layer, operations log, and report model. Relevant for Planning Work Item.
 
 ::READ `$ART_WORK/_guide.md` (Guide) — Repository setup and verification. Relevant for Setting Up, Verifying Completion.
 
@@ -187,7 +187,7 @@ All steps MUST pass. No `it.todo()` tests may remain.
 
 ### Knowledge to Update
 
-- `$ART_WORK_CLI/architecture/index.md` — record the terminal UI choice once Phase 1 lands.
+- `$ART_WORK_CLI/knowledge/index.md` — record the terminal UI choice once Phase 1 lands.
 
 ### Follow Ups
 

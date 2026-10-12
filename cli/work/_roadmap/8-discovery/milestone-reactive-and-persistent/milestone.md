@@ -54,7 +54,7 @@ Turn the CLI from a sequence of one-shot commands into a reactive, persistent se
 
 ### Knowledge
 
-::READ `$ART_WORK_CLI/architecture/index.md` (Model) — Execution model, operations, and reports. Relevant for Planning Work Item.
+::READ `$ART_WORK_CLI/knowledge/index.md` (Model) — Execution model, operations, and reports. Relevant for Planning Work Item.
 
 ::READ `$ART_WORK/_guide.md` (Guide) — Repository setup and verification. Relevant for Setting Up, Verifying Completion.
 
@@ -213,7 +213,7 @@ All steps MUST pass. No `it.todo()` tests may remain.
 
 ### Knowledge to Update
 
-- `$ART_WORK_CLI/architecture/index.md` — record the reactive model once Phase 1 lands.
+- `$ART_WORK_CLI/knowledge/index.md` — record the reactive model once Phase 1 lands.
 
 ### Follow Ups
 
