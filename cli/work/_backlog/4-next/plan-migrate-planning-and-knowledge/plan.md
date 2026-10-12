@@ -20,12 +20,12 @@
 
 ## Path Variables
 
-| Variable        | Resolved Path                | Purpose                                                                |
-| --------------- | ---------------------------- | ---------------------------------------------------------------------- |
-| `$WORKSPACE`    | Current working directory    | Workspace root directory                                               |
-| `$DOMAINS`      | `$WORKSPACE/.agents/domains` | Domain resources directory                                             |
-| `$ART_WORK`     | Provided with prompt.        | Art Work repository. Example: `$WORKSPACE/checkouts/art-work-planning` |
-| `$ART_WORK_CLI` | `$ART_WORK/cli/work`         | The Art Work Cli package, and now its roadmap and backlog.             |
+| Variable        | Resolved Path                            | Purpose                                                    |
+| --------------- | ---------------------------------------- | ---------------------------------------------------------- |
+| `$WORKSPACE`    | Current working directory                | Workspace root directory                                   |
+| `$DOMAINS`      | `$WORKSPACE/.agents/domains`             | Domain resources directory                                 |
+| `$ART_WORK`     | `$WORKSPACE/checkouts/art-work-planning` | Art Work repository; hosts this plan.                      |
+| `$ART_WORK_CLI` | `$ART_WORK/cli/work`                     | The Art Work Cli package, and now its roadmap and backlog. |
 
 ## Summary
 
@@ -35,11 +35,11 @@ Move the root `_roadmap/` and `_backlog/` trees into `$ART_WORK_CLI/`, update th
 
 ### Upstream Work
 
-| Kind                  | Path                                                               | Role                                                                |
-| --------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------- |
-| Parking Lot           | `$ART_WORK/_backlog/_parking-lot.md`                               | Tracks short-term actionables, pending questions, and blockers.     |
-| Architecture Briefing | `$ART_WORK/_roadmap/_architect.md`                                 | Art Work principles, NFRs, milestones.                              |
-| Milestone             | `$ART_WORK/_roadmap/3-now/milestone-art-work-cli-one/milestone.md` | Coordinates this plan as Phase 3 of the Art Work Cli One milestone. |
+| Kind                  | Path                                                                             | Role                                                                |
+| --------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| Parking Lot           | `$ART_WORK_CLI/_roadmap/_parking-lot.md`                                         | Tracks short-term actionables; requested the creation of this plan. |
+| Architecture Briefing | `$ART_WORK/_roadmap/_architect.md`                                               | Art Work principles, NFRs, milestones.                              |
+| Milestone             | `$ART_WORK_CLI/_roadmap/3-now/milestone-rename-art-work-to-art-box/milestone.md` | Coordinates this plan as Phase 1 of the rename milestone.           |
 
 ### Required Skills
 
