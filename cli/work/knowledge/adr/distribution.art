@@ -19,7 +19,6 @@ The CLI will:
 - expose executable entry points through the package configuration.
 - declare `"type": "module"` and emit types for its API surface.
 
-
 ## Decision: Use @noodlestan/esbuild and Configurations
 
 **Status:** Adopted
