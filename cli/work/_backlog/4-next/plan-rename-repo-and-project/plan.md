@@ -2,7 +2,7 @@
 
 **ID:** `rename-repo-and-project`
 
-**Status:** `DRAFT`
+**Status:** `READY`
 
 **Template:** `$DOMAINS/plans/templates/plan.tart`
 
@@ -10,7 +10,7 @@
 
 **Purpose:** Rename the repository and the project from Art Work to Art Box across the workspace records, Artificials, and Noodlestan Web, keeping the Art Work Cli package untouched.
 
-**Description:** Plan record with 4 DRAFT iterations executed from `$WORKSPACE`, renaming the GitHub repository and the identity records in 4 owners — `$ART_WORK`, `$WORKSPACE/_records`, `$ARTIFICIALS`, and `$NOODLESTAN_WEB` — then rebuilding and redeploying the website.
+**Description:** Plan record with 4 `READY` iterations executed from `$WORKSPACE`, renaming the GitHub repository and the identity records in 4 owners — `$ART_WORK`, `$WORKSPACE/_records`, `$ARTIFICIALS`, and `$NOODLESTAN_WEB` — then rebuilding and redeploying the website.
 
 ## Mandatory Reading
 
@@ -263,26 +263,28 @@ Rename one repository and one project across 4 owners: the in-repo records of `$
 
 ## Execution Context
 
-Execution occurs from `$WORKSPACE/`, with one commit per owner: `$ART_WORK` and `$WORKSPACE` on branch `main` (workspace branches `building` and `main` both exist), `$ARTIFICIALS` on `main`, and `$NOODLESTAN_WEB` on `main`.
+Execution occurs from `$WORKSPACE/`, with one commit per owner: `$ART_WORK`, `$WORKSPACE`, `$ARTIFICIALS`, and `$NOODLESTAN_WEB`, each on branch `main`.
 
 ## Items:
 
 | Iteration / Instructions                      | Status  |
 | --------------------------------------------- | ------- |
-| Iteration: Rename Identity Records            | `DRAFT` |
-| Iteration: Rename Workspace Records           | `DRAFT` |
-| Iteration: Repoint Artificials References     | `DRAFT` |
-| Iteration: Regenerate Noodlestan Web Projects | `DRAFT` |
+| Iteration: Rename Identity Records            | `READY` |
+| Iteration: Rename Workspace Records           | `READY` |
+| Iteration: Repoint Artificials References     | `READY` |
+| Iteration: Regenerate Noodlestan Web Projects | `READY` |
 
 ### Iteration: Rename Identity Records
 
 **Id:** `rename-identity-records`
 
-**Status:** `DRAFT`
+**Status:** `READY`
 
 **Purpose:** Make Art Box the identity of the repository and the project at the source.
 
 **Description:** Rename the GitHub repository from `art-work` to `art-box`, then update the in-repo records and the repository-level mentions, leaving every package-name reference untouched.
+
+**Instructions Mode:** `INSTRUCTIONS_INLINED_IN_ITERATION`
 
 **Changes:**
 
@@ -311,9 +313,27 @@ In `$ART_WORK/_guide.md` and `README.md`:
 - Rename repository-level mentions only — the guide title, repository description, and the repository link.
 - Do NOT touch `@art-work/cli`, `art-work-cli`, `npm run art-work`, or `_roadmap`/`_backlog` path names.
 
+**Instructions:**
+
+Execute the Changes listed above; the GitHub rename happens before any record is touched.
+
+Before starting:
+
+- Run `npm ci` from the `$WORKSPACE` root, and confirm `gh auth status` succeeds.
+
+Validate that:
+
+- `git@github.com:noodlestan/art-box.git` resolves and the old URL redirects.
+- `_records/`, `_guide.md`, and `README.md` carry no repository-level `Art Work` mention; package-name hits (`@art-work/cli`, `art-work-cli`, `npm run art-work`) are expected.
+
+After executing:
+
+- Execute the **Verifying Completion** instructions from the Operating Instructions section.
+- Commit `rename-identity-records` in `$ART_WORK`.
+
 **Dependencies:**
 
-- None.
+- Iteration: Regenerate Noodlestan Web Projects is blocked by this one; Phase 1 must also have delivered before this plan starts.
 
 #### Commits:
 
@@ -322,6 +342,8 @@ In `$ART_WORK/_guide.md` and `README.md`:
 | `rename-identity-records` | Art Work / `$ART_WORK` / `main` | `AUTONOMOUS` |      | `PLACEHOLDER` |
 
 ##### Commit: `rename-identity-records`
+
+**Repository:** Art Work
 
 **Message:**
 
@@ -336,11 +358,13 @@ records(art-work): Rename the repository and the project to Art Box.
 
 **Id:** `rename-workspace-records`
 
-**Status:** `DRAFT`
+**Status:** `READY`
 
 **Purpose:** Repoint the workspace records that drive cloning and the website copy.
 
 **Description:** Rename the workspace repository record and the two checkout records, and verify the workspace configuration and the clone command resolve the renamed repository.
+
+**Instructions Mode:** `INSTRUCTIONS_INLINED_IN_ITERATION`
 
 **Changes:**
 
@@ -360,6 +384,24 @@ In `$WORKSPACE`:
 - Verify `.art-workspace.mts` resolves the renamed repository; regenerate it from records if it embeds repository names.
 - Verify `npm run art-work clone "Art Box"` resolves the record, and that `npm run art-work sanity` still reports all checkouts.
 
+**Instructions:**
+
+Execute the Changes listed above after `rename-identity-records` has been committed.
+
+Before starting:
+
+- Run `npm ci` from the `$WORKSPACE` root.
+
+Validate that:
+
+- `_records/repositories/` holds `art-box.art` and no `art-work.art`; both checkout records start with `art-box-@-`.
+- `npm run art-work sanity` still reports every checkout.
+
+After executing:
+
+- Execute the **Verifying Completion** instructions from the Operating Instructions section.
+- Commit `rename-workspace-records` in `$WORKSPACE`.
+
 **Dependencies:**
 
 - Iteration: Rename Identity Records.
@@ -371,6 +413,8 @@ In `$WORKSPACE`:
 | `rename-workspace-records` | Workspace / `$WORKSPACE` / `main` | `AUTONOMOUS` |      | `PLACEHOLDER` |
 
 ##### Commit: `rename-workspace-records`
+
+**Repository:** Workspace
 
 **Message:**
 
@@ -384,11 +428,13 @@ records(art-work): Repoint workspace repository and checkout records to Art Box.
 
 **Id:** `repoint-artificials-references`
 
-**Status:** `DRAFT`
+**Status:** `READY`
 
 **Purpose:** Update the project registration owned by `$ARTIFICIALS`.
 
 **Description:** Repoint the project entry and the two public links to the renamed repository, keeping the `@art-work` link label because the package is not renamed.
+
+**Instructions Mode:** `INSTRUCTIONS_INLINED_IN_ITERATION`
 
 **Changes:**
 
@@ -404,6 +450,23 @@ In `$ARTIFICIALS/apps/art-md-web/src/pages/about.md`:
 
 - Keep `[@art-work](...)` as the label; repoint the URL to `https://github.com/noodlestan/art-box`.
 
+**Instructions:**
+
+Execute the Changes listed above; keep the `@art-work` link label.
+
+Before starting:
+
+- Run `npm ci` from the `$WORKSPACE` root.
+
+Validate that:
+
+- Searching `$ARTIFICIALS` for `noodlestan/art-work` returns no hit.
+
+After executing:
+
+- Execute the **Verifying Completion** instructions from the Operating Instructions section.
+- Commit `repoint-artificials-references` in `$ARTIFICIALS`.
+
 **Dependencies:**
 
 - Iteration: Rename Identity Records.
@@ -415,6 +478,8 @@ In `$ARTIFICIALS/apps/art-md-web/src/pages/about.md`:
 | `repoint-artificials-references` | Artificials / `$ARTIFICIALS` / `main` | `AUTONOMOUS` |      | `PLACEHOLDER` |
 
 ##### Commit: `repoint-artificials-references`
+
+**Repository:** Artificials
 
 **Message:**
 
@@ -428,11 +493,13 @@ refs(artificials): Repoint the project registration to Art Box.
 
 **Id:** `regenerate-noodlestan-web-projects`
 
-**Status:** `DRAFT`
+**Status:** `READY`
 
 **Purpose:** Publish the rename in the project list and redeploy the website.
 
 **Description:** Regenerate the copied project records and the project collection from the renamed source records, drop the stale generated files, then build and redeploy the website.
+
+**Instructions Mode:** `INSTRUCTIONS_INLINED_IN_ITERATION`
 
 **Changes:**
 
@@ -444,6 +511,26 @@ In `$NOODLESTAN_WEB`:
 - Run `npm run update-project-collection` and confirm `data/projects/collection.json` carries `id` `art-box`, `name` `Art Box`, `code` `https://github.com/noodlestan/art-box`.
 - Confirm `data/_records/projects/artificials.art` picked up the repointed reference.
 - Build and redeploy the website; confirm the project list shows `Project: Art Box` and no `Art Work` entry.
+
+**Instructions:**
+
+Execute the Changes listed above; the records must be pushed before the copy script runs.
+
+Before starting:
+
+- Run `npm ci` from the `$WORKSPACE` root.
+- Confirm `rename-workspace-records` and `repoint-artificials-references` are committed and pushed.
+
+Validate that:
+
+- `data/_records/projects/` holds `art-box.art` and no `art-work.art`.
+- `data/projects/collection.json` carries `id` `art-box` and `name` `Art Box`.
+- The deployed site lists `Project: Art Box`.
+
+After executing:
+
+- Execute the **Verifying Completion** instructions from the Operating Instructions section.
+- Commit `regenerate-noodlestan-web-projects` in `$NOODLESTAN_WEB`.
 
 **Dependencies:**
 
@@ -458,6 +545,8 @@ In `$NOODLESTAN_WEB`:
 
 ##### Commit: `regenerate-noodlestan-web-projects`
 
+**Repository:** Noodlestan Web
+
 **Message:**
 
 ```text
@@ -470,7 +559,7 @@ records(noodlestan-web): Regenerate the project list as Art Box.
 
 ### Next
 
-Draft review is complete for the 4 iterations; plan them (`plan more`), then generate their instructions (`write instructions`) before delegating.
+Phase 1 (`migrate-planning-and-knowledge`) delivers first; then delegate `rename-identity-records`.
 
 ### Blockers
 

@@ -2,7 +2,7 @@
 
 **ID:** `rename-art-work-to-art-box`
 
-**Status:** `PLANNING`
+**Status:** `READY`
 
 **Template:** `$DOMAINS/milestones/templates/milestone.tart`
 
@@ -275,8 +275,8 @@ This section describes the ordered phases used to organise downstream work, iden
 
 | Index | Name                                        | Status  |
 | ----- | ------------------------------------------- | ------- |
-| 1     | Relocate planning artefacts into `cli/work` | `DRAFT` |
-| 2     | Rename repository and project to Art Box    | `DRAFT` |
+| 1     | Relocate planning artefacts into `cli/work` | `READY` |
+| 2     | Rename repository and project to Art Box    | `READY` |
 
 ### Phase: 1 — Relocate planning artefacts into `cli/work`
 
@@ -284,7 +284,7 @@ This section describes the ordered phases used to organise downstream work, iden
 
 **Description:** Move the remaining root `_roadmap/` and `_backlog/` entries into `$ART_WORK_CLI`, update both guides, and leave no stale reference.
 
-**Status:** `DRAFT`
+**Status:** `READY`
 
 **Dependencies:**
 
@@ -296,7 +296,7 @@ This section describes the ordered phases used to organise downstream work, iden
 
 **Description:** Rename the GitHub repository, the in-repo and workspace records, the project reference in `$ARTIFICIALS`, and the generated project list in `$NOODLESTAN_WEB`, then rebuild and redeploy the website.
 
-**Status:** `DRAFT`
+**Status:** `READY`
 
 **Dependencies:**
 
@@ -308,8 +308,8 @@ This section describes the ordered phases used to organise downstream work, iden
 
 | Phase | Resource / Record                                                                                                | Status  |
 | ----- | ---------------------------------------------------------------------------------------------------------------- | ------- |
-| 1     | Plan: Migrate Planning and Knowledge `$ART_WORK_CLI/_backlog/4-next/plan-migrate-planning-and-knowledge/plan.md` | `DRAFT` |
-| 2     | Plan: Rename Repo and Project `$ART_WORK_CLI/_backlog/4-next/plan-rename-repo-and-project/plan.md`               | `DRAFT` |
+| 1     | Plan: Migrate Planning and Knowledge `$ART_WORK_CLI/_backlog/4-next/plan-migrate-planning-and-knowledge/plan.md` | `READY` |
+| 2     | Plan: Rename Repo and Project `$ART_WORK_CLI/_backlog/4-next/plan-rename-repo-and-project/plan.md`               | `READY` |
 
 ---
 
@@ -317,7 +317,7 @@ This section describes the ordered phases used to organise downstream work, iden
 
 ### Next
 
-Refine the two `DRAFT` plans (`plan more`), then generate their instructions (`write instructions`) before delegating; start with `migrate-planning-and-knowledge` so the planning artefacts settle before identities move.
+Delegate `move-roadmap-into-cli-work`, the first `READY` iteration of Phase 1; Phase 2 waits for Phase 1 to deliver before `rename-identity-records` starts.
 
 ### Blockers
 
