@@ -61,7 +61,7 @@ Complete the workspace CLI across 3 phases: establish the CLI baseline, implemen
 | Index | Name                    | Status     |
 | ----- | ----------------------- | ---------- |
 | 1     | Establish CLI baseline  | `DONE`     |
-| 2     | Consolidate             | `WORKING`  |
+| 2     | Consolidate             | `DONE`     |
 | 3     | Decompose               | `PLANNING` |
 | 4     | Implement more commands | `DRAFT`    |
 
@@ -101,7 +101,7 @@ Complete the workspace CLI across 3 phases: establish the CLI baseline, implemen
 
 - None.
 
-### Phase: 3 — Implement more commands
+### Phase: 4 — Implement more commands
 
 **Goal:** Deliver the remaining command surface.
 
@@ -149,7 +149,7 @@ Complete the workspace CLI across 3 phases: establish the CLI baseline, implemen
 | -     |                                                                                                                              |            |
 | 4     | Plan: Replace Repo Command                                                                                                   | (create)   |
 | 4     | Plan: Replace Clone Command                                                                                                  | (create)   |
-| 4     | Plan: Workspace CLI — Packages Run Command `_backlog/4-next/plan-implement-packages-run/plan.md`                             | `DRAFT`    |
+| 4     | Plan: Workspace CLI — Packages Run Command `_backlog/6-plan/plan-implement-packages-run/plan.md`                             | `DRAFT`    |
 | 4     | Plan: Workspace CLI — Link Command `_backlog/6-plan/plan-implement-link/plan.md`                                             | `DRAFT`    |
 | 4     | Plan: Workspace CLI — Links Command `_backlog/6-plan/plan-implement-links/plan.md`                                           | `DRAFT`    |
 | 4     | Plan: Workspace CLI — Unlink Command `_backlog/6-plan/plan-implement-unlink/plan.md`                                         | `DRAFT`    |
@@ -161,9 +161,9 @@ Complete the workspace CLI across 3 phases: establish the CLI baseline, implemen
 
 ### Next
 
-- Integrate `extract-read-write-records-art-lib` .
+- Close `add-config-cache` — all 4 iterations delivered (`8821977`, `d68a57f`, `9548943`, `298d6dc`); mark `DONE`, changelog, and archive.
+- Integrate `extract-read-write-records-art-lib`.
 - Prepare `art-work-cli-global-install` for delegation.
-- Prepare `improvements-and-fixes` for delegation.
 
 ### Blockers
 
