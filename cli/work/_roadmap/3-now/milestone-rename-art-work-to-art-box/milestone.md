@@ -309,7 +309,7 @@ This section describes the ordered phases used to organise downstream work, iden
 | Phase | Resource / Record                                                                                               | Status  |
 | ----- | --------------------------------------------------------------------------------------------------------------- | ------- |
 | 1     | Plan: Migrate Planning and Knowledge `$ART_WORK_CLI/_backlog/3-now/plan-migrate-planning-and-knowledge/plan.md` | `READY` |
-| 2     | Plan: Rename Repo and Project `$ART_WORK_CLI/_backlog/4-next/plan-rename-repo-and-project/plan.md`              | `READY` |
+| 2     | Plan: Rename Repo and Project `$ART_WORK_CLI/_backlog/3-now/plan-rename-repo-and-project/plan.md`               | `READY` |
 
 ---
 
@@ -386,7 +386,7 @@ Runs automatically on the pre-commit hook. All steps MUST pass.
 ### Evidence
 
 - **`noodlestan/art-box` resolves** and `noodlestan/art-work` redirects to it.
-- **No stale identity** — searching `Art Work` across `$WORKSPACE/_records`, `$ART_WORK/_records`, `$ARTIFICIALS/_records`, and `$NOODLESTAN_WEB/data` returns only package-name hits (`@art-work/cli`, `art-work-cli`, `npm run art-work`).
+- **No stale identity** — searching `Art Work` across `$WORKSPACE/_records`, `$ART_WORK/_records`, `$ARTIFICIALS/_records`, and `$NOODLESTAN_WEB/data` returns only the package and planned-member names (`Art Work Cli`, `Art Work Website`, `Art Work Tool`).
 - **Website shows Art Box** — the rebuilt and redeployed site lists `Project: Art Box` with the new repository URL.
 
 ### Findings

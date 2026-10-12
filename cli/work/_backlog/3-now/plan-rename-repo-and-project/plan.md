@@ -26,7 +26,7 @@ This section lists the path variables used throughout the plan file and its down
 | ----------------- | ---------------------------------------- | --------------------------------------------------- |
 | `$WORKSPACE`      | Current working directory                | Workspace root directory.                           |
 | `$DOMAINS`        | `$WORKSPACE/.agents/domains`             | Domain resources directory.                         |
-| `$ART_WORK`       | `$WORKSPACE/checkouts/art-work-planning` | Art Work repository; records renamed here first.    |
+| `$ART_WORK`       | `$WORKSPACE/checkouts/art-work-building` | Art Work repository; records renamed here first.    |
 | `$ART_WORK_CLI`   | `$ART_WORK/cli/work`                     | Art Work Cli package; hosts this plan.              |
 | `$ARTIFICIALS`    | `$WORKSPACE/checkouts/artificials`       | Owns the project record; references to repoint.     |
 | `$NOODLESTAN_WEB` | `$WORKSPACE/checkouts/noodlestan-web`    | Hosts the project list and the website to redeploy. |
@@ -263,7 +263,7 @@ Rename one repository and one project across 4 owners: the in-repo records of `$
 
 ## Execution Context
 
-Execution occurs from `$WORKSPACE/`, with one commit per owner: `$ART_WORK`, `$WORKSPACE`, `$ARTIFICIALS`, and `$NOODLESTAN_WEB`, each on branch `main`.
+Execution occurs from `$WORKSPACE/`, with one commit per owner: `$ART_WORK` on branch `building`, and `$WORKSPACE`, `$ARTIFICIALS`, and `$NOODLESTAN_WEB` on `main`.
 
 ## Items:
 
@@ -310,8 +310,13 @@ In `$ART_WORK/_records/namespace.art`:
 
 In `$ART_WORK/_guide.md` and `README.md`:
 
-- Rename repository-level mentions only — the guide title, repository description, and the repository link.
-- Do NOT touch `@art-work/cli`, `art-work-cli`, `npm run art-work`, or `_roadmap`/`_backlog` path names.
+- Rename repository-level mentions only — the `# Guide: Art Work` title, the repository descriptions, and the `# Art Work` README title; neither file carries a repository link.
+- Do NOT touch `@art-work/cli`, `art-work-cli`, `npm run art-work`, `Art Work Cli`, or `_roadmap`/`_backlog` path names.
+
+In `$ART_WORK/knowledge/index.md`:
+
+- Rename the heading to `# Knowledge: Art Box` and repoint the repository-level wording ("the Art Work packages").
+- Leave `cli/work/knowledge/` alone: it is the `Art Work Cli` package knowledge.
 
 **Instructions:**
 
@@ -320,11 +325,12 @@ Execute the Changes listed above; the GitHub rename happens before any record is
 Before starting:
 
 - Run `npm ci` from the `$WORKSPACE` root, and confirm `gh auth status` succeeds.
+- Confirm Phase 1 (`migrate-planning-and-knowledge`) has delivered: the root `_roadmap/` and `_backlog/` no longer exist in `$ART_WORK`.
 
 Validate that:
 
 - `git@github.com:noodlestan/art-box.git` resolves and the old URL redirects.
-- `_records/`, `_guide.md`, and `README.md` carry no repository-level `Art Work` mention; package-name hits (`@art-work/cli`, `art-work-cli`, `npm run art-work`) are expected.
+- `_records/`, `knowledge/index.md`, `_guide.md`, and `README.md` carry no repository-level `Art Work` mention; expected hits are the package and planned-member names (`Art Work Cli`, `Art Work Website`, `Art Work Tool`, `@art-work/cli`, `art-work-cli`, `npm run art-work`).
 
 After executing:
 
@@ -333,13 +339,13 @@ After executing:
 
 **Dependencies:**
 
-- Iteration: Regenerate Noodlestan Web Projects is blocked by this one; Phase 1 must also have delivered before this plan starts.
+- Plan: Migrate Planning and Knowledge (Phase 1) — must have delivered before this plan starts.
 
 #### Commits:
 
-| ID                        | Repository / Checkout / Branch  | Policy       | Hash | Status        |
-| ------------------------- | ------------------------------- | ------------ | ---- | ------------- |
-| `rename-identity-records` | Art Work / `$ART_WORK` / `main` | `AUTONOMOUS` |      | `PLACEHOLDER` |
+| ID                        | Repository / Checkout / Branch      | Policy       | Hash | Status     |
+| ------------------------- | ----------------------------------- | ------------ | ---- | ---------- |
+| `rename-identity-records` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `AUTHORED` |
 
 ##### Commit: `rename-identity-records`
 
@@ -377,6 +383,7 @@ In `$WORKSPACE/_records/repositories/`:
 In `$WORKSPACE/_records/checkouts/`:
 
 - `git mv art-work-@-planning-checkout.art art-box-@-planning-checkout.art` and `git mv art-work-@-building-checkout.art art-box-@-building-checkout.art`.
+- Rename the headings to `## Checkout: Art Box @ planning` and `## Checkout: Art Box @ building`.
 - Repoint `**Repository:** Art Work` to `Art Box`; keep `**Location:** art-work-planning` and `art-work-building`.
 
 In `$WORKSPACE`:
@@ -408,9 +415,9 @@ After executing:
 
 #### Commits:
 
-| ID                         | Repository / Checkout / Branch    | Policy       | Hash | Status        |
-| -------------------------- | --------------------------------- | ------------ | ---- | ------------- |
-| `rename-workspace-records` | Workspace / `$WORKSPACE` / `main` | `AUTONOMOUS` |      | `PLACEHOLDER` |
+| ID                         | Repository / Checkout / Branch    | Policy       | Hash | Status     |
+| -------------------------- | --------------------------------- | ------------ | ---- | ---------- |
+| `rename-workspace-records` | Workspace / `$WORKSPACE` / `main` | `AUTONOMOUS` |      | `AUTHORED` |
 
 ##### Commit: `rename-workspace-records`
 
@@ -460,7 +467,7 @@ Before starting:
 
 Validate that:
 
-- Searching `$ARTIFICIALS` for `noodlestan/art-work` returns no hit.
+- Searching tracked files in `$ARTIFICIALS` for `noodlestan/art-work` returns no hit; `apps/art-md-web/dist/` is untracked build output and does not count.
 
 After executing:
 
@@ -473,9 +480,9 @@ After executing:
 
 #### Commits:
 
-| ID                               | Repository / Checkout / Branch        | Policy       | Hash | Status        |
-| -------------------------------- | ------------------------------------- | ------------ | ---- | ------------- |
-| `repoint-artificials-references` | Artificials / `$ARTIFICIALS` / `main` | `AUTONOMOUS` |      | `PLACEHOLDER` |
+| ID                               | Repository / Checkout / Branch        | Policy       | Hash | Status     |
+| -------------------------------- | ------------------------------------- | ------------ | ---- | ---------- |
+| `repoint-artificials-references` | Artificials / `$ARTIFICIALS` / `main` | `AUTONOMOUS` |      | `AUTHORED` |
 
 ##### Commit: `repoint-artificials-references`
 
@@ -525,6 +532,7 @@ Validate that:
 
 - `data/_records/projects/` holds `art-box.art` and no `art-work.art`.
 - `data/projects/collection.json` carries `id` `art-box` and `name` `Art Box`.
+- Searching `Art Work` (case-sensitive) across `$WORKSPACE/_records`, `$ART_WORK/_records`, `$ARTIFICIALS/_records`, and `$NOODLESTAN_WEB/data` returns only the package and planned-member names (`Art Work Cli`, `Art Work Website`, `Art Work Tool`).
 - The deployed site lists `Project: Art Box`.
 
 After executing:
@@ -539,9 +547,9 @@ After executing:
 
 #### Commits:
 
-| ID                                   | Repository / Checkout / Branch              | Policy       | Hash | Status        |
-| ------------------------------------ | ------------------------------------------- | ------------ | ---- | ------------- |
-| `regenerate-noodlestan-web-projects` | Noodlestan Web / `$NOODLESTAN_WEB` / `main` | `AUTONOMOUS` |      | `PLACEHOLDER` |
+| ID                                   | Repository / Checkout / Branch              | Policy       | Hash | Status     |
+| ------------------------------------ | ------------------------------------------- | ------------ | ---- | ---------- |
+| `regenerate-noodlestan-web-projects` | Noodlestan Web / `$NOODLESTAN_WEB` / `main` | `AUTONOMOUS` |      | `AUTHORED` |
 
 ##### Commit: `regenerate-noodlestan-web-projects`
 
@@ -614,8 +622,6 @@ npm run ci # lint, test and build
 
 Runs automatically on the pre-commit hook. All steps MUST pass. No `it.todo()` tests may remain.
 
-Search `Art Work` across `$WORKSPACE/_records`, `$ART_WORK/_records`, `$ARTIFICIALS/_records`, and `$NOODLESTAN_WEB/data`: only package-name hits (`@art-work/cli`, `art-work-cli`, `npm run art-work`) may remain.
-
 ---
 
 ## Coordination
@@ -630,7 +636,7 @@ Search `Art Work` across `$WORKSPACE/_records`, `$ART_WORK/_records`, `$ARTIFICI
 ### Evidence
 
 - **`noodlestan/art-box` resolves** and `noodlestan/art-work` redirects to it.
-- **No stale identity** — the search above returns only package-name hits.
+- **No stale identity** — the case-sensitive `Art Work` search across `$WORKSPACE/_records`, `$ART_WORK/_records`, `$ARTIFICIALS/_records`, and `$NOODLESTAN_WEB/data` returns only the package and planned-member names (`Art Work Cli`, `Art Work Website`, `Art Work Tool`).
 - **Website shows Art Box** after the rebuilt site is deployed.
 
 ### Findings
@@ -647,8 +653,9 @@ Search `Art Work` across `$WORKSPACE/_records`, `$ART_WORK/_records`, `$ARTIFICI
 
 ### Knowledge to Update
 
-- `$ART_WORK/_guide.md` — guide title and repository description.
-- `$ART_WORK_CLI/_guide.md` — repository-level mentions only.
+- `$ART_WORK/_guide.md` — guide title and repository descriptions.
+- `$ART_WORK/README.md` — README title.
+- `$ART_WORK/knowledge/index.md` — repository-level knowledge heading and wording.
 
 ### Follow Ups
 
