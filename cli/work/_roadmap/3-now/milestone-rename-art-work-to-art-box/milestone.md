@@ -26,7 +26,7 @@ This section lists the path variables used throughout the milestone file and its
 | ----------------- | ---------------------------------------- | --------------------------------------------------- |
 | `$WORKSPACE`      | Current working directory                | Workspace root directory.                           |
 | `$DOMAINS`        | `$WORKSPACE/.agents/domains`             | Domain resources directory.                         |
-| `$ART_WORK`       | `$WORKSPACE/checkouts/art-work-planning` | Art Work repository; hosts this milestone.          |
+| `$ART_WORK`       | `$WORKSPACE/checkouts/art-work-building` | Art Work repository; hosts this milestone.          |
 | `$ART_WORK_CLI`   | `$ART_WORK/cli/work`                     | Art Work Cli package, and its roadmap and backlog.  |
 | `$ARTIFICIALS`    | `$WORKSPACE/checkouts/artificials`       | Owns the project record; references to repoint.     |
 | `$NOODLESTAN_WEB` | `$WORKSPACE/checkouts/noodlestan-web`    | Hosts the project list and the website to redeploy. |
@@ -265,7 +265,7 @@ Rename the identity of one repository and one project across 4 owners — `$ART_
 
 ## Execution Context
 
-Execution occurs from `$WORKSPACE/`; planning work in `$WORKSPACE/checkouts/art-work-planning` on branch `main`, with record changes in `$WORKSPACE/_records`, `$ART_WORK/_records`, `$ARTIFICIALS/_records`, and `$NOODLESTAN_WEB/data`.
+Execution occurs from `$WORKSPACE/`, planning work in `$WORKSPACE/checkouts/art-work-building` on branch `building`, with record changes in `$WORKSPACE/_records`, `$ART_WORK/_records`, `$ARTIFICIALS/_records`, and `$NOODLESTAN_WEB/data`.
 
 ---
 
@@ -306,10 +306,10 @@ This section describes the ordered phases used to organise downstream work, iden
 
 ## Items:
 
-| Phase | Resource / Record                                                                                                | Status  |
-| ----- | ---------------------------------------------------------------------------------------------------------------- | ------- |
-| 1     | Plan: Migrate Planning and Knowledge `$ART_WORK_CLI/_backlog/4-next/plan-migrate-planning-and-knowledge/plan.md` | `READY` |
-| 2     | Plan: Rename Repo and Project `$ART_WORK_CLI/_backlog/4-next/plan-rename-repo-and-project/plan.md`               | `READY` |
+| Phase | Resource / Record                                                                                               | Status  |
+| ----- | --------------------------------------------------------------------------------------------------------------- | ------- |
+| 1     | Plan: Migrate Planning and Knowledge `$ART_WORK_CLI/_backlog/3-now/plan-migrate-planning-and-knowledge/plan.md` | `READY` |
+| 2     | Plan: Rename Repo and Project `$ART_WORK_CLI/_backlog/4-next/plan-rename-repo-and-project/plan.md`              | `READY` |
 
 ---
 

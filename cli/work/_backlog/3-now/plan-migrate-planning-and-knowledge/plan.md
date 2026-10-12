@@ -4,7 +4,7 @@
 
 **Status:** `READY`
 
-**Template:** `.agents/domains/plans/templates/plan.tart`
+**Template:** `$DOMAINS/plans/templates/plan.tart`
 
 **Skill:** `write-plan`
 
@@ -24,7 +24,7 @@
 | --------------- | ---------------------------------------- | ---------------------------------------------------------- |
 | `$WORKSPACE`    | Current working directory                | Workspace root directory                                   |
 | `$DOMAINS`      | `$WORKSPACE/.agents/domains`             | Domain resources directory                                 |
-| `$ART_WORK`     | `$WORKSPACE/checkouts/art-work-planning` | Art Work repository; hosts this plan.                      |
+| `$ART_WORK`     | `$WORKSPACE/checkouts/art-work-building` | Art Work repository; hosts this plan.                      |
 | `$ART_WORK_CLI` | `$ART_WORK/cli/work`                     | The Art Work Cli package, and now its roadmap and backlog. |
 
 ## Summary
@@ -52,14 +52,91 @@ Move the root `_roadmap/` and `_backlog/` trees into `$ART_WORK_CLI/`, finish th
 | --------------------------------------- | ---------------------------------------------------------------------------------- |
 | Domain: Plans `$DOMAINS/plans/index.md` | Planning lifecycle for contextualising, drafting, planning, and integrating plans. |
 
+### Resource Kinds in Scope
+
+| Kind       | Domain       | Structure Record Path                             |
+| ---------- | ------------ | ------------------------------------------------- |
+| Repository | Repositories | `$DOMAINS/repositories/structures/repository.art` |
+| Package    | Packages     | `$DOMAINS/packages/structures/package.art`        |
+
+### Workflows
+
+| Workflow / Path                                                                | Purpose                                               |
+| ------------------------------------------------------------------------------ | ----------------------------------------------------- |
+| Workflow: Planning Work `$DOMAINS/work/workflows/planning-work/workflow.art`   | Create and manage work item lifecycles.               |
+| Workflow: Executing Work `$DOMAINS/work/workflows/executing-work/workflow.art` | Organize work execution to produce verified outcomes. |
+
+### Workflow Operations
+
+| Workflow / Operation / Path                                                                                         | Purpose                                               |
+| ------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| Planning Work / Planning Work Item `$DOMAINS/work/workflows/planning-work/planning-work-item/operation.art`         | Plan the implementation of the work item.             |
+| Planning Work / Writing Commit Message `$DOMAINS/work/workflows/planning-work/writing-commit-message/operation.art` | Write standardized messages according to conventions. |
+| Executing Work / Setting Up `$DOMAINS/work/workflows/executing-work/setting-up/operation.art`                       | Prepare the execution environment.                    |
+| Executing Work / Verifying Completion `$DOMAINS/work/workflows/executing-work/verifying-completion/operation.art`   | Confirm the work item satisfies its intended outcome. |
+
 ### Knowledge
 
-::READ `$ART_WORK/_guide.md` (Guide) — Repository layout, Roadmapping, and Planning Work sections. Relevant for Planning Work Item.
+::READ `$WORKSPACE/_guide.md` (Guide) — Workspace layout, records management, setup, and verification. Relevant for Planning Work Item, Setting Up, Writing Commit Message.
+::READ `$ART_WORK/_guide.md` (Guide) — Repository layout, Roadmapping, and Planning Work sections. Relevant for Planning Work Item, Verifying Completion.
 ::READ `$ART_WORK_CLI/_guide.md` (Guide) — Package layout and workflows. Relevant for Planning Work Item.
 
 ## Scope
 
 Move the two planning trees into `$ART_WORK_CLI`, finish `$ART_WORK/_guide.md` and `$ART_WORK_CLI/_guide.md`, and correct in-repo references. No plan or milestone content is edited, archived, or retired — only relocated. Cross-repository references held by other checkouts are out of scope and tracked as a follow-up.
+
+### (Scope) Repository: Art Work
+
+**Record:** `$ART_WORK/_records/repository.art`
+
+**Role:** — Owns the root `_roadmap/` and `_backlog/` trees being relocated, and the guides that document the split.
+
+**Partial:**
+
+- `owner` — Project: Art Work
+- `remote` — `git@github.com:noodlestan/art-work.git`
+
+**Changes:**
+
+- Move the root `_roadmap/` and `_backlog/` trees into `cli/work/`.
+- Repoint every in-repo reference to the retired root locations.
+
+**Operations:**
+
+- `git mv` for every move so history is preserved.
+
+**Dependencies:**
+
+- None.
+
+### (Scope) Package: Art Work Cli
+
+**Record:** `$ART_WORK_CLI/_records/package.art`
+
+**Role:** — Receives the relocated roadmap and backlog; hosts this plan.
+
+**Partial:**
+
+- `path` — `$ART_WORK_CLI/`
+- `canonicalName` — `@art-work/cli`
+- `bin` — `art-work-cli`
+
+**Changes:**
+
+- Merge the moved trees into the existing `cli/work/_roadmap/` and `cli/work/_backlog/` stage directories.
+- Document the per-CLI roadmap and backlog split in both guides.
+
+**Operations:**
+
+- None.
+
+**Dependencies:**
+
+- None.
+
+## Execution Context
+
+Execution occurs from `$WORKSPACE/`, with every commit in `$ART_WORK` on branch `building`, verified by running `npm run ci` from the `$ART_WORK` root.
 
 ## Work
 
@@ -171,9 +248,9 @@ After executing:
 
 #### Commits:
 
-| ID                           | Repository / Checkout / Branch  | Policy       | Hash | Status        |
-| ---------------------------- | ------------------------------- | ------------ | ---- | ------------- |
-| `move-roadmap-into-cli-work` | Art Work / `$ART_WORK` / `main` | `AUTONOMOUS` |      | `PLACEHOLDER` |
+| ID                           | Repository / Checkout / Branch      | Policy       | Hash | Status     |
+| ---------------------------- | ----------------------------------- | ------------ | ---- | ---------- |
+| `move-roadmap-into-cli-work` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `AUTHORED` |
 
 ##### Commit: `move-roadmap-into-cli-work`
 
@@ -204,7 +281,7 @@ Use `git mv` for every move so history is preserved.
 In `$ART_WORK`:
 
 - `_backlog/_parking-lot.md` → `cli/work/_backlog/_parking-lot.md`
-- `_backlog/0-archive/` (23 archived plan directories) → `cli/work/_backlog/0-archive/`
+- `_backlog/0-archive/` (25 archived plan directories) → `cli/work/_backlog/0-archive/`
 - `_backlog/3-now/plan-add-config-cache/` → `cli/work/_backlog/3-now/plan-add-config-cache/`
 - `_backlog/4-next/plan-art-work-cli-global-install/` → `cli/work/_backlog/4-next/plan-art-work-cli-global-install/`
 - `_backlog/4-next/plan-optimize-tests-update-knowledge/` → `cli/work/_backlog/4-next/plan-optimize-tests-update-knowledge/`
@@ -213,7 +290,7 @@ In `$ART_WORK`:
 
 **Instructions:**
 
-Execute the Changes listed above; `cli/work/_backlog/` already holds the empty stage directories, the new `_parking-lot.md`, and `plan-migrate-planning-and-knowledge`, so this is a merge, not a create.
+Execute the Changes listed above; `cli/work/_backlog/` already holds the empty stage directories, the new `_parking-lot.md`, and the two plans created there (`plan-migrate-planning-and-knowledge`, `plan-rename-repo-and-project`), so this is a merge, not a create.
 
 Before starting:
 
@@ -223,7 +300,8 @@ Before starting:
 Validate that:
 
 - No tracked file remains under the root `_backlog/`.
-- `cli/work/_backlog/4-next/` holds `plan-art-work-cli-global-install`, `plan-optimize-tests-update-knowledge`, and `plan-migrate-planning-and-knowledge`.
+- `cli/work/_backlog/4-next/` holds `plan-art-work-cli-global-install` and `plan-optimize-tests-update-knowledge`.
+- Every plan directory that was under the root `_backlog/` now sits under `cli/work/_backlog/`, in its own stage.
 
 After executing:
 
@@ -236,9 +314,9 @@ After executing:
 
 #### Commits:
 
-| ID                           | Repository / Checkout / Branch  | Policy       | Hash | Status        |
-| ---------------------------- | ------------------------------- | ------------ | ---- | ------------- |
-| `move-backlog-into-cli-work` | Art Work / `$ART_WORK` / `main` | `AUTONOMOUS` |      | `PLACEHOLDER` |
+| ID                           | Repository / Checkout / Branch      | Policy       | Hash | Status     |
+| ---------------------------- | ----------------------------------- | ------------ | ---- | ---------- |
+| `move-backlog-into-cli-work` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `AUTHORED` |
 
 ##### Commit: `move-backlog-into-cli-work`
 
@@ -272,13 +350,13 @@ In `$ART_WORK/_guide.md`:
 In `$ART_WORK_CLI/_guide.md`:
 
 - Package Layout and the Roadmapping / Planning Work sections already document `_roadmap/` and `_backlog/`; leave them as they are.
-- Workflows: add the Roadmapping row (`$DOMAINS/roadmaps/workflows/roadmapping/workflow.art`) alongside Planning Work, Delegating Work, Executing Work, and Deploying.
+- Workflows: the Roadmapping row (`$DOMAINS/roadmaps/workflows/roadmapping/workflow.art`) is already there; leave the table as it is.
 
-Sweep `$ART_WORK` for tracked references to the root `_roadmap/` and `_backlog/` and repoint them to `cli/work/`. Update relative paths inside the moved plan files only where they broke — the move is otherwise path-preserving.
+Sweep `$ART_WORK` for tracked references to the root `_roadmap/` and `_backlog/` and repoint them to `cli/work/` — this covers `_guide.md`, `_records/project.art`, the moved milestones, and the moved plan files whose paths broke. Leave `cli/work/_backlog/0-archive/` untouched: archived records are frozen delivery evidence and their paths stay as delivered. Update relative paths inside the moved plan files only where they broke — the move is otherwise path-preserving.
 
 **Instructions:**
 
-Execute the Changes listed above; two of the three guide sections are already updated, so the work is the remaining Planning Work section, the missing Workflows row, and the reference sweep.
+Execute the Changes listed above; two of the three guide sections are already updated, so the work is the remaining Planning Work section and the reference sweep.
 
 Before starting:
 
@@ -287,7 +365,7 @@ Before starting:
 
 Validate that:
 
-- Searching tracked files for the root `_roadmap/` and `_backlog/` returns no reference outside `cli/work/`.
+- Searching tracked files for the root `_roadmap/` and `_backlog/` returns no hit outside `cli/work/`; `cli/work/_backlog/0-archive/` is excluded.
 - Both guides describe the per-CLI split, and `npm run ci` passes.
 
 After executing:
@@ -301,9 +379,9 @@ After executing:
 
 #### Commits:
 
-| ID                             | Repository / Checkout / Branch  | Policy       | Hash | Status        |
-| ------------------------------ | ------------------------------- | ------------ | ---- | ------------- |
-| `update-guides-and-references` | Art Work / `$ART_WORK` / `main` | `AUTONOMOUS` |      | `PLACEHOLDER` |
+| ID                             | Repository / Checkout / Branch      | Policy       | Hash | Status     |
+| ------------------------------ | ----------------------------------- | ------------ | ---- | ---------- |
+| `update-guides-and-references` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `AUTHORED` |
 
 ##### Commit: `update-guides-and-references`
 
@@ -332,8 +410,8 @@ docs(art-work): Document the per-CLI roadmap and backlog split.
 
 - **Multi-CLI future** — the repository will host more CLIs under `cli/`; planning artefacts must live with the CLI they describe rather than at the monorepo root.
 - **Scaffold already in place** — `cli/work/_roadmap/` and `cli/work/_backlog/` stage directories exist, so the migration is a merge, not a create.
-- **`0-archive` is the bulk** — 23 of the 26 backlog directories are archived plans; moving them first keeps the active stages small and reviewable.
-- **The split is half-documented** — `$ART_WORK/_guide.md` already describes the layout and Roadmapping, while its Planning Work section and the Workflows table of `$ART_WORK_CLI/_guide.md` still point at the root.
+- **`0-archive` is the bulk** — 25 of the 33 plan directories under the root `_backlog/` are archived plans; moving them first keeps the active stages small and reviewable.
+- **The split is half-documented** — `$ART_WORK_CLI/_guide.md` already documents both sections and all five workflows, while the Planning Work section of `$ART_WORK/_guide.md` still points at the root.
 
 ### Decisions
 
