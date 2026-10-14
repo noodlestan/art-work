@@ -27,6 +27,8 @@
 | `$ART_WORK`     | Provided with prompt.        | Art Work repository. Example: `$WORKSPACE/checkouts/art-work-planning`                              |
 | `$ART_WORK_CLI` | `$ART_WORK/cli/work`         | The Art Work Cli package, and its roadmap and backlog.                                              |
 | `$ART_JS`       | Provided with prompt.        | Art JS repository (extract, validate, project art). Example: `$WORKSPACE/checkouts/art-js-planning` |
+| `$ART_LIB`      | Provided with prompt.        | Art Lib repository (filesystem records adapter). Example: `$WORKSPACE/checkouts/art-lib-planning`   |
+| `$ART_MD`       | Provided with prompt.        | Art MD repository (primitives and codecs). Example: `$WORKSPACE/checkouts/art-md-planning`          |
 
 ## Summary
 
@@ -36,11 +38,14 @@ Make the Art Work Cli read and write `.art` files through the Art JS libraries s
 
 ### Upstream Work
 
-| Kind        | Path                                                                   | Role                                                                   |
-| ----------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| Parking Lot | `$ART_WORK_CLI/_backlog/_parking-lot.md`                               | Tracks short-term actionables, pending questions, and blockers.        |
-| Milestone   | `$ART_JS/_roadmap/3-now/milestone-art-records/milestone.md`            | Art JS side of records: the libraries this CLI will consume.           |
-| Milestone   | `$ART_WORK_CLI/_roadmap/3-now/milestone-art-work-cli-one/milestone.md` | Current CLI milestone; its Phase 3 decompose work feeds into this one. |
+| Kind        | Path                                                                     | Role                                                                             |
+| ----------- | ------------------------------------------------------------------------ | -------------------------------------------------------------------------------- |
+| Parking Lot | `$ART_WORK_CLI/_backlog/_parking-lot.md`                                 | Tracks short-term actionables, pending questions, and blockers.                  |
+| Whiteboard  | `$ART_JS/_backlog/whiteboard-art-records/whiteboard.md`                  | Chain coordination: vocabulary, integration contracts, and review turns.         |
+| Milestone   | `$ART_JS/_roadmap/3-now/milestone-art-records/milestone.md`              | Art JS side of records: the record facade this CLI will consume.                 |
+| Plan        | `$ART_LIB/_backlog/4-next/plan-add-fs-records-adapter/plan.md` (`READY`) | Supplies `@art-lib/fs-records`: discovery, content read, content write.          |
+| Milestone   | `$ART_WORK_CLI/_roadmap/3-now/milestone-art-work-cli-one/milestone.md`   | Current CLI milestone; its Phase 3 decompose work feeds into this one.           |
+| Plan        | `$ART_WORK/_backlog/4-next/plan-art-work-cli-global-install/plan.md`     | Holds the gated `refactor-config-semantics` iteration that consumes the adapter. |
 
 ### Required Skills
 
@@ -62,7 +67,7 @@ Make the Art Work Cli read and write `.art` files through the Art JS libraries s
 
 ## Scope
 
-Replace the bespoke `.art` file handling under `$ART_WORK_CLI/private/resources/` and the scan layer that feeds it with calls into the Art JS libraries. No command surface change, no config schema change.
+Replace the bespoke `.art` file handling under `$ART_WORK_CLI/src/private/resources/` and the scan layer that feeds it with calls into the shared libraries: `@art-lib/fs-records` for discovery and content, `@art-js/records` for record extraction and serialisation. No command surface change, no config schema change.
 
 ## Phases
 
@@ -74,39 +79,42 @@ Replace the bespoke `.art` file handling under `$ART_WORK_CLI/private/resources/
 
 ### Phase: 1 — Evaluate Art JS record libs
 
-**Goal:** Confirm which Art JS packages cover the CLI's read and write needs.
+**Goal:** Confirm the CLI's read and write surface maps onto the `AGREED` chain contracts, and record what does not.
 
-**Description:** Inventory the current bespoke record loading and writing, map each onto an Art JS library API, and record any gaps as blockers or follow-ups.
+**Description:** Inventory the current bespoke record loading and writing, map each touchpoint onto the agreed APIs (`discoverRecordFiles()`, `readContent()`, `writeContent()`, `extractRecords`, `writeRecord`), and record any residual gap as a blocker or follow-up. The API question is largely answered by the `art-records` whiteboard; this phase is an inventory and gap map, not a package survey.
 
 **Status:** `DRAFT`
 
 **Dependencies:**
 
-- None.
+- The `art-records` whiteboard contracts — already `AGREED`.
 
 ### Phase: 2 — Read records through Art JS
 
-**Goal:** All record reads go through the Art JS libraries.
+**Goal:** All record reads go through the shared libraries.
 
-**Description:** Replace the loaders under `private/resources/checkout`, `private/resources/repository`, `private/resources/namespace`, `private/resources/package`, and `private/resources/project` with library calls, preserving the existing record shapes consumed by commands.
+**Description:** Replace the loaders under `src/private/resources/checkout`, `src/private/resources/repository`, `src/private/resources/namespace`, `src/private/resources/package`, and `src/private/resources/project` plus the scan layer that feeds them, so discovery comes from `discoverRecordFiles()`, content from `readContent()`, and records from the `@art-js/records` facade — preserving the record shapes consumed by commands.
 
 **Status:** `DRAFT`
 
 **Dependencies:**
 
-- None.
+- `$ART_LIB/_backlog/4-next/plan-add-fs-records-adapter/plan.md` delivered (discovery + content read).
+- `@art-js/records` facade published or workspace-linked (`extractRecords`, capsule hydration).
+- Phase 1 inventory.
 
 ### Phase: 3 — Write records through Art JS
 
-**Goal:** All record writes go through the Art JS libraries.
+**Goal:** All record writes go through the shared libraries.
 
-**Description:** Replace the record writers so clone and any other record-producing path emit files through the shared serializer, keeping templates and naming conventions intact.
+**Description:** Replace the record writers so clone and any other record-producing path serialise through the `@art-js/records` facade and persist through `writeContent(content)`, keeping the CLI's templates and naming conventions intact.
 
 **Status:** `DRAFT`
 
 **Dependencies:**
 
-- None.
+- Phase 2 landed (reads before writes).
+- The adapter's content write available.
 
 ## Items:
 
@@ -120,11 +128,12 @@ No downstream work items are captured yet.
 
 ### Next
 
-- Refine the phases, then draft plans for Phase 1 and Phase 2.
+- Refine the Phase 1 and Phase 2 descriptions against the `AGREED` chain contracts, then draft a plan for Phase 2 (read path) — Phase 1's evaluation question is already answered.
+- Keep the gated `refactor-config-semantics` iteration in `$ART_WORK/_backlog/4-next/plan-art-work-cli-global-install/plan.md` aligned with this milestone: the same adapter boundary, retitled to canonical names.
 
 ### Blockers
 
-- None yet. Gaps found in Phase 1 evaluation become blockers here.
+- None. The chain contracts are `AGREED`; gaps found in the Phase 1 inventory become blockers here.
 
 ---
 
@@ -181,20 +190,31 @@ All steps MUST pass. No `it.todo()` tests may remain.
 
 ### Findings
 
-- **Bespoke loaders today** — `private/resources/*/load*.ts` hand-roll record discovery and parsing; the ecosystem already has shared codecs.
+- **Bespoke loaders today** — `src/private/resources/*/load*.ts` hand-roll record discovery and parsing; the ecosystem already has shared codecs for exactly this.
+- **Chain contracts settled** — the `art-records` whiteboard carries `AGREED` contracts for the whole chain: vocabulary (**record** = `kind`+`name` section; **capsule** = record + source; **facade** = per-document API; **adapter** = filesystem discovery/persistence), the adapter boundary (`FSRecordsAdapter`, `createFSRecordsAdapter(FSRecordsAdapterOptions)`, `FSRecordsPattern`, `FSRecordFile.basePath`, `discoverRecordFiles()`), and the content boundary (`readContent()` / `writeContent(content)`, all async).
+- **Verb families** — `discover` at the filesystem boundary (files); `extract` at the document boundary (records). Both names are already used in the CLI: `findRecordFiles()` becomes `discoverRecordFiles()`.
+- **Layering** — the adapter owns discovery and persistence only: no record semantics, no template rendering. Record extraction and serialisation belong to the `@art-js/records` facade; CLI templates stay in `$ART_WORK`.
 
 ### Decisions
 
 - **Reads before writes** — Phase 2 lands before Phase 3 so the read path proves the library contract before the write path depends on it.
 - **No behaviour change** — record shapes consumed by commands are preserved; this is a substrate swap.
+- **Two libraries, one chain** — discovery and content through `@art-lib/fs-records`; record extraction and serialisation through `@art-js/records`; `ArtContentSource` / `ArtDocumentSource` imported directly from `@art-md/primitives@0.0.3`. Neither library supersedes the other.
+- **No record-level I/O** — persistence at the boundary is `writeContent(content)`; a record-level `writeRecord(file, record, recordWrite)` is retired. Serialise in the facade, persist in the adapter.
+- **Async boundary** — the adapter is fully async; the CLI loops over files per document, so a per-document facade is sufficient (no batch API).
+- **Templates stay local** — rendering remains an `$ART_WORK` concern.
 
 ### Knowledge to Update
 
 - `$ART_WORK_CLI/knowledge/index.md` — document the records substrate once Phase 2 lands.
+- `$ART_WORK_CLI/knowledge/design/context-model.md` — the resource readers already reference `@art-lib/fs-records`; align the wording once the adapter boundary is final.
 
 ### Follow Ups
 
-- Confirm whether `@art-lib/fs-records` and the Art JS codecs converge or one supersedes the other.
+- **Settled** — `@art-lib/fs-records` and the Art JS codecs do not compete: the adapter supplies files and content, the codecs supply records. (Was: "confirm whether they converge or one supersedes the other.")
+- Narrow Phase 1 to an inventory and gap map — the API question is now answered by the `AGREED` chain contracts.
+- Retired spellings (`FSRecordsStore`, `listFiles()`, `readRecord()`, record-level `writeRecord(file, record, recordWrite)`) — swept out of the gated plan and its instruction file on 2026-10-13; sweep the remaining `$ART_WORK` knowledge docs when Phase 2 lands.
+- Repoint consumers to `plan-add-fs-records-adapter` once `$ART_LIB` lifts its hold, and re-check the gated `refactor-config-semantics` iteration.
 
 ### Feedback
 

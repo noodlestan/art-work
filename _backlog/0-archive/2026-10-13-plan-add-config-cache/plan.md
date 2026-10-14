@@ -2,7 +2,7 @@
 
 **ID:** `add-config-cache`
 
-**Status:** `WORKING`
+**Status:** `DONE`
 
 **Template:** `.agents/domains/plans/templates/plan.tart`
 
@@ -66,7 +66,7 @@ Changes confined to config loading and CLI option plumbing in `$ART_WORK/cli/wor
 
 ### Next
 
-- All 4 iterations delivered and integrated (`8821977`, `d68a57f`, `9548943`, `298d6dc`). Mark the plan `DONE` and move it to `done` (changelog + archive) when ready.
+- Closed 2026-10-13: status `DONE`, archived to `_backlog/0-archive/2026-10-13-plan-add-config-cache/`, changelog captured in `_changelog.md` beside this plan. All 4 iterations delivered and integrated (`8821977`, `d68a57f`, `9548943`, `298d6dc`).
 
 ### Blockers
 
