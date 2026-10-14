@@ -11,6 +11,7 @@ Uses Workflow: Planning Work with one backlog per CLI package, coordinating with
 Agents SHOULD scan these files for relevant clarifications when faced with ambiguity or omissions that may result from missing definitions.
 
 - `_guide.md` — this file: system overview, layout, setup, verification.
+- `_records/namespaces/*.art` — namespaces used by packages hosted here.
 - `_records/project.art` — the project record.
 - `_records/repository.art` — the repository record.
 
@@ -21,7 +22,8 @@ _guide.md        — this file
 _records/        — project, repository, namespace, and license records
 knowledge/       — repository-level knowledge documentation
 cli/             — CLI packages; each owns its _roadmap/ and _backlog/
-cli/work         — `@art-work/cli`, plus _roadmap/ and _backlog/
+cli/work         — `@art-work/cli`
+cli/board        — `@art-board/cli`
 ```
 
 ## Records Management
@@ -39,6 +41,7 @@ This repository maintains knowledge references at:
 
 - `knowledge/index.md` — Repository-level knowledge index.
 - `cli/work/knowledge/index.md` — Art Work Cli knowledge index.
+- `cli/board/knowledge/index.md` — Art Board Cli knowledge index.
 
 ## Conventions
 
@@ -49,7 +52,7 @@ Read the convention indexes listed below and follow them when planning and execu
 The following conventions apply to all packages in this repository:
 
 ::READ `./node_modules/@noodlestan/conventions-typescript/art/index.md` — TypeScript conventions.
-::READ `./node_modules/@noodlestan/conventions-unit-tests/art/index.md` — Unit Test conventions.
+::READ `./node_modules/@noodlestan/conventions-unit-tests/art/index.md` — Unit Tests conventions.
 
 In case of ambiguity or conflict applying conventions, follow links from the convention indexes to extended convention files and read the examples there for what to follow and what to avoid.
 
@@ -71,6 +74,8 @@ Roadmaps live with the CLI they describe, one per package:
 - `cli/work/_roadmap/` — subdirectories such as `3-now`, `4-next`, `6-plan`, `8-discovery`, and `9-inbox`.
 - The short-term roadmapping focus is captured in `cli/work/_roadmap/_parking-lot.md`.
 - The requirements, use cases, and principles are captured in `cli/work/_roadmap/_architect.md`.
+- `cli/board/_roadmap/` — subdirectories such as `3-now`, `4-next`, `6-plan`, `8-discovery`, and `9-inbox`.
+- The short-term roadmapping focus is captured in `cli/board/_roadmap/_parking-lot.md`.
 
 ### Planning Work
 

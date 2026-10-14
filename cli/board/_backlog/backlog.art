@@ -1,0 +1,9 @@
+# Module
+
+## Backlog: Art Board Cli
+
+**Purpose:** Hold the planning artefacts of Package: Art Board Cli.
+
+**Description:** Filesystem with 0-archive, 1-done, 2-integrate, 3-now, 4-next, 5-refine, 6-plan, 7-backlog, 8-discovery, and 9-inbox directories.
+
+**Path:** `_backlog/`

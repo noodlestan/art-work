@@ -4,6 +4,11 @@
 
 Tools for discovering projects, managing knowledge and context resources, and operating across multiple checkouts: cloning, visualizing, synchronizing, and executing commands.
 
+## Packages
+
+- `@art-work/cli` (`cli/work`) — Operate and monitor multi-repository development environments.
+- `@art-board/cli` (`cli/board`) — Coordinate agent sessions around a whiteboard (POC).
+
 ## Getting started
 
 ### Using the Art Work Cli

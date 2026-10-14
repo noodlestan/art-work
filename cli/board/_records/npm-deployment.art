@@ -1,0 +1,17 @@
+# Module
+
+## NPM Package Deployment: Art Board Cli
+
+**Owner:** Package: Art Board Cli
+
+**Status:** `PLANNED`
+
+**Build:** Deployment Build: NPM Command
+
+**Deploy:** Deployment Command: NPM Package CLI
+
+**Canonical Name:** `@art-board/cli`
+
+**Registry:** `https://registry.npmjs.org`
+
+**Access:** `public`

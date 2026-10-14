@@ -1,0 +1,17 @@
+# Module
+
+## Namespace: Art Board
+
+**Purpose:** Coordinate agent sessions around a whiteboard.
+
+**Description:** Packages for monitoring whiteboard participant sessions and dispatching next-turn prompts to agents.
+
+**Owner:** Project: Art Work
+
+**Author:** Noodlestan Collective
+
+**Scaffolders:**
+
+- None.
+
+**License:** License: Noodlestan 2026 MIT
