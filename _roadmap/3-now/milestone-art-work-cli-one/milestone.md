@@ -161,7 +161,6 @@ Complete the workspace CLI across 3 phases: establish the CLI baseline, implemen
 
 ### Next
 
-- Close `add-config-cache` — all 4 iterations delivered (`8821977`, `d68a57f`, `9548943`, `298d6dc`); mark `DONE`, changelog, and archive.
 - Integrate `extract-read-write-records-art-lib`.
 - Prepare `art-work-cli-global-install` for delegation.
 
