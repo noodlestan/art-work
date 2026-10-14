@@ -44,7 +44,7 @@ The plan workflow (see the entry point guide → Planning Workflow → Working T
 
 This section describes the goal(s) of this iteration.
 
-Make the intent behind each config option explicit by reshaping `WorkspaceConfig` to express `checkouts.path`, `data` (where managed records are stored), and `discover.records` (how records are scanned for in checkouts), and wire the new `FSRecordsStore` into the workspace context.
+Make the intent behind each config option explicit by reshaping `WorkspaceConfig` to express `checkouts.path`, `data` (where managed records are stored), and `discover.records` (how records are scanned for in checkouts), and wire the records adapter into the workspace context.
 
 ## Mandatory Reading
 
@@ -55,7 +55,7 @@ This section lists the documentation and reference files the sub-agent needs to 
 
 - knowledge: `$ART_WORK/cli/work/knowledge/index.md`
 - briefing: `$ART_WORK/_roadmap/_architect.md`
-- provider contract: `$ART_LIB` Plan: Add FS Records Store — Iteration: Implement FSRecordsStore (`$WORKSPACE/checkouts/art-lib-planning/_backlog/4-next/add-fs-records-store/plan.md`). This iteration depends on the `FSRecordsStore`, `FSRecordsStoreOptions`, `FSRecordsPattern`, and `createFSRecordsStore()` symbols being available from `@art-lib/fs-records`.
+- provider contract: `$ART_LIB/_backlog/4-next/plan-add-fs-records-adapter/plan.md` (`READY`, 2026-10-13) — the supplier plan for `@art-lib/fs-records`. The whiteboard `AGREED` contracts are the authority for the symbols this iteration consumes.
 
 ---
 
@@ -123,42 +123,47 @@ This section contains the detailed steps to execute, including commit steps.
 
 ### Step `1 / 8` — Verify provider contract availability
 
-Confirm that the `@art-lib/fs-records` package exposes the symbols required by this iteration. Read the package exports from `$ART_LIB/libs/fs-records/src/index.ts` and confirm the following are exported:
+Confirm that `@art-lib/fs-records` exposes the boundary this iteration consumes. Read the package exports from `$ART_LIB/libs/fs-records/src/index.ts` and confirm the following are exported:
 
-- `FSRecordsStore` (interface)
-- `FSRecordsStoreOptions` (interface)
+- `FSRecordsAdapter` (interface) — `options`, `discoverRecordFiles(kinds?)`, `createContentSource(file)`
+- `FSRecordsAdapterOptions` (interface) — `basePath`, `patterns`
 - `FSRecordsPattern` (interface)
-- `createFSRecordsStore(options: FSRecordsStoreOptions): FSRecordsStore` (factory)
+- `createFSRecordsAdapter(options: FSRecordsAdapterOptions): FSRecordsAdapter` (factory)
+- `FSContentSource` (interface) — the `ArtContentSource` implementation, one per file
 - `FSRecordFile` with the `basePath` field (renamed from `searchPath`)
 
-Also confirm the `FSRecordsStore` contract matches the provider plan:
+Confirm both units against the plan `$ART_LIB/_backlog/4-next/plan-add-fs-records-adapter/plan.md`:
 
 ```ts
-export interface FSRecordsStore {
-  options: FSRecordsStoreOptions;
-  listFiles: () => Promise<FSRecordFile[]>;
-  readRecord: <T extends BaseRecordStructure>(
-    file: FSRecordFile,
-    recordRead: RecordReadImplementation<T>,
-  ) => Promise<FSRecord<T>>;
-  writeRecord: <T extends BaseRecordStructure>(
-    file: FSRecordFile,
-    record: T,
-    recordWrite: RecordWriteImplementation<T>,
-  ) => Promise<FSRecord<T>>;
+export interface FSRecordsAdapter {
+  readonly options: FSRecordsAdapterOptions;
+  discoverRecordFiles(kinds?: string | string[]): Promise<FSRecordFile[]>;
+  createContentSource(file: FSRecordFile): FSContentSource;
+}
+
+export interface FSContentSource extends ArtContentSource {
+  readonly type: 'fs';
+  readonly file: FSRecordFile;
 }
 ```
 
-Note: `listFiles()` is async, and `writeRecord(file, record, recordWrite)` accepts the record to write.
+Notes:
 
-If any of these symbols are missing or the contract differs, **REPORT A BLOCKER** — this iteration depends on the `$ART_LIB` Plan: Add FS Records Store, Iteration: Implement FSRecordsStore being complete.
+- The **adapter is not an `ArtContentSource`**: a content source addresses one file (`uri`, `maybeContent`, `readContent(): Promise<string>`, `writeContent(content): Promise<void>`); the adapter spans a search tree and hands out one source per file. The whiteboard layering bullet still reads the older way — the plan it links is authoritative.
+- Discovery tolerates, content is strict: `discoverRecordFiles()` never throws for a single bad file — it returns that file with `error?` populated. **Filter on `FSRecordFile.error?` before calling `readContent()`.**
+- `discoverRecordFiles()` returns files sorted ascending by absolute path (explicit contract).
+- Do **not** verify against the published `@art-lib/fs-records@0.0.1`: it still exports the pre-rename surface (`findRecordFiles`, `FSRecordsConfig`, `FSRecordsPath`, `FSRecordFile.searchPath`) and has no adapter at all. Verify against the package source once iterations 1–3 of `plan-add-fs-records-adapter` land.
+- The adapter owns discovery and persistence only. Record extraction and serialisation belong to the `@art-js/records` facade (`extractRecords`, `writeRecord`) — there is no `readRecord` and no `writeRecord(file, record, recordWrite)` at this boundary.
+- `ArtContentSource` / `ArtDocumentSource` are imported straight from `@art-md/primitives@0.0.3`.
+
+If any of these symbols are missing or the boundary differs, **REPORT A BLOCKER** — this iteration consumes the adapter iterations in `$ART_LIB/_backlog/4-next/plan-add-fs-records-adapter/plan.md`.
 
 ### Step `2 / 8` — Add config constants
 
 Create `$ART_WORK/cli/work/src/config/constants.ts` with two exported constants:
 
 ```ts
-import type { FSRecordsPattern, FSRecordsStoreOptions } from '@art-lib/fs-records';
+import type { FSRecordsPattern, FSRecordsAdapterOptions } from '@art-lib/fs-records';
 
 export const DEFAULT_RECORDS_PATTERN: FSRecordsPattern = {
   base: '.',
@@ -168,7 +173,7 @@ export const DEFAULT_RECORDS_PATTERN: FSRecordsPattern = {
   gitignore: true,
 };
 
-export const DEFAULT_RECORDS_STORE_OPTIONS: FSRecordsStoreOptions = {
+export const DEFAULT_RECORDS_STORE_OPTIONS: FSRecordsAdapterOptions = {
   path: '_records/',
   extension: '.art',
   ignored: ['node_modules/', '.git/', 'dist/'],
@@ -183,13 +188,13 @@ The `DEFAULT_RECORDS_PATTERN` is extracted from the current `DEFAULTS` constant 
 Update `$ART_WORK/cli/work/src/config/types.ts` to the new shape:
 
 ```ts
-import type { FSRecordsPattern, FSRecordsStoreOptions } from '@art-lib/fs-records';
+import type { FSRecordsPattern, FSRecordsAdapterOptions } from '@art-lib/fs-records';
 
 export interface WorkspaceConfig {
   root: { path: string };
   checkouts: { path: string };
   data: {
-    store: FSRecordsStoreOptions;
+    store: FSRecordsAdapterOptions;
     template: string; // WIP: purpose to be defined (default record template path?)
   };
   discover: {
@@ -231,12 +236,12 @@ Update `$ART_WORK/cli/work/src/config/loadWorkspaceConfig.ts` so its `DEFAULT_CO
 Extract the `WorkspaceContext` interface from `$ART_WORK/cli/work/src/private/context/createWorkspaceContext.ts` into a new file `$ART_WORK/cli/work/src/private/context/types.ts`:
 
 ```ts
-import type { FSRecordsStore } from '@art-lib/fs-records';
+import type { FSRecordsAdapter } from '@art-lib/fs-records';
 import type { CheckoutStore } from '../store/types';
 
 export interface WorkspaceContext {
   store: CheckoutStore;
-  fsRecords: FSRecordsStore;
+  fsRecords: FSRecordsAdapter;
 }
 ```
 
@@ -262,7 +267,7 @@ createContext(config, logger) {
   logger(createGenericOperation('create-context'));
   const store = createCheckoutStore();
   const log = createOperationsLog(logger);
-  const fsRecords = createFSRecordsStore(config.data.store);
+  const fsRecords = createFSRecordsAdapter(config.data.store);
   return createWorkspaceContext(config, store, fsRecords, log);
 }
 ```
@@ -273,7 +278,7 @@ Update `$ART_WORK/cli/work/src/index.ts` to use `createConfig()` and `createCont
 
 ### Step `7 / 8` — Replace findRecordFiles with fsRecords
 
-Replace direct `findRecordFiles()` calls with `fsRecords.listFiles()` and `fsRecords.readRecord()`:
+Replace direct `findRecordFiles()` calls with `fsRecords.discoverRecordFiles()` for discovery, `fsRecords.createContentSource(file).readContent()` for content, and the `@art-js/records` facade for extraction:
 
 - `$ART_WORK/cli/work/src/private/resources/checkout/loadCheckoutRecords.ts`
 - `$ART_WORK/cli/work/src/private/resources/repository/loadRepositoryRecords.ts`
@@ -308,7 +313,7 @@ This section describes how to confirm the iteration is completed and ready for b
 
 - Verify that commits have been executed and pushed (or not pushed) according to the commit's policy.
 - Verify that `WorkspaceConfig` uses the new shape (`root`, `checkouts`, `data.store`, `discover.records.paths`) and that no references to `clone`, `records.paths`, or `output` remain in the config layer.
-- Verify that `WorkspaceContext` exposes `fsRecords: FSRecordsStore` and that all commands consume the context from `createContext()`.
-- Verify that no direct `findRecordFiles()` calls remain; record discovery goes through `fsRecords.listFiles()` / `fsRecords.readRecord()`.
+- Verify that `WorkspaceContext` exposes `fsRecords: FSRecordsAdapter` and that all commands consume the context from `createContext()`.
+- Verify that no direct `findRecordFiles()` calls remain; discovery goes through `fsRecords.discoverRecordFiles()`, content through `fsRecords.createContentSource(file).readContent()`, and extraction through the `@art-js/records` facade.
 - Execute the **Verifying Completion** step as defined in the "Operating Instructions" section.
 - Report according to the "How to Report Back to the Delegator" instructions.

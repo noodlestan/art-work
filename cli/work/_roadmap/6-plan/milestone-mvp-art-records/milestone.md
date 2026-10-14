@@ -192,6 +192,8 @@ All steps MUST pass. No `it.todo()` tests may remain.
 
 - **Bespoke loaders today** — `src/private/resources/*/load*.ts` hand-roll record discovery and parsing; the ecosystem already has shared codecs for exactly this.
 - **Chain contracts settled** — the `art-records` whiteboard carries `AGREED` contracts for the whole chain: vocabulary (**record** = `kind`+`name` section; **capsule** = record + source; **facade** = per-document API; **adapter** = filesystem discovery/persistence), the adapter boundary (`FSRecordsAdapter`, `createFSRecordsAdapter(FSRecordsAdapterOptions)`, `FSRecordsPattern`, `FSRecordFile.basePath`, `discoverRecordFiles()`), and the content boundary (`readContent()` / `writeContent(content)`, all async).
+- **`kind` is records-domain, not a constructs field** (2026-10-14) — `@art-md` deletes `SectionBlock.kind`: a heading's text is never split, so `## Checkout: Art Work` is one section named `Checkout: Art Work`. The record layer parses `Kind: Name` from the heading text. **Nothing changes in this CLI**: the `kinds` filter on `discoverRecordFiles()` and the read/write shapes below all already operate on the whole heading text.
+- **Round-trip is structural, not byte-identical** (2026-10-14) — the codec normalises extraneous whitespace and enforces one final newline, so byte-identity is no longer a chain contract. This milestone's write-back fidelity claim does not rest on it — see Decisions.
 - **Verb families** — `discover` at the filesystem boundary (files); `extract` at the document boundary (records). Both names are already used in the CLI: `findRecordFiles()` becomes `discoverRecordFiles()`.
 - **Layering** — the adapter owns discovery and persistence only: no record semantics, no template rendering. Record extraction and serialisation belong to the `@art-js/records` facade; CLI templates stay in `$ART_WORK`.
 
@@ -201,6 +203,7 @@ All steps MUST pass. No `it.todo()` tests may remain.
 - **No behaviour change** — record shapes consumed by commands are preserved; this is a substrate swap.
 - **Two libraries, one chain** — discovery and content through `@art-lib/fs-records`; record extraction and serialisation through `@art-js/records`; `ArtContentSource` / `ArtDocumentSource` imported directly from `@art-md/primitives@0.0.3`. Neither library supersedes the other.
 - **No record-level I/O** — persistence at the boundary is `writeContent(content)`; a record-level `writeRecord(file, record, recordWrite)` is retired. Serialise in the facade, persist in the adapter.
+- **Fidelity is line-splice, not codec** — edits to existing records never invoke the codec: `readContent()` hands me a string, `writeRecord(content, capsule)` line-splices the anchored section, `writeContent(newContent)` persists what I produced. Byte-for-byte fidelity on existing files therefore survives the codec's move to structural round-tripping. The clone path writes a **new** file via `serialize(capsule)`, where there are no prior bytes to violate.
 - **Async boundary** — the adapter is fully async; the CLI loops over files per document, so a per-document facade is sufficient (no batch API).
 - **Templates stay local** — rendering remains an `$ART_WORK` concern.
 

@@ -65,11 +65,11 @@ Update the Art Work Cli so that the globally installed executable can locate its
 
 ### Next
 
-- All 4 iterations are `READY` and fully planned. Delegate Iteration: Refactor Config Semantics first — its delegation is gated on the `$ART_LIB` Plan: Add FS Records Store, Iteration: Implement FSRecordsStore being delivered (the contract is settled; only the provider code is pending).
+- All 4 iterations are `READY` and fully planned. Delegate Iteration: Refactor Config Semantics first — its delegation is gated on the adapter work in `$ART_LIB/_backlog/4-next/plan-add-fs-records-adapter/plan.md` (`READY`, 2026-10-13) being delivered: this iteration wires `createFSRecordsAdapter` plus one `FSContentSource` per file, and neither exists in the published `0.0.1`. Review question resolved 2026-10-13: the read path cannot be split out — `0.0.1` carries no adapter, only the pre-rename `findRecordFiles()` / `readRecordFileContent()`.
 
 ### Blockers
 
-- None. The contract with `$ART_LIB` Plan: Add FS Records Store is settled (types, signatures, and factory names are final). Iteration: Refactor Config Semantics has a delegation precondition: the provider's `implement-fs-records-store` iteration must be delivered first, since the instructions verify `@art-lib/fs-records` exports at runtime.
+- None planning-side. The boundary is settled by the whiteboard `AGREED` contracts (`FSRecordsAdapter` / `createFSRecordsAdapter` / `discoverRecordFiles()` / per-file `FSContentSource` with `readContent()` and `writeContent(content)`, all async). Delegation precondition: the adapter iterations in `$ART_LIB/_backlog/4-next/plan-add-fs-records-adapter/plan.md` (`READY`) must be delivered first, since the instructions verify exports in source (Step 1/8) — `0.0.1` carries none of these names.
 
 ---
 
@@ -132,7 +132,7 @@ Additionally verify the CLI from a global installation and from the local develo
 
 **Id:** `refactor-config-semantics`
 
-**Status:** `PLANNING`
+**Status:** `READY`
 
 **Purpose:** Make the intent behind each config option more explicit.
 
@@ -149,7 +149,7 @@ export interface WorkspaceConfig {
   root: { path: string };
   checkouts: { path: string };
   data: {
-    store: FSRecordsStoreOptions;
+    store: FSRecordsAdapterOptions;
     template: string; // WIP: purpose to be defined (default record template path?)
   };
   discover: {
@@ -173,12 +173,12 @@ Change `checkouts.paths` => `data.store` and update `cli/work/src/config/defineC
 
 Extract the `WorkspaceContext` interface in `cli/work/src/private/context/createWorkspaceContext.ts` to `cli/work/src/private/context/types.ts`.
 
-Add `fsRecords: FSRecordsStore` to `WorkspaceContext`.
+Add `fsRecords: FSRecordsAdapter` to `WorkspaceContext`.
 
 ```ts
 export interface WorkspaceContext {
   store: CheckoutStore;
-  fsRecords: FSRecordsStore;
+  fsRecords: FSRecordsAdapter;
 }
 ```
 
@@ -197,21 +197,21 @@ async function createConfig(logger: Logger) {
 }
 ```
 
-In `createContext()` create an instance of `FSRecordsStore` using the `config.data.store` options:
+In `createContext()` create an instance of `FSRecordsAdapter` using the `config.data.store` options:
 
 ```ts
 createContext(config, logger) {
   logger(createGenericOperation('create-context'));
   const store = createCheckoutStore();
   const log = createOperationsLog(logger);
-  const fsRecords = createFSRecordsStore(config.data.store);
+  const fsRecords = createFSRecordsAdapter(config.data.store);
   return createWorkspaceContext(config, store, fsRecords, log);
 }
 ```
 
 Update all commands to use `createContext()`
 
-Replace direct `findRecordFiles()` calls with `fsRecords.discoverRecordFiles()` and `fsRecords.readRecord()`:
+Replace direct `findRecordFiles()` calls with `fsRecords.discoverRecordFiles()` for discovery, `fsRecords.createContentSource(file).readContent()` for content, and the `@art-js/records` facade for extraction:
 
 - `cli/work/src/private/resources/checkout/loadCheckoutRecords.ts`
 - `cli/work/src/private/resources/repository/loadRepositoryRecords.ts`
@@ -235,7 +235,7 @@ Change all discovery invokations of `findRecordFiles()` to use the discovery con
 
 **Dependencies:**
 
-- `$ART_LIB` Plan: Add FS Records Store — Iteration: Implement FSRecordsStore must be complete so that `FSRecordsStore`, `FSRecordsStoreOptions`, `createFSRecordsStore()`, and `FSRecordsPattern` are available.
+- `$ART_LIB/_backlog/4-next/plan-add-fs-records-adapter/plan.md` (`READY`) must be delivered so that `FSRecordsAdapter`, `FSRecordsAdapterOptions`, `FSRecordsPattern`, `FSContentSource`, `createFSRecordsAdapter()`, and `discoverRecordFiles()` are available from `@art-lib/fs-records`.
 
 #### Commits:
 
@@ -391,13 +391,14 @@ docs(art-work-cli): Update knowledge for global install and config semantics.
 
 ### Findings
 
-- The provider plan (`add-fs-records-store`) confirms `FSRecordsStore.discoverRecordFiles()` is async (`Promise<FSRecordFile[]>`) and `writeRecord(file, record, recordWrite)` accepts the record to write. The consumer contract reference reflects these signatures.
+- The provider boundary is **two units**: `FSRecordsAdapter{options, discoverRecordFiles(kinds?), createContentSource(file)}` — discovery only — and `FSContentSource extends ArtContentSource`, one per file (`uri`, `maybeContent`, `readContent(): Promise<string>`, `writeContent(content): Promise<void>`). All async. Serialisation belongs to the `@art-js/records` facade (`writeRecord(content, capsule, {guard?})`); the record-level `writeRecord(file, record, recordWrite)` from an earlier capture is retired.
+- Published `@art-lib/fs-records@0.0.1` still exports the pre-rename surface (`findRecordFiles`, `FSRecordsConfig`, `FSRecordsPath`, `FSRecordFile.searchPath`) and carries no adapter — verified by the producer from source (2026-10-13). The agreed names land with iteration 1 of `plan-add-fs-records-adapter`.
 - `FSRecordFile.searchPath` is renamed to `FSRecordFile.basePath` in the provider plan; the consumer refactor must use `basePath`.
 - The target `WorkspaceConfig` shape drops the `clone` and `output` keys. `clone` is replaced by `checkouts`; `output` is removed and its consumers must be updated.
 
 ### Decisions
 
-- Iteration: Refactor Config Semantics is marked `READY` — planning is complete and the contract with `$ART_LIB` Plan: Add FS Records Store is settled. Its delegation is gated on the provider's `implement-fs-records-store` iteration being delivered; the instructions verify `@art-lib/fs-records` exports before starting (Step 1/8).
+- Iteration: Refactor Config Semantics is marked `READY` — planning is complete against the `AGREED` adapter boundary. Its delegation is gated on the held adapter work in `$ART_LIB/_backlog/4-next/plan-add-fs-records-adapter/plan.md`; the instructions verify `@art-lib/fs-records` exports before starting (Step 1/8).
 - Iterations: Discover configuration file, Add Init command, and Update Art Work Knowledge are marked `READY`; they depend on Iteration: Refactor Config Semantics and must be delegated in order.
 - The `output` config key is removed per the target `WorkspaceConfig` shape; consumers are updated in Iteration: Refactor Config Semantics.
 
@@ -407,7 +408,7 @@ docs(art-work-cli): Update knowledge for global install and config semantics.
 
 ### Follow Ups
 
-- Delegate Iteration: Refactor Config Semantics once the `$ART_LIB` Plan: Add FS Records Store, Iteration: Implement FSRecordsStore is delivered (delegation precondition, not a planning blocker).
+- Delegate Iteration: Refactor Config Semantics once the held adapter work in `$ART_LIB/_backlog/4-next/plan-add-fs-records-adapter/plan.md` is delivered (delegation precondition, not a planning blocker).
 - Confirm the `data.template` purpose (currently WIP) in a later iteration.
 
 ### Feedback
