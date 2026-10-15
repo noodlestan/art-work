@@ -4,6 +4,8 @@
 
 Tools for discovering projects, managing knowledge and context resources, and operating across multiple checkouts: cloning, visualizing, synchronizing, and executing commands.
 
+**Keywords:** art, workspaces, cli, tooling, multi-repository, git.
+
 ## Packages
 
 - `@art-work/cli` (`cli/work`) — Operate and monitor multi-repository development environments.

@@ -52,6 +52,13 @@
 
 **Private:** `false`
 
+**Keywords:**
+
+- workspaces
+- multi-repository
+- cli
+- git
+
 **Deployment:** NPM Package Deployment: Art Work Cli
 
 **Files:**
