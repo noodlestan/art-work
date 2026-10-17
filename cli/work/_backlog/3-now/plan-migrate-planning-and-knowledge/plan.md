@@ -8,9 +8,9 @@
 
 **Skill:** `write-plan`
 
-**Purpose:** Move the repository-level `_roadmap/` and `_backlog/` into `cli/work/` so the Art Work Cli owns its own planning artefacts.
+**Purpose:** Move the repository-level `_roadmap/` and `_backlog/` content into `cli/work/`, re-scaffold the emptied root trees for repository-level planning, and keep the root free for non-CLI work.
 
-**Description:** The repository is going to host more CLIs under `cli/`. Relocate the roadmap and backlog from the monorepo root into `cli/work/`, finish documenting the split in both guides, and fix every in-repo reference to the old root locations.
+**Description:** The CLI planning artefacts relocate from the monorepo root into `cli/work/`, the emptied root trees are re-scaffolded with empty stages for future repository-level (non-CLI) planning, both guides document the split, and no in-repo reference to the relocated entries remains.
 
 ## Mandatory Reading
 
@@ -29,17 +29,17 @@
 
 ## Summary
 
-Move the root `_roadmap/` and `_backlog/` trees into `$ART_WORK_CLI/`, finish the repository and package guides so both describe the per-CLI planning split, and leave no reference to the old root paths — so additional CLIs can each own their own roadmap and backlog.
+Move the root `_roadmap/` and `_backlog/` content into `$ART_WORK_CLI/`, re-scaffold the emptied root trees for future repository-level planning, verify the repository and package guides already describe the per-CLI planning split, and leave no reference to the relocated root paths — so additional CLIs can each own their own roadmap and backlog while the root stays free for non-CLI work.
 
 ## Context
 
 ### Upstream Work
 
-| Kind                  | Path                                                                             | Role                                                                |
-| --------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| Parking Lot           | `$ART_WORK_CLI/_roadmap/_parking-lot.md`                                         | Tracks short-term actionables; requested the creation of this plan. |
-| Architecture Briefing | `$ART_WORK/_roadmap/_architect.md`                                               | Art Work principles, NFRs, milestones.                              |
-| Milestone             | `$ART_WORK_CLI/_roadmap/3-now/milestone-rename-art-work-to-art-box/milestone.md` | Coordinates this plan as Phase 1 of the rename milestone.           |
+| Kind                  | Path                                                                               | Role                                                        |
+| --------------------- | ---------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| Parking Lot           | `$ART_WORK/_backlog/_parking-lot.md`                                               | Tracks the ONGOING migration item that requested this plan. |
+| Architecture Briefing | `$ART_WORK/_roadmap/_architect.md`                                                 | Art Work principles, NFRs, milestones.                      |
+| Milestone             | `$ART_WORK_CLI/_roadmap/3-now/milestone-rename-art-work-to-art-works/milestone.md` | Coordinates this plan as Phase 1 of the rename milestone.   |
 
 ### Required Skills
 
@@ -83,7 +83,7 @@ Move the root `_roadmap/` and `_backlog/` trees into `$ART_WORK_CLI/`, finish th
 
 ## Scope
 
-Move the two planning trees into `$ART_WORK_CLI`, finish `$ART_WORK/_guide.md` and `$ART_WORK_CLI/_guide.md`, and correct in-repo references. No plan or milestone content is edited, archived, or retired — only relocated. Cross-repository references held by other checkouts are out of scope and tracked as a follow-up.
+Move the planning content of both trees into `$ART_WORK_CLI`, re-scaffold the emptied root trees with `.gitkeep` stages while their repository-level files (`_roadmap/_architect.md`, the root `_parking-lot.md` trackers) stay at the root, verify (without editing) `$ART_WORK/_guide.md` and `$ART_WORK_CLI/_guide.md`, which already describe the split, and correct in-repo references to the relocated entries. No plan or milestone content is edited, archived, or retired — only relocated. Cross-repository references held by other checkouts are out of scope and tracked as a follow-up.
 
 ### (Scope) Repository: Art Work
 
@@ -98,8 +98,9 @@ Move the two planning trees into `$ART_WORK_CLI`, finish `$ART_WORK/_guide.md` a
 
 **Changes:**
 
-- Move the root `_roadmap/` and `_backlog/` trees into `cli/work/`.
-- Repoint every in-repo reference to the retired root locations.
+- Move the root `_roadmap/` and `_backlog/` content into `cli/work/`.
+- Re-scaffold the emptied root trees with `.gitkeep` stage directories.
+- Repoint every in-repo reference to the relocated root entries.
 
 **Operations:**
 
@@ -218,15 +219,14 @@ Use `git mv` for every move so history is preserved.
 
 In `$ART_WORK`:
 
-- `_roadmap/_architect.md` → `cli/work/_roadmap/_architect.md`
-- `_roadmap/_parking-lot.md` → `cli/work/_roadmap/_parking-lot.md`
 - `_roadmap/3-now/milestone-art-work-cli-one/` → `cli/work/_roadmap/3-now/milestone-art-work-cli-one/`
 - `_roadmap/1-done/` and `_roadmap/9-inbox/` hold only `.gitkeep`; drop the sources, keeping the scaffolded copies under `cli/work/_roadmap/`.
-- Remove the emptied root `_roadmap/`.
+- Keep the repository-level files at the root: `_roadmap/_architect.md` (repository briefing) and `_roadmap/_parking-lot.md` (repository-level tracker).
+- Re-scaffold the emptied root `_roadmap/` by adding a `.gitkeep` back to `1-done/`, `3-now/`, and `9-inbox/`.
 
 **Instructions:**
 
-Execute the Changes listed above; `cli/work/_roadmap/` already holds `3-now`, `4-next`, `6-plan`, `8-discovery`, `9-inbox`, and the committed milestones, so this is a merge, not a create.
+Execute the Changes listed above; `cli/work/_roadmap/` already holds `3-now`, `4-next`, `6-plan`, `8-discovery`, `9-inbox`, and the committed milestones, so this is a merge, not a create. The emptied root stages are re-scaffolded with `.gitkeep` so the root tree stays ready for repository-level planning.
 
 Before starting:
 
@@ -234,8 +234,8 @@ Before starting:
 
 Validate that:
 
-- No tracked file remains under the root `_roadmap/`, and every moved entry appears under `cli/work/_roadmap/`.
-- `git status` reports the moves as renames, not as delete-then-add pairs.
+- The root `_roadmap/` holds only `_architect.md`, `_parking-lot.md`, and `.gitkeep`-scaffolded stage directories.
+- Every moved entry appears under `cli/work/_roadmap/`, and `git status` reports the moves as renames, not as delete-then-add pairs.
 
 After executing:
 
@@ -280,17 +280,16 @@ Use `git mv` for every move so history is preserved.
 
 In `$ART_WORK`:
 
-- `_backlog/_parking-lot.md` → `cli/work/_backlog/_parking-lot.md`
-- `_backlog/0-archive/` (25 archived plan directories) → `cli/work/_backlog/0-archive/`
-- `_backlog/3-now/plan-add-config-cache/` → `cli/work/_backlog/3-now/plan-add-config-cache/`
+- `_backlog/0-archive/` (26 archived plan directories) → `cli/work/_backlog/0-archive/`
 - `_backlog/4-next/plan-art-work-cli-global-install/` → `cli/work/_backlog/4-next/plan-art-work-cli-global-install/`
 - `_backlog/4-next/plan-optimize-tests-update-knowledge/` → `cli/work/_backlog/4-next/plan-optimize-tests-update-knowledge/`
 - `_backlog/6-plan/` (5 plan directories plus `_parking-lot.md`) → `cli/work/_backlog/6-plan/`
-- Remove the emptied root `_backlog/`.
+- Keep the repository-level tracker at the root: `_backlog/_parking-lot.md`.
+- Re-scaffold the emptied root `_backlog/` by adding a `.gitkeep` back to `0-archive/`, `4-next/`, and `6-plan/`.
 
 **Instructions:**
 
-Execute the Changes listed above; `cli/work/_backlog/` already holds the empty stage directories, the new `_parking-lot.md`, and the two plans created there (`plan-migrate-planning-and-knowledge`, `plan-rename-repo-and-project`), so this is a merge, not a create.
+Execute the Changes listed above; `cli/work/_backlog/` already holds the empty stage directories, the new `_parking-lot.md`, and the two plans created there (`plan-migrate-planning-and-knowledge`, `plan-rename-repo-and-project`), so this is a merge, not a create. The emptied root stages are re-scaffolded with `.gitkeep` so the root tree stays ready for repository-level planning.
 
 Before starting:
 
@@ -299,7 +298,7 @@ Before starting:
 
 Validate that:
 
-- No tracked file remains under the root `_backlog/`.
+- The root `_backlog/` holds only `_parking-lot.md` and `.gitkeep`-scaffolded stage directories.
 - `cli/work/_backlog/4-next/` holds `plan-art-work-cli-global-install` and `plan-optimize-tests-update-knowledge`.
 - Every plan directory that was under the root `_backlog/` now sits under `cli/work/_backlog/`, in its own stage.
 
@@ -344,19 +343,17 @@ migrate(art-work): Move the root `_backlog` into `cli/work`.
 
 In `$ART_WORK/_guide.md`:
 
-- Repository Layout and the Roadmapping section already point at `cli/work/`; leave them as they are.
-- Planning Work: repoint `_backlog/` and `_backlog/_parking-lot.md` at `$ART_WORK_CLI/_backlog/`.
+- Verify only — do not edit: the Roadmapping and Planning Work sections already describe the repository-level `_roadmap/` and `_backlog/` plus the per-CLI trees hosted under `cli/work/`, which is exactly the post-migration layout.
 
 In `$ART_WORK_CLI/_guide.md`:
 
-- Package Layout and the Roadmapping / Planning Work sections already document `_roadmap/` and `_backlog/`; leave them as they are.
-- Workflows: the Roadmapping row (`$DOMAINS/roadmaps/workflows/roadmapping/workflow.art`) is already there; leave the table as it is.
+- Verify only — do not edit: Package Layout and the Roadmapping / Planning Work sections already document `_roadmap/` and `_backlog/`.
 
-Sweep `$ART_WORK` for tracked references to the root `_roadmap/` and `_backlog/` and repoint them to `cli/work/` — this covers `_guide.md`, `_records/project.art`, the moved milestones, and the moved plan files whose paths broke. Leave `cli/work/_backlog/0-archive/` untouched: archived records are frozen delivery evidence and their paths stay as delivered. Update relative paths inside the moved plan files only where they broke — the move is otherwise path-preserving.
+Sweep `$ART_WORK` for tracked references to the relocated entries (the CLI milestone, the moved plans, and the archive) and repoint them to their new `cli/work/` locations — this covers the moved milestones and the moved plan files whose paths broke. Do not touch the root `_roadmap/_architect.md`, the root `_backlog/_parking-lot.md`, or the root `_roadmap/_parking-lot.md`: they are repository-level files that stay. Do not touch `$ART_WORK/_guide.md` or `$ART_WORK/_records/project.art`: their references point at the root trees, which remain. Leave `cli/work/_backlog/0-archive/` untouched: archived records are frozen delivery evidence and their paths stay as delivered. Update relative paths inside the moved plan files only where they broke — the move is otherwise path-preserving.
 
 **Instructions:**
 
-Execute the Changes listed above; two of the three guide sections are already updated, so the work is the remaining Planning Work section and the reference sweep.
+Execute the Changes listed above; both guides already document the post-migration split, so this iteration is verification plus the reference sweep.
 
 Before starting:
 
@@ -365,8 +362,10 @@ Before starting:
 
 Validate that:
 
-- Searching tracked files for the root `_roadmap/` and `_backlog/` returns no hit outside `cli/work/`; `cli/work/_backlog/0-archive/` is excluded.
-- Both guides describe the per-CLI split, and `npm run ci` passes.
+- Searching tracked references to the relocated entries (root `3-now/milestone-art-work-cli-one`, the root backlog plans, and the archive) returns no hit outside `cli/work/`; `cli/work/_backlog/0-archive/` is excluded.
+- Both guides describe the split: the repository-level trees reserved at the root, one roadmap and backlog per CLI under `cli/work/`.
+- `git status` reports no change to `_guide.md` or `_records/project.art`.
+- `npm run ci` passes.
 
 After executing:
 
@@ -404,13 +403,13 @@ docs(art-work): Document the per-CLI roadmap and backlog split.
 
 ### Evidence
 
-- **No root planning trees** — after delivery, `$ART_WORK/_roadmap` and `$ART_WORK/_backlog` no longer exist, and `cli/work/_roadmap` + `cli/work/_backlog` hold everything.
+- **Root trees freed** — after delivery, `$ART_WORK/_roadmap` and `$ART_WORK/_backlog` hold only repository-level files (`_architect.md`, the root `_parking-lot.md`) and `.gitkeep`-scaffolded stages, while `cli/work/_roadmap` + `cli/work/_backlog` hold the CLI planning artefacts.
 
 ### Findings
 
 - **Multi-CLI future** — the repository will host more CLIs under `cli/`; planning artefacts must live with the CLI they describe rather than at the monorepo root.
 - **Scaffold already in place** — `cli/work/_roadmap/` and `cli/work/_backlog/` stage directories exist, so the migration is a merge, not a create.
-- **`0-archive` is the bulk** — 25 of the 33 plan directories under the root `_backlog/` are archived plans; moving them first keeps the active stages small and reviewable.
+- **`0-archive` is the bulk** — 26 of the 33 plan directories under the root `_backlog/` are archived plans; moving them first keeps the active stages small and reviewable.
 - **The split is half-documented** — `$ART_WORK_CLI/_guide.md` already documents both sections and all five workflows, while the Planning Work section of `$ART_WORK/_guide.md` still points at the root.
 
 ### Decisions
@@ -418,11 +417,13 @@ docs(art-work): Document the per-CLI roadmap and backlog split.
 - **`git mv` everywhere** — history follows the rename; no copy-then-delete.
 - **Merge into scaffold** — the pre-created stage directories are kept; only their `.gitkeep` sources are dropped when the real content arrives.
 - **One commit per tree** — roadmap, backlog, and guides are separable concerns and revert independently.
+- **Root trees are re-scaffolded, not removed** — the root `_roadmap/` and `_backlog/` stay, emptied of CLI content and re-scaffolded with `.gitkeep` stages, so the root remains free for repository-level (non-CLI) planning.
+- **Repository-level files stay at the root** — `_roadmap/_architect.md` (the repository briefing) and the root `_parking-lot.md` trackers are not relocated.
 
 ### Knowledge to Update
 
-- `$ART_WORK/_guide.md` — delivered by Iteration: Update Guides and References.
-- `$ART_WORK_CLI/_guide.md` — delivered by Iteration: Update Guides and References.
+- `$ART_WORK/_guide.md` — verified by Iteration: Update Guides and References; already describes the split, no edit required.
+- `$ART_WORK_CLI/_guide.md` — verified by Iteration: Update Guides and References; already describes the split, no edit required.
 
 ### Follow Ups
 

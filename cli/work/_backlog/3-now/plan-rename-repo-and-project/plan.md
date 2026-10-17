@@ -8,7 +8,7 @@
 
 **Skill:** `write-plan`
 
-**Purpose:** Rename the repository and the project from Art Work to Art Box across the workspace records, Artificials, and Noodlestan Web, keeping the Art Work Cli package untouched.
+**Purpose:** Rename the repository and the project from Art Work to Art Works across the workspace records, Artificials, and Noodlestan Web, keeping the Art Work Cli package untouched.
 
 **Description:** Plan record with 4 `READY` iterations executed from `$WORKSPACE`, renaming the GitHub repository and the identity records in 4 owners — `$ART_WORK`, `$WORKSPACE/_records`, `$ARTIFICIALS`, and `$NOODLESTAN_WEB` — then rebuilding and redeploying the website.
 
@@ -33,17 +33,17 @@ This section lists the path variables used throughout the plan file and its down
 
 ## Summary
 
-Rename the repository and the project to Art Box — GitHub repository first so redirects keep old URLs alive, then the identity records in `$ART_WORK`, the workspace records that drive cloning and the website copy, the project reference held by `$ARTIFICIALS`, and the generated project list in `$NOODLESTAN_WEB` — while `@art-work/cli`, `art-work-cli`, and `npm run art-work` keep their names; requested by `$ART_WORK_CLI/_roadmap/_parking-lot.md` and coordinated as Phase 2 of `$ART_WORK_CLI/_roadmap/3-now/milestone-rename-art-work-to-art-box/milestone.md`.
+Rename the repository and the project to Art Works — GitHub repository first so redirects keep old URLs alive, then the identity records in `$ART_WORK`, the workspace records that drive cloning and the website copy, the project reference held by `$ARTIFICIALS`, and the generated project list in `$NOODLESTAN_WEB` — while `@art-work/cli`, `art-work-cli`, and `npm run art-work` keep their names; requested by `$ART_WORK/_backlog/_parking-lot.md` and coordinated as Phase 2 of `$ART_WORK_CLI/_roadmap/3-now/milestone-rename-art-work-to-art-works/milestone.md`.
 
 ## Context
 
 ### Upstream Work
 
-| Kind        | Path                                                                             | Role                                                                     |
-| ----------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| Parking Lot | `$ART_WORK_CLI/_roadmap/_parking-lot.md`                                         | Tracks the actionable item that requested this plan.                     |
-| Milestone   | `$ART_WORK_CLI/_roadmap/3-now/milestone-rename-art-work-to-art-box/milestone.md` | Coordinates this plan as Phase 2 of the rename.                          |
-| Briefing    | `$ART_WORK/_roadmap/_architect.md`                                               | Repository principles and the multi-CLI future that motivate the rename. |
+| Kind        | Path                                                                               | Role                                                                     |
+| ----------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| Parking Lot | `$ART_WORK/_backlog/_parking-lot.md`                                               | Tracks the actionable item that requested this plan.                     |
+| Milestone   | `$ART_WORK_CLI/_roadmap/3-now/milestone-rename-art-work-to-art-works/milestone.md` | Coordinates this plan as Phase 2 of the rename.                          |
+| Briefing    | `$ART_WORK/_roadmap/_architect.md`                                                 | Repository principles and the multi-CLI future that motivate the rename. |
 
 ### Required Skills
 
@@ -106,8 +106,8 @@ Rename one repository and one project across 4 owners: the in-repo records of `$
 
 **Changes:**
 
-- Rename the heading to `Project: Art Box` and repoint `Repository: Art Box`.
-- Keep `Package: Art Work Cli`, `Application: Art Work Website (PLANNED)`, and `Tool: Art Work Tool (PLANNED)` unchanged.
+- Rename the heading to `Project: Art Works` and repoint `Repository: Art Works`.
+- Keep all declared members unchanged, including the planned ones (`Package: Art Work Cli`, `Package: Art Board Cli (PLANNED)`, `Application: Art Work Website (PLANNED)`, `Tool: Art Work Tool (PLANNED)`).
 
 **Operations:**
 
@@ -130,11 +130,11 @@ Rename one repository and one project across 4 owners: the in-repo records of `$
 
 **Changes:**
 
-- Rename heading, repoint `owner` to `Project: Art Box`, `remote` to `git@github.com:noodlestan/art-box.git`.
+- Rename heading, repoint `owner` to `Project: Art Works`, `remote` to `git@github.com:noodlestan/art-works.git`.
 
 **Operations:**
 
-- `git remote set-url origin git@github.com:noodlestan/art-box.git`.
+- `git remote set-url origin git@github.com:noodlestan/art-works.git`.
 
 **Dependencies:**
 
@@ -154,7 +154,7 @@ Rename one repository and one project across 4 owners: the in-repo records of `$
 
 **Changes:**
 
-- Rename the record file to `art-box.art`; update heading, Purpose, Description, Remote, and Owner.
+- Rename the record file to `art-works.art`; update heading, Purpose, Description, Remote, and Owner.
 
 **Operations:**
 
@@ -178,8 +178,8 @@ Rename one repository and one project across 4 owners: the in-repo records of `$
 
 **Changes:**
 
-- Repoint `Repository:` to `Art Box` in both records; keep `Location:` unchanged.
-- Rename the record files to `art-box-@-{branch}-checkout.art`.
+- Repoint `Repository:` to `Art Works` in both records; keep `Location:` unchanged.
+- Rename the record files to `art-works-@-{branch}-checkout.art`.
 
 **Operations:**
 
@@ -201,7 +201,7 @@ Rename one repository and one project across 4 owners: the in-repo records of `$
 
 **Changes:**
 
-- Repoint the entry to `Project: Art Box — https://github.com/noodlestan/art-box`.
+- Repoint the entry to `Project: Art Works — https://github.com/noodlestan/art-works`.
 - Repoint the URL in `$ARTIFICIALS/README.md` and `apps/art-md-web/src/pages/about.md`, keeping the `@art-work` link label.
 
 **Operations:**
@@ -226,7 +226,7 @@ Rename one repository and one project across 4 owners: the in-repo records of `$
 
 **Changes:**
 
-- Regenerate as `art-box.art` and drop the stale `art-work.art`.
+- Regenerate as `art-works.art` and drop the stale `art-work.art`.
 - Refresh `data/projects/collection.json` and the cross-reference copied into `data/_records/projects/artificials.art`.
 - Build and redeploy the website.
 
@@ -280,9 +280,9 @@ Execution occurs from `$WORKSPACE/`, with one commit per owner: `$ART_WORK` on b
 
 **Status:** `READY`
 
-**Purpose:** Make Art Box the identity of the repository and the project at the source.
+**Purpose:** Make Art Works the identity of the repository and the project at the source.
 
-**Description:** Rename the GitHub repository from `art-work` to `art-box`, then update the in-repo records and the repository-level mentions, leaving every package-name reference untouched.
+**Description:** Rename the GitHub repository from `art-work` to `art-works`, then update the in-repo records and the repository-level mentions, leaving every package-name reference untouched.
 
 **Instructions Mode:** `INSTRUCTIONS_INLINED_IN_ITERATION`
 
@@ -291,22 +291,22 @@ Execution occurs from `$WORKSPACE/`, with one commit per owner: `$ART_WORK` on b
 Use the GitHub CLI to rename the repository first, so the redirect from the old URL keeps working:
 
 ```bash
-gh repo rename art-box --repo noodlestan/art-work
-git remote set-url origin git@github.com:noodlestan/art-box.git # in $ART_WORK
+gh repo rename art-works --repo noodlestan/art-work
+git remote set-url origin git@github.com:noodlestan/art-works.git # in $ART_WORK
 ```
 
 In `$ART_WORK/_records/project.art`:
 
-- Heading to `## Project: Art Box`; `**Repository:** Repository: Art Box`.
-- Keep the members: `Package: Art Work Cli`, `Application: Art Work Website (PLANNED)`, `Tool: Art Work Tool (PLANNED)`.
+- Heading to `## Project: Art Works`; `**Repository:** Repository: Art Works`.
+- Keep all declared members unchanged (the declared list includes `Package: Art Board Cli (PLANNED)`).
 
 In `$ART_WORK/_records/repository.art`:
 
-- Heading to `## Repository: Art Box`; `**Owner:** Project: Art Box`; `**Remote:** git@github.com:noodlestan/art-box.git`; Purpose and Description wording.
+- Heading to `## Repository: Art Works`; `**Owner:** Project: Art Works`; `**Remote:** git@github.com:noodlestan/art-works.git`; Purpose and Description wording.
 
 In `$ART_WORK/_records/namespace.art`:
 
-- Heading to `## Namespace: Art Box`; `**Owner:** Project: Art Box`.
+- Heading to `## Namespace: Art Works`; `**Owner:** Project: Art Works`.
 
 In `$ART_WORK/_guide.md` and `README.md`:
 
@@ -315,7 +315,7 @@ In `$ART_WORK/_guide.md` and `README.md`:
 
 In `$ART_WORK/knowledge/index.md`:
 
-- Rename the heading to `# Knowledge: Art Box` and repoint the repository-level wording ("the Art Work packages").
+- Rename the heading to `# Knowledge: Art Works` and repoint the repository-level wording ("the Art Work packages").
 - Leave `cli/work/knowledge/` alone: it is the `Art Work Cli` package knowledge.
 
 **Instructions:**
@@ -325,11 +325,11 @@ Execute the Changes listed above; the GitHub rename happens before any record is
 Before starting:
 
 - Run `npm ci` from the `$WORKSPACE` root, and confirm `gh auth status` succeeds.
-- Confirm Phase 1 (`migrate-planning-and-knowledge`) has delivered: the root `_roadmap/` and `_backlog/` no longer exist in `$ART_WORK`.
+- Confirm Phase 1 (`migrate-planning-and-knowledge`) has delivered: the root `_roadmap/` and `_backlog/` hold only repository-level files and `.gitkeep` stage scaffolds — no CLI planning content remains in `$ART_WORK`.
 
 Validate that:
 
-- `git@github.com:noodlestan/art-box.git` resolves and the old URL redirects.
+- `git@github.com:noodlestan/art-works.git` resolves and the old URL redirects.
 - `_records/`, `knowledge/index.md`, `_guide.md`, and `README.md` carry no repository-level `Art Work` mention; expected hits are the package and planned-member names (`Art Work Cli`, `Art Work Website`, `Art Work Tool`, `@art-work/cli`, `art-work-cli`, `npm run art-work`).
 
 After executing:
@@ -354,9 +354,9 @@ After executing:
 **Message:**
 
 ```text
-records(art-work): Rename the repository and the project to Art Box.
+records(art-work): Rename the repository and the project to Art Works.
 
-- Rename the GitHub repository `noodlestan/art-work` to `noodlestan/art-box`.
+- Rename the GitHub repository `noodlestan/art-work` to `noodlestan/art-works`.
 - Repoint project, repository, and namespace records; package keeps its name.
 ```
 
@@ -376,20 +376,20 @@ records(art-work): Rename the repository and the project to Art Box.
 
 In `$WORKSPACE/_records/repositories/`:
 
-- `git mv art-work.art art-box.art`, then heading to `## Repository: Art Box`.
-- `**Remote:** git@github.com:noodlestan/art-box.git`; Purpose and Description wording.
-- `**Owner:** Project: Art JS` → `Project: Art Box` (it is stale today; see Findings).
+- `git mv art-work.art art-works.art`, then heading to `## Repository: Art Works`.
+- `**Remote:** git@github.com:noodlestan/art-works.git`; Purpose and Description wording.
+- `**Owner:** Project: Art JS` → `Project: Art Works` (it is stale today; see Findings).
 
 In `$WORKSPACE/_records/checkouts/`:
 
-- `git mv art-work-@-planning-checkout.art art-box-@-planning-checkout.art` and `git mv art-work-@-building-checkout.art art-box-@-building-checkout.art`.
-- Rename the headings to `## Checkout: Art Box @ planning` and `## Checkout: Art Box @ building`.
-- Repoint `**Repository:** Art Work` to `Art Box`; keep `**Location:** art-work-planning` and `art-work-building`.
+- `git mv art-work-@-planning-checkout.art art-works-@-planning-checkout.art` and `git mv art-work-@-building-checkout.art art-works-@-building-checkout.art`.
+- Rename the headings to `## Checkout: Art Works @ planning` and `## Checkout: Art Works @ building`.
+- Repoint `**Repository:** Art Work` to `Art Works`; keep `**Location:** art-work-planning` and `art-work-building`.
 
 In `$WORKSPACE`:
 
 - Verify `.art-workspace.mts` resolves the renamed repository; regenerate it from records if it embeds repository names.
-- Verify `npm run art-work clone "Art Box"` resolves the record, and that `npm run art-work sanity` still reports all checkouts.
+- Verify `npm run art-work clone "Art Works"` resolves the record, and that `npm run art-work sanity` still reports all checkouts.
 
 **Instructions:**
 
@@ -401,7 +401,7 @@ Before starting:
 
 Validate that:
 
-- `_records/repositories/` holds `art-box.art` and no `art-work.art`; both checkout records start with `art-box-@-`.
+- `_records/repositories/` holds `art-works.art` and no `art-work.art`; both checkout records start with `art-works-@-`.
 - `npm run art-work sanity` still reports every checkout.
 
 After executing:
@@ -426,7 +426,7 @@ After executing:
 **Message:**
 
 ```text
-records(art-work): Repoint workspace repository and checkout records to Art Box.
+records(art-work): Repoint workspace repository and checkout records to Art Works.
 
 - Rename the repository record and both checkout records; keep checkout locations.
 ```
@@ -447,15 +447,15 @@ records(art-work): Repoint workspace repository and checkout records to Art Box.
 
 In `$ARTIFICIALS/_records/project.art`:
 
-- `- Project: Art Work — https://github.com/noodlestan/art-work` → `- Project: Art Box — https://github.com/noodlestan/art-box`.
+- `- Project: Art Work — https://github.com/noodlestan/art-work` → `- Project: Art Works — https://github.com/noodlestan/art-works`.
 
 In `$ARTIFICIALS/README.md`:
 
-- `- [Project: Art Work](https://github.com/noodlestan/art-work)` → `- [Project: Art Box](https://github.com/noodlestan/art-box)`.
+- `- [Project: Art Work](https://github.com/noodlestan/art-work)` → `- [Project: Art Works](https://github.com/noodlestan/art-works)`.
 
 In `$ARTIFICIALS/apps/art-md-web/src/pages/about.md`:
 
-- Keep `[@art-work](...)` as the label; repoint the URL to `https://github.com/noodlestan/art-box`.
+- Keep `[@art-work](...)` as the label; repoint the URL to `https://github.com/noodlestan/art-works`.
 
 **Instructions:**
 
@@ -467,7 +467,7 @@ Before starting:
 
 Validate that:
 
-- Searching tracked files in `$ARTIFICIALS` for `noodlestan/art-work` returns no hit; `apps/art-md-web/dist/` is untracked build output and does not count.
+- Searching tracked files in `$ARTIFICIALS` for `noodlestan/art-work` returns only `noodlestan/art-works` hits — no bare `noodlestan/art-work` URL remains; `apps/art-md-web/dist/` is untracked build output and does not count.
 
 After executing:
 
@@ -491,7 +491,7 @@ After executing:
 **Message:**
 
 ```text
-refs(artificials): Repoint the project registration to Art Box.
+refs(artificials): Repoint the project registration to Art Works.
 
 - Update the project entry and the repository links; the `@art-work` label stays.
 ```
@@ -513,11 +513,11 @@ refs(artificials): Repoint the project registration to Art Box.
 In `$NOODLESTAN_WEB`:
 
 - Confirm the renamed records are pushed, then run `npm run update-project-records`.
-- Note that `scripts/copy-project-records.ts` resolves each checkout as `checkouts/{kebab(name)}`, so after the rename it resolves `checkouts/art-box`; make sure that checkout exists (or the record is copied from the local checkout) before running it, and check its remote matches `github.com:noodlestan/art-box.git`.
+- Note that `scripts/copy-project-records.ts` resolves each checkout as `checkouts/{kebab(name)}`, so after the rename it resolves `checkouts/art-works`; make sure that checkout exists (or the record is copied from the local checkout) before running it, and check its remote matches `github.com:noodlestan/art-works.git`.
 - Remove the stale generated `data/_records/projects/art-work.art` if the script does not overwrite it.
-- Run `npm run update-project-collection` and confirm `data/projects/collection.json` carries `id` `art-box`, `name` `Art Box`, `code` `https://github.com/noodlestan/art-box`.
+- Run `npm run update-project-collection` and confirm `data/projects/collection.json` carries `id` `art-works`, `name` `Art Works`, `code` `https://github.com/noodlestan/art-works`.
 - Confirm `data/_records/projects/artificials.art` picked up the repointed reference.
-- Build and redeploy the website; confirm the project list shows `Project: Art Box` and no `Art Work` entry.
+- Build and redeploy the website; confirm the project list shows `Project: Art Works` and no `Art Work` entry.
 
 **Instructions:**
 
@@ -530,10 +530,10 @@ Before starting:
 
 Validate that:
 
-- `data/_records/projects/` holds `art-box.art` and no `art-work.art`.
-- `data/projects/collection.json` carries `id` `art-box` and `name` `Art Box`.
-- Searching `Art Work` (case-sensitive) across `$WORKSPACE/_records`, `$ART_WORK/_records`, `$ARTIFICIALS/_records`, and `$NOODLESTAN_WEB/data` returns only the package and planned-member names (`Art Work Cli`, `Art Work Website`, `Art Work Tool`).
-- The deployed site lists `Project: Art Box`.
+- `data/_records/projects/` holds `art-works.art` and no `art-work.art`.
+- `data/projects/collection.json` carries `id` `art-works` and `name` `Art Works`.
+- Searching `Art Work` (case-sensitive) across `$WORKSPACE/_records`, `$ART_WORK/_records`, `$ARTIFICIALS/_records`, and `$NOODLESTAN_WEB/data` returns only the new `Art Works` identity plus the package and planned-member names (`Art Work Cli`, `Art Work Website`, `Art Work Tool`).
+- The deployed site lists `Project: Art Works`.
 
 After executing:
 
@@ -558,7 +558,7 @@ After executing:
 **Message:**
 
 ```text
-records(noodlestan-web): Regenerate the project list as Art Box.
+records(noodlestan-web): Regenerate the project list as Art Works.
 
 - Refresh the copied project records and the project collection, then redeploy.
 ```
@@ -635,15 +635,16 @@ Runs automatically on the pre-commit hook. All steps MUST pass. No `it.todo()` t
 
 ### Evidence
 
-- **`noodlestan/art-box` resolves** and `noodlestan/art-work` redirects to it.
-- **No stale identity** — the case-sensitive `Art Work` search across `$WORKSPACE/_records`, `$ART_WORK/_records`, `$ARTIFICIALS/_records`, and `$NOODLESTAN_WEB/data` returns only the package and planned-member names (`Art Work Cli`, `Art Work Website`, `Art Work Tool`).
-- **Website shows Art Box** after the rebuilt site is deployed.
+- **`noodlestan/art-works` resolves** and `noodlestan/art-work` redirects to it.
+- **No stale identity** — the case-sensitive `Art Work` search across `$WORKSPACE/_records`, `$ART_WORK/_records`, `$ARTIFICIALS/_records`, and `$NOODLESTAN_WEB/data` returns only the new `Art Works` identity plus the package and planned-member names (`Art Work Cli`, `Art Work Website`, `Art Work Tool`).
+- **Website shows Art Works** after the rebuilt site is deployed.
 
 ### Findings
 
 - **Website project data is generated** — `data/_records/projects/*.art` come from `npm run update-project-records` and `data/projects/collection.json` from `npm run update-project-collection`; edit the source records, then regenerate.
 - **The copy script resolves checkouts by name** — `scripts/copy-project-records.ts` computes `checkouts/{kebab(name)}`, clones when missing, and fails on a remote mismatch, so the renamed records must be pushed before it runs.
-- **Owner field is stale** — `$WORKSPACE/_records/repositories/art-work.art` declares `Owner: Project: Art JS` while `$ART_WORK/_records/project.art` declares `Project: Art Work`; the rename sets it to `Project: Art Box`.
+- **Owner field is stale** — `$WORKSPACE/_records/repositories/art-work.art` declares `Owner: Project: Art JS` while `$ART_WORK/_records/project.art` declares `Project: Art Work`; the rename sets it to `Project: Art Works`.
+- **`Art Works` contains `Art Work`** — naive searches for the old name also match the new identity; validations must allow the new `Art Works`/`art-works` hits and reject only the bare old identity, keeping the package names, planned members, and checkout locations.
 
 ### Decisions
 
@@ -659,8 +660,9 @@ Runs automatically on the pre-commit hook. All steps MUST pass. No `it.todo()` t
 
 ### Follow Ups
 
-- **Rename checkout locations** — `art-work-planning` and `art-work-building` to `art-box-*` once no session runs inside them.
+- **Rename checkout locations** — `art-work-planning` and `art-work-building` to `art-works-*` once no session runs inside them.
 - **Update Management references** — repoint `$MANAGEMENT` milestones and records that reference `art-work` paths.
+- **Review the planned `Package: Art Board Cli (PLANNED)` member** — art-boards now lives in its own repository; decide whether to drop it from the project record (this plan keeps all members unchanged).
 
 ### Feedback
 
