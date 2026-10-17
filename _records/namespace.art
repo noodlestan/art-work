@@ -1,0 +1,17 @@
+# Module
+
+## Namespace: Art Work
+
+**Purpose:** Manage multi-repository development environments for parallel planning and execution.
+
+**Description:** Tools for discovering projects, managing knowledge and context resources, and operating across multiple checkouts: cloning, visualizing, synchronizing, and executing commands.
+
+**Owner:** Project: Art Work
+
+**Author:** Noodlestan Collective
+
+**Scaffolders:**
+
+- None.
+
+**License:** License: Noodlestan 2026 MIT
