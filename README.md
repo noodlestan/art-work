@@ -4,7 +4,7 @@
 
 Tools for discovering projects, managing knowledge and context resources, and operating across multiple checkouts: cloning, visualizing, synchronizing, and executing commands.
 
-**Keywords:** art, workspaces, cli, tooling, multi-repository, git.
+**Keywords:** art, agent-workflows, workspaces, multi-repository, git.
 
 ## Packages
 

@@ -54,9 +54,12 @@
 
 **Keywords:**
 
-- workspaces
-- multi-repository
 - cli
+- workspaces
+- tooling
+- art
+- agent-workflows
+- multi-repository
 - git
 
 **Deployment:** NPM Package Deployment: Art Work Cli

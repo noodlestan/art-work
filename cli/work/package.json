@@ -3,9 +3,12 @@
   "version": "0.2.0",
   "description": "CLI for discovering projects, inspecting and synchronizing checkouts, linking resources, and executing commands across them.",
   "keywords": [
-    "workspaces",
-    "multi-repository",
     "cli",
+    "workspaces",
+    "tooling",
+    "art",
+    "agent-workflows",
+    "multi-repository",
     "git"
   ],
   "author": "Noodlestan Collective",
