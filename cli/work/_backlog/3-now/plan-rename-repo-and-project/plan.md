@@ -164,22 +164,23 @@ Rename one repository and one project across 4 owners: the in-repo records of `$
 
 - None.
 
-### (Scope) Checkout: Art Work @ planning
+### (Scope) Checkout: Art Work
 
-**Record:** `$WORKSPACE/_records/checkouts/art-work-@-planning-checkout.art`
+**Record:** `$WORKSPACE/_records/checkouts/art-work-checkout.art`
 
-**Role:** — Checkout records reference the repository by name.
+**Role:** — Checkout records reference the repository by name. The `_records/checkouts/` directory is gitignored, so its files are moved with plain `mv`, never `git mv`.
 
 **Partial:**
 
 - `repository` — Art Work
-- `location` — `art-work-planning` (sibling: `art-work-@-building-checkout.art`, `art-work-building`)
-- `branch` — `main`
+- `location` — `art-work`
+- `branch` — `main` (stale; the checkout runs on `building` — see Changes)
 
 **Changes:**
 
-- Repoint `Repository:` to `Art Works` in both records; keep `Location:` unchanged.
-- Rename the record files to `art-works-@-{branch}-checkout.art`.
+- Repoint `Repository:` to `Art Works`; keep `Location: art-work`.
+- Correct `Branch:` to `building` — the record is stale today.
+- Rename the record file to `art-works-checkout.art` with plain `mv` (gitignored directory).
 
 **Operations:**
 
@@ -304,7 +305,7 @@ In `$ART_WORK/_records/repository.art`:
 
 - Heading to `## Repository: Art Works`; `**Owner:** Project: Art Works`; `**Remote:** git@github.com:noodlestan/art-works.git`; Purpose and Description wording.
 
-In `$ART_WORK/_records/namespace.art`:
+In `$ART_WORK/_records/namespaces/art-work.art`:
 
 - Heading to `## Namespace: Art Works`; `**Owner:** Project: Art Works`.
 
@@ -382,9 +383,10 @@ In `$WORKSPACE/_records/repositories/`:
 
 In `$WORKSPACE/_records/checkouts/`:
 
-- `git mv art-work-@-planning-checkout.art art-works-@-planning-checkout.art` and `git mv art-work-@-building-checkout.art art-works-@-building-checkout.art`.
-- Rename the headings to `## Checkout: Art Works @ planning` and `## Checkout: Art Works @ building`.
-- Repoint `**Repository:** Art Work` to `Art Works`; keep `**Location:** art-work-planning` and `art-work-building`.
+- `mv art-work-checkout.art art-works-checkout.art` — the directory is gitignored (`.gitignore`: `_records/checkouts`), so plain `mv`, never `git mv`.
+- Rename the heading to `## Checkout: Art Works`.
+- Repoint `**Repository:** Art Work` to `Art Works`; keep `**Location:** art-work`.
+- Correct `**Branch:** main` to `**Branch:** building` — the record is stale; the checkout runs on `building`.
 
 In `$WORKSPACE`:
 
@@ -401,7 +403,7 @@ Before starting:
 
 Validate that:
 
-- `_records/repositories/` holds `art-works.art` and no `art-work.art`; both checkout records start with `art-works-@-`.
+- `_records/repositories/` holds `art-works.art` and no `art-work.art`; the checkout record is `art-works-checkout.art` with `Repository: Art Works`, `Location: art-work`, and `Branch: building`.
 - `npm run art-work sanity` still reports every checkout.
 
 After executing:
@@ -629,7 +631,7 @@ Runs automatically on the pre-commit hook. All steps MUST pass. No `it.todo()` t
 ### Not In Scope
 
 - **Package: Art Work Cli** — `@art-work/cli`, `art-work-cli`, and the `npm run art-work` script keep their names.
-- **Checkout locations** — `art-work-planning` and `art-work-building` stay; renaming them is a follow-up.
+- **Checkout locations** — `art-work` stays; renaming it is a follow-up.
 - **Application: Art Work Website (PLANNED)** — planned project members keep their names.
 - **Repository transfer** — the repository stays in the `noodlestan` org.
 
@@ -660,7 +662,7 @@ Runs automatically on the pre-commit hook. All steps MUST pass. No `it.todo()` t
 
 ### Follow Ups
 
-- **Rename checkout locations** — `art-work-planning` and `art-work-building` to `art-works-*` once no session runs inside them.
+- **Rename checkout location** — `art-work` to `art-works` once no session runs inside it.
 - **Update Management references** — repoint `$MANAGEMENT` milestones and records that reference `art-work` paths.
 - **Review the planned `Package: Art Board Cli (PLANNED)` member** — art-boards now lives in its own repository; decide whether to drop it from the project record (this plan keeps all members unchanged).
 
