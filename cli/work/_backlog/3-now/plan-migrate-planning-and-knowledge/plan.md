@@ -143,7 +143,7 @@ Execution occurs from `$WORKSPACE/`, with every commit in `$PROJECT` on branch `
 
 ### Next
 
-Delegate `move-backlog-into-cli-work`, the next `READY` iteration.
+Delegate `update-guides-and-references`, the next `READY` iteration.
 
 ### Blockers
 
@@ -198,7 +198,7 @@ All steps MUST pass. No `it.todo()` tests may remain.
 | Iteration / Instructions                | Status  |
 | --------------------------------------- | ------- |
 | Iteration: Move Roadmap Into Cli Work   | `DONE`  |
-| Iteration: Move Backlog Into Cli Work   | `READY` |
+| Iteration: Move Backlog Into Cli Work   | `DONE`  |
 | Iteration: Update Guides and References | `READY` |
 
 ### Iteration: Move Roadmap Into Cli Work
@@ -266,7 +266,7 @@ migrate(art-work): Move the root `_roadmap` into `cli/work`.
 
 **Id:** `move-backlog-into-cli-work`
 
-**Status:** `READY`
+**Status:** `DONE`
 
 **Purpose:** Give the Art Work Cli its own backlog tree.
 
@@ -313,9 +313,9 @@ After executing:
 
 #### Commits:
 
-| ID                           | Repository / Checkout / Branch     | Policy       | Hash | Status     |
-| ---------------------------- | ---------------------------------- | ------------ | ---- | ---------- |
-| `move-backlog-into-cli-work` | Art Work / `$PROJECT` / `building` | `AUTONOMOUS` |      | `AUTHORED` |
+| ID                           | Repository / Checkout / Branch     | Policy       | Hash      | Status      |
+| ---------------------------- | ---------------------------------- | ------------ | --------- | ----------- |
+| `move-backlog-into-cli-work` | Art Work / `$PROJECT` / `building` | `AUTONOMOUS` | `3941ace` | `COMMITTED` |
 
 ##### Commit: `move-backlog-into-cli-work`
 
