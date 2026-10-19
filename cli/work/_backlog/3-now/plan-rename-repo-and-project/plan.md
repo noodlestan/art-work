@@ -22,14 +22,14 @@
 
 This section lists the path variables used throughout the plan file and its downstream work items. All file references in the plan and downstream work items MUST use these variables — never bare filesystem paths.
 
-| Variable          | Resolved Path                            | Purpose                                             |
-| ----------------- | ---------------------------------------- | --------------------------------------------------- |
-| `$WORKSPACE`      | Current working directory                | Workspace root directory.                           |
-| `$DOMAINS`        | `$WORKSPACE/.agents/domains`             | Domain resources directory.                         |
-| `$ART_WORK`       | `$WORKSPACE/checkouts/art-work-building` | Art Work repository; records renamed here first.    |
-| `$ART_WORK_CLI`   | `$ART_WORK/cli/work`                     | Art Work Cli package; hosts this plan.              |
-| `$ARTIFICIALS`    | `$WORKSPACE/checkouts/artificials`       | Owns the project record; references to repoint.     |
-| `$NOODLESTAN_WEB` | `$WORKSPACE/checkouts/noodlestan-web`    | Hosts the project list and the website to redeploy. |
+| Variable          | Resolved Path                         | Purpose                                             |
+| ----------------- | ------------------------------------- | --------------------------------------------------- |
+| `$WORKSPACE`      | Current working directory             | Workspace root directory.                           |
+| `$DOMAINS`        | `$WORKSPACE/.agents/domains`          | Domain resources directory.                         |
+| `$ART_WORK`       | Provided with prompt                  | Art Work repository; records renamed here first.    |
+| `$ART_WORK_CLI`   | `$ART_WORK/cli/work`                  | Art Work Cli package; hosts this plan.              |
+| `$ARTIFICIALS`    | `$WORKSPACE/checkouts/artificials`    | Owns the project record; references to repoint.     |
+| `$NOODLESTAN_WEB` | `$WORKSPACE/checkouts/noodlestan-web` | Hosts the project list and the website to redeploy. |
 
 ## Summary
 

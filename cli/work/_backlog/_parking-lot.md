@@ -10,7 +10,7 @@ WIP tracker, structured like the session parking lot: **ACTIONABLE** (in progres
 
 ### PENDING
 
-- None.
+- **Raise vitest timeout for git-heavy tests** — pre-commit hook CI flaks under machine load: random git-based test fails each run (5s default timeout or spawned-process capture race), always green in isolation. Consider folding into `plan-optimize-tests-update-knowledge`.
 
 ### BLOCKERS
 

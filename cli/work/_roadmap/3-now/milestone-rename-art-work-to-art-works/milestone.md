@@ -275,7 +275,7 @@ This section describes the ordered phases used to organise downstream work, iden
 
 | Index | Name                                        | Status  |
 | ----- | ------------------------------------------- | ------- |
-| 1     | Relocate planning artefacts into `cli/work` | `READY` |
+| 1     | Relocate planning artefacts into `cli/work` | `DONE`  |
 | 2     | Rename repository and project to Art Works  | `READY` |
 
 ### Phase: 1 — Relocate planning artefacts into `cli/work`
@@ -284,7 +284,7 @@ This section describes the ordered phases used to organise downstream work, iden
 
 **Description:** Move the remaining root `_roadmap/` and `_backlog/` entries into `$ART_WORK_CLI`, re-scaffold the emptied root trees with `.gitkeep` stages, verify both guides already describe the split, and leave no stale reference.
 
-**Status:** `READY`
+**Status:** `DONE`
 
 **Dependencies:**
 
@@ -308,7 +308,7 @@ This section describes the ordered phases used to organise downstream work, iden
 
 | Phase | Resource / Record                                                                                               | Status  |
 | ----- | --------------------------------------------------------------------------------------------------------------- | ------- |
-| 1     | Plan: Migrate Planning and Knowledge `$ART_WORK_CLI/_backlog/3-now/plan-migrate-planning-and-knowledge/plan.md` | `READY` |
+| 1     | Plan: Migrate Planning and Knowledge `$ART_WORK_CLI/_backlog/3-now/plan-migrate-planning-and-knowledge/plan.md` | `DONE`  |
 | 2     | Plan: Rename Repo and Project `$ART_WORK_CLI/_backlog/3-now/plan-rename-repo-and-project/plan.md`               | `READY` |
 
 ---
