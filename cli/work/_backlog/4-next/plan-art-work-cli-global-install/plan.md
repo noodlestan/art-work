@@ -34,11 +34,11 @@ Make the Art Work Cli executable and operational when installed globally, while 
 
 ### Upstream Work
 
-| Kind                  | Path                                                               | Role                                                                |
-| --------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------- |
-| Parking Lot           | `$ART_WORK/_backlog/_parking-lot.md`                               | Tracks short-term actionables, pending questions, and blockers.     |
-| Architecture Briefing | `$ART_WORK/_roadmap/_architect.md`                                 | Art Work principles, NFRs, milestones.                              |
-| Milestone             | `$ART_WORK/_roadmap/3-now/milestone-art-work-cli-one/milestone.md` | Coordinates this plan as Phase 3 of the Art Work Cli One milestone. |
+| Kind                  | Path                                                                        | Role                                                                |
+| --------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| Parking Lot           | `$ART_WORK/_backlog/_parking-lot.md`                                        | Tracks short-term actionables, pending questions, and blockers.     |
+| Architecture Briefing | `$ART_WORK/_roadmap/_architect.md`                                          | Art Work principles, NFRs, milestones.                              |
+| Milestone             | `$ART_WORK/cli/work/_roadmap/3-now/milestone-art-work-cli-one/milestone.md` | Coordinates this plan as Phase 3 of the Art Work Cli One milestone. |
 
 ### Required Skills
 

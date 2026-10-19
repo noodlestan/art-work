@@ -39,11 +39,11 @@ Rename the repository and the project to Art Works in 2 phases — relocate the 
 
 ### Upstream Work
 
-| Kind                  | Path                                                               | Role                                                                              |
-| --------------------- | ------------------------------------------------------------------ | --------------------------------------------------------------------------------- |
-| Parking Lot           | `$ART_WORK/_backlog/_parking-lot.md`                               | Tracks the ONGOING migration and rename items that requested this milestone.      |
-| Architecture Briefing | `$ART_WORK/_roadmap/_architect.md`                                 | Repository principles and the multi-CLI future that motivate the rename.          |
-| Milestone             | `$ART_WORK/_roadmap/3-now/milestone-art-work-cli-one/milestone.md` | Sibling milestone holding the CLI delivery work this planning migration supports. |
+| Kind                  | Path                                                                   | Role                                                                              |
+| --------------------- | ---------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Parking Lot           | `$ART_WORK/_backlog/_parking-lot.md`                                   | Tracks the ONGOING migration and rename items that requested this milestone.      |
+| Architecture Briefing | `$ART_WORK/_roadmap/_architect.md`                                     | Repository principles and the multi-CLI future that motivate the rename.          |
+| Milestone             | `$ART_WORK_CLI/_roadmap/3-now/milestone-art-work-cli-one/milestone.md` | Sibling milestone holding the CLI delivery work this planning migration supports. |
 
 ### Required Skills
 
