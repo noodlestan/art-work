@@ -2,7 +2,7 @@
 
 **ID:** `migrate-planning-and-knowledge`
 
-**Status:** `WORKING`
+**Status:** `DONE`
 
 **Template:** `$DOMAINS/plans/templates/plan.tart`
 
@@ -145,6 +145,8 @@ Execution occurs from `$WORKSPACE/`, with every commit in `$PROJECT` on branch `
 
 Delegate `update-guides-and-references`, the next `READY` iteration.
 
+All iterations `DONE`; plan `DONE`. Ready to move to `done` alongside the rename milestone phases.
+
 ### Blockers
 
 - None.
@@ -195,11 +197,11 @@ All steps MUST pass. No `it.todo()` tests may remain.
 
 ## Items:
 
-| Iteration / Instructions                | Status  |
-| --------------------------------------- | ------- |
-| Iteration: Move Roadmap Into Cli Work   | `DONE`  |
-| Iteration: Move Backlog Into Cli Work   | `DONE`  |
-| Iteration: Update Guides and References | `READY` |
+| Iteration / Instructions                | Status |
+| --------------------------------------- | ------ |
+| Iteration: Move Roadmap Into Cli Work   | `DONE` |
+| Iteration: Move Backlog Into Cli Work   | `DONE` |
+| Iteration: Update Guides and References | `DONE` |
 
 ### Iteration: Move Roadmap Into Cli Work
 
@@ -331,7 +333,7 @@ migrate(art-work): Move the root `_backlog` into `cli/work`.
 
 **Id:** `update-guides-and-references`
 
-**Status:** `READY`
+**Status:** `DONE`
 
 **Purpose:** Make the split discoverable and leave no stale path.
 
@@ -378,9 +380,9 @@ After executing:
 
 #### Commits:
 
-| ID                             | Repository / Checkout / Branch     | Policy       | Hash | Status     |
-| ------------------------------ | ---------------------------------- | ------------ | ---- | ---------- |
-| `update-guides-and-references` | Art Work / `$PROJECT` / `building` | `AUTONOMOUS` |      | `AUTHORED` |
+| ID                             | Repository / Checkout / Branch     | Policy       | Hash      | Status      |
+| ------------------------------ | ---------------------------------- | ------------ | --------- | ----------- |
+| `update-guides-and-references` | Art Work / `$PROJECT` / `building` | `AUTONOMOUS` | `ece02b7` | `COMMITTED` |
 
 ##### Commit: `update-guides-and-references`
 
