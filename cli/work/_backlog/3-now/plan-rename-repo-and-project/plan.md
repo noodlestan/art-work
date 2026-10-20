@@ -2,7 +2,7 @@
 
 **ID:** `rename-repo-and-project`
 
-**Status:** `READY`
+**Status:** `WORKING`
 
 **Template:** `$DOMAINS/plans/templates/plan.tart`
 
@@ -115,7 +115,7 @@ Rename one repository and one project across 4 owners: the in-repo records of `$
 
 **Dependencies:**
 
-- GitHub repository renamed before remotes are repointed.
+- GitHub repository renamed (done 2026-10-21); only the local remote repoint remains.
 
 ### (Scope) Repository: Art Work
 
@@ -211,7 +211,7 @@ Rename one repository and one project across 4 owners: the in-repo records of `$
 
 **Dependencies:**
 
-- GitHub repository renamed.
+- GitHub repository renamed (done 2026-10-21).
 
 ### (Scope) Project: Art Work (Noodlestan Web)
 
@@ -283,16 +283,15 @@ Execution occurs from `$WORKSPACE/`, with one commit per owner: `$ART_WORK` on b
 
 **Purpose:** Make Art Works the identity of the repository and the project at the source.
 
-**Description:** Rename the GitHub repository from `art-work` to `art-works`, then update the in-repo records and the repository-level mentions, leaving every package-name reference untouched.
+**Description:** Repoint the local remote to the renamed GitHub repository, then update the in-repo records and the repository-level mentions, leaving every package-name reference untouched.
 
 **Instructions Mode:** `INSTRUCTIONS_INLINED_IN_ITERATION`
 
 **Changes:**
 
-Use the GitHub CLI to rename the repository first, so the redirect from the old URL keeps working:
+Repoint the local remote to the renamed repository (the GitHub rename already happened on 2026-10-21, and the redirect from the old URL works):
 
 ```bash
-gh repo rename art-works --repo noodlestan/art-work
 git remote set-url origin git@github.com:noodlestan/art-works.git # in $ART_WORK
 ```
 
@@ -321,11 +320,11 @@ In `$ART_WORK/knowledge/index.md`:
 
 **Instructions:**
 
-Execute the Changes listed above; the GitHub rename happens before any record is touched.
+Execute the Changes listed above; the remote is repointed before any record is touched.
 
 Before starting:
 
-- Run `npm ci` from the `$WORKSPACE` root, and confirm `gh auth status` succeeds.
+- Run `npm ci` from the `$WORKSPACE` root.
 - Confirm Phase 1 (`migrate-planning-and-knowledge`) has delivered: the root `_roadmap/` and `_backlog/` hold only repository-level files and `.gitkeep` stage scaffolds — no CLI planning content remains in `$ART_WORK`.
 
 Validate that:
@@ -357,8 +356,8 @@ After executing:
 ```text
 records(art-work): Rename the repository and the project to Art Works.
 
-- Rename the GitHub repository `noodlestan/art-work` to `noodlestan/art-works`.
-- Repoint project, repository, and namespace records; package keeps its name.
+- Repoint the origin remote to `noodlestan/art-works`; repoint project, repository, and namespace records.
+- Package keeps its name.
 ```
 
 ### Iteration: Rename Workspace Records
@@ -650,7 +649,7 @@ Runs automatically on the pre-commit hook. All steps MUST pass. No `it.todo()` t
 
 ### Decisions
 
-- **GitHub rename first** — records and the website are repointed afterwards, so redirects cover the transition.
+- **GitHub rename first** — records and the website are repointed afterwards, so redirects cover the transition. Executed out-of-band on 2026-10-21; the plan only repoints the local remote.
 - **One commit per owner** — each checkout carries a single, revertable identity commit.
 - **Checkout locations unchanged** — record filenames follow the repository name, but `Location:` values stay so open sessions are not disturbed.
 
