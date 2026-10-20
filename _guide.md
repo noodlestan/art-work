@@ -1,8 +1,8 @@
-# Guide: Art Work
+# Guide: Art Works
 
-> Host and manage the Art Work orchestration tools and applications, and their planning artefacts.
+> Host and manage the Art Works orchestration tools and applications, and their planning artefacts.
 
-Monorepo containing the Art Work orchestration tools and applications. Hosts more than one CLI under `cli/`, and each CLI owns its own roadmap and backlog.
+Monorepo containing the Art Works orchestration tools and applications. Hosts more than one CLI under `cli/`, and each CLI owns its own roadmap and backlog.
 
 Uses Workflow: Planning Work with one backlog per CLI package, coordinating with Workflow: Roadmapping from one roadmap per CLI package.
 

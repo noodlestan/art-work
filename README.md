@@ -1,4 +1,4 @@
-# Art Work
+# Art Works
 
 > Manage multi-repository development environments for parallel planning and execution.
 

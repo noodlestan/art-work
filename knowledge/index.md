@@ -1,8 +1,8 @@
-# Knowledge: Art Work
+# Knowledge: Art Works
 
 ## Overview
 
-This directory contains knowledge documentation for the Art Work packages.
+This directory contains knowledge documentation for the Art Works packages.
 
 ## Documents
 

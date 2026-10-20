@@ -1,16 +1,16 @@
 # Module
 
-## Repository: Art Work
+## Repository: Art Works
 
-**Purpose:** Host and manage the Art Work orchestration tools and applications, and their planning artefacts.
+**Purpose:** Host and manage the Art Works orchestration tools and applications, and their planning artefacts.
 
-**Description:** Monorepo containing the Art Work roadmap, orchestration source code, and their backlogs.
+**Description:** Monorepo containing the Art Works roadmap, orchestration source code, and their backlogs.
 
-**Owner:** Project: Art Work
+**Owner:** Project: Art Works
 
 **Author:** Noodlestan Collective
 
-**Remote:** `git@github.com:noodlestan/art-work.git`
+**Remote:** `git@github.com:noodlestan/art-works.git`
 
 **Consumers:** TBD
 
