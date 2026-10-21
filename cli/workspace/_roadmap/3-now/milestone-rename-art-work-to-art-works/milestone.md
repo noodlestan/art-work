@@ -318,7 +318,7 @@ This section describes the ordered phases used to organise downstream work, iden
 
 ### Next
 
-Phase 2 is `ONGOING`: `rename-identity-records` is `DONE` (the identity records and the package identity are renamed, `@art-works/workspace-cli@0.3.0` is published, and the old `@art-work/cli` is deprecated with a final `0.2.1` release); `rename-workspace-records` is `SKIPPED` and the user takes the workspace records and the checkout locations over; `repoint-artificials-references` is `READY`; `regenerate-noodlestan-web-projects` waits for the workspace records; `sweep-remaining-references` waits for iterations 2 to 4.
+Phase 2 is `ONGOING`: `rename-identity-records` is `DONE` (the identity records and the package identity are renamed, `@art-works/workspace-cli@0.3.0` is published, and the old `@art-work/cli` is deprecated with a final `0.2.1` release); `rename-workspace-records` is `SKIPPED` and the user takes the workspace records and the checkout locations over; `repoint-artificials-references` is `DONE`; `regenerate-noodlestan-web-projects` waits for the workspace records; `sweep-remaining-references` waits for iterations 2 to 4.
 
 ### Blockers
 
@@ -422,4 +422,5 @@ Runs automatically on the pre-commit hook. All steps MUST pass.
 
 ### Feedback
 
+- **Record updates land as `plan` commits** (user, 2026-10-21) — the roadmap does not move while the plan executes; the replanned iteration details and this record commit under the `plan` type.
 - **The checkout scope was corrected** (2026-10-21) — the scope described `art-work-@-planning-checkout.art` and `art-work-planning` / `art-work-building` locations; the workspace holds a single `art-work-checkout.art` with `Location: art-work`, and the path variables pointed at a checkout directory that does not exist. The plan already described the real records; the milestone now matches them.
