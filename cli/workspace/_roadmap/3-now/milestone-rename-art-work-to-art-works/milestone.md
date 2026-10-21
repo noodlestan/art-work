@@ -22,14 +22,14 @@
 
 This section lists the path variables used throughout the milestone file and its downstream work items. All file references in the milestone and downstream work items MUST use these variables — never bare filesystem paths.
 
-| Variable          | Resolved Path                            | Purpose                                                 |
-| ----------------- | ---------------------------------------- | ------------------------------------------------------- |
-| `$WORKSPACE`      | Current working directory                | Workspace root directory.                               |
-| `$DOMAINS`        | `$WORKSPACE/.agents/domains`             | Domain resources directory.                             |
-| `$ART_WORK`       | `$WORKSPACE/checkouts/art-work-building` | Art Work repository; hosts this milestone.              |
-| `$ART_WORK_CLI`   | `$ART_WORK/cli/workspace`                | Art Workspace Cli package, and its roadmap and backlog. |
-| `$ARTIFICIALS`    | `$WORKSPACE/checkouts/artificials`       | Owns the project record; references to repoint.         |
-| `$NOODLESTAN_WEB` | `$WORKSPACE/checkouts/noodlestan-web`    | Hosts the project list and the website to redeploy.     |
+| Variable          | Resolved Path                         | Purpose                                                 |
+| ----------------- | ------------------------------------- | ------------------------------------------------------- |
+| `$WORKSPACE`      | Current working directory             | Workspace root directory.                               |
+| `$DOMAINS`        | `$WORKSPACE/.agents/domains`          | Domain resources directory.                             |
+| `$ART_WORK`       | `$WORKSPACE/checkouts/art-work`       | Art Works repository; hosts this milestone.             |
+| `$ART_WORK_CLI`   | `$ART_WORK/cli/workspace`             | Art Workspace Cli package, and its roadmap and backlog. |
+| `$ARTIFICIALS`    | `$WORKSPACE/checkouts/artificials`    | Owns the project record; references to repoint.         |
+| `$NOODLESTAN_WEB` | `$WORKSPACE/checkouts/noodlestan-web` | Hosts the project list and the website to redeploy.     |
 
 ## Summary
 
@@ -168,25 +168,25 @@ Rename the identity of one repository and one project across 4 owners — `$ART_
 
 - None.
 
-### (Scope) Checkout: Art Work @ planning
+### (Scope) Checkout: Art Work
 
-**Record:** `$WORKSPACE/_records/checkouts/art-work-@-planning-checkout.art`
+**Record:** `$WORKSPACE/_records/checkouts/art-work-checkout.art`
 
 **Role:** — Checkout records reference the repository by name and must follow the rename; locations are kept.
 
 **Partial:**
 
 - `repository` — Art Work
-- `location` — `art-work-planning` (sibling record: `art-work-@-building-checkout.art`, `art-work-building`)
-- `branch` — `main`
+- `location` — `art-work`
+- `branch` — `main` (stale; the checkout runs on `building`)
 
 **Changes:**
 
-- Repoint `Repository:` to `Art Works` in both checkout records; keep `Location:` unchanged.
+- Repoint `Repository:` to `Art Works`; keep `Location:` unchanged; correct `Branch:` to `building`.
 
 **Operations:**
 
-- Rename the record files to `art-works-@-{branch}-checkout.art`.
+- Rename the record file to `art-works-checkout.art` with a plain `mv`; the directory is gitignored.
 
 **Dependencies:**
 
@@ -266,7 +266,7 @@ Rename the identity of one repository and one project across 4 owners — `$ART_
 
 ## Execution Context
 
-Execution occurs from `$WORKSPACE/`, planning work in `$WORKSPACE/checkouts/art-work-building` on branch `building`, with record changes in `$WORKSPACE/_records`, `$ART_WORK/_records`, `$ARTIFICIALS/_records`, and `$NOODLESTAN_WEB/data`.
+Execution occurs from `$WORKSPACE/`, planning work in `$WORKSPACE/checkouts/art-work` on branch `building`, with record changes in `$WORKSPACE/_records`, `$ART_WORK/_records`, `$ARTIFICIALS/_records`, and `$NOODLESTAN_WEB/data`.
 
 ---
 
@@ -318,7 +318,7 @@ This section describes the ordered phases used to organise downstream work, iden
 
 ### Next
 
-Phase 2 is `ONGOING`: `rename-identity-records` is `DONE` (the identity records and the package identity are renamed) and `rename-workspace-records` is `SKIPPED` until the new CLI is installed and the workspaces restart.
+Phase 2 is `ONGOING`: `rename-identity-records` is `DONE` (the identity records and the package identity are renamed, `@art-works/workspace-cli@0.3.0` is published, and the old `@art-work/cli` is deprecated with a final `0.2.1` release); `rename-workspace-records` is `SKIPPED` and the user takes the workspace records and the checkout locations over; `repoint-artificials-references` is `READY`; `regenerate-noodlestan-web-projects` waits for the workspace records; `sweep-remaining-references` waits for iterations 2 to 4.
 
 ### Blockers
 
@@ -379,17 +379,19 @@ Runs automatically on the pre-commit hook. All steps MUST pass.
 
 ### Not In Scope
 
-- **Checkout locations** — `Location: art-work-planning` and `Location: art-work-building` stay as they are; renaming them is a follow-up.
+- **Checkout locations** — `Location: art-work` stays as it is; renaming it is a follow-up.
 - **Application: Art Work Website (PLANNED)** — planned members of the project keep their names; renaming them is a separate decision.
 - **Repository transfer** — only the repository name changes; it stays in the `noodlestan` org.
-- **Workspace script name** — `npm run art-work` keeps its name; the workspace is out of scope for this round.
+- **Workspace script name** — `npm run art-work` keeps its name; the workspace tooling dependency moved to the new package.
 - **Archived records, changelogs, and decision records** — they keep the old names as history.
 
 ### Evidence
 
 - **`noodlestan/art-works` resolves** and `noodlestan/art-work` redirects to it.
-- **No stale identity** — searching `Art Work` (case-sensitive) across `$WORKSPACE/_records`, `$ART_WORK/_records`, `$ARTIFICIALS/_records`, and `$NOODLESTAN_WEB/data` returns only the new `Art Works` identity plus the planned-member names (`Art Work Website`, `Art Work Tool`); searching `art-work` returns only `art-works`, the kept checkout locations (`art-work-planning`, `art-work-building`), and the workspace script name (`npm run art-work`).
+- **No stale identity** — searching `Art Work` (case-sensitive) across `$WORKSPACE/_records`, `$ART_WORK/_records`, `$ARTIFICIALS/_records`, and `$NOODLESTAN_WEB/data` returns only the new `Art Works` identity plus the planned-member names (`Art Work Website`, `Art Work Tool`); searching `art-work` returns only `art-works`, the kept checkout location (`art-work`), and the workspace script name (`npm run art-work`).
 - **Website shows Art Works** — the rebuilt and redeployed site lists `Project: Art Works` with the new repository URL.
+- **`@art-works/workspace-cli@0.3.0` is published** and the global install resolves the `art-workspace-cli` bin.
+- **`@art-work/cli` is deprecated** — `0.2.1` carries the deprecation notice and the registry marks the package deprecated.
 
 ### Findings
 
@@ -403,6 +405,8 @@ Runs automatically on the pre-commit hook. All steps MUST pass.
 - **GitHub rename first** — the repository is renamed before records are repointed, so GitHub redirects keep every old URL working during the switch.
 - **Package keeps its name** — the repository and the project only are renamed, so the repository can host more CLIs and tools. Superseded on 2026-10-21: the package identity moved with the repository to `@art-works/workspace-cli` (bin `art-workspace-cli`, path `cli/workspace`).
 - **The workspace records wait** (user, 2026-10-21) — the workspace records move after the new CLI is installed and the workspaces restart.
+- **The old package is deprecated, not replaced** (user, 2026-10-21) — `@art-work/cli@0.2.1` was published from the `0.2.0` source with a deprecation notice; the registry marks the package deprecated and `0.2.0` stays the last feature release.
+- **The reference sweep is its own iteration** (user, 2026-10-21) — the zero-reference pass runs after the record renames and covers the known artefacts plus the workspace guide, the agent domains, and the sibling repositories.
 
 ### Knowledge to Update
 
@@ -411,9 +415,11 @@ Runs automatically on the pre-commit hook. All steps MUST pass.
 
 ### Follow Ups
 
-- **Rename checkout locations** — `art-work-planning` and `art-work-building` to `art-works-*` once no session runs inside them.
+- **Rename checkout location** — `art-work` to `art-works` once no session runs inside it.
 - **Update Management references** — repoint `$MANAGEMENT` milestones and records that reference `art-work` paths.
+- **Decide the workspace script name** — `npm run art-work` keeps its name; renaming it touches the guide, the agent templates, and the `$NOODLESTAN_WEB` copy script.
+- **Decide the config cache directory** — `node_modules/.art-work` is a published constant; renaming it invalidates the existing cache and ships with the next release.
 
 ### Feedback
 
-- None.
+- **The checkout scope was corrected** (2026-10-21) — the scope described `art-work-@-planning-checkout.art` and `art-work-planning` / `art-work-building` locations; the workspace holds a single `art-work-checkout.art` with `Location: art-work`, and the path variables pointed at a checkout directory that does not exist. The plan already described the real records; the milestone now matches them.
