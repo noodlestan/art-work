@@ -6,14 +6,7 @@ This file tracks the forward-looking plan: why, principles, NFRs, definitions, c
 
 Agents SHOULD scan these files for relevant clarifications when faced with ambiguity or omissions that may result from missing definitions.
 
-- `cli/work/knowledge/index.md` — How the Art Work Cli is structured, how it works, and its use cases.
-- `cli/work/knowledge/config.md` — The configuration system.
-- `cli/work/knowledge/commands.md` — The command surface, procedures, and edge cases.
-- `cli/work/knowledge/context-model.md` — Records and `WorkspaceContext`, `CheckoutStore`, `Checkout`.
-- `cli/work/knowledge/operations-log.md` — How operations are logged.
-- `cli/work/knowledge/reports.md` — How state and operation logs are presented.
-- `cli/work/knowledge/_pseudo.md` — the CLI pseudo-code contract: data structures, use cases, and auxiliary functions.
-- Decision records in `knowledge/records/adr/`: `cli.art`, `execution-model.art`, and `publish.art`.
+- `cli/workspace/knowledge/index.md` — How the Art Workspace Cli is structured, how it works, and its use cases.
 
 ## Why
 
@@ -26,7 +19,7 @@ The Noodlestan ecosystem spans multiple independent repositories (`artificials`,
 - Publish packages to npm before they can be consumed across repos.
 - The workspace owns cross-repo workflow; repos own their hooks and CI.
 - The workspace `context` checkout must never commit to an extracted project.
-- Workspace tooling lives in the artificial ecosystem (`@art-work/cli`) and cli libraries in `@art-lib/lib-*`.
+- Workspace tooling lives in the artificial ecosystem (`@art-works/workspace-cli`) and cli libraries in `@art-lib/lib-*`.
 - Records are the source of truth; generated files (`.art-workspace.mts`) are derived from records.
 - **Imperative first, reactive later.** Commands run as one-shot processes now; the store and log are in-memory per invocation. The design must stay clean enough that `npm run workspace watch` can subscribe to filesystem events and re-scan without rearchitecting. See `knowledge/records/adr/execution-model.art`.
 

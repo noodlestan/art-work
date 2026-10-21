@@ -36,7 +36,6 @@ Complete the workspace CLI across 3 phases: establish the CLI baseline, implemen
 | Kind        | Path                                | Role                                                            |
 | ----------- | ----------------------------------- | --------------------------------------------------------------- |
 | Parking Lot | `$PROJECT/_backlog/_parking-lot.md` | Tracks short-term actionables, pending questions, and blockers. |
-| Source      | `$PROJECT/_roadmap/_architect.md`   | Architect Briefing: Workspace CLI (Milestone 1)                 |
 
 ### Required Skills
 
@@ -52,7 +51,7 @@ Complete the workspace CLI across 3 phases: establish the CLI baseline, implemen
 
 ### Knowledge
 
-::READ `_roadmap/_architect.md` (Briefing) — Workspace principles, NFRs, milestones. Relevant for Planning Work Item.
+::READ `$PROJECT/cli/workspace/knowledge/index.md` (Knowledge) — Project.
 
 ---
 
@@ -143,7 +142,7 @@ Complete the workspace CLI across 3 phases: establish the CLI baseline, implemen
 | 3     | Plan: Extract Workspace Cli to Art Work `_backlog/0-archive/2026-09-06-plan-extract-workspace-cli-art-work/plan.md`          | `ARCHIVED` |
 | 3     | Plan: Extract Read/Write Records to Art Cli `_backlog/0-archive/2026-09-06-plan-extract-read-write-records-art-lib/plan.md`  | `ARCHIVED` |
 | 3     | Plan: Improvements and Fixes `_backlog/0-archive/2026-09-12-plan-improvements-and-fixes/plan.md`                             | `ARCHIVED` |
-| 3     | Plan: Make Art Work Cli work from global install `_backlog/4-next/plan-art-work-cli-global-install/plan.md`                  | `PLANNING` |
+| 3     | Plan: Make Art Workspace Cli work from global install `_backlog/4-next/plan-art-work-cli-global-install/plan.md`             | `PLANNING` |
 | 3     | Plan: Optimize Tests and Update Knowledge `_backlog/4-next/plan-optimize-tests-update-knowledge/plan.md`                     | `DRAFT`    |
 | 3     | Plan: Add Config Cache `_backlog/3-now/plan-add-config-cache/plan.md`                                                        | `DRAFT`    |
 | -     |                                                                                                                              |            |
@@ -200,7 +199,7 @@ Complete the workspace CLI across 3 phases: establish the CLI baseline, implemen
 ### Decisions
 
 - Phase 3 splits the move plan into 4 plans: create art-lib repo, create art-work repo, extract workspace cli to art-work, extract read/write records to art-lib.
-- The workspace CLI moves to `noodlestan/art-work` (canonical `@art-work/cli`); the shared records lib lives in `noodlestan/art-lib` (canonical `@art-lib/lib-records`).
+- The workspace CLI moves to `noodlestan/art-works` (canonical `@art-works/workspace-cli`); the shared records lib lives in `noodlestan/art-lib` (canonical `@art-lib/lib-records`).
 - The superseded plan `plan-move-code-project-art-lib` is archived.
 
 ### Knowledge to Update

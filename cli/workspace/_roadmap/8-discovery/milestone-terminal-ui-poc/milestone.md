@@ -25,7 +25,7 @@
 | `$WORKSPACE`    | Current working directory    | Workspace root directory                                               |
 | `$DOMAINS`      | `$WORKSPACE/.agents/domains` | Domain resources directory                                             |
 | `$ART_WORK`     | Provided with prompt.        | Art Work repository. Example: `$WORKSPACE/checkouts/art-work-planning` |
-| `$ART_WORK_CLI` | `$ART_WORK/cli/work`         | The Art Work Cli package, and its roadmap and backlog.                 |
+| `$ART_WORK_CLI` | `$ART_WORK/cli/workspace`    | The Art Workspace Cli package, and its roadmap and backlog.            |
 
 ## Summary
 
@@ -60,7 +60,7 @@ Build a static-display terminal UI — live checkout states, an operations panel
 
 ## Scope
 
-A proof-of-concept terminal UI in `cli/work`: four panels — checkout states, operations, stream, queue — driven by existing scan and operation data. Static display first; live updates come from the reactive milestone.
+A proof-of-concept terminal UI in `cli/workspace`: four panels — checkout states, operations, stream, queue — driven by existing scan and operation data. Static display first; live updates come from the reactive milestone.
 
 ## Phases
 

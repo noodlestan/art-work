@@ -8,9 +8,9 @@
 
 **Skill:** `write-milestone`
 
-**Purpose:** Rename the repository and the project from Art Work to Art Works so the repository can host more CLIs and tools, without renaming the Art Work Cli package.
+**Purpose:** Rename the repository and the project from Art Work to Art Works so the repository can host more CLIs and tools, moving the package identity along with them.
 
-**Description:** Milestone record with 2 phases and 2 plans, coordinating the relocation of the remaining planning artefacts into `cli/work/` (re-scaffolding the root trees for repository-level planning) and the rename of the repository and project across `$ART_WORK`, `$WORKSPACE/_records`, `$ARTIFICIALS`, and `$NOODLESTAN_WEB`.
+**Description:** Milestone record with 2 phases and 2 plans, coordinating the relocation of the remaining planning artefacts into `cli/workspace/` (re-scaffolding the root trees for repository-level planning) and the rename of the repository and project across `$ART_WORK`, `$WORKSPACE/_records`, `$ARTIFICIALS`, and `$NOODLESTAN_WEB`.
 
 ## Mandatory Reading
 
@@ -22,18 +22,18 @@
 
 This section lists the path variables used throughout the milestone file and its downstream work items. All file references in the milestone and downstream work items MUST use these variables — never bare filesystem paths.
 
-| Variable          | Resolved Path                            | Purpose                                             |
-| ----------------- | ---------------------------------------- | --------------------------------------------------- |
-| `$WORKSPACE`      | Current working directory                | Workspace root directory.                           |
-| `$DOMAINS`        | `$WORKSPACE/.agents/domains`             | Domain resources directory.                         |
-| `$ART_WORK`       | `$WORKSPACE/checkouts/art-work-building` | Art Work repository; hosts this milestone.          |
-| `$ART_WORK_CLI`   | `$ART_WORK/cli/work`                     | Art Work Cli package, and its roadmap and backlog.  |
-| `$ARTIFICIALS`    | `$WORKSPACE/checkouts/artificials`       | Owns the project record; references to repoint.     |
-| `$NOODLESTAN_WEB` | `$WORKSPACE/checkouts/noodlestan-web`    | Hosts the project list and the website to redeploy. |
+| Variable          | Resolved Path                            | Purpose                                                 |
+| ----------------- | ---------------------------------------- | ------------------------------------------------------- |
+| `$WORKSPACE`      | Current working directory                | Workspace root directory.                               |
+| `$DOMAINS`        | `$WORKSPACE/.agents/domains`             | Domain resources directory.                             |
+| `$ART_WORK`       | `$WORKSPACE/checkouts/art-work-building` | Art Work repository; hosts this milestone.              |
+| `$ART_WORK_CLI`   | `$ART_WORK/cli/workspace`                | Art Workspace Cli package, and its roadmap and backlog. |
+| `$ARTIFICIALS`    | `$WORKSPACE/checkouts/artificials`       | Owns the project record; references to repoint.         |
+| `$NOODLESTAN_WEB` | `$WORKSPACE/checkouts/noodlestan-web`    | Hosts the project list and the website to redeploy.     |
 
 ## Summary
 
-Rename the repository and the project to Art Works in 2 phases — relocate the remaining `_roadmap/` and `_backlog/` content into `$ART_WORK_CLI` and re-scaffold the root trees for repository-level planning, then rename the repository and project identity across `$WORKSPACE/_records`, `$ARTIFICIALS`, and `$NOODLESTAN_WEB` — so the repository can host more CLIs and tools while `@art-work/cli` keeps its name; coordinated from the ONGOING items in `$ART_WORK/_backlog/_parking-lot.md`.
+Rename the repository and the project to Art Works in 2 phases — relocate the remaining `_roadmap/` and `_backlog/` content into `$ART_WORK_CLI` and re-scaffold the root trees for repository-level planning, then rename the repository and project identity across `$WORKSPACE/_records`, `$ARTIFICIALS`, and `$NOODLESTAN_WEB` — so the repository can host more CLIs and tools, with the package identity moving to `@art-works/workspace-cli`; coordinated from the ONGOING items in `$ART_WORK/_backlog/_parking-lot.md`.
 
 ## Context
 
@@ -94,7 +94,7 @@ Agents SHOULD scan these files for relevant clarifications when faced by ambigui
 
 ## Scope
 
-Rename the identity of one repository and one project across 4 owners — `$ART_WORK` records, `$WORKSPACE` records, the project reference held by `$ARTIFICIALS`, and the generated project list in `$NOODLESTAN_WEB` — plus the GitHub repository name; the `@art-work/cli` package, the `art-work` script names, and the existing checkout locations stay unchanged.
+Rename the identity of one repository and one project across 4 owners — `$ART_WORK` records, `$WORKSPACE` records, the project reference held by `$ARTIFICIALS`, and the generated project list in `$NOODLESTAN_WEB` — plus the GitHub repository name and the package identity (`@art-works/workspace-cli`); the workspace script names and the existing checkout locations stay unchanged.
 
 ### (Scope) Project: Art Work
 
@@ -106,7 +106,7 @@ Rename the identity of one repository and one project across 4 owners — `$ART_
 
 - `name` — Art Work
 - `repository` — Repository: Art Work
-- `members` — Package: Art Work Cli; Package: Art Board Cli (PLANNED); Application: Art Work Website (PLANNED); Tool: Art Work Tool (PLANNED)
+- `members` — Package: Art Workspace Cli; Package: Art Board Cli (PLANNED); Application: Art Work Website (PLANNED); Tool: Art Work Tool (PLANNED)
 
 **Changes:**
 
@@ -240,24 +240,25 @@ Rename the identity of one repository and one project across 4 owners — `$ART_
 
 - Workspace repository record and the `$ART_WORK` project record renamed first.
 
-### (Scope) Package: Art Work Cli
+### (Scope) Package: Art Workspace Cli
 
 **Record:** `$ART_WORK_CLI/_records/package.art`
 
-**Role:** — Anchor verified unchanged: only the repository and the project are renamed.
+**Role:** — Renamed together with the repository and the project.
 
 **Partial:**
 
-- `canonicalName` — `@art-work/cli`
-- `bin` — `art-work-cli`
+- `canonicalName` — `@art-works/workspace-cli`
+- `bin` — `art-workspace-cli`
+- `path` — `cli/workspace`
 
 **Changes:**
 
-- None.
+- Rename the package, its bin, and its path; update the manifest, the deployment record, the imports, the docs, the tests, and every `$PROJECT` reference to the old path and names.
 
 **Operations:**
 
-- Verify that `npm run art-work` and `@art-work/cli` references still resolve after the rename.
+- Verify that `@art-works/workspace-cli` and `art-workspace-cli` references resolve after the rename; the `npm run art-work` workspace script keeps its name.
 
 **Dependencies:**
 
@@ -273,14 +274,14 @@ Execution occurs from `$WORKSPACE/`, planning work in `$WORKSPACE/checkouts/art-
 
 This section describes the ordered phases used to organise downstream work, identifying blocking dependencies across resources of different owners.
 
-| Index | Name                                        | Status  |
-| ----- | ------------------------------------------- | ------- |
-| 1     | Relocate planning artefacts into `cli/work` | `DONE`  |
-| 2     | Rename repository and project to Art Works  | `READY` |
+| Index | Name                                             | Status    |
+| ----- | ------------------------------------------------ | --------- |
+| 1     | Relocate planning artefacts into `cli/workspace` | `DONE`    |
+| 2     | Rename repository and project to Art Works       | `ONGOING` |
 
-### Phase: 1 — Relocate planning artefacts into `cli/work`
+### Phase: 1 — Relocate planning artefacts into `cli/workspace`
 
-**Goal:** Give the Art Work Cli ownership of its roadmap and backlog before identities move, keeping the root trees free for repository-level planning.
+**Goal:** Give the Art Workspace Cli ownership of its roadmap and backlog before identities move, keeping the root trees free for repository-level planning.
 
 **Description:** Move the remaining root `_roadmap/` and `_backlog/` entries into `$ART_WORK_CLI`, re-scaffold the emptied root trees with `.gitkeep` stages, verify both guides already describe the split, and leave no stale reference.
 
@@ -306,10 +307,10 @@ This section describes the ordered phases used to organise downstream work, iden
 
 ## Items:
 
-| Phase | Resource / Record                                                                                               | Status  |
-| ----- | --------------------------------------------------------------------------------------------------------------- | ------- |
-| 1     | Plan: Migrate Planning and Knowledge `$ART_WORK_CLI/_backlog/3-now/plan-migrate-planning-and-knowledge/plan.md` | `DONE`  |
-| 2     | Plan: Rename Repo and Project `$ART_WORK_CLI/_backlog/3-now/plan-rename-repo-and-project/plan.md`               | `READY` |
+| Phase | Resource / Record                                                                                               | Status    |
+| ----- | --------------------------------------------------------------------------------------------------------------- | --------- |
+| 1     | Plan: Migrate Planning and Knowledge `$ART_WORK_CLI/_backlog/3-now/plan-migrate-planning-and-knowledge/plan.md` | `DONE`    |
+| 2     | Plan: Rename Repo and Project `$ART_WORK_CLI/_backlog/3-now/plan-rename-repo-and-project/plan.md`               | `WORKING` |
 
 ---
 
@@ -317,7 +318,7 @@ This section describes the ordered phases used to organise downstream work, iden
 
 ### Next
 
-Delegate `move-roadmap-into-cli-work`, the first `READY` iteration of Phase 1; Phase 2 waits for Phase 1 to deliver before `rename-identity-records` starts.
+Phase 2 is `ONGOING`: `rename-identity-records` is `DONE` (the identity records and the package identity are renamed) and `rename-workspace-records` is `SKIPPED` until the new CLI is installed and the workspaces restart.
 
 ### Blockers
 
@@ -378,15 +379,16 @@ Runs automatically on the pre-commit hook. All steps MUST pass.
 
 ### Not In Scope
 
-- **Package: Art Work Cli** — `@art-work/cli`, `art-work-cli`, and the `npm run art-work` script keep their names; only the repository and the project are renamed.
 - **Checkout locations** — `Location: art-work-planning` and `Location: art-work-building` stay as they are; renaming them is a follow-up.
 - **Application: Art Work Website (PLANNED)** — planned members of the project keep their names; renaming them is a separate decision.
 - **Repository transfer** — only the repository name changes; it stays in the `noodlestan` org.
+- **Workspace script name** — `npm run art-work` keeps its name; the workspace is out of scope for this round.
+- **Archived records, changelogs, and decision records** — they keep the old names as history.
 
 ### Evidence
 
 - **`noodlestan/art-works` resolves** and `noodlestan/art-work` redirects to it.
-- **No stale identity** — searching `Art Work` (case-sensitive) across `$WORKSPACE/_records`, `$ART_WORK/_records`, `$ARTIFICIALS/_records`, and `$NOODLESTAN_WEB/data` returns only the new `Art Works` identity plus the package and planned-member names (`Art Work Cli`, `Art Work Website`, `Art Work Tool`); searching `art-work` returns only `art-works`, the kept checkout locations (`art-work-planning`, `art-work-building`), and the package names (`@art-work/cli`, `art-work-cli`, `npm run art-work`).
+- **No stale identity** — searching `Art Work` (case-sensitive) across `$WORKSPACE/_records`, `$ART_WORK/_records`, `$ARTIFICIALS/_records`, and `$NOODLESTAN_WEB/data` returns only the new `Art Works` identity plus the planned-member names (`Art Work Website`, `Art Work Tool`); searching `art-work` returns only `art-works`, the kept checkout locations (`art-work-planning`, `art-work-building`), and the workspace script name (`npm run art-work`).
 - **Website shows Art Works** — the rebuilt and redeployed site lists `Project: Art Works` with the new repository URL.
 
 ### Findings
@@ -399,7 +401,8 @@ Runs automatically on the pre-commit hook. All steps MUST pass.
 
 - **Migrate before rename** — planning artefacts settle in `$ART_WORK_CLI` first so the rename does not move paths twice.
 - **GitHub rename first** — the repository is renamed before records are repointed, so GitHub redirects keep every old URL working during the switch.
-- **Package keeps its name** — the repository and the project only are renamed, so the repository can host more CLIs and tools.
+- **Package keeps its name** — the repository and the project only are renamed, so the repository can host more CLIs and tools. Superseded on 2026-10-21: the package identity moved with the repository to `@art-works/workspace-cli` (bin `art-workspace-cli`, path `cli/workspace`).
+- **The workspace records wait** (user, 2026-10-21) — the workspace records move after the new CLI is installed and the workspaces restart.
 
 ### Knowledge to Update
 

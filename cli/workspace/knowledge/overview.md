@@ -1,10 +1,10 @@
-# Overview: Art Work Cli
+# Overview: Art Workspace Cli
 
-**Purpose:** Provide an overview of the Art Work Cli and inform authors about its benefits, definitions, use cases, and how it works.
+**Purpose:** Provide an overview of the Art Workspace Cli and inform authors about its benefits, definitions, use cases, and how it works.
 
 ## What
 
-Art Work Cli (`@art-work/cli`) is a workspace meta-repo tool that orchestrates cross-repo work within an ecosystem. It discovers and clones repositories, branches across checkouts, symlinks packages for local development, checks repository status, and publishes packages.
+Art Workspace Cli (`@art-works/workspace-cli`) is a workspace meta-repo tool that orchestrates cross-repo work within an ecosystem. It discovers and clones repositories, branches across checkouts, symlinks packages for local development, checks repository status, and publishes packages.
 
 ## Why
 
@@ -39,7 +39,7 @@ An ecosystem spans multiple independent repositories (`artificial`, `purrception
 
 ### CLI Execution Model
 
-**CLI package** (`@art-work/cli`) — hosts the orchestration commands (`clone`, `branch`, `link`, `unlink`, `sanity`, `publish`).
+**CLI package** (`@art-works/workspace-cli`) — hosts the orchestration commands (`clone`, `branch`, `link`, `unlink`, `sanity`, `publish`).
 
 The workspace owns:
 

@@ -8,7 +8,7 @@
 
 **Skill:** `write-plan`
 
-**Purpose:** Implement `art-workspace packages run <command> [<checkouts...>] [<packages...>]` — run arbitrary commands across packages in selected checkouts.
+**Purpose:** Implement `art-workspace-cli packages run <command> [<checkouts...>] [<packages...>]` — run arbitrary commands across packages in selected checkouts.
 
 **Description:** TBD — name, params, and exact behaviour to be decided. The command should accept a shell command and optional filters for checkouts and packages, then execute the command in each matching package directory.
 
@@ -33,11 +33,10 @@ Implement a `packages run` command that runs an arbitrary shell command across p
 
 ### Upstream Work
 
-| Kind                  | Path                                                              | Role                                                            |
-| --------------------- | ----------------------------------------------------------------- | --------------------------------------------------------------- |
-| Parking Lot           | `$PROJECT/_backlog/_parking-lot.md`                               | Tracks short-term actionables, pending questions, and blockers. |
-| Architecture Briefing | `_roadmap/_architect.md`                                          | Art Work principles, NFRs, milestones.                          |
-| Milestone             | `$PROJECT/_roadmap/3-now/milestone-art-work-cli-one/milestone.md` | Coordinates this plan within the Art Work Cli One milestone.    |
+| Kind        | Path                                                              | Role                                                              |
+| ----------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- |
+| Parking Lot | `$PROJECT/_backlog/_parking-lot.md`                               | Tracks short-term actionables, pending questions, and blockers.   |
+| Milestone   | `$PROJECT/_roadmap/3-now/milestone-art-work-cli-one/milestone.md` | Coordinates this plan within the Art Workspace Cli One milestone. |
 
 ### Required Skills
 
@@ -52,7 +51,6 @@ Implement a `packages run` command that runs an arbitrary shell command across p
 
 ### Knowledge
 
-::READ `_roadmap/_architect.md` (Briefing) — Workspace principles, NFRs, milestones. Relevant for Planning Work Item.
 ::READ `knowledge/commands.md` (Design) — TBD — command surface to be designed.
 ::READ `knowledge/_pseudo.md` (Pseudo-code) — TBD — pseudo-code contract to be drafted.
 ::READ `knowledge/context-model.md` (Model) — WorkspaceContext, CheckoutStore, project records. Relevant for Planning Work Item.
@@ -131,7 +129,7 @@ All steps MUST pass. No `it.todo()` tests may remain.
 
 **Status:** `DRAFT`
 
-**Purpose:** Implement `art-workspace packages run <command> [<checkouts...>] [<packages...>]` end-to-end.
+**Purpose:** Implement `art-workspace-cli packages run <command> [<checkouts...>] [<packages...>]` end-to-end.
 
 **Description:** TBD — command name, parameters, and exact behaviour to be decided. The command will need to resolve checkouts, resolve packages within them, and execute the given command in each matching package directory.
 

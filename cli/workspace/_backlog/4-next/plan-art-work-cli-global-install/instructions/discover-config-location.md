@@ -43,7 +43,7 @@ The plan workflow (see the entry point guide → Planning Workflow → Working T
 
 This section describes the goal(s) of this iteration.
 
-Make the Art Work Cli execute independently of its source checkout when installed globally by discovering the configuration file in the current working directory and its parent directories, compiling it to a hidden `.art` temp directory, applying default config values when not found, and displaying the active configuration on every run.
+Make the Art Workspace Cli execute independently of its source checkout when installed globally by discovering the configuration file in the current working directory and its parent directories, compiling it to a hidden `.art` temp directory, applying default config values when not found, and displaying the active configuration on every run.
 
 ## Mandatory Reading
 
@@ -52,9 +52,8 @@ This section lists the documentation and reference files the sub-agent needs to 
 - RULE: You MUST follow any links under `## Mandatory Reading` sections found in the listed files.
 - RULE: If you are unable to read a file linked under `## Mandatory Reading` you must stop and REPORT A BLOCKER.
 
-- knowledge: `$ART_WORK/cli/work/knowledge/index.md`
-- briefing: `$ART_WORK/_roadmap/_architect.md`
-- config loader: `$ART_WORK/cli/work/src/config/loadWorkspaceConfig.ts` (current manifest/temp file handling)
+- knowledge: `$ART_WORK/cli/workspace/knowledge/index.md`
+- config loader: `$ART_WORK/cli/workspace/src/config/loadWorkspaceConfig.ts` (current manifest/temp file handling)
 
 ---
 
@@ -118,7 +117,7 @@ This section contains the detailed steps to execute, including commit steps.
 
 ### Step `1 / 4` — Discover configuration by scanning parent dirs
 
-Implement configuration discovery in `$ART_WORK/cli/work/src/private/cli/createConfig.ts` (created in the `refactor-config-semantics` iteration). Replace the `// WIP: Config discovery next.` placeholder with logic that:
+Implement configuration discovery in `$ART_WORK/cli/workspace/src/private/cli/createConfig.ts` (created in the `refactor-config-semantics` iteration). Replace the `// WIP: Config discovery next.` placeholder with logic that:
 
 - Starts from the current working directory and walks up through parent directories.
 - Looks for the workspace config manifest file (`.art-workspace.mts`) at each level.
@@ -138,14 +137,14 @@ In this scenario, checkouts are assumed at `checkouts` and, if repos are added, 
 **Message:**
 
 ```text
-build(art-work-cli): Discover configuration file.
+build(art-workspace-cli): Discover configuration file.
 ```
 
 ---
 
 ### Step `3 / 4` — Compile config to a hidden `.art` dir and show config options
 
-Extend the config loading so that the discovered config file is compiled to a hidden `.art` temp directory (reusing the existing esbuild bundling approach in `$ART_WORK/cli/work/src/config/loadWorkspaceConfig.ts`).
+Extend the config loading so that the discovered config file is compiled to a hidden `.art` temp directory (reusing the existing esbuild bundling approach in `$ART_WORK/cli/workspace/src/config/loadWorkspaceConfig.ts`).
 
 Advertise the active configuration on every run:
 
@@ -163,7 +162,7 @@ Advertise the active configuration on every run:
 **Message:**
 
 ```text
-build(art-work-cli): Compile config to .art directory.
+build(art-workspace-cli): Compile config to .art directory.
 ```
 
 ---
@@ -175,7 +174,7 @@ build(art-work-cli): Compile config to .art directory.
 **Message:**
 
 ```text
-build(art-work-cli): Show config options.
+build(art-workspace-cli): Show config options.
 ```
 
 ---

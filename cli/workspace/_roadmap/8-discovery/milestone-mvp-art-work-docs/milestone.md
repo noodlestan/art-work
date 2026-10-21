@@ -8,7 +8,7 @@
 
 **Skill:** `write-milestone`
 
-**Purpose:** Define and deliver the minimal documentation set for the Art Work Cli, with API docs extracted by a library.
+**Purpose:** Define and deliver the minimal documentation set for the Art Workspace Cli, with API docs extracted by a library.
 
 **Description:** Establish what must be documented, then extract API documentation from source using a library. Candidates are `@purrception/lang-ts` extract — which may need rebuilding and republishing — and the language-agnostic `tree-sitter-language-pack`. A further option is to migrate `@purrception/lang-ts` onto tree-sitter and keep only the classification and bundling needed for the symbol-resolution and type-resolution use cases.
 
@@ -25,7 +25,7 @@
 | `$WORKSPACE`    | Current working directory    | Workspace root directory                                               |
 | `$DOMAINS`      | `$WORKSPACE/.agents/domains` | Domain resources directory                                             |
 | `$ART_WORK`     | Provided with prompt.        | Art Work repository. Example: `$WORKSPACE/checkouts/art-work-planning` |
-| `$ART_WORK_CLI` | `$ART_WORK/cli/work`         | The Art Work Cli package, and its roadmap and backlog.                 |
+| `$ART_WORK_CLI` | `$ART_WORK/cli/workspace`    | The Art Workspace Cli package, and its roadmap and backlog.            |
 | `$PURRCEPTION`  | Provided with prompt.        | Purrception repository. Example: `$WORKSPACE/checkouts/purrception`    |
 
 ## Summary
@@ -61,7 +61,7 @@ Decide the minimal documentation set for the CLI and the extraction library that
 
 ## Scope
 
-The minimal documentation set for `cli/work`, and the library that extracts API docs from its TypeScript source. Purrception library work is upstream, not in this CLI.
+The minimal documentation set for `cli/workspace`, and the library that extracts API docs from its TypeScript source. Purrception library work is upstream, not in this CLI.
 
 ## Phases
 

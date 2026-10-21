@@ -1,4 +1,4 @@
-# Art Work Cli - Reports
+# Art Workspace Cli - Reports
 
 **Purpose:** Describe how commands present their findings and side effects as markdown tables.
 

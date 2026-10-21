@@ -1,12 +1,12 @@
-# Guide: Art Work Cli
+# Guide: Art Workspace Cli
 
-The Art Work Cli package (`@art-work/cli`, binary `art-work-cli`) orchestrates cross-repo work for the Noodlestan ecosystem. It clones repositories, branches across them, symlinks packages for local development, checks repository status, and publishes packages.
+The Art Workspace Cli package (`@art-works/workspace-cli`, binary `art-workspace-cli`) orchestrates cross-repo work for the Noodlestan ecosystem. It clones repositories, branches across them, symlinks packages for local development, checks repository status, and publishes packages.
 
 ## Recommended Reading
 
 Agents SHOULD scan these files for relevant clarifications when faced with ambiguity or omissions that may result from missing definitions.
 
-- `_guide.md` — the Art Work Cli overview, plan workflow, and agent interactions.
+- `_guide.md` — the Art Workspace Cli overview, plan workflow, and agent interactions.
 - `knowledge/index.md` — use cases, principles, decision records, and designs for the commands, configuration, context model, operations, reports, and dependencies.
 
 ## Package Layout
@@ -57,13 +57,11 @@ This CLI uses the following workflows:
 
 - This CLI's roadmap lives at `_roadmap/` with subdirectories such as `3-now`, `4-next`, `6-plan`, `8-discovery`, and `9-inbox`.
 - The short-term roadmapping focus is captured in `_roadmap/_parking-lot.md`.
-- The requirements, use cases, and principles are captured in `_roadmap/_architect.md`.
 
 ### Planning Work
 
 - This CLI's backlog lives at `_backlog/` with subdirectories such as `3-now`, `4-next`, and `6-plan`.
 - The short-term focus is captured in `_backlog/_parking-lot.md`.
-- Planning coordination and constraints are captured in `_backlog/_architect.md`.
 
 ## Operating Instructions
 

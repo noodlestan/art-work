@@ -1,4 +1,4 @@
-# Plan: Art Work Cli — Link Command
+# Plan: Art Workspace Cli — Link Command
 
 **ID:** `implement-link`
 
@@ -8,7 +8,7 @@
 
 **Skill:** `write-plan`
 
-**Purpose:** Implement `art-workspace link <location> <package> [<target>]` for `@art-work/cli`.
+**Purpose:** Implement `art-workspace-cli link <location> <package> [<target>]` for `@art-works/workspace-cli`.
 
 **Description:** Symlink a source package from a repo checkout into a target `node_modules` for local development, replacing the stub at `src/commands/link/runLink.ts`.
 
@@ -33,11 +33,10 @@ Implement the link command for local package symlinking, supporting scoped packa
 
 ### Upstream Work
 
-| Kind                  | Path                                                              | Role                                                            |
-| --------------------- | ----------------------------------------------------------------- | --------------------------------------------------------------- |
-| Parking Lot           | `$PROJECT/_backlog/_parking-lot.md`                               | Tracks short-term actionables, pending questions, and blockers. |
-| Architecture Briefing | `_roadmap/_architect.md`                                          | Workspace principles, NFRs, milestones.                         |
-| Milestone             | `$PROJECT/_roadmap/3-now/milestone-art-work-cli-one/milestone.md` | Coordinates this plan within the Art Work Cli One milestone.    |
+| Kind        | Path                                                              | Role                                                              |
+| ----------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- |
+| Parking Lot | `$PROJECT/_backlog/_parking-lot.md`                               | Tracks short-term actionables, pending questions, and blockers.   |
+| Milestone   | `$PROJECT/_roadmap/3-now/milestone-art-work-cli-one/milestone.md` | Coordinates this plan within the Art Workspace Cli One milestone. |
 
 ### Required Skills
 
@@ -52,7 +51,6 @@ Implement the link command for local package symlinking, supporting scoped packa
 
 ### Knowledge
 
-::READ `_roadmap/_architect.md` (Briefing) — Workspace principles, NFRs, milestones. Relevant for Planning Work Item.
 ::READ `knowledge/commands.md` (Design) — Designed behaviour and BDD scenarios for Link. Relevant for Planning Work Item.
 ::READ `knowledge/_pseudo.md` (Pseudo-code) — Pseudo-code contract for link command. Relevant for Planning Work Item.
 ::READ `knowledge/context-model.md` (Model) — WorkspaceContext, CheckoutStore, project records. Relevant for Planning Work Item.
@@ -131,7 +129,7 @@ All steps MUST pass. No `it.todo()` tests may remain.
 
 **Status:** `DRAFT`
 
-**Purpose:** Implement `art-workspace link <location> <package> [<target>]` end-to-end, tests first.
+**Purpose:** Implement `art-workspace-cli link <location> <package> [<target>]` end-to-end, tests first.
 
 **Description:** Implement the full link command with source checkout resolution, package resolution, symlink creation, operation logging, and commander wiring.
 

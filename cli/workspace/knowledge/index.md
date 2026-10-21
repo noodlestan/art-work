@@ -1,17 +1,18 @@
-# Knowledge: Art Work Cli
+# Knowledge: Art Workspace Cli
 
 ## Documents
 
-| Document                           | Purpose                                                                          |
-| ---------------------------------- | -------------------------------------------------------------------------------- |
-| [overview.md](overview.md)         | Overview of the Art Work Cli: benefits, definitions, use cases, and how it works |
-| [dependencies.md](dependencies.md) | Dependency observations and choices behind this CLI                              |
+| Document                           | Purpose                                                                               |
+| ---------------------------------- | ------------------------------------------------------------------------------------- |
+| [overview.md](overview.md)         | Overview of the Art Workspace Cli: benefits, definitions, use cases, and how it works |
+| [dependencies.md](dependencies.md) | Dependency observations and choices behind this CLI                                   |
+| [principles.md](principles.md)     | Principles guiding the design, authoring, and distribution of the Art Workspace Cli   |
 
 ## Design Documents
 
 | Document                                             | Purpose                                                                                    |
 | ---------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| [design/commands.md](design/commands.md)             | Command surface of the Art Work Cli: arguments, procedures, reports, and edge cases        |
+| [design/commands.md](design/commands.md)             | Command surface of the Art Workspace Cli: arguments, procedures, reports, and edge cases   |
 | [design/config.md](design/config.md)                 | The `.art-workspace.mts` manifest: structure, authoring, loading, exports, and type safety |
 | [design/context-model.md](design/context-model.md)   | Per-command data model: `WorkspaceContext`, `CheckoutStore`, and the records behind them   |
 | [design/operations-log.md](design/operations-log.md) | Append-only side-effect log of a command invocation                                        |

@@ -10,7 +10,7 @@
 
 **Purpose:** Read and write `.art` files through the Art JS libraries rather than bespoke parsing.
 
-**Description:** Adopt the Art JS codecs in the Art Work Cli so that record discovery, reading, and writing go through the shared libraries, replacing the ad-hoc file handling currently in `private/resources/`.
+**Description:** Adopt the Art JS codecs in the Art Workspace Cli so that record discovery, reading, and writing go through the shared libraries, replacing the ad-hoc file handling currently in `private/resources/`.
 
 ## Mandatory Reading
 
@@ -25,14 +25,14 @@
 | `$WORKSPACE`    | Current working directory    | Workspace root directory                                                                            |
 | `$DOMAINS`      | `$WORKSPACE/.agents/domains` | Domain resources directory                                                                          |
 | `$ART_WORK`     | Provided with prompt.        | Art Work repository. Example: `$WORKSPACE/checkouts/art-work-planning`                              |
-| `$ART_WORK_CLI` | `$ART_WORK/cli/work`         | The Art Work Cli package, and its roadmap and backlog.                                              |
+| `$ART_WORK_CLI` | `$ART_WORK/cli/workspace`    | The Art Workspace Cli package, and its roadmap and backlog.                                         |
 | `$ART_JS`       | Provided with prompt.        | Art JS repository (extract, validate, project art). Example: `$WORKSPACE/checkouts/art-js-planning` |
 | `$ART_LIB`      | Provided with prompt.        | Art Lib repository (filesystem records adapter). Example: `$WORKSPACE/checkouts/art-lib-planning`   |
 | `$ART_MD`       | Provided with prompt.        | Art MD repository (primitives and codecs). Example: `$WORKSPACE/checkouts/art-md-planning`          |
 
 ## Summary
 
-Make the Art Work Cli read and write `.art` files through the Art JS libraries so record handling stops being bespoke, stays consistent with the rest of the ecosystem, and picks up codec fixes for free — scoped to the record resources in `private/resources/` and the scan layer that feeds them.
+Make the Art Workspace Cli read and write `.art` files through the Art JS libraries so record handling stops being bespoke, stays consistent with the rest of the ecosystem, and picks up codec fixes for free — scoped to the record resources in `private/resources/` and the scan layer that feeds them.
 
 ## Context
 

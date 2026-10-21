@@ -25,7 +25,7 @@
 | `$WORKSPACE`    | Current working directory    | Workspace root directory                                               |
 | `$DOMAINS`      | `$WORKSPACE/.agents/domains` | Domain resources directory                                             |
 | `$ART_WORK`     | Provided with prompt.        | Art Work repository. Example: `$WORKSPACE/checkouts/art-work-planning` |
-| `$ART_WORK_CLI` | `$ART_WORK/cli/work`         | The Art Work Cli package, and its roadmap and backlog.                 |
+| `$ART_WORK_CLI` | `$ART_WORK/cli/workspace`    | The Art Workspace Cli package, and its roadmap and backlog.            |
 
 ## Summary
 

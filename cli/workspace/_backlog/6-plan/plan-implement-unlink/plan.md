@@ -1,4 +1,4 @@
-# Plan: Art Work Cli — Unlink Command
+# Plan: Art Workspace Cli — Unlink Command
 
 **ID:** `implement-unlink`
 
@@ -8,7 +8,7 @@
 
 **Skill:** `write-plan`
 
-**Purpose:** Implement `art-workspace unlink <location> <package> [<target>]` for `@art-work/cli`.
+**Purpose:** Implement `art-workspace-cli unlink <location> <package> [<target>]` for `@art-works/workspace-cli`.
 
 **Description:** Remove a package symlink created by `link` and restore the published version with `npm install`, replacing the stub at `src/commands/unlink/runUnlink.ts`. Params mirror `link`; default target is the workspace root `node_modules/`.
 
@@ -33,11 +33,10 @@ Implement the unlink command to remove package symlinks and restore published ve
 
 ### Upstream Work
 
-| Kind                  | Path                                                              | Role                                                            |
-| --------------------- | ----------------------------------------------------------------- | --------------------------------------------------------------- |
-| Parking Lot           | `$PROJECT/_backlog/_parking-lot.md`                               | Tracks short-term actionables, pending questions, and blockers. |
-| Architecture Briefing | `_roadmap/_architect.md`                                          | Art Work principles, NFRs, milestones.                          |
-| Milestone             | `$PROJECT/_roadmap/3-now/milestone-art-work-cli-one/milestone.md` | Coordinates this plan within the Art Work Cli One milestone.    |
+| Kind        | Path                                                              | Role                                                              |
+| ----------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- |
+| Parking Lot | `$PROJECT/_backlog/_parking-lot.md`                               | Tracks short-term actionables, pending questions, and blockers.   |
+| Milestone   | `$PROJECT/_roadmap/3-now/milestone-art-work-cli-one/milestone.md` | Coordinates this plan within the Art Workspace Cli One milestone. |
 
 ### Required Skills
 
@@ -52,7 +51,6 @@ Implement the unlink command to remove package symlinks and restore published ve
 
 ### Knowledge
 
-::READ `_roadmap/_architect.md` (Briefing) — Workspace principles, NFRs, milestones. Relevant for Planning Work Item.
 ::READ `knowledge/commands.md` (Design) — Designed behaviour and BDD scenarios for Unlink. Relevant for Planning Work Item.
 ::READ `knowledge/_pseudo.md` (Pseudo-code) — Pseudo-code contract for unlink command. Relevant for Planning Work Item.
 ::READ `knowledge/context-model.md` (Model) — WorkspaceContext, CheckoutStore, project records. Relevant for Planning Work Item.
@@ -131,7 +129,7 @@ All steps MUST pass. No `it.todo()` tests may remain.
 
 **Status:** `DRAFT`
 
-**Purpose:** Implement `art-workspace unlink <location> <package> [<target>]` end-to-end, tests first.
+**Purpose:** Implement `art-workspace-cli unlink <location> <package> [<target>]` end-to-end, tests first.
 
 **Description:** Implement the full unlink command with source checkout resolution, package resolution, symlink removal, npm install restore, operation logging, and commander wiring. Reuses resolution helpers from the link command.
 

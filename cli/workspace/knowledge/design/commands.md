@@ -1,8 +1,8 @@
-# Art Work Cli - Commands
+# Art Workspace Cli - Commands
 
-**Purpose:** Specify the command surface of the Art Work Cli: arguments, procedures, reports, and edge cases.
+**Purpose:** Specify the command surface of the Art Workspace Cli: arguments, procedures, reports, and edge cases.
 
-Commands are hosted in `@art-work/cli` (binary `art-workspace`) and invoked from the workspace root, either directly (`art-workspace <command>`) or through npm scripts (`npm run workspace -- <command>`).
+Commands are hosted in `@art-works/workspace-cli` (binary `art-workspace-cli`) and invoked from the workspace root, either directly (`art-workspace-cli <command>`) or through npm scripts (`npm run workspace -- <command>`).
 
 ## Command Surface
 
@@ -78,26 +78,26 @@ Feature: Sanity check workspace status
   Scenario: sanity shows workspace status
     Given workspace root is on branch "main"
     And checkout "Artificial" is cloned on branch "main"
-    When I run "art-workspace sanity"
+    When I run "art-workspace-cli sanity"
     Then the Workspace Report lists workspace root
     And the Checkout Report lists "Artificial"
 
   Scenario: sanity detects "is behind" state
     Given workspace root is behind origin/main by 1 commit
-    When I run "art-workspace sanity"
+    When I run "art-workspace-cli sanity"
     Then the Workspace Report lists workspace root with state "1 commit behind"
 
   Scenario: sanity --auto pulls if behind and clean
     Given workspace root is behind origin/main by 1 commit
     And workspace root has no uncommitted changes
-    When I run "art-workspace sanity --auto"
+    When I run "art-workspace-cli sanity --auto"
     Then workspace root is pulled from origin
     And a pull operation is logged with outcome success
 
   Scenario: sanity --auto does not pull if dirty
     Given workspace root is behind origin/main by 1 commit
     And workspace root has uncommitted changes
-    When I run "art-workspace sanity --auto"
+    When I run "art-workspace-cli sanity --auto"
     Then workspace root is not pulled
     And the Workspace Report lists workspace root with state "uncommitted files; 1 commit behind"
 ```
@@ -122,7 +122,7 @@ Feature: Pull from origin
   Scenario: pull clean checkouts that are behind
     Given checkout "Artificial" is cloned on branch "main" and is behind origin by 1 commit
     And checkout "Artificial" has no uncommitted changes
-    When I run "art-workspace pull"
+    When I run "art-workspace-cli pull"
     Then checkout "Artificial" is pulled from origin
     And a pull operation is logged with outcome success
     And the Checkout Report lists "Artificial" with no "behind" state
@@ -130,18 +130,18 @@ Feature: Pull from origin
   Scenario: pull skips dirty checkouts
     Given checkout "Artificial" is cloned on branch "main" and is behind origin by 1 commit
     And checkout "Artificial" has uncommitted changes
-    When I run "art-workspace pull"
+    When I run "art-workspace-cli pull"
     Then checkout "Artificial" is not pulled
     And the Checkout Report lists "Artificial" with state "uncommitted files; 1 commit behind"
 
   Scenario: pull skips checkouts already up to date
     Given checkout "Artificial" is cloned on branch "main" and is up to date with origin
-    When I run "art-workspace pull"
+    When I run "art-workspace-cli pull"
     Then no pull operation is logged for "Artificial"
 
   Scenario: pull skips checkouts not cloned
     Given checkout "Purrception" is recorded but not cloned
-    When I run "art-workspace pull"
+    When I run "art-workspace-cli pull"
     Then checkout "Purrception" is skipped with a warning
 ```
 
@@ -166,7 +166,7 @@ Feature: Push to origin
   Scenario: push clean checkouts that are ahead
     Given checkout "Artificial" is cloned on branch "main" and is ahead of origin by 1 commit
     And checkout "Artificial" has no uncommitted changes
-    When I run "art-workspace push"
+    When I run "art-workspace-cli push"
     Then checkout "Artificial" is pushed to origin
     And a push operation is logged with outcome success
     And the Checkout Report lists "Artificial" with no "ahead" state
@@ -175,7 +175,7 @@ Feature: Push to origin
     Given checkout "Artificial" is cloned on branch "main" and is ahead of origin by 1 commit
     And checkout "Artificial" is also behind origin by 1 commit (diverged)
     And checkout "Artificial" has no uncommitted changes
-    When I run "art-workspace push"
+    When I run "art-workspace-cli push"
     Then checkout "Artificial" is pulled first
     And checkout "Artificial" is pushed to origin
     And a pull operation is logged with outcome success
@@ -184,18 +184,18 @@ Feature: Push to origin
   Scenario: push skips dirty checkouts
     Given checkout "Artificial" is cloned on branch "main" and is ahead of origin by 1 commit
     And checkout "Artificial" has uncommitted changes
-    When I run "art-workspace push"
+    When I run "art-workspace-cli push"
     Then checkout "Artificial" is not pushed
     And the Checkout Report lists "Artificial" with state "uncommitted files; 1 commit ahead"
 
   Scenario: push skips checkouts already up to date
     Given checkout "Artificial" is cloned on branch "main" and is up to date with origin
-    When I run "art-workspace push"
+    When I run "art-workspace-cli push"
     Then no push operation is logged for "Artificial"
 
   Scenario: push skips checkouts not cloned
     Given checkout "Purrception" is recorded but not cloned
-    When I run "art-workspace push"
+    When I run "art-workspace-cli push"
     Then checkout "Purrception" is skipped with a warning
 ```
 
@@ -221,7 +221,7 @@ Feature: Sync checkouts
   Scenario: sync clean checkouts
     Given checkout "Artificial" is cloned on branch "main" and is behind origin by 1 commit
     And checkout "Artificial" has no uncommitted changes
-    When I run "art-workspace sync"
+    When I run "art-workspace-cli sync"
     Then checkout "Artificial" is pulled from origin
     And checkout "Artificial" is pushed to origin
     And a pull operation is logged with outcome success
@@ -230,18 +230,18 @@ Feature: Sync checkouts
   Scenario: sync skips dirty checkouts
     Given checkout "Artificial" is cloned on branch "main" and is behind origin by 1 commit
     And checkout "Artificial" has uncommitted changes
-    When I run "art-workspace sync"
+    When I run "art-workspace-cli sync"
     Then checkout "Artificial" is not pulled or pushed
     And the Checkout Report lists "Artificial" with state "uncommitted files; 1 commit behind"
 
   Scenario: sync skips checkouts not cloned
     Given checkout "Purrception" is recorded but not cloned
-    When I run "art-workspace sync"
+    When I run "art-workspace-cli sync"
     Then checkout "Purrception" is skipped with a warning
 
   Scenario: sync works on up to date checkouts
     Given checkout "Artificial" is cloned on branch "main" and is up to date with origin
-    When I run "art-workspace sync"
+    When I run "art-workspace-cli sync"
     Then a pull operation is logged for "Artificial" (no-op)
     And no push operation is logged for "Artificial"
 ```
@@ -268,7 +268,7 @@ Feature: Run a command across checkouts
   Scenario: run executes the command in matching checkouts
     Given checkout "Artificial" is cloned at "checkouts/artificial"
     And checkout "Purrception" is cloned at "checkouts/purrception"
-    When I run "art-workspace checkouts run touch marker.txt -c art*"
+    When I run "art-workspace-cli checkouts run touch marker.txt -c art*"
     Then a file "marker.txt" exists in checkout "Artificial"
     And no file "marker.txt" exists in checkout "Purrception"
     And a run operation is logged with outcome success for "Artificial"
@@ -276,28 +276,28 @@ Feature: Run a command across checkouts
   Scenario: run --all executes in every checkout
     Given checkout "Artificial" is cloned
     And checkout "Purrception" is cloned
-    When I run "art-workspace checkouts run touch marker.txt --all"
+    When I run "art-workspace-cli checkouts run touch marker.txt --all"
     Then a file "marker.txt" exists in checkout "Artificial"
     And a file "marker.txt" exists in checkout "Purrception"
 
   Scenario: run without -c or --all prints usage and exits
-    When I run "art-workspace checkouts run touch marker.txt"
+    When I run "art-workspace-cli checkouts run touch marker.txt"
     Then a usage message is printed
     And no run operation is logged
 
   Scenario: run logs failure on non-zero exit
     Given checkout "Artificial" is cloned
-    When I run "art-workspace checkouts run sh -c 'exit 1' --all"
+    When I run "art-workspace-cli checkouts run sh -c 'exit 1' --all"
     Then a run operation is logged with outcome failure for "Artificial"
 
   Scenario: run skips uncloned checkouts with a failure
     Given checkout "Purrception" is recorded but not cloned
-    When I run "art-workspace checkouts run touch marker.txt --all"
+    When I run "art-workspace-cli checkouts run touch marker.txt --all"
     Then a run operation is logged with outcome failure for "Purrception"
     And the failure message is "checkout not cloned"
 
   Scenario: run warns when no checkout matches
-    When I run "art-workspace checkouts run touch marker.txt -c nonexistent"
+    When I run "art-workspace-cli checkouts run touch marker.txt -c nonexistent"
     Then a warning is printed for "no checkout matches pattern"
     And no run operation is logged
 ```
@@ -323,7 +323,7 @@ List the packages of active checkouts (all checkouts when none specified). Each 
 Feature: List repositories and their packages
   Scenario: list a single checkout's packages
     Given checkout "Artificial" is cloned with project records
-    When I run "art-workspace repo Artificial"
+    When I run "art-workspace-cli repo Artificial"
     Then the Repository State Report lists "Artificial"
     And the Package State Report lists namespace "Art Domains"
     And the Package State Report lists package "@artisans/art-mantras" with current version from package.json
@@ -331,7 +331,7 @@ Feature: List repositories and their packages
 
   Scenario: repo defaults to all checkouts when none specified
     Given checkouts "Artificial" and "Purrception" are cloned
-    When I run "art-workspace repo"
+    When I run "art-workspace-cli repo"
     Then the Repository State Report lists "Artificial"
     And the Package State Report lists packages for "Artificial"
     And the Repository State Report lists "Purrception"
@@ -341,7 +341,7 @@ Feature: List repositories and their packages
   Scenario: keeps two checkouts of one repository distinct
     Given checkout "Artificial" is cloned at "checkouts/artificial" with version "1.0.0"
     And checkout "Artificial @ bug-fixes" is cloned at "checkouts/artificial-bug-fixes" with version "2.0.0"
-    When I run "art-workspace repo"
+    When I run "art-workspace-cli repo"
     Then the Repository State Report lists "Artificial"
     And the Package State Report lists version "1.0.0" for "Artificial"
     And the Repository State Report lists "Artificial @ bug-fixes"
@@ -349,33 +349,33 @@ Feature: List repositories and their packages
 
   Scenario: checkout has no project records
     Given checkout "Purrception" is cloned without project records
-    When I run "art-workspace repo Purrception"
+    When I run "art-workspace-cli repo Purrception"
     Then the Repository State Report lists "Purrception" with state "no project records"
 
   Scenario: unknown checkout warns and skips
-    When I run "art-workspace repo Unknown"
+    When I run "art-workspace-cli repo Unknown"
     Then a warning is printed for "unknown checkout: Unknown"
 
   Scenario: project references a missing namespace
     Given project "Artificial" lists namespace "Missing" with no namespace record
-    When I run "art-workspace repo Artificial"
+    When I run "art-workspace-cli repo Artificial"
     Then a warning is printed for "unknown namespace: Missing"
     And the missing namespace is skipped
 
   Scenario: namespace references a missing package
     Given namespace "Art Domains" lists package "Missing" with no package record
-    When I run "art-workspace repo Artificial"
+    When I run "art-workspace-cli repo Artificial"
     Then a warning is printed for "unknown package: Missing"
     And the missing package is skipped
 
   Scenario: package path has no package.json
     Given package "@artisans/art-mantras" has no package.json at its resolved path
-    When I run "art-workspace repo Artificial"
+    When I run "art-workspace-cli repo Artificial"
     Then the Package State Report lists "@artisans/art-mantras" with state "no package.json"
 
   Scenario: npm info fails
     Given the npm registry is unreachable
-    When I run "art-workspace repo Artificial"
+    When I run "art-workspace-cli repo Artificial"
     Then the Package State Report lists "@artisans/art-mantras" with published version "unknown"
     And the Package State Report lists state "npm info failed"
 ```
@@ -406,34 +406,34 @@ Three modes:
 Feature: Clone single repo
   Scenario: clone with default location
     Given repo "Artificial" exists in the manifest
-    When I run "art-workspace clone Artificial"
+    When I run "art-workspace-cli clone Artificial"
     Then checkout "Artificial" is created at "checkouts/artificial"
     And the Checkout Report contains "Artificial"
 
   Scenario: clone with explicit location
     Given repo "Artificial" exists in the manifest
-    When I run "art-workspace clone Artificial foo"
+    When I run "art-workspace-cli clone Artificial foo"
     Then checkout "Artificial @ foo" is created at "checkouts/artificial foo"
     And the Checkout Report contains "Artificial @ foo"
 
   Scenario: clone is idempotent
     Given checkout "Artificial" exists at "checkouts/artificial"
-    When I run "art-workspace clone Artificial"
+    When I run "art-workspace-cli clone Artificial"
     Then no new checkout is created
     And the Checkout Report contains "Artificial"
 
   Scenario: unknown repo fails
-    When I run "art-workspace clone Unknown"
+    When I run "art-workspace-cli clone Unknown"
     Then a clone failure is logged for "unknown repo"
 
   Scenario: location taken by different checkout
     Given checkout "foo" exists at "checkouts/artificial foo"
-    When I run "art-workspace clone Artificial foo"
+    When I run "art-workspace-cli clone Artificial foo"
     Then a clone failure is logged for "location artificial foo is already used by checkout 'foo'"
 
   Scenario: checkout exists at different location
     Given checkout "Artificial" exists at "checkouts/artificial"
-    When I run "art-workspace clone Artificial custom"
+    When I run "art-workspace-cli clone Artificial custom"
     Then a clone failure is logged for "checkout for 'Artificial' exists at artificial. Cannot clone to artificial custom"
 ```
 
@@ -457,7 +457,7 @@ Feature: Branch across checkouts
   Scenario: branch creates new branch in specified checkouts
     Given checkout "Artificial" is cloned on branch "main" at "checkouts/artificial"
     And checkout "Purrception" is cloned on branch "main" at "checkouts/purrception"
-    When I run "art-workspace branch feat/x artificial purrception"
+    When I run "art-workspace-cli branch feat/x artificial purrception"
     Then branch "feat/x" exists in checkout "Artificial"
     And branch "feat/x" exists in checkout "Purrception"
     And the Operations Report contains "Artificial | branch"
@@ -466,23 +466,23 @@ Feature: Branch across checkouts
   Scenario: branch defaults to all checkouts when none specified
     Given checkout "Artificial" is cloned on branch "main"
     And checkout "Purrception" is cloned on branch "main"
-    When I run "art-workspace branch feat/x"
+    When I run "art-workspace-cli branch feat/x"
     Then branch "feat/x" exists in checkout "Artificial"
     And branch "feat/x" exists in checkout "Purrception"
 
   Scenario: branch switches to existing branch
     Given checkout "Artificial" has branch "feat/x"
-    When I run "art-workspace branch feat/x artificial"
+    When I run "art-workspace-cli branch feat/x artificial"
     Then the Operations Report contains "Artificial | branch | switched to feat/x"
 
   Scenario: unknown location logs failure
-    When I run "art-workspace branch feat/x unknown-location"
+    When I run "art-workspace-cli branch feat/x unknown-location"
     Then the Operations Report contains "branch | failure"
     And the failure message is "not cloned"
 
   Scenario: uncloned checkout logs failure
     Given checkout "Artificial" is recorded but not cloned
-    When I run "art-workspace branch feat/x artificial"
+    When I run "art-workspace-cli branch feat/x artificial"
     Then the Operations Report contains "Artificial | branch | failure"
     And the failure message is "checkout not cloned"
 ```
@@ -507,41 +507,41 @@ Feature: Link a local package into a target checkout
   Scenario: link package to default target
     Given checkout "Artificial" is cloned with project records
     And package "@artisans/art-mantras" exists at path "artisans/apps/art-mantras/"
-    When I run "art-workspace link Artificial @artisans/art-mantras"
+    When I run "art-workspace-cli link Artificial @artisans/art-mantras"
     Then a symlink is created at "node_modules/@artisans/art-mantras"
     And the symlink points to "checkouts/artificial/artisans/apps/art-mantras/"
     And a linked operation is logged with outcome success
 
   Scenario: link package to explicit target
     Given checkout "Purrception" is cloned
-    When I run "art-workspace link Artificial @artisans/art-mantras Purrception"
+    When I run "art-workspace-cli link Artificial @artisans/art-mantras Purrception"
     Then a symlink is created at "checkouts/purrception/node_modules/@artisans/art-mantras"
 
   Scenario: link replaces an existing symlink
     Given a symlink already exists at "node_modules/@artisans/art-mantras"
-    When I run "art-workspace link Artificial @artisans/art-mantras"
+    When I run "art-workspace-cli link Artificial @artisans/art-mantras"
     Then the existing symlink is removed
     And a new symlink is created
 
   Scenario: link replaces an npm-installed directory
     Given a directory "node_modules/@artisans/art-mantras" exists
-    When I run "art-workspace link Artificial @artisans/art-mantras"
+    When I run "art-workspace-cli link Artificial @artisans/art-mantras"
     Then the existing directory is removed
     And a symlink is created
 
   Scenario: unknown package fails
-    When I run "art-workspace link Artificial @unknown/missing"
+    When I run "art-workspace-cli link Artificial @unknown/missing"
     Then a linked operation is logged with outcome failure
     And the failure message names the unknown package
 
   Scenario: unknown location checkout fails
-    When I run "art-workspace link Unknown @artisans/art-mantras"
+    When I run "art-workspace-cli link Unknown @artisans/art-mantras"
     Then a linked operation is logged with outcome failure
     And the failure message names the unknown location
 
   Scenario: scoped target needs directory creation
     Given no directory exists at "node_modules/@artisans"
-    When I run "art-workspace link Artificial @artisans/art-mantras"
+    When I run "art-workspace-cli link Artificial @artisans/art-mantras"
     Then the directory "node_modules/@artisans" is created
     And the symlink is created at "node_modules/@artisans/art-mantras"
 ```
@@ -568,23 +568,23 @@ Show symlink sources. Scan the workspace root `node_modules` and the `node_modul
 Feature: Show symlink sources
   Scenario: lists a linked package
     Given package "@no-comply/core" is symlinked into checkout "Purrception" node_modules
-    When I run "art-workspace links"
+    When I run "art-workspace-cli links"
     Then the Symlink Report lists "@no-comply/core"
     And the Symlink Report lists location "Purrception"
 
   Scenario: lists scoped packages recursively
     Given scoped package "@noodlestan/esbuild" is symlinked into the root node_modules
-    When I run "art-workspace links"
+    When I run "art-workspace-cli links"
     Then the Symlink Report lists "@noodlestan/esbuild"
     And the Symlink Report lists location "workspace root"
 
   Scenario: no symlinks found
-    When I run "art-workspace links"
+    When I run "art-workspace-cli links"
     Then the Symlink Report is empty
 
   Scenario: repository without project records is skipped
     Given repo "Purrception" has no project records
-    When I run "art-workspace links"
+    When I run "art-workspace-cli links"
     Then repo "Purrception" is skipped with a warning
 ```
 
@@ -607,30 +607,30 @@ Remove a package symlink created by `link` and restore the published version wit
 Feature: Unlink a local package from a target checkout
   Scenario: unlink removes an existing symlink and restores
     Given a symlink exists at "checkouts/purrception/node_modules/@artisans/art-mantras"
-    When I run "art-workspace unlink Artificial @artisans/art-mantras Purrception"
+    When I run "art-workspace-cli unlink Artificial @artisans/art-mantras Purrception"
     Then the symlink is removed
     And npm install runs in "checkouts/purrception"
     And an unlink operation is logged with outcome success
 
   Scenario: unlink defaults to workspace root target
     Given a symlink exists at "node_modules/@artisans/art-mantras"
-    When I run "art-workspace unlink Artificial @artisans/art-mantras"
+    When I run "art-workspace-cli unlink Artificial @artisans/art-mantras"
     Then the symlink is removed
     And npm install runs in the workspace root
 
   Scenario: target entry is npm-installed, not a symlink
     Given a directory "node_modules/@artisans/art-mantras" exists
-    When I run "art-workspace unlink Artificial @artisans/art-mantras"
+    When I run "art-workspace-cli unlink Artificial @artisans/art-mantras"
     Then nothing is removed
     And no unlink operation is logged
 
   Scenario: unknown package fails
-    When I run "art-workspace unlink Artificial @unknown/missing"
+    When I run "art-workspace-cli unlink Artificial @unknown/missing"
     Then an unlink operation is logged with outcome failure
     And the failure message names the unknown package
 
   Scenario: unknown location checkout fails
-    When I run "art-workspace unlink Unknown @artisans/art-mantras"
+    When I run "art-workspace-cli unlink Unknown @artisans/art-mantras"
     Then an unlink operation is logged with outcome failure
     And the failure message names the unknown location
 ```
@@ -656,7 +656,7 @@ Feature: Publish packages
   Scenario: push and publish unpublished packages
     Given checkout "Artificial" is cloned on branch "main" with 2 unpushed commits
     And package "@artisans/art-mantras" at version 0.0.2 is unpublished
-    When I run "art-workspace publish --auto"
+    When I run "art-workspace-cli publish --auto"
     Then the branch is pushed to origin
     And @artisans/art-mantras@0.0.2 is published to npm
     And a push operation is logged with outcome success
@@ -664,23 +664,23 @@ Feature: Publish packages
 
   Scenario: already published packages are skipped
     Given package "@artisans/art-mantras" at version 0.0.1 is already published
-    When I run "art-workspace publish --auto"
+    When I run "art-workspace-cli publish --auto"
     Then no publish operation is logged for "@artisans/art-mantras"
 
   Scenario: repo not cloned is skipped
     Given checkout "Purrception" is not cloned
-    When I run "art-workspace publish --auto"
+    When I run "art-workspace-cli publish --auto"
     Then checkout "Purrception" is skipped with a warning
 
   Scenario: no remote skips the push
     Given checkout "Artificial" has no remote
-    When I run "art-workspace publish --auto"
+    When I run "art-workspace-cli publish --auto"
     Then no push operation is logged for "Artificial"
     And issue "no remote" is reported
 
   Scenario: npm publish fails and continues
     Given @artisans/art-mantras@0.0.2 fails to publish
-    When I run "art-workspace publish --auto"
+    When I run "art-workspace-cli publish --auto"
     Then a publish operation is logged with outcome failure for "@artisans/art-mantras"
     And remaining packages are still processed
 ```

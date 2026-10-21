@@ -43,7 +43,7 @@ The plan workflow (see the entry point guide → Planning Workflow → Working T
 
 This section describes the goal(s) of this iteration.
 
-Add a new `init` command that creates a configuration file with default values for `root.path` and `checkouts.path` redeclared for an easy to use starting point, so the Art Work Cli can be set up in a fresh workspace when installed globally.
+Add a new `init` command that creates a configuration file with default values for `root.path` and `checkouts.path` redeclared for an easy to use starting point, so the Art Workspace Cli can be set up in a fresh workspace when installed globally.
 
 ## Mandatory Reading
 
@@ -52,9 +52,8 @@ This section lists the documentation and reference files the sub-agent needs to 
 - RULE: You MUST follow any links under `## Mandatory Reading` sections found in the listed files.
 - RULE: If you are unable to read a file linked under `## Mandatory Reading` you must stop and REPORT A BLOCKER.
 
-- knowledge: `$ART_WORK/cli/work/knowledge/index.md`
-- briefing: `$ART_WORK/_roadmap/_architect.md`
-- CLI entry: `$ART_WORK/cli/work/src/index.ts` (where commands are registered)
+- knowledge: `$ART_WORK/cli/workspace/knowledge/index.md`
+- CLI entry: `$ART_WORK/cli/workspace/src/index.ts` (where commands are registered)
 
 ---
 
@@ -117,7 +116,7 @@ This section contains the detailed steps to execute, including commit steps.
 
 ### Step `1 / 3` — Add the `init` command
 
-Add a new `init` command to the CLI in `$ART_WORK/cli/work/src/index.ts`. The command must:
+Add a new `init` command to the CLI in `$ART_WORK/cli/workspace/src/index.ts`. The command must:
 
 - Create a configuration file in the current working directory with default values for `root.path` and `checkouts.path` redeclared for an easy to use starting point.
 - Use only the new config names (`checkouts`, `data.store`, `discover.records`) — never `clone` or `records`.
@@ -142,7 +141,7 @@ Run the `init` command in a temporary directory and verify that:
 **Message:**
 
 ```text
-build(art-work-cli): Add Init Command.
+build(art-workspace-cli): Add Init Command.
 ```
 
 ---

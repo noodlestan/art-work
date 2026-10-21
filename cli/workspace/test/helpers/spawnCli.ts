@@ -7,7 +7,7 @@ import type { TestCliOptions, TestCliResult } from './types.js';
 
 function readBundlePath(): string {
 	if (!existsSync(BUNDLE)) {
-		throw new Error(`Cannot spawn art-work-cli: the bin bundle is missing, ${BUILD_HINT}`);
+		throw new Error(`Cannot spawn art-workspace-cli: the bin bundle is missing, ${BUILD_HINT}`);
 	}
 	return BUNDLE;
 }

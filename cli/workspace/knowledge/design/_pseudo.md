@@ -1,6 +1,6 @@
-# Art Work Cli - Pseudo
+# Art Workspace Cli - Pseudo
 
-**Purpose:** Prescribe pseudo-code and BDD expectations for the Art Work Cli use cases — zero real code; bodies prescribe what to do, not how to implement. Settled definitions live in the other design documents.
+**Purpose:** Prescribe pseudo-code and BDD expectations for the Art Workspace Cli use cases — zero real code; bodies prescribe what to do, not how to implement. Settled definitions live in the other design documents.
 
 ## Entry Point
 
@@ -164,7 +164,7 @@ branch(branch, options)
 
   if not options.all and (not options.checkouts or options.checkouts is empty):
     print "No checkouts matched."
-    print "Usage: Use `art-workspace branch [options] -c <pattern>` or `art-workspace branch [options] --all` if you want to apply the branch to all checkouts."
+    print "Usage: Use `art-workspace-cli branch [options] -c <pattern>` or `art-workspace-cli branch [options] --all` if you want to apply the branch to all checkouts."
     return
 
   if options.all:
@@ -395,7 +395,7 @@ pull(options)
 
   if not options.all and (not options.checkouts or options.checkouts is empty):
     print "No checkouts matched."
-    print "Usage: Use `art-workspace pull [options] -c <pattern>` or `art-workspace pull [options] --all` if you want to apply the pull to all checkouts."
+    print "Usage: Use `art-workspace-cli pull [options] -c <pattern>` or `art-workspace-cli pull [options] --all` if you want to apply the pull to all checkouts."
     return
 
   if options.all:
@@ -425,7 +425,7 @@ push(options)
 
   if not options.all and (not options.checkouts or options.checkouts is empty):
     print "No checkouts matched."
-    print "Usage: Use `art-workspace push [options] -c <pattern>` or `art-workspace push [options] --all` if you want to apply the push to all checkouts."
+    print "Usage: Use `art-workspace-cli push [options] -c <pattern>` or `art-workspace-cli push [options] --all` if you want to apply the push to all checkouts."
     return
 
   if options.all:
@@ -457,7 +457,7 @@ sync(options)
 
   if not options.all and (not options.checkouts or options.checkouts is empty):
     print "No checkouts matched."
-    print "Usage: Use `art-workspace sync [options] -c <pattern>` or `art-workspace sync [options] --all` if you want to apply the sync to all checkouts."
+    print "Usage: Use `art-workspace-cli sync [options] -c <pattern>` or `art-workspace-cli sync [options] --all` if you want to apply the sync to all checkouts."
     return
 
   if options.all:
@@ -486,7 +486,7 @@ checkouts run(command, options)
 
   if not options.all and (not options.checkouts or options.checkouts is empty):
     print "No checkouts matched."
-    print "Usage: Use `art-workspace checkouts run [options] -c <pattern>` or `art-workspace checkouts run [options] --all` if you want to run the command in all checkouts."
+    print "Usage: Use `art-workspace-cli checkouts run [options] -c <pattern>` or `art-workspace-cli checkouts run [options] --all` if you want to run the command in all checkouts."
     return
 
   if options.all:

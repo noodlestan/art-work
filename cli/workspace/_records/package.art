@@ -32,21 +32,21 @@
 
 **Version:** `^0.28.0`
 
-## Package: Art Work Cli
+## Package: Art Workspace Cli
 
 **Purpose:** Operate and monitor multi-repository development environments.
 
 **Description:** CLI for discovering projects, inspecting and synchronizing checkouts, linking resources, and executing commands across them.
 
-**Owner:** Project: Art Work
+**Owner:** Project: Art Works
 
-**Namespace:** Namespace: Art Work
+**Namespace:** Namespace: Art Works
 
 **Author:** Noodlestan Collective
 
-**Path:** `cli/work`
+**Path:** `cli/workspace`
 
-**Canonical Name:** `@art-work/cli`
+**Canonical Name:** `@art-works/workspace-cli`
 
 **Published:** `true`
 
@@ -62,7 +62,7 @@
 - multi-repository
 - git
 
-**Deployment:** NPM Package Deployment: Art Work Cli
+**Deployment:** NPM Package Deployment: Art Workspace Cli
 
 **Files:**
 
@@ -74,7 +74,7 @@
 
 **Bin:**
 
-- `art-work-cli`: `./dist/index.js`
+- `art-workspace-cli`: `./dist/index.js`
 
 **Engines:**
 

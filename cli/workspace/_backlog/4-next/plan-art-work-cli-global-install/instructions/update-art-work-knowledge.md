@@ -52,8 +52,7 @@ This section lists the documentation and reference files the sub-agent needs to 
 - RULE: You MUST follow any links under `## Mandatory Reading` sections found in the listed files.
 - RULE: If you are unable to read a file linked under `## Mandatory Reading` you must stop and REPORT A BLOCKER.
 
-- knowledge: `$ART_WORK/cli/work/knowledge/index.md`
-- briefing: `$ART_WORK/_roadmap/_architect.md`
+- knowledge: `$ART_WORK/cli/workspace/knowledge/index.md`
 - guide: `$ART_WORK/_guide.md`
 
 ---
@@ -117,7 +116,7 @@ This section contains the detailed steps to execute, including commit steps.
 
 ### Step `1 / 3` — Update knowledge and guide
 
-Update `$ART_WORK/cli/work/knowledge/index.md` to document the global-install execution model: how the CLI locates configuration (current working directory and parent dirs), how it operates in global vs local modes, and the new workspace config shape (`root`, `checkouts`, `data.store`, `discover.records`).
+Update `$ART_WORK/cli/workspace/knowledge/index.md` to document the global-install execution model: how the CLI locates configuration (current working directory and parent dirs), how it operates in global vs local modes, and the new workspace config shape (`root`, `checkouts`, `data.store`, `discover.records`).
 
 Update `$ART_WORK/_guide.md` with global install usage notes, including how to run the CLI from a global installation and how to use the `init` command to set up a fresh workspace.
 
@@ -125,7 +124,7 @@ Use only the new config names (`checkouts`, `data.store`, `discover.records`) �
 
 ### Step `2 / 3` — Update config README
 
-Update `$ART_WORK/cli/work/src/config/README.md` (or create it if it does not exist) describing the config file format and discovery: the manifest file name, the discovery process (current dir and parents), the compile-to-`.art`-temp-dir behaviour, and the default config values.
+Update `$ART_WORK/cli/workspace/src/config/README.md` (or create it if it does not exist) describing the config file format and discovery: the manifest file name, the discovery process (current dir and parents), the compile-to-`.art`-temp-dir behaviour, and the default config values.
 
 ### Step `3 / 3` — Commit `update-art-work-knowledge`
 
@@ -138,7 +137,7 @@ Update `$ART_WORK/cli/work/src/config/README.md` (or create it if it does not ex
 **Message:**
 
 ```text
-docs(art-work-cli): Update knowledge for global install and config semantics.
+docs(art-workspace-cli): Update knowledge for global install and config semantics.
 ```
 
 ---
@@ -150,9 +149,9 @@ This section describes how to confirm the iteration is completed and ready for b
 **Instructions:**
 
 - Verify that commits have been executed and pushed (or not pushed) according to the commit's policy.
-- Verify that `$ART_WORK/cli/work/knowledge/index.md` documents the global-install execution model and the new config shape.
+- Verify that `$ART_WORK/cli/workspace/knowledge/index.md` documents the global-install execution model and the new config shape.
 - Verify that `$ART_WORK/_guide.md` includes global install usage notes.
-- Verify that `$ART_WORK/cli/work/src/config/README.md` describes the config file format and discovery.
+- Verify that `$ART_WORK/cli/workspace/src/config/README.md` describes the config file format and discovery.
 - Verify that no references to the old config names (`clone`, `records`) remain in the updated knowledge files.
 - Execute the **Verifying Completion** step as defined in the "Operating Instructions" section.
 - Report according to the "How to Report Back to the Delegator" instructions.

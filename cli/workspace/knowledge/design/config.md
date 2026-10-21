@@ -1,6 +1,6 @@
-# Art Work Cli - Config
+# Art Workspace Cli - Config
 
-**Purpose:** Explain the configuration system of the Art Work Cli: the `.art-workspace.mts` manifest, its structure, authoring, loading mechanism, package exports, and type safety.
+**Purpose:** Explain the configuration system of the Art Workspace Cli: the `.art-workspace.mts` manifest, its structure, authoring, loading mechanism, package exports, and type safety.
 
 ## Overview
 
@@ -75,7 +75,7 @@ records: {
 The manifest imports `defineConfig` from the `/config` subpath:
 
 ```typescript
-import { defineConfig } from '@art-work/cli/config';
+import { defineConfig } from '@art-works/workspace-cli/config';
 
 export default defineConfig({
   clone: { path: 'repos' },
@@ -96,14 +96,14 @@ The CLI loads the config at runtime using esbuild bundle-at-runtime (Vite-style)
 3. Write the bundled output to a temp `.mjs` file.
 4. `await import()` the temp file.
 
-The config's `import { defineConfig } from '@art-work/cli/config'` is resolved from the consumer `node_modules` and inlined. The `/config` subpath has zero runtime deps beyond `esbuild` (ESM-friendly), so the CLI command surface (commander, simple-git) never enters the manifest bundle. `esbuild` is therefore a **runtime dependency** of `@art-work/cli` (see `records/adr/cli.art` — "Runtime Config Loading — esbuild Bundle-at-Runtime").
+The config's `import { defineConfig } from '@art-works/workspace-cli/config'` is resolved from the consumer `node_modules` and inlined. The `/config` subpath has zero runtime deps beyond `esbuild` (ESM-friendly), so the CLI command surface (commander, simple-git) never enters the manifest bundle. `esbuild` is therefore a **runtime dependency** of `@art-works/workspace-cli` (see `records/adr/cli.art` — "Runtime Config Loading — esbuild Bundle-at-Runtime").
 
 ## Package Exports
 
 The CLI package exports two surfaces:
 
-- **`@art-work/cli/config`** — Authoring API for the manifest: `defineConfig`, the `WorkspaceConfig` type, and `loadWorkspaceConfig`.
-- **`@art-work/cli`** — Main entry (the `art-workspace` binary) re-exports the config module for the CLI commands and backwards compatibility.
+- **`@art-works/workspace-cli/config`** — Authoring API for the manifest: `defineConfig`, the `WorkspaceConfig` type, and `loadWorkspaceConfig`.
+- **`@art-works/workspace-cli`** — Main entry (the `art-workspace-cli` binary) re-exports the config module for the CLI commands and backwards compatibility.
 
 The `exports` map (`./config` → `types` + `import`) keeps the authoring surface stable: renaming types or exports is a breaking change once consumers exist — the manifest is the first consumer.
 

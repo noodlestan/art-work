@@ -27,23 +27,22 @@ This section lists the path variables used throughout the plan file and its down
 | `$WORKSPACE`      | Current working directory             | Workspace root directory.                           |
 | `$DOMAINS`        | `$WORKSPACE/.agents/domains`          | Domain resources directory.                         |
 | `$ART_WORK`       | Provided with prompt                  | Art Work repository; records renamed here first.    |
-| `$ART_WORK_CLI`   | `$ART_WORK/cli/work`                  | Art Work Cli package; hosts this plan.              |
+| `$ART_WORK_CLI`   | `$ART_WORK/cli/workspace`             | Art Workspace Cli package; hosts this plan.         |
 | `$ARTIFICIALS`    | `$WORKSPACE/checkouts/artificials`    | Owns the project record; references to repoint.     |
 | `$NOODLESTAN_WEB` | `$WORKSPACE/checkouts/noodlestan-web` | Hosts the project list and the website to redeploy. |
 
 ## Summary
 
-Rename the repository and the project to Art Works — GitHub repository first so redirects keep old URLs alive, then the identity records in `$ART_WORK`, the workspace records that drive cloning and the website copy, the project reference held by `$ARTIFICIALS`, and the generated project list in `$NOODLESTAN_WEB` — while `@art-work/cli`, `art-work-cli`, and `npm run art-work` keep their names; requested by `$ART_WORK/_backlog/_parking-lot.md` and coordinated as Phase 2 of `$ART_WORK_CLI/_roadmap/3-now/milestone-rename-art-work-to-art-works/milestone.md`.
+Rename the repository and the project to Art Works — GitHub repository first so redirects keep old URLs alive, then the identity records in `$ART_WORK`, the workspace records that drive cloning and the website copy, the project reference held by `$ARTIFICIALS`, and the generated project list in `$NOODLESTAN_WEB` — together with the package identity, which moves to `@art-works/workspace-cli` (bin `art-workspace-cli`, path `cli/workspace`); requested by `$ART_WORK/_backlog/_parking-lot.md` and coordinated as Phase 2 of `$ART_WORK_CLI/_roadmap/3-now/milestone-rename-art-work-to-art-works/milestone.md`.
 
 ## Context
 
 ### Upstream Work
 
-| Kind        | Path                                                                               | Role                                                                     |
-| ----------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| Parking Lot | `$ART_WORK/_backlog/_parking-lot.md`                                               | Tracks the actionable item that requested this plan.                     |
-| Milestone   | `$ART_WORK_CLI/_roadmap/3-now/milestone-rename-art-work-to-art-works/milestone.md` | Coordinates this plan as Phase 2 of the rename.                          |
-| Briefing    | `$ART_WORK/_roadmap/_architect.md`                                                 | Repository principles and the multi-CLI future that motivate the rename. |
+| Kind        | Path                                                                               | Role                                                 |
+| ----------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| Parking Lot | `$ART_WORK/_backlog/_parking-lot.md`                                               | Tracks the actionable item that requested this plan. |
+| Milestone   | `$ART_WORK_CLI/_roadmap/3-now/milestone-rename-art-work-to-art-works/milestone.md` | Coordinates this plan as Phase 2 of the rename.      |
 
 ### Required Skills
 
@@ -91,7 +90,7 @@ Agents SHOULD scan these files for relevant clarifications when faced by ambigui
 
 ## Scope
 
-Rename one repository and one project across 4 owners: the in-repo records of `$ART_WORK`, the workspace records in `$WORKSPACE/_records`, the project reference held by `$ARTIFICIALS`, and the generated project list in `$NOODLESTAN_WEB` — plus the GitHub repository name. The `@art-work/cli` package, the `art-work` script names, the existing checkout locations, and the planned project members stay unchanged.
+Rename one repository and one project across 4 owners: the in-repo records of `$ART_WORK`, the workspace records in `$WORKSPACE/_records`, the project reference held by `$ARTIFICIALS`, and the generated project list in `$NOODLESTAN_WEB` — plus the GitHub repository name and the package identity of `$ART_WORK_CLI` (`@art-works/workspace-cli`, bin `art-workspace-cli`, path `cli/workspace`). The `npm run art-work` workspace script, the existing checkout locations, and the planned project members stay unchanged.
 
 ### (Scope) Project: Art Work
 
@@ -239,24 +238,25 @@ Rename one repository and one project across 4 owners: the in-repo records of `$
 
 - Workspace repository record and the `$ART_WORK` project record renamed and pushed first.
 
-### (Scope) Package: Art Work Cli
+### (Scope) Package: Art Workspace Cli
 
 **Record:** `$ART_WORK_CLI/_records/package.art`
 
-**Role:** — Anchor verified unchanged.
+**Role:** — Renamed together with the repository and the project.
 
 **Partial:**
 
-- `canonicalName` — `@art-work/cli`
-- `bin` — `art-work-cli`
+- `canonicalName` — `@art-works/workspace-cli`
+- `bin` — `art-workspace-cli`
+- `path` — `cli/workspace`
 
 **Changes:**
 
-- None.
+- Rename the package, its bin, and its path; update the manifest, the deployment record, the imports, the docs, the tests, and every `$PROJECT` reference to the old path and names.
 
 **Operations:**
 
-- Verify `npm run art-work` and `@art-work/cli` references still resolve.
+- Verify `@art-works/workspace-cli` and `art-workspace-cli` references resolve; the `npm run art-work` workspace script keeps its name.
 
 **Dependencies:**
 
@@ -268,22 +268,22 @@ Execution occurs from `$WORKSPACE/`, with one commit per owner: `$ART_WORK` on b
 
 ## Items:
 
-| Iteration / Instructions                      | Status  |
-| --------------------------------------------- | ------- |
-| Iteration: Rename Identity Records            | `READY` |
-| Iteration: Rename Workspace Records           | `READY` |
-| Iteration: Repoint Artificials References     | `READY` |
-| Iteration: Regenerate Noodlestan Web Projects | `READY` |
+| Iteration / Instructions                      | Status    |
+| --------------------------------------------- | --------- |
+| Iteration: Rename Identity Records            | `DONE`    |
+| Iteration: Rename Workspace Records           | `SKIPPED` |
+| Iteration: Repoint Artificials References     | `READY`   |
+| Iteration: Regenerate Noodlestan Web Projects | `READY`   |
 
 ### Iteration: Rename Identity Records
 
 **Id:** `rename-identity-records`
 
-**Status:** `READY`
+**Status:** `DONE`
 
 **Purpose:** Make Art Works the identity of the repository and the project at the source.
 
-**Description:** Repoint the local remote to the renamed GitHub repository, then update the in-repo records and the repository-level mentions, leaving every package-name reference untouched.
+**Description:** Repoint the local remote to the renamed GitHub repository, then update the in-repo records and the repository-level mentions, and rename the package identity (`@art-works/workspace-cli`, bin `art-workspace-cli`, path `cli/workspace`).
 
 **Instructions Mode:** `INSTRUCTIONS_INLINED_IN_ITERATION`
 
@@ -311,12 +311,19 @@ In `$ART_WORK/_records/namespaces/art-work.art`:
 In `$ART_WORK/_guide.md` and `README.md`:
 
 - Rename repository-level mentions only — the `# Guide: Art Work` title, the repository descriptions, and the `# Art Work` README title; neither file carries a repository link.
-- Do NOT touch `@art-work/cli`, `art-work-cli`, `npm run art-work`, `Art Work Cli`, or `_roadmap`/`_backlog` path names.
+- The package identity changes in this iteration: `@art-works/workspace-cli`, bin `art-workspace-cli`, path `cli/workspace`; the `npm run art-work` workspace script and the `_roadmap`/`_backlog` path names stay.
 
 In `$ART_WORK/knowledge/index.md`:
 
 - Rename the heading to `# Knowledge: Art Works` and repoint the repository-level wording ("the Art Work packages").
-- Leave `cli/work/knowledge/` alone: it is the `Art Work Cli` package knowledge.
+- `cli/workspace/knowledge/` follows the package path rename; it is the `Art Workspace Cli` package knowledge.
+
+In `$ART_WORK_CLI` (the package at `cli/workspace`):
+
+- Move the package directory to `cli/workspace` and update the manifest: `name` `@art-works/workspace-cli`, `bin` `art-workspace-cli`, `repository.url` `https://github.com/noodlestan/art-works`, `repository.directory` `cli/workspace`.
+- Update the root manifest `name` to `noodlestan/art-works`, and regenerate the lockfile.
+- Update the package and deployment records, the README, the guides, the knowledge documents, the tests, and the active plan and milestone records; leave the archived records, the changelogs, and the decision records as history.
+- Update `program.name(...)` in the CLI entry point to `art-workspace-cli`.
 
 **Instructions:**
 
@@ -330,7 +337,8 @@ Before starting:
 Validate that:
 
 - `git@github.com:noodlestan/art-works.git` resolves and the old URL redirects.
-- `_records/`, `knowledge/index.md`, `_guide.md`, and `README.md` carry no repository-level `Art Work` mention; expected hits are the package and planned-member names (`Art Work Cli`, `Art Work Website`, `Art Work Tool`, `@art-work/cli`, `art-work-cli`, `npm run art-work`).
+- `_records/`, `knowledge/index.md`, `_guide.md`, and `README.md` carry no repository-level `Art Work` mention; expected hits are the planned-member names (`Art Work Website`, `Art Work Tool`) and the workspace script name (`npm run art-work`).
+- The package resolves as `@art-works/workspace-cli` with bin `art-workspace-cli` at `cli/workspace`; the archived records, the changelogs, and the decision records keep the old names as history.
 
 After executing:
 
@@ -343,13 +351,14 @@ After executing:
 
 #### Commits:
 
-| ID                        | Repository / Checkout / Branch      | Policy       | Hash | Status     |
-| ------------------------- | ----------------------------------- | ------------ | ---- | ---------- |
-| `rename-identity-records` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `AUTHORED` |
+| ID                        | Repository / Checkout / Branch       | Policy       | Hash      | Status      |
+| ------------------------- | ------------------------------------ | ------------ | --------- | ----------- |
+| `rename-identity-records` | Art Works / `$ART_WORK` / `building` | `AUTONOMOUS` | `8fd9369` | `COMMITTED` |
+| `rename-package-identity` | Art Works / `$ART_WORK` / `building` | `AUTONOMOUS` |           | `AUTHORED`  |
 
 ##### Commit: `rename-identity-records`
 
-**Repository:** Art Work
+**Repository:** Art Works
 
 **Message:**
 
@@ -360,13 +369,28 @@ records(art-work): Rename the repository and the project to Art Works.
 - Package keeps its name.
 ```
 
+##### Commit: `rename-package-identity`
+
+**Repository:** Art Works
+
+**Message:**
+
+```text
+rename(workspace-cli): Rename the package to @art-works/workspace-cli.
+
+- Rename the canonical name, the bin, and the package path; update the records, docs, and tests.
+- Repoint the repository url and the root manifest name; regenerate the lockfile.
+```
+
 ### Iteration: Rename Workspace Records
 
 **Id:** `rename-workspace-records`
 
-**Status:** `READY`
+**Status:** `SKIPPED`
 
 **Purpose:** Repoint the workspace records that drive cloning and the website copy.
+
+**Description:** Deferred by the user on 2026-10-21 — the workspace records move after the new `@art-works/workspace-cli` is installed and the workspace is restarted, together with the other workspaces.
 
 **Description:** Rename the workspace repository record and the two checkout records, and verify the workspace configuration and the clone command resolve the renamed repository.
 
@@ -568,7 +592,7 @@ records(noodlestan-web): Regenerate the project list as Art Works.
 
 ### Next
 
-Phase 1 (`migrate-planning-and-knowledge`) delivers first; then delegate `rename-identity-records`.
+Iteration `rename-identity-records` is `DONE` — the identity records and the package identity are renamed; the package rename is committed and awaiting the release publish. `rename-workspace-records` is `SKIPPED` until the new CLI is installed and the workspaces restart. `repoint-artificials-references` and `regenerate-noodlestan-web-projects` stay `READY` and wait for the workspace records to move.
 
 ### Blockers
 
@@ -629,10 +653,11 @@ Runs automatically on the pre-commit hook. All steps MUST pass. No `it.todo()` t
 
 ### Not In Scope
 
-- **Package: Art Work Cli** — `@art-work/cli`, `art-work-cli`, and the `npm run art-work` script keep their names.
 - **Checkout locations** — `art-work` stays; renaming it is a follow-up.
 - **Application: Art Work Website (PLANNED)** — planned project members keep their names.
 - **Repository transfer** — the repository stays in the `noodlestan` org.
+- **Workspace script name** — `npm run art-work` keeps its name; the workspace is out of scope for this round.
+- **Archived records, changelogs, and decision records** — they keep the old names as history.
 
 ### Evidence
 
@@ -652,6 +677,8 @@ Runs automatically on the pre-commit hook. All steps MUST pass. No `it.todo()` t
 - **GitHub rename first** — records and the website are repointed afterwards, so redirects cover the transition. Executed out-of-band on 2026-10-21; the plan only repoints the local remote.
 - **One commit per owner** — each checkout carries a single, revertable identity commit.
 - **Checkout locations unchanged** — record filenames follow the repository name, but `Location:` values stay so open sessions are not disturbed.
+- **The package identity moves with the repository** (user, 2026-10-21) — `@art-works/workspace-cli`, bin `art-workspace-cli`, path `cli/workspace`; the workspace script `npm run art-work` keeps its name.
+- **The workspace records wait** (user, 2026-10-21) — `rename-workspace-records` is skipped until the new CLI is installed and the workspaces restart.
 
 ### Knowledge to Update
 
@@ -667,4 +694,6 @@ Runs automatically on the pre-commit hook. All steps MUST pass. No `it.todo()` t
 
 ### Feedback
 
-- None.
+- **Worker deviation** — the worker repointed the `**Owner:**` of `_records/namespaces/art-board.art` from `Project: Art Work` to `Project: Art Works`; that file was outside the iteration Changes. Kept: the old value was stale after the project rename.
+- **Package identity added to the iteration** (user, 2026-10-21) — the package rename was not in the plan; it was executed in the same iteration and recorded above.
+- **Historical records kept** — the archived plans, the changelogs, and the decision records keep the old names; only the live artifacts were rewritten.

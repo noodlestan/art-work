@@ -1,4 +1,4 @@
-# Plan: Art Work Cli — Links Command
+# Plan: Art Workspace Cli — Links Command
 
 **ID:** `implement-links`
 
@@ -8,7 +8,7 @@
 
 **Skill:** `write-plan`
 
-**Purpose:** Implement `art-workspace links` for `@art-work/cli`.
+**Purpose:** Implement `art-workspace-cli links` for `@art-works/workspace-cli`.
 
 **Description:** Scan the workspace root `node_modules` and every known repo's project `node_modules` for symlinks (including scoped `@scope/pkg` entries) and present the Symlink Report. Read-only — no operations are logged.
 
@@ -33,11 +33,10 @@ Implement the links command as a read-only scan of symlinks across the workspace
 
 ### Upstream Work
 
-| Kind                  | Path                                                              | Role                                                            |
-| --------------------- | ----------------------------------------------------------------- | --------------------------------------------------------------- |
-| Parking Lot           | `$PROJECT/_backlog/_parking-lot.md`                               | Tracks short-term actionables, pending questions, and blockers. |
-| Architecture Briefing | `_roadmap/_architect.md`                                          | Art Work principles, NFRs, milestones.                          |
-| Milestone             | `$PROJECT/_roadmap/3-now/milestone-art-work-cli-one/milestone.md` | Coordinates this plan within the Art Work Cli One milestone.    |
+| Kind        | Path                                                              | Role                                                              |
+| ----------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- |
+| Parking Lot | `$PROJECT/_backlog/_parking-lot.md`                               | Tracks short-term actionables, pending questions, and blockers.   |
+| Milestone   | `$PROJECT/_roadmap/3-now/milestone-art-work-cli-one/milestone.md` | Coordinates this plan within the Art Workspace Cli One milestone. |
 
 ### Required Skills
 
@@ -52,7 +51,6 @@ Implement the links command as a read-only scan of symlinks across the workspace
 
 ### Knowledge
 
-::READ `_roadmap/_architect.md` (Briefing) — Workspace principles, NFRs, milestones. Relevant for Planning Work Item.
 ::READ `knowledge/commands.md` (Design) — Designed behaviour and BDD scenarios for Links. Relevant for Planning Work Item.
 ::READ `knowledge/_pseudo.md` (Pseudo-code) — Pseudo-code contract for links command (incl. `scanNodeModules`). Relevant for Planning Work Item.
 ::READ `knowledge/context-model.md` (Model) — WorkspaceContext, CheckoutStore, project records. Relevant for Planning Work Item.
@@ -131,7 +129,7 @@ All steps MUST pass. No `it.todo()` tests may remain.
 
 **Status:** `DRAFT`
 
-**Purpose:** Implement `art-workspace links` end-to-end, tests first.
+**Purpose:** Implement `art-workspace-cli links` end-to-end, tests first.
 
 **Description:** Create `src/commands/links/` with `runLinks(ctx)`, implement `scanNodeModules(dir, location)` per the pseudo contract, add `presentSymlinkReport(links)`, wire `links` in `src/index.ts`.
 

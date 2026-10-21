@@ -1,4 +1,4 @@
-# Art Work Cli - Operations Log
+# Art Workspace Cli - Operations Log
 
 **Purpose:** Specify the side-effect log of a command invocation.
 

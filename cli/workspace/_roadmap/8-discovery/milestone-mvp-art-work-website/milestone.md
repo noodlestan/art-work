@@ -8,9 +8,9 @@
 
 **Skill:** `write-milestone`
 
-**Purpose:** Publish a minimal website for the Art Work Cli.
+**Purpose:** Publish a minimal website for the Art Workspace Cli.
 
-**Description:** Stand up the smallest site that can grow: what the CLI does, how to install and configure it, and where the docs live. Static, deployable, and owned by `cli/work`.
+**Description:** Stand up the smallest site that can grow: what the CLI does, how to install and configure it, and where the docs live. Static, deployable, and owned by `cli/workspace`.
 
 ## Mandatory Reading
 
@@ -25,11 +25,11 @@
 | `$WORKSPACE`    | Current working directory    | Workspace root directory                                               |
 | `$DOMAINS`      | `$WORKSPACE/.agents/domains` | Domain resources directory                                             |
 | `$ART_WORK`     | Provided with prompt.        | Art Work repository. Example: `$WORKSPACE/checkouts/art-work-planning` |
-| `$ART_WORK_CLI` | `$ART_WORK/cli/work`         | The Art Work Cli package, and its roadmap and backlog.                 |
+| `$ART_WORK_CLI` | `$ART_WORK/cli/workspace`    | The Art Workspace Cli package, and its roadmap and backlog.            |
 
 ## Summary
 
-Publish a minimal, static Art Work Cli website — install, configure, commands — so the CLI has a public face that can absorb documentation and reference pages as later milestones produce them.
+Publish a minimal, static Art Workspace Cli website — install, configure, commands — so the CLI has a public face that can absorb documentation and reference pages as later milestones produce them.
 
 ## Context
 
@@ -59,7 +59,7 @@ Publish a minimal, static Art Work Cli website — install, configure, commands 
 
 ## Scope
 
-One static site for the CLI, living under `cli/work`. Content is limited to what already exists: installation, configuration, and the command list. No docs pipeline, no API reference, no interactive UI.
+One static site for the CLI, living under `cli/workspace`. Content is limited to what already exists: installation, configuration, and the command list. No docs pipeline, no API reference, no interactive UI.
 
 ## Phases
 
@@ -84,7 +84,7 @@ One static site for the CLI, living under `cli/work`. Content is limited to what
 
 **Goal:** A live URL serving the install, configure, and commands pages.
 
-**Description:** Scaffold the site under `cli/work`, source the content from the README and the CLI itself, add the deployment record, and publish.
+**Description:** Scaffold the site under `cli/workspace`, source the content from the README and the CLI itself, add the deployment record, and publish.
 
 **Status:** `DRAFT`
 

@@ -1,4 +1,4 @@
-# @art-work/cli
+# @art-works/workspace-cli
 
 **Purpose:** Operate and monitor multi-repository development environments.
 
@@ -7,13 +7,13 @@
 ## Installation
 
 ```bash
-npm install -g @art-work/cli
+npm install -g @art-works/workspace-cli
 ```
 
 ## Config
 
 ```ts
-import { defineConfig } from '@art-work/cli/config';
+import { defineConfig } from '@art-works/workspace-cli/config';
 
 export default defineConfig({
   clone: {
@@ -33,7 +33,7 @@ export default defineConfig({
 ## Usage
 
 ```bash
-art-work-cli --help
+art-workspace-cli --help
 ```
 
 ### Commands

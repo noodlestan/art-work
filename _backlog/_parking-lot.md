@@ -1,10 +1,10 @@
-# Parking Lot: Art Work Backlog
+# Parking Lot: Art Works Backlog
 
 WIP tracker, structured like the session parking lot: **ACTIONABLE** (in progress now), **pending** (waiting), **BLOCKER** (blocking work), **FOLLOW-UPS** (not in scope).
 
 ## Ongoing
 
-- **Rename the project `art-work` → `art-works`** — supersedes the dead "art box" rename; new target is `art-works`. Covers records, checkout name, packages, docs, and references.
+- **Rename the project `art-work` → `art-works`** — supersedes the dead "art box" rename; new target is `art-works`. The identity records and the package identity are renamed (`@art-works/workspace-cli`, bin `art-workspace-cli`, path `cli/workspace`); the checkout name, the workspace records, and the website project list wait for the new CLI install.
 - **Participate in the Art Boards Inception Whiteboard (owned by `ART_BOARDS`)** — board at `$ART_BOARDS/cli/whiteboard/_roadmap/whiteboard-art-boards-inception/whiteboard.md`.
 - **Participate in the Art Records Whiteboard (owned by `ART_JS`)** — board at `$ART_JS/_backlog/whiteboard-art-records/whiteboard.md`; this project is the highest priority.
 - **Implement `plan-art-work-cli-global-install`** — Steps 1–6/8 complete; Step 7 partly migrated and blocked on `@art-js/records`; checkpoint `102e828` committed.

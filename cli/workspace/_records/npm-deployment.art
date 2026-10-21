@@ -1,8 +1,8 @@
 # Module
 
-## NPM Package Deployment: Art Work Cli
+## NPM Package Deployment: Art Workspace Cli
 
-**Owner:** Package: Art Work Cli
+**Owner:** Package: Art Workspace Cli
 
 **Status:** `DEPLOYED`
 
@@ -10,7 +10,7 @@
 
 **Deploy:** Deployment Command: NPM Package CLI
 
-**Canonical Name:** `@art-work/cli`
+**Canonical Name:** `@art-works/workspace-cli`
 
 **Registry:** `https://registry.npmjs.org`
 

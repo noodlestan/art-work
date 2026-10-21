@@ -38,7 +38,10 @@ async function createCommandContext(
 	return context;
 }
 
-program.name('art-workspace').description('Workspace orchestration CLI').version(__BUILD_VERSION__);
+program
+	.name('art-workspace-cli')
+	.description('Workspace orchestration CLI')
+	.version(__BUILD_VERSION__);
 
 program.option('--no-config-cache', 'Ignore the config cache and recompile the config');
 

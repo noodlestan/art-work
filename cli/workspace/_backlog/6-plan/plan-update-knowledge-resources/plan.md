@@ -8,7 +8,7 @@
 
 **Skill:** `write-plan`
 
-**Purpose:** Update the Art Work Cli architecture knowledge resources to reflect implemented commands and planned changes.
+**Purpose:** Update the Art Workspace Cli architecture knowledge resources to reflect implemented commands and planned changes.
 
 **Description:** The architecture docs currently describe an earlier state of the codebase; this plan brings them current with the actual `src/` structure, completed plans, and planned changes.
 
@@ -33,10 +33,10 @@ Update 8 knowledge resource files to reflect implemented commands (pull, push, s
 
 ### Upstream Work
 
-| Kind        | Path                                                              | Role                                                            |
-| ----------- | ----------------------------------------------------------------- | --------------------------------------------------------------- |
-| Parking Lot | `$PROJECT/_backlog/_parking-lot.md`                               | Tracks short-term actionables, pending questions, and blockers. |
-| Milestone   | `$PROJECT/_roadmap/3-now/milestone-art-work-cli-one/milestone.md` | Defines this plan as part of the Art Work Cli One milestone.    |
+| Kind        | Path                                                              | Role                                                              |
+| ----------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- |
+| Parking Lot | `$PROJECT/_backlog/_parking-lot.md`                               | Tracks short-term actionables, pending questions, and blockers.   |
+| Milestone   | `$PROJECT/_roadmap/3-now/milestone-art-work-cli-one/milestone.md` | Defines this plan as part of the Art Workspace Cli One milestone. |
 
 ### Required Skills
 
@@ -111,7 +111,7 @@ Delegate the first `DRAFT` iteration: `update-architecture-index`.
 
 **Changes:**
 
-- Replace the fields at the top **Status:**, **Pseudo:**, **Plans:** by a **Purpose:** of this document (overview and index of the Art Work Cli architecure).
+- Replace the fields at the top **Status:**, **Pseudo:**, **Plans:** by a **Purpose:** of this document (overview and index of the Art Workspace Cli architecure).
 - Promote **Description:** to a ## What section (describes the CLI) and nest "### Why", "### Key Benefits"
 - Remove "### Definitions"
 - Add "## Index" with a table of nested documents with columns "Title / Path" and "Purpose" \*where path is relative to architecture and purpose is **Purpose:** field of the document, fallback to **Description:**, fallback to generate terse summary of doc.

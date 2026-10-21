@@ -22,7 +22,7 @@ _guide.md        — this file
 _records/        — project, repository, namespace, and license records
 knowledge/       — repository-level knowledge documentation
 cli/             — CLI packages; each owns its _roadmap/ and _backlog/
-cli/work         — `@art-work/cli`
+cli/workspace         — `@art-works/workspace-cli`
 cli/board        — `@art-board/cli`
 ```
 
@@ -40,7 +40,7 @@ Records are co-located with the resources they describe in `_records/` directori
 This repository maintains knowledge references at:
 
 - `knowledge/index.md` — Repository-level knowledge.
-- `cli/work/knowledge/index.md` — Art Work Cli.
+- `cli/workspace/knowledge/index.md` — Art Workspace Cli.
 
 ## Conventions
 
@@ -75,7 +75,7 @@ This repository maintains one repository level roadmap:
 
 This repository hosts also roadmaps for:
 
-- `cli/work/`
+- `cli/workspace/`
 
 ### Planning Work
 
@@ -86,7 +86,7 @@ This repository maintains one repository level backlog:
 
 This repository hosts also backlogs for:
 
-- `cli/work/`
+- `cli/workspace/`
 
 ## Operating Instructions
 

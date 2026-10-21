@@ -34,11 +34,10 @@ Audit test overlap across command layers, eliminate redundant git fixture setups
 
 ### Upstream Work
 
-| Kind                  | Path                                                                        | Role                                                                |
-| --------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| Parking Lot           | `$ART_WORK/_backlog/_parking-lot.md`                                        | Tracks short-term actionables, pending questions, and blockers.     |
-| Architecture Briefing | `$ART_WORK/_roadmap/_architect.md`                                          | Art Work principles, NFRs, milestones.                              |
-| Milestone             | `$ART_WORK/cli/work/_roadmap/3-now/milestone-art-work-cli-one/milestone.md` | Coordinates this plan as Phase 2 of the Art Work Cli One milestone. |
+| Kind        | Path                                                                             | Role                                                                     |
+| ----------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| Parking Lot | `$ART_WORK/_backlog/_parking-lot.md`                                             | Tracks short-term actionables, pending questions, and blockers.          |
+| Milestone   | `$ART_WORK/cli/workspace/_roadmap/3-now/milestone-art-work-cli-one/milestone.md` | Coordinates this plan as Phase 2 of the Art Workspace Cli One milestone. |
 
 ### Required Skills
 
@@ -53,13 +52,13 @@ Audit test overlap across command layers, eliminate redundant git fixture setups
 
 ### Knowledge
 
-::READ `$ART_WORK/cli/work/knowledge/commands.md` (Model) — Command surface, BDD, edge cases. Relevant for Iterations 2, 3, 4.
+::READ `$ART_WORK/cli/workspace/knowledge/commands.md` (Model) — Command surface, BDD, edge cases. Relevant for Iterations 2, 3, 4.
 
-::READ `$ART_WORK/cli/work/knowledge/index.md` (Model) — Execution model, data model, reports. Relevant for all iterations.
+::READ `$ART_WORK/cli/workspace/knowledge/index.md` (Model) — Execution model, data model, reports. Relevant for all iterations.
 
 ## Scope
 
-Audit and redesign the test suite for `cli/work/src`. Update architecture knowledge files to accurately reflect the command → operation → git/scan layering. Reduce expensive git fixture usage by mocking at appropriate boundaries.
+Audit and redesign the test suite for `cli/workspace/src`. Update architecture knowledge files to accurately reflect the command → operation → git/scan layering. Reduce expensive git fixture usage by mocking at appropriate boundaries.
 
 ## Work
 
@@ -199,7 +198,7 @@ docs(tests): audit test coverage, overlap, and gaps
 
 **Status:** `DRAFT`
 
-**Purpose:** Sync `cli/work/knowledge/commands.md` with current implementation.
+**Purpose:** Sync `cli/workspace/knowledge/commands.md` with current implementation.
 
 **Description:** Review all implemented commands against `commands.md`. Update BDD scenarios, edge cases, and implementation status. Remove stale references. Ensure commands.md accurately reflects the current command surface.
 
@@ -207,7 +206,7 @@ docs(tests): audit test coverage, overlap, and gaps
 
 **Changes:**
 
-In `$ART_WORK/cli/work/knowledge/commands.md`:
+In `$ART_WORK/cli/workspace/knowledge/commands.md`:
 
 1. Update **Implementation Status** section to reflect current state.
 2. Review each command's BDD — add missing scenarios discovered during testing (e.g., `checkouts run` inner flags after `--`).
@@ -247,7 +246,7 @@ docs(architecture): sync commands.md with current implementation
 
 **Changes:**
 
-In `$ART_WORK/cli/work/src/commands/*/*.test.ts` (run command tests):
+In `$ART_WORK/cli/workspace/src/commands/*/*.test.ts` (run command tests):
 
 1. **Test cases to cover** (no git fixtures):
    - Validates arguments (e.g., `-c` or `--all` required).
@@ -304,17 +303,17 @@ test(commands): rewrite run tests as focused orchestration tests
 
 **Changes:**
 
-1. **Create `cli/work/knowledge/operations.md`**
+1. **Create `cli/workspace/knowledge/operations.md`**
    - Document the `do*` operation layer: logic, gates, side effects (store updates, logging), error handling.
    - List each `do*` function, its guards, and what it delegates to.
    - Map operations to commands (which command calls which operation).
 
-2. **Create `cli/work/knowledge/git.md`**
+2. **Create `cli/workspace/knowledge/git.md`**
    - Document the `private/git/` layer: pure git wrappers, signatures, error handling.
    - List each helper, what it wraps, and what it returns.
    - Note which helpers take `Checkout` vs primitives (post-refactor).
 
-3. **Create `cli/work/knowledge/scan.md`**
+3. **Create `cli/workspace/knowledge/scan.md`**
    - Document the scan layer: `scanCheckoutState`, `scanWorkspaceCheckout`, `scanAllCheckoutsStates`.
    - What they scan, what states they produce, how they use `remoteFetch`.
    - Note performance implications (fetching on every scan).
@@ -416,10 +415,10 @@ test: add missing tests and adopt mock patterns
 
 ### Knowledge to Update
 
-- `cli/work/knowledge/commands.md` — Iteration 2.
-- `cli/work/knowledge/operations.md` — Iteration 4 (new file).
-- `cli/work/knowledge/git.md` — Iteration 4 (new file).
-- `cli/work/knowledge/scan.md` — Iteration 4 (new file).
+- `cli/workspace/knowledge/commands.md` — Iteration 2.
+- `cli/workspace/knowledge/operations.md` — Iteration 4 (new file).
+- `cli/workspace/knowledge/git.md` — Iteration 4 (new file).
+- `cli/workspace/knowledge/scan.md` — Iteration 4 (new file).
 
 ### Follow Ups
 

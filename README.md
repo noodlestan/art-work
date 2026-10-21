@@ -8,16 +8,16 @@ Tools for discovering projects, managing knowledge and context resources, and op
 
 ## Packages
 
-- `@art-work/cli` (`cli/work`) — Operate and monitor multi-repository development environments.
+- `@art-works/workspace-cli` (`cli/workspace`) — Operate and monitor multi-repository development environments.
 - `@art-board/cli` (`cli/board`) — Coordinate agent sessions around a whiteboard (POC).
 
 ## Getting started
 
-### Using the Art Work Cli
+### Using the Art Workspace Cli
 
 ```md
-npm install -g @art-work/cli
-art-work-cli --help
+npm install -g @art-works/workspace-cli
+art-workspace-cli --help
 ```
 
 ## Development
