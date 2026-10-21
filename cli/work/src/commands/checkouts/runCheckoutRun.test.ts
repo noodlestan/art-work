@@ -31,7 +31,7 @@ describe('checkouts run command', () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
-		const repoDir = join(workspaceDir, ctx.config.clone.path, 'art');
+		const repoDir = join(workspaceDir, ctx.config.checkouts.path, 'art');
 		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
 
 		writeRepoMockRecord(workspaceDir, 'Art', bareDir);
@@ -53,8 +53,8 @@ describe('checkouts run command', () => {
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: artBare } = await makeGitBareRepo(tempDirs);
 		const { dir: purrBare } = await makeGitBareRepo(tempDirs);
-		const artDir = join(workspaceDir, ctx.config.clone.path, 'art');
-		const purrDir = join(workspaceDir, ctx.config.clone.path, 'purr');
+		const artDir = join(workspaceDir, ctx.config.checkouts.path, 'art');
+		const purrDir = join(workspaceDir, ctx.config.checkouts.path, 'purr');
 		await makeGitRepoFromBare(tempDirs, artBare, { dir: artDir });
 		await makeGitRepoFromBare(tempDirs, purrBare, { dir: purrDir });
 
@@ -78,8 +78,8 @@ describe('checkouts run command', () => {
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: artBare } = await makeGitBareRepo(tempDirs);
 		const { dir: purrBare } = await makeGitBareRepo(tempDirs);
-		const artDir = join(workspaceDir, ctx.config.clone.path, 'art');
-		const purrDir = join(workspaceDir, ctx.config.clone.path, 'purr');
+		const artDir = join(workspaceDir, ctx.config.checkouts.path, 'art');
+		const purrDir = join(workspaceDir, ctx.config.checkouts.path, 'purr');
 		await makeGitRepoFromBare(tempDirs, artBare, { dir: artDir });
 		await makeGitRepoFromBare(tempDirs, purrBare, { dir: purrDir });
 
@@ -104,8 +104,8 @@ describe('checkouts run command', () => {
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: artBare } = await makeGitBareRepo(tempDirs);
 		const { dir: purrBare } = await makeGitBareRepo(tempDirs);
-		const artDir = join(workspaceDir, ctx.config.clone.path, 'art');
-		const purrDir = join(workspaceDir, ctx.config.clone.path, 'purr');
+		const artDir = join(workspaceDir, ctx.config.checkouts.path, 'art');
+		const purrDir = join(workspaceDir, ctx.config.checkouts.path, 'purr');
 		await makeGitRepoFromBare(tempDirs, artBare, { dir: artDir });
 		await makeGitRepoFromBare(tempDirs, purrBare, { dir: purrDir });
 

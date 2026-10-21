@@ -1,3 +1,9 @@
+import { resolve } from 'node:path';
+
+import {
+	DEFAULT_RECORDS_PATTERN,
+	DEFAULT_RECORDS_STORE_OPTIONS,
+} from '../../../config/constants.js';
 import type { WorkspaceConfig } from '../../../config/index.js';
 
 export function makeConfigMock(
@@ -5,22 +11,16 @@ export function makeConfigMock(
 	overrides?: Partial<WorkspaceConfig>,
 ): WorkspaceConfig {
 	return {
-		clone: { path: 'checkouts' },
 		root: { path: rootPath },
-		checkouts: { path: '_records/', template: 'checkout.art.njk' },
-		records: {
-			paths: [
-				{
-					base: '.',
-					pattern: '*.art',
-					ignored: ['node_modules/', '.git/', 'dist/'],
-					excluded: [],
-					gitignore: true,
-				},
-			],
+		checkouts: { path: 'checkouts' },
+		data: {
+			store: { ...DEFAULT_RECORDS_STORE_OPTIONS, basePath: resolve(rootPath, '_records') },
+			template: 'checkout.art.njk',
 		},
-		output: {
-			mode: 'quiet',
+		discover: {
+			records: {
+				paths: [DEFAULT_RECORDS_PATTERN],
+			},
 		},
 		...overrides,
 	};

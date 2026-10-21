@@ -1,6 +1,7 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 
+import { DEFAULT_RECORDS_STORE_OPTIONS } from './constants.js';
 import { defineConfig } from './defineConfig.js';
 import { compileConfigBundle } from './private/compileConfigBundle.js';
 import { findReusableBundlePath } from './private/findReusableBundlePath.js';
@@ -11,17 +12,22 @@ import type { PartialWorkspaceConfig, WorkspaceConfig } from './types.js';
 const MANIFEST_FILE = '.art-workspace.mts';
 
 const DEFAULT_CONFIG: PartialWorkspaceConfig = {
-	clone: { path: 'checkouts' },
-	checkouts: {
-		path: '_records/',
+	root: { path: process.cwd() },
+	checkouts: { path: 'checkouts' },
+	data: {
+		store: DEFAULT_RECORDS_STORE_OPTIONS,
 		template: '.agents/domains/workspace/templates/checkout.art.njk',
 	},
-	records: {
-		base: '.',
-		pattern: '*.art',
-		ignored: ['node_modules/', '.git/', 'dist/'],
-		excluded: [],
-		gitignore: true,
+	discover: {
+		records: {
+			defaults: {
+				base: '.',
+				pattern: '*.art',
+				ignored: ['node_modules/', '.git/', 'dist/'],
+				excluded: [],
+				gitignore: true,
+			},
+		},
 	},
 };
 

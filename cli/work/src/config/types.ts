@@ -1,4 +1,4 @@
-import type { FSRecordsPath } from '@art-lib/fs-records';
+import type { FSRecordsAdapterOptions, FSRecordsPattern } from '@art-lib/fs-records';
 
 export type ConfigCacheInput = {
 	path: string;
@@ -14,16 +14,21 @@ export type ConfigCacheMeta = {
 
 export interface WorkspaceConfig {
 	root: { path: string };
-	clone: { path: string };
-	checkouts: { path: string; template: string };
-	records: { paths: FSRecordsPath[] };
-	output: { mode: 'quiet' | 'verbose' };
+	checkouts: { path: string };
+	data: {
+		store: FSRecordsAdapterOptions;
+		template: string;
+	};
+	discover: {
+		records: { paths: FSRecordsPattern[] };
+	};
 }
 
 export interface PartialWorkspaceConfig {
 	root?: Partial<WorkspaceConfig['root']>;
-	clone?: Partial<WorkspaceConfig['clone']>;
 	checkouts?: Partial<WorkspaceConfig['checkouts']>;
-	records?: Partial<FSRecordsPath> & { paths?: Partial<FSRecordsPath>[] };
-	output?: Partial<WorkspaceConfig['output']>;
+	data?: Partial<WorkspaceConfig['data']>;
+	discover?: {
+		records?: { defaults?: Partial<FSRecordsPattern>; paths?: Partial<FSRecordsPattern>[] };
+	};
 }

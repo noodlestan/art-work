@@ -46,7 +46,7 @@ describe('cloneSpecific', () => {
 		const repos = await loadRepositoryRecords(ctx);
 		await cloneSpecific(ctx, repos, 'One');
 
-		const repoDir = join(workspaceDir, ctx.config.clone.path, 'one');
+		const repoDir = join(workspaceDir, ctx.config.checkouts.path, 'one');
 		expect(() => simpleGit(repoDir).status()).not.toThrow();
 
 		const recordFile = join(workspaceDir, '_records/one-checkout.art');
@@ -94,7 +94,7 @@ describe('cloneSpecific', () => {
 		expect(checkout).toBeDefined();
 		expect(checkout?.record.name).toBe('Foo @ bar');
 		expect(checkout?.record.location).toBe('foo-bar');
-		expect(checkout?.path).toBe(join(workspaceDir, ctx.config.clone.path, 'foo-bar'));
+		expect(checkout?.path).toBe(join(workspaceDir, ctx.config.checkouts.path, 'foo-bar'));
 	});
 
 	it('WHEN no location is given it uses the repo name as name and path', async () => {
@@ -112,7 +112,7 @@ describe('cloneSpecific', () => {
 		expect(checkout).toBeDefined();
 		expect(checkout?.record.name).toBe('Foo');
 		expect(checkout?.record.location).toBe('foo');
-		expect(checkout?.path).toBe(join(workspaceDir, ctx.config.clone.path, 'foo'));
+		expect(checkout?.path).toBe(join(workspaceDir, ctx.config.checkouts.path, 'foo'));
 	});
 
 	it('WHEN the location is already used it logs a failure', async () => {
@@ -137,7 +137,7 @@ describe('cloneSpecific', () => {
 		const ctx = makeCommandContextMock(workspaceDir);
 		writeRepoMockRecord(workspaceDir, 'One', 'git@example.com:one.git');
 
-		const targetDir = join(workspaceDir, ctx.config.clone.path, 'one');
+		const targetDir = join(workspaceDir, ctx.config.checkouts.path, 'one');
 		mkdirSync(targetDir, { recursive: true });
 
 		const repos = await loadRepositoryRecords(ctx);

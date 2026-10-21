@@ -50,7 +50,7 @@ describe('push command', () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
-		const repoDir = join(workspaceDir, ctx.config.clone.path, 'ahead');
+		const repoDir = join(workspaceDir, ctx.config.checkouts.path, 'ahead');
 		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
 		const filename = await advanceGitRepoByOneCommit(repoDir);
 
@@ -78,7 +78,7 @@ describe('push command', () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
-		const repoDir = join(workspaceDir, ctx.config.clone.path, 'aheadonly');
+		const repoDir = join(workspaceDir, ctx.config.checkouts.path, 'aheadonly');
 		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
 		const filename = await advanceGitRepoByOneCommit(repoDir);
 
@@ -105,7 +105,7 @@ describe('push command', () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
-		const repoDir = join(workspaceDir, ctx.config.clone.path, 'dirtypush');
+		const repoDir = join(workspaceDir, ctx.config.checkouts.path, 'dirtypush');
 		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
 		await advanceGitRepoByOneCommit(repoDir);
 		writeFileSync(join(repoDir, 'dirty.txt'), 'dirty');
@@ -124,7 +124,7 @@ describe('push command', () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
-		const repoDir = join(workspaceDir, ctx.config.clone.path, 'current');
+		const repoDir = join(workspaceDir, ctx.config.checkouts.path, 'current');
 		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
 
 		writeRepoMockRecord(workspaceDir, 'Current', 'git@example.com:current.git');

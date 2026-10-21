@@ -22,7 +22,7 @@ describe('doPushCheckout', () => {
 	it('WHEN the checkout has no remote pushing logs a failure operation', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
-		const repoDir = join(workspaceDir, ctx.config.clone.path, 'my-repo');
+		const repoDir = join(workspaceDir, ctx.config.checkouts.path, 'my-repo');
 		await makeGitRepo(tempDirs, { commit: true, dir: repoDir });
 
 		const checkout = makeCheckoutMock({

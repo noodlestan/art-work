@@ -16,7 +16,7 @@ export function presentCheckoutReport(config: WorkspaceConfig, checkouts: Checko
 	const headers = ['repo', 'location', 'branch', 'states'];
 	const rows = items.map(c => [
 		c.repo?.name || '-',
-		join(config.clone.path, c.record.location),
+		join(config.checkouts.path, c.record.location),
 		c.scan?.state('remote').branch || c.record.branch,
 		c.scan?.issues().join('; ') || '-',
 	]);

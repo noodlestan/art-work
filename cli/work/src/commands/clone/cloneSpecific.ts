@@ -44,7 +44,7 @@ export async function cloneSpecific(
 	if (existing) {
 		await cloneIfMissing(ctx, existing);
 	} else {
-		const targetDir = join(ctx.config.root.path, ctx.config.clone.path, location);
+		const targetDir = join(ctx.config.root.path, ctx.config.checkouts.path, location);
 		if (existsSync(targetDir)) {
 			const msg = `directory already exists at ${targetDir}`;
 			ctx.log.log(createOperationFailure(createCloneOperation(undefined), msg));

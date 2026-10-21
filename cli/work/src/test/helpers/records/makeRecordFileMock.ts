@@ -2,13 +2,13 @@ import { relative, resolve } from 'node:path';
 
 import type { FSRecordFile } from '@art-lib/fs-records';
 
-export function makeRecordFileMock(searchPath: string, filename: string): FSRecordFile {
-	const resolvedSearchPath = resolve(searchPath);
+export function makeRecordFileMock(basePath: string, filename: string): FSRecordFile {
+	const resolvedBasePath = resolve(basePath);
 	const resolvedFilename = resolve(filename);
 
 	return {
 		filename: resolvedFilename,
-		searchPath,
-		path: relative(resolvedSearchPath, resolvedFilename),
+		basePath: resolvedBasePath,
+		path: relative(resolvedBasePath, resolvedFilename),
 	};
 }

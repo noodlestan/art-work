@@ -1,4 +1,4 @@
-import { type FSRecordFile, findRecordFiles } from '@art-lib/fs-records';
+import type { FSRecordFile } from '@art-lib/fs-records';
 
 import type { WorkspaceContext } from '../../context/createWorkspaceContext.js';
 import { createGenericOperation } from '../../operations/createGenericOperation.js';
@@ -10,9 +10,17 @@ export async function loadRepositoryRecords(ctx: WorkspaceContext): Promise<Repo
 	const searchPath = ctx.config.root.path;
 	ctx.log.log(createGenericOperation('load-repository-records', searchPath));
 
-	const recordFiles: FSRecordFile[] = await findRecordFiles(ctx.config.records, searchPath, [
-		'Repository',
-	]);
-	const records = await Promise.all(recordFiles.map(file => readRepositoryRecord(file)));
+	const adapter = ctx.fsRecords;
+	const recordFiles: FSRecordFile[] = await adapter.discoverRecordFiles();
+	const records = await Promise.all(
+		recordFiles
+			.filter(file => !file.error)
+			.map(async file => {
+				const contentSource = adapter.createContentSource(file);
+				const content = await contentSource.readContent();
+				const fileWithContent = { ...file, content };
+				return readRepositoryRecord(fileWithContent);
+			}),
+	);
 	return records.filter((record): record is RepositoryRecord => record !== null);
 }

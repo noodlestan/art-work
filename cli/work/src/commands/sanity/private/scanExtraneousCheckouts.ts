@@ -11,7 +11,7 @@ export async function scanExtraneousCheckouts(
 	ctx: WorkspaceContext,
 	store: CheckoutStore,
 ): Promise<Checkout[]> {
-	const checkoutsPath = join(ctx.config.root.path, ctx.config.clone.path);
+	const checkoutsPath = join(ctx.config.root.path, ctx.config.checkouts.path);
 	const result: Checkout[] = [];
 
 	try {

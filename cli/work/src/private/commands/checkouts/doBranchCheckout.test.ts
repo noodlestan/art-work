@@ -23,7 +23,7 @@ describe('doBranchCheckout', () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
-		const repoDir = join(workspaceDir, ctx.config.clone.path, 'my-repo');
+		const repoDir = join(workspaceDir, ctx.config.checkouts.path, 'my-repo');
 		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
 
 		const checkout = makeCheckoutMock({

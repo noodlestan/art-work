@@ -40,14 +40,13 @@ describe('makeCheckoutFilename', () => {
 		expect(result).toBe(join(tempDir, '_records/upper-case-checkout.art'));
 	});
 
-	it('WHEN a filename is made it uses the config root and checkouts paths', () => {
+	it('WHEN a filename is made it uses the data store path', () => {
 		const tempDir = makeTempDir(tempDirs);
 		const config = makeConfigMock(tempDir);
 		const data = { name: 'Foo', location: 'checkouts/foo', branch: 'main' };
 
 		const result = makeCheckoutFilename(config, data);
 
-		expect(result).toContain(config.root.path);
-		expect(result).toContain(config.checkouts.path);
+		expect(result).toBe(join(config.data.store.basePath, 'foo-checkout.art'));
 	});
 });

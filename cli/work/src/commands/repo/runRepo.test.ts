@@ -39,9 +39,9 @@ afterEach(async () => {
 describe('repo command', () => {
 	async function setupCheckoutWithPackages(
 		workspaceDir: string,
-		ctx: { config: { clone: { path: string } } },
+		ctx: { config: { checkouts: { path: string } } },
 	) {
-		const checkoutDir = join(workspaceDir, ctx.config.clone.path, 'artificial');
+		const checkoutDir = join(workspaceDir, ctx.config.checkouts.path, 'artificial');
 		await makeGitRepo(tempDirs, { dir: checkoutDir });
 
 		writeRepoMockRecord(workspaceDir, 'Artificial', 'git@example.com:artificial.git');
@@ -108,8 +108,8 @@ describe('repo command', () => {
 	it('WHEN no locations are specified it defaults to all checkouts', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
-		const dir1 = join(workspaceDir, ctx.config.clone.path, 'artificial');
-		const dir2 = join(workspaceDir, ctx.config.clone.path, 'conventions-fixes');
+		const dir1 = join(workspaceDir, ctx.config.checkouts.path, 'artificial');
+		const dir2 = join(workspaceDir, ctx.config.checkouts.path, 'conventions-fixes');
 		await makeGitRepo(tempDirs, { dir: dir1 });
 		await makeGitRepo(tempDirs, { dir: dir2 });
 
@@ -194,7 +194,7 @@ describe('repo command', () => {
 	it('WHEN a checkout has no project records, its report lists that issue', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
-		const checkoutDir = join(workspaceDir, ctx.config.clone.path, 'purrception');
+		const checkoutDir = join(workspaceDir, ctx.config.checkouts.path, 'purrception');
 		await makeGitRepo(tempDirs, { dir: checkoutDir });
 
 		writeRepoMockRecord(workspaceDir, 'Purrception', 'git@example.com:purrception.git');
@@ -209,8 +209,8 @@ describe('repo command', () => {
 	it('WHEN repositories have packages it groups each repository report with its package report', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
-		const dir1 = join(workspaceDir, ctx.config.clone.path, 'artificial');
-		const dir2 = join(workspaceDir, ctx.config.clone.path, 'purrception');
+		const dir1 = join(workspaceDir, ctx.config.checkouts.path, 'artificial');
+		const dir2 = join(workspaceDir, ctx.config.checkouts.path, 'purrception');
 		await makeGitRepo(tempDirs, { dir: dir1 });
 		await makeGitRepo(tempDirs, { dir: dir2 });
 
@@ -280,7 +280,7 @@ describe('repo command', () => {
 	it('WHEN a project references a missing namespace, the command warns about that namespace', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
-		const checkoutDir = join(workspaceDir, ctx.config.clone.path, 'artificial');
+		const checkoutDir = join(workspaceDir, ctx.config.checkouts.path, 'artificial');
 		await makeGitRepo(tempDirs, { dir: checkoutDir });
 
 		writeRepoMockRecord(workspaceDir, 'Artificial', 'git@example.com:artificial.git');
@@ -303,7 +303,7 @@ describe('repo command', () => {
 	it('WHEN a namespace references a missing package, the command warns about that package', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
-		const checkoutDir = join(workspaceDir, ctx.config.clone.path, 'artificial');
+		const checkoutDir = join(workspaceDir, ctx.config.checkouts.path, 'artificial');
 		await makeGitRepo(tempDirs, { dir: checkoutDir });
 
 		writeRepoMockRecord(workspaceDir, 'Artificial', 'git@example.com:artificial.git');
@@ -330,7 +330,7 @@ describe('repo command', () => {
 	it('WHEN a package has no package.json, the report notes it without querying npm', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
-		const checkoutDir = join(workspaceDir, ctx.config.clone.path, 'artificial');
+		const checkoutDir = join(workspaceDir, ctx.config.checkouts.path, 'artificial');
 		await makeGitRepo(tempDirs, { dir: checkoutDir });
 
 		writeRepoMockRecord(workspaceDir, 'Artificial', 'git@example.com:artificial.git');

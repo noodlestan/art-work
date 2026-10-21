@@ -53,7 +53,7 @@ describe('sanity command', () => {
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const ctx = await makeCommandContextMock(workspaceDir);
 
-		const repoDir = join(workspaceDir, ctx.config.clone.path, 'green');
+		const repoDir = join(workspaceDir, ctx.config.checkouts.path, 'green');
 		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
 		await advanceGitRepoByOneCommit(repoDir, 'file.txt');
 		const git = simpleGit(repoDir);
@@ -77,7 +77,7 @@ describe('sanity command', () => {
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const ctx = await makeCommandContextMock(workspaceDir);
 
-		const repoDir = join(workspaceDir, ctx.config.clone.path, 'dirty');
+		const repoDir = join(workspaceDir, ctx.config.checkouts.path, 'dirty');
 		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
 		writeFileSync(join(repoDir, 'dirty.txt'), 'dirty');
 
@@ -99,7 +99,7 @@ describe('sanity command', () => {
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const ctx = await makeCommandContextMock(workspaceDir);
 
-		const repoDir = join(workspaceDir, ctx.config.clone.path, 'unpushed');
+		const repoDir = join(workspaceDir, ctx.config.checkouts.path, 'unpushed');
 		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
 		await advanceGitRepoByOneCommit(repoDir, 'file.txt');
 
@@ -121,7 +121,7 @@ describe('sanity command', () => {
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const ctx = await makeCommandContextMock(workspaceDir);
 
-		const repoDir = join(workspaceDir, ctx.config.clone.path, 'autopush');
+		const repoDir = join(workspaceDir, ctx.config.checkouts.path, 'autopush');
 		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
 		await advanceGitRepoByOneCommit(repoDir, 'file.txt');
 		const git = simpleGit(repoDir);
@@ -148,7 +148,7 @@ describe('sanity command', () => {
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const ctx = await makeCommandContextMock(workspaceDir);
 
-		const repoDir = join(workspaceDir, ctx.config.clone.path, 'dirtynoauto');
+		const repoDir = join(workspaceDir, ctx.config.checkouts.path, 'dirtynoauto');
 		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
 		await advanceGitRepoByOneCommit(repoDir, 'file.txt');
 		writeFileSync(join(repoDir, 'dirty.txt'), 'dirty');
@@ -171,7 +171,7 @@ describe('sanity command', () => {
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const ctx = await makeCommandContextMock(workspaceDir);
 
-		const repoDir = join(workspaceDir, ctx.config.clone.path, 'detached');
+		const repoDir = join(workspaceDir, ctx.config.checkouts.path, 'detached');
 		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
 		await advanceGitRepoByOneCommit(repoDir, 'file.txt');
 		const git = simpleGit(repoDir);
@@ -197,7 +197,7 @@ describe('sanity command', () => {
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const ctx = await makeCommandContextMock(workspaceDir);
 
-		const repoDir = join(workspaceDir, ctx.config.clone.path, 'conflict');
+		const repoDir = join(workspaceDir, ctx.config.checkouts.path, 'conflict');
 		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
 		await advanceGitRepoByOneCommit(repoDir, 'file.txt');
 		const git = simpleGit(repoDir);
@@ -241,7 +241,7 @@ describe('sanity command', () => {
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const ctx = await makeCommandContextMock(workspaceDir);
 
-		const repoDir = join(workspaceDir, ctx.config.clone.path, 'green');
+		const repoDir = join(workspaceDir, ctx.config.checkouts.path, 'green');
 		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
 		await advanceGitRepoByOneCommit(repoDir, 'file.txt');
 		const git = simpleGit(repoDir);
@@ -266,7 +266,7 @@ describe('sanity command', () => {
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const ctx = await makeCommandContextMock(workspaceDir);
 
-		const repoDir = join(workspaceDir, ctx.config.clone.path, 'orphan');
+		const repoDir = join(workspaceDir, ctx.config.checkouts.path, 'orphan');
 		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
 
 		writeCheckoutMockRecord(workspaceDir, 'Orphan', 'Orphan', 'orphan');
@@ -286,7 +286,7 @@ describe('sanity command', () => {
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const ctx = await makeCommandContextMock(workspaceDir);
 
-		const repoDir = join(workspaceDir, ctx.config.clone.path, 'orphan');
+		const repoDir = join(workspaceDir, ctx.config.checkouts.path, 'orphan');
 		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
 		await advanceGitRepoByOneCommit(repoDir, 'file.txt');
 
@@ -306,7 +306,7 @@ describe('sanity command', () => {
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const ctx = await makeCommandContextMock(workspaceDir);
 
-		const repoDir = join(workspaceDir, ctx.config.clone.path, 'test');
+		const repoDir = join(workspaceDir, ctx.config.checkouts.path, 'test');
 		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
 
 		writeRepoMockRecord(workspaceDir, 'Test', 'git@example.com:test.git');
@@ -389,7 +389,7 @@ describe('sanity command', () => {
 		await simpleGit(workspaceDir).fetch('origin', 'main');
 
 		const { dir: checkoutBare } = await makeGitBareRepo(tempDirs);
-		const repoDir = join(workspaceDir, ctx.config.clone.path, 'autopush');
+		const repoDir = join(workspaceDir, ctx.config.checkouts.path, 'autopush');
 		await makeGitRepoFromBare(tempDirs, checkoutBare, { dir: repoDir });
 		await advanceGitRepoByOneCommit(repoDir, 'file.txt');
 		const git = simpleGit(repoDir);
@@ -425,7 +425,7 @@ describe('sanity command', () => {
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const ctx = await makeCommandContextMock(workspaceDir);
 
-		const repoDir = join(workspaceDir, ctx.config.clone.path, 'refetchsanity');
+		const repoDir = join(workspaceDir, ctx.config.checkouts.path, 'refetchsanity');
 		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
 		await advanceGitRepoByOneCommit(repoDir, 'file.txt');
 		const git = simpleGit(repoDir);

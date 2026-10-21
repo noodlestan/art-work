@@ -23,7 +23,7 @@ describe('doClone', () => {
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 
 		const checkout = makeCheckoutMock({
-			path: join(workspaceDir, ctx.config.clone.path, 'my-repo'),
+			path: join(workspaceDir, ctx.config.checkouts.path, 'my-repo'),
 			repo: { name: 'MyRepo', remote: bareDir },
 		});
 
@@ -39,7 +39,7 @@ describe('doClone', () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const checkout = makeCheckoutMock({
-			path: join(workspaceDir, ctx.config.clone.path, 'my-repo'),
+			path: join(workspaceDir, ctx.config.checkouts.path, 'my-repo'),
 			repo: { name: 'MyRepo', remote: join(workspaceDir, 'nonexistent-repo.git') },
 		});
 

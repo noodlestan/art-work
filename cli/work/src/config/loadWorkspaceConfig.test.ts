@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 
 import { build } from 'esbuild';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -25,17 +25,17 @@ vi.mock('esbuild', async importOriginal => {
 const buildMock = vi.mocked(build);
 
 const SOME_CONFIG = JSON.stringify({
-	clone: { path: 'clone-path' },
-	root: {},
-	checkouts: { path: 'checkouts-path', template: 'checkouts-template' },
-	records: { pattern: '*.art' },
+	root: { path: 'root-path' },
+	checkouts: { path: 'checkouts-path' },
+	data: { store: { basePath: 'store-path', patterns: [] }, template: 'checkouts-template' },
+	discover: { records: { paths: [{ base: '.', pattern: '*.art' }] } },
 });
 
 const CHANGED_CONFIG = JSON.stringify({
-	clone: { path: 'changed-clone-path' },
-	root: {},
-	checkouts: { path: 'checkouts-path', template: 'checkouts-template' },
-	records: { pattern: '*.art' },
+	root: { path: 'root-path' },
+	checkouts: { path: 'changed-checkouts-path' },
+	data: { store: { basePath: 'store-path', patterns: [] }, template: 'checkouts-template' },
+	discover: { records: { paths: [{ base: '.', pattern: '*.art' }] } },
 });
 
 const tempDirs: string[] = [];
@@ -67,10 +67,10 @@ describe('loadWorkspaceConfig', () => {
 
 		const config = await loadWorkspaceConfig(tempDir);
 
-		expect(config.clone.path).toBe('checkouts');
-		expect(config.checkouts.path).toBe('_records/');
-		expect(config.checkouts.template).toBe('.agents/domains/workspace/templates/checkout.art.njk');
-		expect(config.records.paths[0].pattern).toBe('*.art');
+		expect(config.checkouts.path).toBe('checkouts');
+		expect(config.data.store.basePath).toBe(resolve(tempDir, '_records/'));
+		expect(config.data.template).toBe('.agents/domains/workspace/templates/checkout.art.njk');
+		expect(config.discover.records.paths[0].pattern).toBe('*.art');
 	});
 
 	it('WHEN the config is missing it warns and still returns a config', async () => {
@@ -80,8 +80,8 @@ describe('loadWorkspaceConfig', () => {
 		const config = await loadWorkspaceConfig(tempDir);
 
 		expect(warnSpy).toHaveBeenCalled();
-		expect(config.clone.path).toBe('checkouts');
-		expect(config.records.paths[0].pattern).toBe('*.art');
+		expect(config.checkouts.path).toBe('checkouts');
+		expect(config.discover.records.paths[0].pattern).toBe('*.art');
 	});
 
 	it('WHEN the config is present it returns the loaded config', async () => {
@@ -92,8 +92,8 @@ describe('loadWorkspaceConfig', () => {
 
 		expect(config.root.path).toBe(tempDir);
 		expect(config.checkouts.path).toBe('checkouts-path');
-		expect(config.checkouts.template).toBe('checkouts-template');
-		expect(config.records.paths[0].pattern).toBe('*.art');
+		expect(config.data.template).toBe('checkouts-template');
+		expect(config.discover.records.paths[0].pattern).toBe('*.art');
 	});
 
 	it('GIVEN a successful load it writes the bundle into the cache and skips the root-level file', async () => {
@@ -128,8 +128,8 @@ describe('loadWorkspaceConfig', () => {
 		const config = await loadWorkspaceConfig(tempDir);
 
 		expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining(cacheDir));
-		expect(config.clone.path).toBe('clone-path');
-		expect(config.records.paths[0].pattern).toBe('*.art');
+		expect(config.checkouts.path).toBe('checkouts-path');
+		expect(config.discover.records.paths[0].pattern).toBe('*.art');
 	});
 
 	it('WHEN the manifest throws on import it reports the manifest path', async () => {
@@ -176,7 +176,7 @@ describe('loadWorkspaceConfig', () => {
 		await loadWorkspaceConfig(tempDir, { verbose: true });
 
 		expect(vi.mocked(console.info)).toHaveBeenCalledWith('⚙️ [config] reused cached bundle');
-		expect(config.clone.path).toBe('clone-path');
+		expect(config.checkouts.path).toBe('checkouts-path');
 	});
 
 	it('GIVEN the manifest changed a load rebuilds and rewrites the cache metadata', async () => {
@@ -322,12 +322,12 @@ describe('loadWorkspaceConfig', () => {
 		const reused = await loadWorkspaceConfig(tempDir);
 
 		expect(buildMock).not.toHaveBeenCalled();
-		expect(reused.clone.path).toBe('clone-path');
+		expect(reused.checkouts.path).toBe('checkouts-path');
 
 		const rebuilt = await loadWorkspaceConfig(tempDir, { cache: false });
 
 		expect(buildMock).toHaveBeenCalledTimes(1);
-		expect(rebuilt.clone.path).toBe('clone-path');
+		expect(rebuilt.checkouts.path).toBe('checkouts-path');
 		expect(vi.mocked(console.info)).toHaveBeenCalledWith(
 			'⚙️ [config] cache bypassed, rebuilt bundle',
 		);

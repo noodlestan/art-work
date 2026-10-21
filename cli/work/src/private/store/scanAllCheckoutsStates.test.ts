@@ -76,7 +76,7 @@ describe('scanAllCheckoutsStates', () => {
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 
-		const repoDir = join(workspaceDir, ctx.config.clone.path, 'refetchtest');
+		const repoDir = join(workspaceDir, ctx.config.checkouts.path, 'refetchtest');
 		const { git } = await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
 		await advanceGitRepoByOneCommit(repoDir, 'file.txt');
 		await git.push('origin', 'main', ['--set-upstream']);

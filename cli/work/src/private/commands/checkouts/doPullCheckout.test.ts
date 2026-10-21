@@ -27,7 +27,7 @@ describe('doPullCheckout', () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
-		const repoDir = join(workspaceDir, ctx.config.clone.path, 'behind');
+		const repoDir = join(workspaceDir, ctx.config.checkouts.path, 'behind');
 		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
 
 		// Create an advance in another clone
@@ -56,7 +56,7 @@ describe('doPullCheckout', () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
-		const repoDir = join(workspaceDir, ctx.config.clone.path, 'nopull');
+		const repoDir = join(workspaceDir, ctx.config.checkouts.path, 'nopull');
 		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
 
 		// Point remote to a non-existent path so pull fails
@@ -80,7 +80,7 @@ describe('doPullCheckout', () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		const { dir: bareDir } = await makeGitBareRepo(tempDirs);
-		const repoDir = join(workspaceDir, ctx.config.clone.path, 'pending-pull');
+		const repoDir = join(workspaceDir, ctx.config.checkouts.path, 'pending-pull');
 		await makeGitRepoFromBare(tempDirs, bareDir, { dir: repoDir });
 
 		// Point remote to a non-existent path so pull fails

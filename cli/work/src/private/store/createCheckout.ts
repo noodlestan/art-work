@@ -15,7 +15,7 @@ export function createCheckout(
 	branch?: string,
 	name?: string,
 ): Checkout {
-	const basePath = join(config.root.path, config.clone.path);
+	const basePath = join(config.root.path, config.checkouts.path);
 	const l = safePath(target);
 	const r = repo;
 	const b = branch ?? 'main';

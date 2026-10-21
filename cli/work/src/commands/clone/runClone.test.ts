@@ -38,7 +38,7 @@ describe('clone command', () => {
 
 		await runClone(ctx, { repoName: 'Artificial' });
 
-		const repoDir = join(workspaceDir, ctx.config.clone.path, 'artificial');
+		const repoDir = join(workspaceDir, ctx.config.checkouts.path, 'artificial');
 		expect(() => simpleGit(repoDir).status()).not.toThrow();
 
 		const recordFile = join(workspaceDir, '_records/artificial-checkout.art');
@@ -106,8 +106,8 @@ describe('clone command', () => {
 
 		await runClone(ctx, { all: true });
 
-		const checkoutDir1 = join(workspaceDir, ctx.config.clone.path, 'repo-a');
-		const checkoutDir2 = join(workspaceDir, ctx.config.clone.path, 'repo-b');
+		const checkoutDir1 = join(workspaceDir, ctx.config.checkouts.path, 'repo-a');
+		const checkoutDir2 = join(workspaceDir, ctx.config.checkouts.path, 'repo-b');
 		expect(existsSync(checkoutDir1)).toBe(true);
 		expect(existsSync(checkoutDir2)).toBe(true);
 	});
@@ -121,7 +121,7 @@ describe('clone command', () => {
 
 		await runClone(ctx, { repoName: 'My Repo' });
 
-		const checkoutDir = join(workspaceDir, ctx.config.clone.path, 'my-repo');
+		const checkoutDir = join(workspaceDir, ctx.config.checkouts.path, 'my-repo');
 		expect(existsSync(checkoutDir)).toBe(true);
 	});
 
@@ -134,7 +134,7 @@ describe('clone command', () => {
 
 		await runClone(ctx, { repoName: 'Artificial', checkoutInput: 'custom' });
 
-		const checkoutDir = join(workspaceDir, ctx.config.clone.path, 'artificial-custom');
+		const checkoutDir = join(workspaceDir, ctx.config.checkouts.path, 'artificial-custom');
 		expect(existsSync(checkoutDir)).toBe(true);
 	});
 
@@ -147,7 +147,7 @@ describe('clone command', () => {
 
 		await runClone(ctx, { repoName: 'Artificial', checkoutInput: 'foo' });
 
-		const checkoutDir = join(workspaceDir, ctx.config.clone.path, 'artificial-foo');
+		const checkoutDir = join(workspaceDir, ctx.config.checkouts.path, 'artificial-foo');
 		expect(existsSync(checkoutDir)).toBe(true);
 
 		const recordFile = join(workspaceDir, '_records/artificial-@-foo-checkout.art');
@@ -181,8 +181,8 @@ describe('clone command', () => {
 		await runClone(ctx, { repoName: 'Artificial' });
 		await runClone(ctx, { repoName: 'Artificial', checkoutInput: 'custom' });
 
-		const checkoutDir1 = join(workspaceDir, ctx.config.clone.path, 'artificial');
-		const checkoutDir2 = join(workspaceDir, ctx.config.clone.path, 'artificial-custom');
+		const checkoutDir1 = join(workspaceDir, ctx.config.checkouts.path, 'artificial');
+		const checkoutDir2 = join(workspaceDir, ctx.config.checkouts.path, 'artificial-custom');
 		expect(existsSync(checkoutDir1)).toBe(true);
 		expect(existsSync(checkoutDir2)).toBe(true);
 	});

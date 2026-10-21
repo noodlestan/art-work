@@ -46,7 +46,7 @@ describe('branch command', () => {
 	it('WHEN a single checkout is specified it creates and checks out a new branch', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
-		const repoDir = join(workspaceDir, ctx.config.clone.path, 'one');
+		const repoDir = join(workspaceDir, ctx.config.checkouts.path, 'one');
 		await makeGitRepo(tempDirs, { dir: repoDir });
 
 		writeRepoMockRecord(workspaceDir, 'One', 'git@example.com:one.git');
@@ -68,8 +68,8 @@ describe('branch command', () => {
 	it('WHEN no checkouts are specified it branches all checkouts', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
-		await makeGitRepo(tempDirs, { dir: join(workspaceDir, ctx.config.clone.path, 'alpha') });
-		await makeGitRepo(tempDirs, { dir: join(workspaceDir, ctx.config.clone.path, 'beta') });
+		await makeGitRepo(tempDirs, { dir: join(workspaceDir, ctx.config.checkouts.path, 'alpha') });
+		await makeGitRepo(tempDirs, { dir: join(workspaceDir, ctx.config.checkouts.path, 'beta') });
 
 		writeRepoMockRecord(workspaceDir, 'Alpha', 'git@example.com:alpha.git');
 		writeRepoMockRecord(workspaceDir, 'Beta', 'git@example.com:beta.git');
@@ -89,7 +89,7 @@ describe('branch command', () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		await makeGitRepo(tempDirs, {
-			dir: join(workspaceDir, ctx.config.clone.path, 'checkouts/one'),
+			dir: join(workspaceDir, ctx.config.checkouts.path, 'checkouts/one'),
 		});
 
 		writeRepoMockRecord(workspaceDir, 'One', 'git@example.com:one.git');
@@ -106,7 +106,7 @@ describe('branch command', () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
 		await makeGitRepo(tempDirs, {
-			dir: join(workspaceDir, ctx.config.clone.path, 'checkouts/good'),
+			dir: join(workspaceDir, ctx.config.checkouts.path, 'checkouts/good'),
 		});
 
 		writeRepoMockRecord(workspaceDir, 'Good', 'git@example.com:good.git');
@@ -128,7 +128,7 @@ describe('branch command', () => {
 	it('WHEN a checkout has no matching repository it still branches it', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
-		await makeGitRepo(tempDirs, { dir: join(workspaceDir, ctx.config.clone.path, 'conv') });
+		await makeGitRepo(tempDirs, { dir: join(workspaceDir, ctx.config.checkouts.path, 'conv') });
 
 		writeCheckoutMockRecord(workspaceDir, 'Conv', 'Conv', 'conv');
 
@@ -146,7 +146,7 @@ describe('branch command', () => {
 	it('WHEN the branch already exists it switches to it', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
-		const repoDir = join(workspaceDir, ctx.config.clone.path, 'one');
+		const repoDir = join(workspaceDir, ctx.config.checkouts.path, 'one');
 		const { git } = await makeGitRepo(tempDirs, { dir: repoDir });
 		await advanceGitRepoByOneCommit(repoDir, 'file.txt');
 		await git.checkoutLocalBranch('feat/x');
@@ -167,8 +167,8 @@ describe('branch command', () => {
 	it('WHEN the pattern is a wildcard it branches the matching checkouts', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
-		await makeGitRepo(tempDirs, { dir: join(workspaceDir, ctx.config.clone.path, 'alpha') });
-		await makeGitRepo(tempDirs, { dir: join(workspaceDir, ctx.config.clone.path, 'beta') });
+		await makeGitRepo(tempDirs, { dir: join(workspaceDir, ctx.config.checkouts.path, 'alpha') });
+		await makeGitRepo(tempDirs, { dir: join(workspaceDir, ctx.config.checkouts.path, 'beta') });
 
 		writeRepoMockRecord(workspaceDir, 'Alpha', 'git@example.com:alpha.git');
 		writeRepoMockRecord(workspaceDir, 'Beta', 'git@example.com:beta.git');
@@ -188,7 +188,7 @@ describe('branch command', () => {
 	it('WHEN the pattern matches no checkouts it warns and skips', async () => {
 		const workspaceDir = makeTempDir(tempDirs);
 		const ctx = makeCommandContextMock(workspaceDir);
-		await makeGitRepo(tempDirs, { dir: join(workspaceDir, ctx.config.clone.path, 'alpha') });
+		await makeGitRepo(tempDirs, { dir: join(workspaceDir, ctx.config.checkouts.path, 'alpha') });
 
 		writeRepoMockRecord(workspaceDir, 'Alpha', 'git@example.com:alpha.git');
 		writeCheckoutMockRecord(workspaceDir, 'Alpha', 'Alpha', 'alpha');
