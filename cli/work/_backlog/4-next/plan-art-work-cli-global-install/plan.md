@@ -65,11 +65,11 @@ Update the Art Work Cli so that the globally installed executable can locate its
 
 ### Next
 
-- All 4 iterations are `READY` and fully planned. Delegate Iteration: Refactor Config Semantics first — its delegation is gated on the adapter work in `$ART_LIB/_backlog/4-next/plan-add-fs-records-adapter/plan.md` (`READY`, 2026-10-13) being delivered: this iteration wires `createFSRecordsAdapter` plus one `FSContentSource` per file, and neither exists in the published `0.0.1`. Review question resolved 2026-10-13: the read path cannot be split out — `0.0.1` carries no adapter, only the pre-rename `findRecordFiles()` / `readRecordFileContent()`.
+- Iteration `refactor-config-semantics` is a committed checkpoint (`102e828`): Steps 1–6 are complete, and Step 7 has adapter discovery/content wired. **The iteration remains `BLOCKED`** because Step 7 also requires extraction through `@art-js/records`, which is not declared or installed in `@art-work/cli`; `npm info @art-js/records version` returns 404 from the configured registry. Complete facade extraction and rerun CI when that dependency is available; only then proceed to the dependent iterations.
 
 ### Blockers
 
-- None planning-side. The boundary is settled by the whiteboard `AGREED` contracts (`FSRecordsAdapter` / `createFSRecordsAdapter` / `discoverRecordFiles()` / per-file `FSContentSource` with `readContent()` and `writeContent(content)`, all async). Delegation precondition: the adapter iterations in `$ART_LIB/_backlog/4-next/plan-add-fs-records-adapter/plan.md` (`READY`) must be delivered first, since the instructions verify exports in source (Step 1/8) — `0.0.1` carries none of these names.
+- **Implementation blocker:** Step 7 requires the `@art-js/records` facade, but the package is not declared or installed and is not available from the configured npm registry (`npm info` returns 404). Discovery/content migration is committed; extraction still uses existing `read*Record` parsers. The `@art-lib/fs-records@0.0.2` prerequisite is delivered.
 
 ---
 
@@ -121,18 +121,18 @@ Additionally verify the CLI from a global installation and from the local develo
 
 ## Items:
 
-| Iteration / Instructions               | Status  |
-| -------------------------------------- | ------- |
-| Iteration: Refactor Config Semantics   | `READY` |
-| Iteration: Discover configuration file | `READY` |
-| Iteration: Add Init command            | `READY` |
-| Iteration: Update Art Work Knowledge   | `READY` |
+| Iteration / Instructions               | Status    |
+| -------------------------------------- | --------- |
+| Iteration: Refactor Config Semantics   | `BLOCKED` |
+| Iteration: Discover configuration file | `READY`   |
+| Iteration: Add Init command            | `READY`   |
+| Iteration: Update Art Work Knowledge   | `READY`   |
 
 ### Iteration: Refactor Config Semantics
 
 **Id:** `refactor-config-semantics`
 
-**Status:** `READY`
+**Status:** `BLOCKED`
 
 **Purpose:** Make the intent behind each config option more explicit.
 
@@ -235,13 +235,14 @@ Change all discovery invokations of `findRecordFiles()` to use the discovery con
 
 **Dependencies:**
 
-- `$ART_LIB/_backlog/4-next/plan-add-fs-records-adapter/plan.md` (`READY`) must be delivered so that `FSRecordsAdapter`, `FSRecordsAdapterOptions`, `FSRecordsPattern`, `FSContentSource`, `createFSRecordsAdapter()`, and `discoverRecordFiles()` are available from `@art-lib/fs-records`.
+- `@art-lib/fs-records@0.0.2` is delivered and provides `FSRecordsAdapter`, `FSRecordsAdapterOptions`, `FSRecordsPattern`, `FSContentSource`, `createFSRecordsAdapter()`, and `discoverRecordFiles()`.
+- The `@art-js/records` facade must be available to complete Step 7 extraction; it is not currently declared or installed, and `npm info @art-js/records version` returns 404.
 
 #### Commits:
 
-| ID                        | Repository / Checkout / Branch      | Policy       | Hash | Status     |
-| ------------------------- | ----------------------------------- | ------------ | ---- | ---------- |
-| `refactor-config-options` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `PLANNING` |
+| ID                        | Repository / Checkout / Branch      | Policy       | Hash      | Status      |
+| ------------------------- | ----------------------------------- | ------------ | --------- | ----------- |
+| `refactor-config-options` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` | `102e828` | `COMMITTED` |
 
 ##### Commit: `refactor-config-options`
 
@@ -387,20 +388,21 @@ docs(art-work-cli): Update knowledge for global install and config semantics.
 
 ### Evidence
 
-- None
+- Implementation checkpoint `102e828` is pushed. `npm run ci` passes: lint, build, 358 unit tests, and 26 integration tests.
+- `@art-lib/fs-records@0.0.2` is declared in `cli/work/package.json`; adapter discovery and per-file content reads are wired in all five record loaders.
 
 ### Findings
 
 - The provider boundary is **two units**: `FSRecordsAdapter{options, discoverRecordFiles(kinds?), createContentSource(file)}` — discovery only — and `FSContentSource extends ArtContentSource`, one per file (`uri`, `maybeContent`, `readContent(): Promise<string>`, `writeContent(content): Promise<void>`). All async. Serialisation belongs to the `@art-js/records` facade (`writeRecord(content, capsule, {guard?})`); the record-level `writeRecord(file, record, recordWrite)` from an earlier capture is retired.
-- Published `@art-lib/fs-records@0.0.1` still exports the pre-rename surface (`findRecordFiles`, `FSRecordsConfig`, `FSRecordsPath`, `FSRecordFile.searchPath`) and carries no adapter — verified by the producer from source (2026-10-13). The agreed names land with iteration 1 of `plan-add-fs-records-adapter`.
+- `@art-lib/fs-records@0.0.2` now exports the agreed adapter surface; `FSRecordFile` uses `basePath`. The instruction file still contains stale `0.0.1` and old options examples and needs re-baselining before further delegated work.
 - `FSRecordFile.searchPath` is renamed to `FSRecordFile.basePath` in the provider plan; the consumer refactor must use `basePath`.
-- `discoverRecordFiles(kinds?)` filters by **filename**, not by heading — `FSRecordFile{filename, path, searchPath}` carries no content, so the filter cannot consult a section (producer, 2026-10-16). The CLI's record filenames do not encode kind (`_records/art-work.art` holds `## Repository: Art Work`; `_records/package.art` holds four `## Package Dependency:` sections), so **call it with no `kinds` and filter by parsed heading kind in the CLI**.
+- `discoverRecordFiles(kinds?)` filters by **filename**, not by heading — `FSRecordFile{filename, path, basePath}` carries no content, so the filter cannot consult a section (producer, 2026-10-16). The CLI's record filenames do not encode kind (`_records/art-work.art` holds `## Repository: Art Work`; `_records/package.art` holds four `## Package Dependency:` sections), so **call it with no `kinds` and filter by parsed heading kind in the CLI**.
 - `@art-js/records` carries no kind — `ArtRecord{name}` holds the whole heading text, `extractRecords(document)` takes no kinds filter, and any `SectionBlock` is a record (owner-authority decision, 2026-10-14). Kind detection and `Kind: Name` splitting are this CLI's responsibility; `readCheckoutRecord.ts` already reads `/## Checkout:\s*(.+)/`, so the parser moves rather than appears. Both `@art-md` contracts are `AGREED` 3/3 and `@art-md/constructs@0.0.4` is published; this plan's upstream pin stays `@art-md/primitives@0.0.3` (types only).
 - The target `WorkspaceConfig` shape drops the `clone` and `output` keys. `clone` is replaced by `checkouts`; `output` is removed and its consumers must be updated.
 
 ### Decisions
 
-- Iteration: Refactor Config Semantics is marked `READY` — planning is complete against the `AGREED` adapter boundary. Its delegation is gated on the held adapter work in `$ART_LIB/_backlog/4-next/plan-add-fs-records-adapter/plan.md`; the instructions verify `@art-lib/fs-records` exports before starting (Step 1/8).
+- `refactor-config-semantics` is `BLOCKED` after a committed checkpoint: Steps 1–6 complete; Step 7 discovery/content migration complete, facade extraction pending; Step 8 checkpoint commit `102e828` is `COMMITTED`.
 - Iterations: Discover configuration file, Add Init command, and Update Art Work Knowledge are marked `READY`; they depend on Iteration: Refactor Config Semantics and must be delegated in order.
 - The `output` config key is removed per the target `WorkspaceConfig` shape; consumers are updated in Iteration: Refactor Config Semantics.
 
@@ -410,7 +412,8 @@ docs(art-work-cli): Update knowledge for global install and config semantics.
 
 ### Follow Ups
 
-- Delegate Iteration: Refactor Config Semantics once the held adapter work in `$ART_LIB/_backlog/4-next/plan-add-fs-records-adapter/plan.md` is delivered (delegation precondition, not a planning blocker).
+- Obtain/declare `@art-js/records`, then complete Step 7 facade extraction and rerun `npm run ci`; only then unblock the dependent iterations.
+- Re-baseline `instructions/refactor-config-semantics.md` against `@art-lib/fs-records@0.0.2` (Step 1 exports and Step 2 adapter options).
 - Confirm the `data.template` purpose (currently WIP) in a later iteration.
 
 ### Feedback
