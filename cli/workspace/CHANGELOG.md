@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## 0.3.0
+
+### Changed
+
+- **Package renamed:** `@art-work/cli` is now `@art-works/workspace-cli`.
+- **Bin renamed:** `art-work-cli` is now `art-workspace-cli`.
+- **Repository:** the package points at `noodlestan/art-works`.
+
+### Deprecated
+
+- **Old package:** `@art-work/cli` is deprecated; `0.2.1` is its final release. It stays published for existing installs.
+
+### Migration
+
+- Install `@art-works/workspace-cli`; the old package is deprecated.
+- Import the config API from `@art-works/workspace-cli/config`.
+- Run the CLI as `art-workspace-cli`.
+
 ## 0.2.0
 
 ### Added

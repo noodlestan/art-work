@@ -1,6 +1,6 @@
 {
-  "name": "@art-work/cli",
-  "version": "0.2.0",
+  "name": "@art-works/workspace-cli",
+  "version": "0.3.0",
   "description": "CLI for discovering projects, inspecting and synchronizing checkouts, linking resources, and executing commands across them.",
   "keywords": [
     "cli",
@@ -14,14 +14,17 @@
   "author": "Noodlestan Collective",
   "license": "MIT",
   "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/noodlestan/art-work",
-    "directory": "cli/work"
+    "url": "https://github.com/noodlestan/art-works",
+    "directory": "cli/workspace"
   },
   "type": "module",
   "bin": {
-    "art-work-cli": "./dist/index.mjs"
+    "art-workspace-cli": "./dist/index.mjs"
   },
   "exports": {
     "./config": {
