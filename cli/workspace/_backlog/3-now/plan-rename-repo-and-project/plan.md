@@ -8,9 +8,9 @@
 
 **Skill:** `write-plan`
 
-**Purpose:** Rename the repository and the project from Art Work to Art Works across the workspace records, Artificials, and Noodlestan Web, keeping the Art Work Cli package untouched.
+**Purpose:** Rename the repository and the project from Art Work to Art Works across the workspace records, Artificials, and Noodlestan Web, move the package identity to `@art-works/workspace-cli`, and sweep the remaining old-identity references.
 
-**Description:** Plan record with 4 `READY` iterations executed from `$WORKSPACE`, renaming the GitHub repository and the identity records in 4 owners — `$ART_WORK`, `$WORKSPACE/_records`, `$ARTIFICIALS`, and `$NOODLESTAN_WEB` — then rebuilding and redeploying the website.
+**Description:** Plan record with 5 iterations executed from `$WORKSPACE`: rename the GitHub repository and the identity records in 4 owners — `$ART_WORK`, `$WORKSPACE/_records`, `$ARTIFICIALS`, and `$NOODLESTAN_WEB`, rebuild and redeploy the website, then sweep the remaining old-identity references from the workspace guide, the agent domains, and the sibling repositories.
 
 ## Mandatory Reading
 
@@ -274,6 +274,7 @@ Execution occurs from `$WORKSPACE/`, with one commit per owner: `$ART_WORK` on b
 | Iteration: Rename Workspace Records           | `SKIPPED` |
 | Iteration: Repoint Artificials References     | `READY`   |
 | Iteration: Regenerate Noodlestan Web Projects | `READY`   |
+| Iteration: Sweep Remaining References         | `READY`   |
 
 ### Iteration: Rename Identity Records
 
@@ -351,10 +352,12 @@ After executing:
 
 #### Commits:
 
-| ID                        | Repository / Checkout / Branch       | Policy       | Hash      | Status      |
-| ------------------------- | ------------------------------------ | ------------ | --------- | ----------- |
-| `rename-identity-records` | Art Works / `$ART_WORK` / `building` | `AUTONOMOUS` | `8fd9369` | `COMMITTED` |
-| `rename-package-identity` | Art Works / `$ART_WORK` / `building` | `AUTONOMOUS` |           | `AUTHORED`  |
+| ID                          | Repository / Checkout / Branch       | Policy       | Hash      | Status      |
+| --------------------------- | ------------------------------------ | ------------ | --------- | ----------- |
+| `rename-identity-records`   | Art Works / `$ART_WORK` / `building` | `AUTONOMOUS` | `8fd9369` | `COMMITTED` |
+| `rename-package-identity`   | Art Works / `$ART_WORK` / `building` | `AUTONOMOUS` | `9182ff2` | `COMMITTED` |
+| `release-0-3-0`             | Art Works / `$ART_WORK` / `building` | `AUTONOMOUS` | `bb195d0` | `COMMITTED` |
+| `replace-workspace-tooling` | Workspace / `$WORKSPACE` / `main`    | `AUTONOMOUS` | `ec74b65` | `COMMITTED` |
 
 ##### Commit: `rename-identity-records`
 
@@ -376,10 +379,30 @@ records(art-work): Rename the repository and the project to Art Works.
 **Message:**
 
 ```text
-rename(workspace-cli): Rename the package to @art-works/workspace-cli.
+renames(workspace-cli): Rename the package to @art-works/workspace-cli.
 
 - Rename the canonical name, the bin, and the package path; update the records, docs, and tests.
 - Repoint the repository url and the root manifest name; regenerate the lockfile.
+```
+
+##### Commit: `release-0-3-0`
+
+**Repository:** Art Works
+
+**Message:**
+
+```text
+release(workspace-cli): 0.3.0
+```
+
+##### Commit: `replace-workspace-tooling`
+
+**Repository:** Workspace
+
+**Message:**
+
+```text
+tooling: replace art-work@0.2.0 by @art-works/workspace-cli 0.3.0
 ```
 
 ### Iteration: Rename Workspace Records
@@ -588,11 +611,129 @@ records(noodlestan-web): Regenerate the project list as Art Works.
 - Refresh the copied project records and the project collection, then redeploy.
 ```
 
+### Iteration: Sweep Remaining References
+
+**Id:** `sweep-remaining-references`
+
+**Status:** `READY`
+
+**Purpose:** Drive the old identity out of the live artefacts of the workspace and the sibling repositories.
+
+**Description:** Fix the artefacts already known to carry the old identity, then sweep the workspace guide, the agent domains, and the READMEs, guides, and knowledge of the sibling repositories for whatever remains. The frozen names, the historical records, and the checkout locations stay as they are.
+
+**Instructions Mode:** `INSTRUCTIONS_INLINED_IN_ITERATION`
+
+**Changes:**
+
+Known artefacts in `$ART_WORK`:
+
+- `cli/workspace/_backlog/_parking-lot.md` — title `Parking Lot: Art Work Backlog` to `Parking Lot: Art Workspace Cli Backlog`.
+- `cli/workspace/_roadmap/_parking-lot.md` — title `Parking Lot: Art Work Roadmap` to `Parking Lot: Art Workspace Cli Roadmap`.
+- `_roadmap/_parking-lot.md` — title `Parking Lot: Art Work Roadmap` to `Parking Lot: Art Works Roadmap`.
+- `_roadmap/_architect.md` — title `Architect Briefing: Art Work Roadmap` to `Architect Briefing: Art Works Roadmap`.
+- `cli/workspace/src/config/private/compileConfigBundle.ts` — the fallback bundle file `art-work-config-bundle.mjs` to `art-works-config-bundle.mjs`; it is a published constant and ships with the next release.
+- `cli/workspace/src/config/private/cache/constants.ts`, `cli/workspace/src/test/helpers/config/makeConfigCachePaths.ts`, and the cache tests — the cache directory `node_modules/.art-work` to `node_modules/.art-works`; decide first, see Follow Ups.
+- `cli/workspace/test/fixture-repo/_records/art-work.art`, `cli/workspace/test/fixture-repo/_records/art-work-checkout.art`, `cli/workspace/test/integration.test.ts`, `cli/workspace/test/helpers/setupWorkspace.ts` — the fictional repository and checkout names to `art-works`; the fixtures are not bound to the real repository.
+- The path examples `$WORKSPACE/checkouts/art-work-building` and `$WORKSPACE/checkouts/art-work-planning` in `_backlog/4-next/plan-*` and `_roadmap/8-discovery/milestone-*` — repoint them at the real location `checkouts/art-work`.
+
+Workspace artefacts:
+
+- `$WORKSPACE/_guide.md` — the CLI section: the package `@art-domains/workspace-cli` to `@art-works/workspace-cli`, the bin `art-workspace` to `art-workspace-cli`; the `npm run art-work` command names follow the script-name decision.
+- `$WORKSPACE/README.md` and `$WORKSPACE/.art-workspace.mts` — the single old-identity hit in each.
+- `$WORKSPACE/.agents/domains/work/templates/operating-instructions.tart` — the two `npm run art-work sanity` examples.
+- `$WORKSPACE/.agents/domains/packages/structures/package.art` — the bin example `art-workspace` to `art-workspace-cli`.
+
+Sibling repositories:
+
+- `$ART_LIB` — `knowledge/design/operations.md`, `knowledge/design/config.md`, `knowledge/design/logger.md`, `knowledge/components.md`, `knowledge/index.md` — the consumer prose and the `$ART_WORK/cli/work` paths to the new identity and `cli/workspace`.
+- `$ARTIFICIALS` — `README.md`, `_records/project.art`, `apps/art-md-web/src/pages/about.md` — the project entry, the links, and the `[@art-work]` label to `@art-works`; iteration 3 repoints the URLs, this iteration finishes the labels.
+- `$MANAGEMENT` — `_ops/conventions/adoption.md`, `_roadmap/3-now/milestone-hello-world/*`, `_backlog/3-now/plan-rollout-project-keywords/*` — the project name, the `$ART_WORK` path examples, and the `npm run art-work sanity` examples.
+- `$NOODLESTAN_WEB` — `README.md` and `scripts/copy-project-records.ts` — the `art-work-cli clone` and `npm run art-work clone` examples; the generated `data/` files are refreshed by iteration 4, never by hand.
+
+Frozen — do not change:
+
+- The work-item identifiers: `art-work-cli-global-install`, `milestone-art-work-cli-one`, `mvp-art-work-docs`, `mvp-art-work-website`, `art-work-9000`.
+- The historical records: `0-archive/**`, `1-done/**`, the `CHANGELOG.md` entries, `_changelog.md`, `knowledge/adr/**`.
+- The planned member names: `Art Work Website`, `Art Work Tool`, `Art Work Cli` — until the project record drops them.
+- The checkout locations: `checkouts/art-work` and the `Location:` values in the checkout records.
+
+**Instructions:**
+
+Execute the Changes listed above, one commit per owner.
+
+Before starting:
+
+- Run `npm ci` from the `$WORKSPACE` root.
+- Confirm iterations 2, 3, and 4 are committed and pushed; the sweep must not race the record renames.
+
+Validate that:
+
+- The case-sensitive search for `art-work` and `Art Work` across the live artefacts of `$WORKSPACE`, `$ART_WORK`, `$ART_LIB`, `$ARTIFICIALS`, `$MANAGEMENT`, and `$NOODLESTAN_WEB` returns only the frozen names listed above.
+- `npm run ci` passes in every touched repository.
+
+After executing:
+
+- Execute the **Verifying Completion** instructions from the Operating Instructions section.
+- Commit the sweep in each owner repository; a repository without hits gets no commit.
+
+**Dependencies:**
+
+- Iteration: Rename Workspace Records.
+- Iteration: Repoint Artificials References.
+- Iteration: Regenerate Noodlestan Web Projects.
+
+#### Commits:
+
+| ID                     | Repository / Checkout / Branch              | Policy       | Hash | Status     |
+| ---------------------- | ------------------------------------------- | ------------ | ---- | ---------- |
+| `sweep-art-work`       | Art Works / `$ART_WORK` / `building`        | `AUTONOMOUS` |      | `AUTHORED` |
+| `sweep-workspace`      | Workspace / `$WORKSPACE` / `main`           | `AUTONOMOUS` |      | `AUTHORED` |
+| `sweep-art-lib`        | Art Lib / `$ART_LIB` / `main`               | `AUTONOMOUS` |      | `AUTHORED` |
+| `sweep-artificials`    | Artificials / `$ARTIFICIALS` / `main`       | `AUTONOMOUS` |      | `AUTHORED` |
+| `sweep-management`     | Management / `$MANAGEMENT` / `main`         | `AUTONOMOUS` |      | `AUTHORED` |
+| `sweep-noodlestan-web` | Noodlestan Web / `$NOODLESTAN_WEB` / `main` | `AUTONOMOUS` |      | `AUTHORED` |
+
+##### Commit: `sweep-art-work`
+
+**Repository:** Art Works
+
+**Message:**
+
+```text
+refs(art-work): Sweep the remaining old-identity references in the repository.
+
+- Fix the stale titles, the fallback bundle name, the cache directory, and the fixtures.
+```
+
+##### Commit: `sweep-workspace`
+
+**Repository:** Workspace
+
+**Message:**
+
+```text
+refs(workspace): Sweep the remaining old-identity references in the workspace.
+
+- Fix the guide, the agent templates, and the package structure example.
+```
+
+##### Commit: `sweep-siblings`
+
+**Repository:** One per sibling repository — Art Lib, Artificials, Management, Noodlestan Web; the scope is the repository.
+
+**Message:**
+
+```text
+refs(art-lib): Sweep the remaining old-identity references in the repository.
+
+- Repoint the project name, the package paths, and the command examples.
+```
+
 ## Work
 
 ### Next
 
-Iteration `rename-identity-records` is `DONE` — the identity records and the package identity are renamed; the package rename is committed and awaiting the release publish. `rename-workspace-records` is `SKIPPED` until the new CLI is installed and the workspaces restart. `repoint-artificials-references` and `regenerate-noodlestan-web-projects` stay `READY` and wait for the workspace records to move.
+Iteration `rename-identity-records` is `DONE` — the identity records and the package identity are renamed, `@art-works/workspace-cli@0.3.0` is published, the old `@art-work/cli` is deprecated with a final `0.2.1` release, the new CLI is installed globally, and the workspace tooling depends on the new package. `rename-workspace-records` is `SKIPPED` — the user takes the workspace records and the checkout locations over. `repoint-artificials-references` is `READY` and unblocked. `regenerate-noodlestan-web-projects` waits for the workspace records. `sweep-remaining-references` waits for iterations 2 to 4.
 
 ### Blockers
 
@@ -656,7 +797,7 @@ Runs automatically on the pre-commit hook. All steps MUST pass. No `it.todo()` t
 - **Checkout locations** — `art-work` stays; renaming it is a follow-up.
 - **Application: Art Work Website (PLANNED)** — planned project members keep their names.
 - **Repository transfer** — the repository stays in the `noodlestan` org.
-- **Workspace script name** — `npm run art-work` keeps its name; the workspace is out of scope for this round.
+- **Workspace script name** — `npm run art-work` keeps its name; the workspace tooling dependency moved to the new package.
 - **Archived records, changelogs, and decision records** — they keep the old names as history.
 
 ### Evidence
@@ -664,6 +805,8 @@ Runs automatically on the pre-commit hook. All steps MUST pass. No `it.todo()` t
 - **`noodlestan/art-works` resolves** and `noodlestan/art-work` redirects to it.
 - **No stale identity** — the case-sensitive `Art Work` search across `$WORKSPACE/_records`, `$ART_WORK/_records`, `$ARTIFICIALS/_records`, and `$NOODLESTAN_WEB/data` returns only the new `Art Works` identity plus the package and planned-member names (`Art Work Cli`, `Art Work Website`, `Art Work Tool`).
 - **Website shows Art Works** after the rebuilt site is deployed.
+- **`@art-works/workspace-cli@0.3.0` is published** and the global install resolves the `art-workspace-cli` bin.
+- **`@art-work/cli` is deprecated** — `0.2.1` carries the deprecation notice and the registry marks the package deprecated.
 
 ### Findings
 
@@ -679,6 +822,9 @@ Runs automatically on the pre-commit hook. All steps MUST pass. No `it.todo()` t
 - **Checkout locations unchanged** — record filenames follow the repository name, but `Location:` values stay so open sessions are not disturbed.
 - **The package identity moves with the repository** (user, 2026-10-21) — `@art-works/workspace-cli`, bin `art-workspace-cli`, path `cli/workspace`; the workspace script `npm run art-work` keeps its name.
 - **The workspace records wait** (user, 2026-10-21) — `rename-workspace-records` is skipped until the new CLI is installed and the workspaces restart.
+- **The old package is deprecated, not replaced** (user, 2026-10-21) — `@art-work/cli@0.2.1` was published from the `0.2.0` source with a deprecation notice in its README, and the registry marks the package deprecated; `0.2.0` stays the last feature release.
+- **The workspace tooling moves to the new package** (user, 2026-10-21) — `$WORKSPACE` depends on `@art-works/workspace-cli@0.3.0`; the `npm run art-work` script name keeps, its body points at the `art-workspace-cli` bin.
+- **The reference sweep is its own iteration** (user, 2026-10-21) — the zero-reference pass runs after the record renames so it never fights them, and it covers the known artefacts plus a sweep of the workspace guide, the agent domains, and the sibling repositories.
 
 ### Knowledge to Update
 
@@ -691,6 +837,8 @@ Runs automatically on the pre-commit hook. All steps MUST pass. No `it.todo()` t
 - **Rename checkout location** — `art-work` to `art-works` once no session runs inside it.
 - **Update Management references** — repoint `$MANAGEMENT` milestones and records that reference `art-work` paths.
 - **Review the planned `Package: Art Board Cli (PLANNED)` member** — art-boards now lives in its own repository; decide whether to drop it from the project record (this plan keeps all members unchanged).
+- **Decide the workspace script name** — `npm run art-work` keeps its name; renaming it to `npm run art-works` touches the guide, the agent templates, and the `$NOODLESTAN_WEB` copy script.
+- **Decide the config cache directory** — `node_modules/.art-work` is a published constant; renaming it invalidates the existing cache and ships with the next release.
 
 ### Feedback
 
