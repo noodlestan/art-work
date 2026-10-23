@@ -17,12 +17,12 @@
 | [design/context-model.md](design/context-model.md)   | Per-command data model: `WorkspaceContext`, `CheckoutStore`, and the records behind them   |
 | [design/operations-log.md](design/operations-log.md) | Append-only side-effect log of a command invocation                                        |
 | [design/reports.md](design/reports.md)               | Markdown table reports of findings and side effects                                        |
-| [design/\_pseudo.md](design/_pseudo.md)              | Pseudo-code and BDD expectations for the Art Work use cases                                |
+| [design/\_pseudo.md](design/_pseudo.md)              | Pseudo-code and BDD expectations for the Art Works use cases                               |
 
 ## Decision Records
 
 | Record                                             | Purpose                                                                                                     |
 | -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
 | [adr/cli.art](adr/cli.art)                         | How the CLI is structured and delivered: package layout, manifest format, records, tooling, and type safety |
-| [adr/execution-model.art](adr/execution-model.art) | How Art Work commands execute: imperative one-shot now, reactive layer later                                |
+| [adr/execution-model.art](adr/execution-model.art) | How Art Works commands execute: imperative one-shot now, reactive layer later                               |
 | [adr/distribution.art](adr/distribution.art)       | How this CLI is shaped for its consumers: module format, compiled output, and declarations                  |

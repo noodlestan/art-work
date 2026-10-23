@@ -20,15 +20,15 @@
 
 ## Path Variables
 
-| Variable        | Resolved Path                | Purpose                                                                                             |
-| --------------- | ---------------------------- | --------------------------------------------------------------------------------------------------- |
-| `$WORKSPACE`    | Current working directory    | Workspace root directory                                                                            |
-| `$DOMAINS`      | `$WORKSPACE/.agents/domains` | Domain resources directory                                                                          |
-| `$ART_WORK`     | Provided with prompt.        | Art Work repository. Example: `$WORKSPACE/checkouts/art-work-planning`                              |
-| `$ART_WORK_CLI` | `$ART_WORK/cli/workspace`    | The Art Workspace Cli package, and its roadmap and backlog.                                         |
-| `$ART_JS`       | Provided with prompt.        | Art JS repository (extract, validate, project art). Example: `$WORKSPACE/checkouts/art-js-planning` |
-| `$ART_LIB`      | Provided with prompt.        | Art Lib repository (filesystem records adapter). Example: `$WORKSPACE/checkouts/art-lib-planning`   |
-| `$ART_MD`       | Provided with prompt.        | Art MD repository (primitives and codecs). Example: `$WORKSPACE/checkouts/art-md-planning`          |
+| Variable         | Resolved Path                | Purpose                                                                                             |
+| ---------------- | ---------------------------- | --------------------------------------------------------------------------------------------------- |
+| `$WORKSPACE`     | Current working directory    | Workspace root directory                                                                            |
+| `$DOMAINS`       | `$WORKSPACE/.agents/domains` | Domain resources directory                                                                          |
+| `$ART_WORKS`     | Provided with prompt.        | Art Work repository. Example: `$WORKSPACE/checkouts/art-works`                                      |
+| `$ART_WORKS_CLI` | `$ART_WORKS/cli/workspace`   | The Art Workspace Cli package, and its roadmap and backlog.                                         |
+| `$ART_JS`        | Provided with prompt.        | Art JS repository (extract, validate, project art). Example: `$WORKSPACE/checkouts/art-js-planning` |
+| `$ART_LIB`       | Provided with prompt.        | Art Lib repository (filesystem records adapter). Example: `$WORKSPACE/checkouts/art-lib-planning`   |
+| `$ART_MD`        | Provided with prompt.        | Art MD repository (primitives and codecs). Example: `$WORKSPACE/checkouts/art-md-planning`          |
 
 ## Summary
 
@@ -38,14 +38,14 @@ Make the Art Workspace Cli read and write `.art` files through the Art JS librar
 
 ### Upstream Work
 
-| Kind        | Path                                                                     | Role                                                                             |
-| ----------- | ------------------------------------------------------------------------ | -------------------------------------------------------------------------------- |
-| Parking Lot | `$ART_WORK_CLI/_backlog/_parking-lot.md`                                 | Tracks short-term actionables, pending questions, and blockers.                  |
-| Whiteboard  | `$ART_JS/_backlog/whiteboard-art-records/whiteboard.md`                  | Chain coordination: vocabulary, integration contracts, and review turns.         |
-| Milestone   | `$ART_JS/_roadmap/3-now/milestone-art-records/milestone.md`              | Art JS side of records: the record facade this CLI will consume.                 |
-| Plan        | `$ART_LIB/_backlog/4-next/plan-add-fs-records-adapter/plan.md` (`READY`) | Supplies `@art-lib/fs-records`: discovery, content read, content write.          |
-| Milestone   | `$ART_WORK_CLI/_roadmap/3-now/milestone-art-work-cli-one/milestone.md`   | Current CLI milestone; its Phase 3 decompose work feeds into this one.           |
-| Plan        | `$ART_WORK_CLI/_backlog/4-next/plan-art-work-cli-global-install/plan.md` | Holds the gated `refactor-config-semantics` iteration that consumes the adapter. |
+| Kind        | Path                                                                      | Role                                                                             |
+| ----------- | ------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| Parking Lot | `$ART_WORKS_CLI/_backlog/_parking-lot.md`                                 | Tracks short-term actionables, pending questions, and blockers.                  |
+| Whiteboard  | `$ART_JS/_backlog/whiteboard-art-records/whiteboard.md`                   | Chain coordination: vocabulary, integration contracts, and review turns.         |
+| Milestone   | `$ART_JS/_roadmap/3-now/milestone-art-records/milestone.md`               | Art JS side of records: the record facade this CLI will consume.                 |
+| Plan        | `$ART_LIB/_backlog/4-next/plan-add-fs-records-adapter/plan.md` (`READY`)  | Supplies `@art-lib/fs-records`: discovery, content read, content write.          |
+| Milestone   | `$ART_WORKS_CLI/_roadmap/3-now/milestone-art-work-cli-one/milestone.md`   | Current CLI milestone; its Phase 3 decompose work feeds into this one.           |
+| Plan        | `$ART_WORKS_CLI/_backlog/4-next/plan-art-work-cli-global-install/plan.md` | Holds the gated `refactor-config-semantics` iteration that consumes the adapter. |
 
 ### Required Skills
 
@@ -61,13 +61,13 @@ Make the Art Workspace Cli read and write `.art` files through the Art JS librar
 
 ### Knowledge
 
-::READ `$ART_WORK_CLI/knowledge/index.md` (Model) — Command surface, data model, and record loading. Relevant for Planning Work Item.
+::READ `$ART_WORKS_CLI/knowledge/index.md` (Model) — Command surface, data model, and record loading. Relevant for Planning Work Item.
 
-::READ `$ART_WORK/_guide.md` (Guide) — Repository setup and verification. Relevant for Setting Up, Verifying Completion.
+::READ `$ART_WORKS/_guide.md` (Guide) — Repository setup and verification. Relevant for Setting Up, Verifying Completion.
 
 ## Scope
 
-Replace the bespoke `.art` file handling under `$ART_WORK_CLI/src/private/resources/` and the scan layer that feeds it with calls into the shared libraries: `@art-lib/fs-records` for discovery and content, `@art-js/records` for record extraction and serialisation. No command surface change, no config schema change.
+Replace the bespoke `.art` file handling under `$ART_WORKS_CLI/src/private/resources/` and the scan layer that feeds it with calls into the shared libraries: `@art-lib/fs-records` for discovery and content, `@art-js/records` for record extraction and serialisation. No command surface change, no config schema change.
 
 ## Phases
 
@@ -129,7 +129,7 @@ No downstream work items are captured yet.
 ### Next
 
 - Refine the Phase 1 and Phase 2 descriptions against the `AGREED` chain contracts, then draft a plan for Phase 2 (read path) — Phase 1's evaluation question is already answered.
-- Keep the gated `refactor-config-semantics` iteration in `$ART_WORK_CLI/_backlog/4-next/plan-art-work-cli-global-install/plan.md` aligned with this milestone: the same adapter boundary, retitled to canonical names.
+- Keep the gated `refactor-config-semantics` iteration in `$ART_WORKS_CLI/_backlog/4-next/plan-art-work-cli-global-install/plan.md` aligned with this milestone: the same adapter boundary, retitled to canonical names.
 
 ### Blockers
 
@@ -165,9 +165,9 @@ npm ci # to install dependencies.
 
 **Purpose:** Confirms that the work item has been completed and satisfies its intended outcome. Operation of Workflow: Executing Work, defined in `$DOMAINS/work/workflows/executing-work/ops/verifying-completion.art`.
 
-**Instructions:** (From `$ART_WORK/_guide.md`)
+**Instructions:** (From `$ART_WORKS/_guide.md`)
 
-Run from the `$ART_WORK` root:
+Run from the `$ART_WORKS` root:
 
 ```bash
 npm run ci # lint, test and build
@@ -197,7 +197,7 @@ All steps MUST pass. No `it.todo()` tests may remain.
 - **`discoverRecordFiles(kinds?)` cannot filter by kind for this CLI** (2026-10-18) — the adapter's filter is **filename-based**: `FSRecordFile{filename, path, searchPath}` carries no content, so it cannot consult a heading. The CLI's record filenames do **not** encode kind — `_records/art-work.art` holds `## Repository: Art Work`, `_records/package.art` holds four `## Package Dependency:` sections, `_records/npm-deployment.art` holds `## NPM Package Deployment:` — so a filename filter selects the wrong set. **Call `discoverRecordFiles()` with no `kinds`, parse every document, filter by heading kind in the CLI.** Producer confirmed the filter is filename-based 2026-10-16.
 - **Round-trip is structural, not byte-identical** (2026-10-14) — the codec normalises extraneous whitespace and enforces one final newline, so byte-identity is no longer a chain contract. This milestone's write-back fidelity claim does not rest on it — see Decisions.
 - **Verb families** — `discover` at the filesystem boundary (files); `extract` at the document boundary (records). Both names are already used in the CLI: `findRecordFiles()` becomes `discoverRecordFiles()`.
-- **Layering** — the adapter owns discovery and persistence only: no record semantics, no template rendering. Record extraction and serialisation belong to the `@art-js/records` facade; CLI templates stay in `$ART_WORK`.
+- **Layering** — the adapter owns discovery and persistence only: no record semantics, no template rendering. Record extraction and serialisation belong to the `@art-js/records` facade; CLI templates stay in `$ART_WORKS`.
 
 ### Decisions
 
@@ -208,18 +208,18 @@ All steps MUST pass. No `it.todo()` tests may remain.
 - **No record-level I/O** — persistence at the boundary is `writeContent(content)`; a record-level `writeRecord(file, record, recordWrite)` is retired. Serialise in the facade, persist in the adapter.
 - **Fidelity is line-splice, not codec** — edits to existing records never invoke the codec: `readContent()` hands me a string, `writeRecord(content, capsule)` line-splices the anchored section, `writeContent(newContent)` persists what I produced. Byte-for-byte fidelity on existing files therefore survives the codec's move to structural round-tripping. The clone path writes a **new** file via `serialize(capsule)`, where there are no prior bytes to violate.
 - **Async boundary** — the adapter is fully async; the CLI loops over files per document, so a per-document facade is sufficient (no batch API).
-- **Templates stay local** — rendering remains an `$ART_WORK` concern.
+- **Templates stay local** — rendering remains an `$ART_WORKS` concern.
 
 ### Knowledge to Update
 
-- `$ART_WORK_CLI/knowledge/index.md` — document the records substrate once Phase 2 lands.
-- `$ART_WORK_CLI/knowledge/design/context-model.md` — the resource readers already reference `@art-lib/fs-records`; align the wording once the adapter boundary is final.
+- `$ART_WORKS_CLI/knowledge/index.md` — document the records substrate once Phase 2 lands.
+- `$ART_WORKS_CLI/knowledge/design/context-model.md` — the resource readers already reference `@art-lib/fs-records`; align the wording once the adapter boundary is final.
 
 ### Follow Ups
 
 - **Settled** — `@art-lib/fs-records` and the Art JS codecs do not compete: the adapter supplies files and content, the codecs supply records. (Was: "confirm whether they converge or one supersedes the other.")
 - Narrow Phase 1 to an inventory and gap map — the API question is now answered by the `AGREED` chain contracts.
-- Retired spellings (`FSRecordsStore`, `listFiles()`, `readRecord()`, record-level `writeRecord(file, record, recordWrite)`) — swept out of the gated plan and its instruction file on 2026-10-13; sweep the remaining `$ART_WORK` knowledge docs when Phase 2 lands.
+- Retired spellings (`FSRecordsStore`, `listFiles()`, `readRecord()`, record-level `writeRecord(file, record, recordWrite)`) — swept out of the gated plan and its instruction file on 2026-10-13; sweep the remaining `$ART_WORKS` knowledge docs when Phase 2 lands.
 - Repoint consumers to `plan-add-fs-records-adapter` once `$ART_LIB` lifts its hold, and re-check the gated `refactor-config-semantics` iteration.
 
 ### Feedback

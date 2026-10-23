@@ -11,7 +11,7 @@ import { setupWorkspace } from './helpers/setupWorkspace.js';
 import { spawnCli } from './helpers/spawnCli.js';
 import { type TestCliResult } from './helpers/types.js';
 
-const CACHE_DIR_SEGMENTS = ['node_modules', '.art-work'];
+const CACHE_DIR_SEGMENTS = ['node_modules', '.art-workspace'];
 const MANIFEST_FILE = '.art-workspace.mts';
 
 const tempDirs: string[] = [];

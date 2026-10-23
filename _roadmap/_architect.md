@@ -1,4 +1,4 @@
-# Architect Briefing: Art Work Roadmap
+# Architect Briefing: Art Works Roadmap
 
 This file tracks the forward-looking plan: why, principles, NFRs, definitions, conventions, and follow-ups.
 

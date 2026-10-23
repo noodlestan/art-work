@@ -11,7 +11,7 @@ import { resolveMetaPath } from './cache/resolveMetaPath.js';
 import { formatError } from './formatError.js';
 import { makeConfigCacheMeta } from './makeConfigCacheMeta.js';
 
-const FALLBACK_BUNDLE_FILE = 'art-work-config-bundle.mjs';
+const FALLBACK_BUNDLE_FILE = 'art-works-config-bundle.mjs';
 
 export async function compileConfigBundle(rootPath: string, manifestPath: string): Promise<string> {
 	let output;

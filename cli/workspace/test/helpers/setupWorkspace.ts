@@ -16,7 +16,7 @@ export async function setupWorkspace(tempDirs: string[]): Promise<string> {
 	const root = makeTempDir(tempDirs);
 	cpSync(FIXTURE, root, { recursive: true });
 
-	const checkout = join(root, 'checkouts', 'art-work');
+	const checkout = join(root, 'checkouts', 'art-works');
 	mkdirSync(dirname(checkout), { recursive: true });
 	await makeGitRepo(tempDirs, { dir: checkout, commit: true });
 

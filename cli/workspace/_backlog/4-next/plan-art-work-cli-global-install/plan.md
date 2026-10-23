@@ -20,11 +20,11 @@
 
 ## Path Variables
 
-| Variable     | Resolved Path                | Purpose                                                                |
-| ------------ | ---------------------------- | ---------------------------------------------------------------------- |
-| `$WORKSPACE` | Current working directory    | Workspace root directory                                               |
-| `$DOMAINS`   | `$WORKSPACE/.agents/domains` | Domain resources directory                                             |
-| `$ART_WORK`  | Provided with prompt.        | Art Work repository. Example: `$WORKSPACE/checkouts/art-work-building` |
+| Variable     | Resolved Path                | Purpose                                                        |
+| ------------ | ---------------------------- | -------------------------------------------------------------- |
+| `$WORKSPACE` | Current working directory    | Workspace root directory                                       |
+| `$DOMAINS`   | `$WORKSPACE/.agents/domains` | Domain resources directory                                     |
+| `$ART_WORKS` | Provided with prompt.        | Art Work repository. Example: `$WORKSPACE/checkouts/art-works` |
 
 ## Summary
 
@@ -34,10 +34,10 @@ Make the Art Workspace Cli executable and operational when installed globally, w
 
 ### Upstream Work
 
-| Kind        | Path                                                                             | Role                                                                     |
-| ----------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| Parking Lot | `$ART_WORK/_backlog/_parking-lot.md`                                             | Tracks short-term actionables, pending questions, and blockers.          |
-| Milestone   | `$ART_WORK/cli/workspace/_roadmap/3-now/milestone-art-work-cli-one/milestone.md` | Coordinates this plan as Phase 3 of the Art Workspace Cli One milestone. |
+| Kind        | Path                                                                              | Role                                                                     |
+| ----------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| Parking Lot | `$ART_WORKS/_backlog/_parking-lot.md`                                             | Tracks short-term actionables, pending questions, and blockers.          |
+| Milestone   | `$ART_WORKS/cli/workspace/_roadmap/3-now/milestone-art-work-cli-one/milestone.md` | Coordinates this plan as Phase 3 of the Art Workspace Cli One milestone. |
 
 ### Required Skills
 
@@ -52,7 +52,7 @@ Make the Art Workspace Cli executable and operational when installed globally, w
 
 ### Knowledge
 
-::READ `$ART_WORK/cli/workspace/knowledge/index.md` (Model) — Package layout, publishing, and execution model. Relevant for Planning Work Item.
+::READ `$ART_WORKS/cli/workspace/knowledge/index.md` (Model) — Package layout, publishing, and execution model. Relevant for Planning Work Item.
 
 ## Scope
 
@@ -85,7 +85,7 @@ npm ci # to install dependencies.
 npm run ci # to verify build is green before starting
 ```
 
-If any of these fail, resolve the issue before proceeding with implementation. Do NOT run `npm install` inside `$ART_WORK` (the package directory) — a local `node_modules` there shadows the monorepo resolution and breaks the build.
+If any of these fail, resolve the issue before proceeding with implementation. Do NOT run `npm install` inside `$ART_WORKS` (the package directory) — a local `node_modules` there shadows the monorepo resolution and breaks the build.
 
 ### Writing Commit Message
 
@@ -101,7 +101,7 @@ If any of these fail, resolve the issue before proceeding with implementation. D
 
 **Purpose:** Confirms that the work item has been completed and satisfies its intended outcome. Operation of Workflow: Executing Work, defined in `$DOMAINS/work/workflows/executing-work/ops/verifying-completion.art`.
 
-**Instructions:** (From `$ART_WORK/_guide.md`)
+**Instructions:** (From `$ART_WORKS/_guide.md`)
 
 Run from the package directory:
 
@@ -139,7 +139,7 @@ Additionally verify the CLI from a global installation and from the local develo
 
 **Changes:**
 
-In `$ART_WORK`
+In `$ART_WORKS`
 
 ```ts
 export interface WorkspaceConfig {
@@ -237,9 +237,9 @@ Change all discovery invokations of `findRecordFiles()` to use the discovery con
 
 #### Commits:
 
-| ID                        | Repository / Checkout / Branch      | Policy       | Hash      | Status      |
-| ------------------------- | ----------------------------------- | ------------ | --------- | ----------- |
-| `refactor-config-options` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` | `102e828` | `COMMITTED` |
+| ID                        | Repository / Checkout / Branch       | Policy       | Hash      | Status      |
+| ------------------------- | ------------------------------------ | ------------ | --------- | ----------- |
+| `refactor-config-options` | Art Work / `$ART_WORKS` / `building` | `AUTONOMOUS` | `102e828` | `COMMITTED` |
 
 ##### Commit: `refactor-config-options`
 
@@ -273,11 +273,11 @@ refactor(art-workspace-cli): Refactor config options for better semantics.
 
 #### Commits:
 
-| ID                           | Repository / Checkout / Branch      | Policy       | Hash | Status        |
-| ---------------------------- | ----------------------------------- | ------------ | ---- | ------------- |
-| `discover-config-location`   | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `PLACEHOLDER` |
-| `compile-config-to-temp-dir` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `PLACEHOLDER` |
-| `show-config-options`        | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `PLACEHOLDER` |
+| ID                           | Repository / Checkout / Branch       | Policy       | Hash | Status        |
+| ---------------------------- | ------------------------------------ | ------------ | ---- | ------------- |
+| `discover-config-location`   | Art Work / `$ART_WORKS` / `building` | `AUTONOMOUS` |      | `PLACEHOLDER` |
+| `compile-config-to-temp-dir` | Art Work / `$ART_WORKS` / `building` | `AUTONOMOUS` |      | `PLACEHOLDER` |
+| `show-config-options`        | Art Work / `$ART_WORKS` / `building` | `AUTONOMOUS` |      | `PLACEHOLDER` |
 
 ##### Commit: `discover-config-location`
 
@@ -326,9 +326,9 @@ build(art-workspace-cli): Show config options.
 
 #### Commits:
 
-| ID                 | Repository / Checkout / Branch      | Policy       | Hash | Status        |
-| ------------------ | ----------------------------------- | ------------ | ---- | ------------- |
-| `add-init-command` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `PLACEHOLDER` |
+| ID                 | Repository / Checkout / Branch       | Policy       | Hash | Status        |
+| ------------------ | ------------------------------------ | ------------ | ---- | ------------- |
+| `add-init-command` | Art Work / `$ART_WORKS` / `building` | `AUTONOMOUS` |      | `PLACEHOLDER` |
 
 ##### Commit: `add-init-command`
 
@@ -346,15 +346,15 @@ build(art-workspace-cli): Add Init Command.
 
 **Purpose:** Update Art Work knowledge files to reflect the global-install capability and new configuration semantics.
 
-**Description:** Update architecture docs, guides, and any knowledge files in `$ART_WORK` that describe how the CLI locates configuration, operates in global vs local modes, and the shape of the workspace config.
+**Description:** Update architecture docs, guides, and any knowledge files in `$ART_WORKS` that describe how the CLI locates configuration, operates in global vs local modes, and the shape of the workspace config.
 
 **Instructions:** `./plan-art-work-cli-global-install/instructions/update-art-work-knowledge.md`
 
 **Changes:**
 
-- Update `$ART_WORK/cli/workspace/knowledge/index.md` to document global-install execution model.
-- Update `$ART_WORK/_guide.md` with global install usage notes.
-- Update `$ART_WORK/cli/workspace/src/config/README.md` (or create) describing config file format and discovery.
+- Update `$ART_WORKS/cli/workspace/knowledge/index.md` to document global-install execution model.
+- Update `$ART_WORKS/_guide.md` with global install usage notes.
+- Update `$ART_WORKS/cli/workspace/src/config/README.md` (or create) describing config file format and discovery.
 
 **Dependencies:**
 
@@ -363,9 +363,9 @@ build(art-workspace-cli): Add Init Command.
 
 #### Commits:
 
-| ID                          | Repository / Checkout / Branch      | Policy       | Hash | Status        |
-| --------------------------- | ----------------------------------- | ------------ | ---- | ------------- |
-| `update-art-work-knowledge` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `PLACEHOLDER` |
+| ID                          | Repository / Checkout / Branch       | Policy       | Hash | Status        |
+| --------------------------- | ------------------------------------ | ------------ | ---- | ------------- |
+| `update-art-work-knowledge` | Art Work / `$ART_WORKS` / `building` | `AUTONOMOUS` |      | `PLACEHOLDER` |
 
 ##### Commit: `update-art-work-knowledge`
 

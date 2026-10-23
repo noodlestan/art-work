@@ -20,11 +20,11 @@
 
 ## Path Variables
 
-| Variable     | Resolved Path                | Purpose                                                                |
-| ------------ | ---------------------------- | ---------------------------------------------------------------------- |
-| `$WORKSPACE` | Current working directory    | Workspace root directory                                               |
-| `$DOMAINS`   | `$WORKSPACE/.agents/domains` | Domain resources directory                                             |
-| `$ART_WORK`  | Provided with prompt.        | Art Work repository. Example: `$WORKSPACE/checkouts/art-work-building` |
+| Variable     | Resolved Path                | Purpose                                                        |
+| ------------ | ---------------------------- | -------------------------------------------------------------- |
+| `$WORKSPACE` | Current working directory    | Workspace root directory                                       |
+| `$DOMAINS`   | `$WORKSPACE/.agents/domains` | Domain resources directory                                     |
+| `$ART_WORKS` | Provided with prompt.        | Art Work repository. Example: `$WORKSPACE/checkouts/art-works` |
 
 ## Summary
 
@@ -34,10 +34,10 @@ Audit test overlap across command layers, eliminate redundant git fixture setups
 
 ### Upstream Work
 
-| Kind        | Path                                                                             | Role                                                                     |
-| ----------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| Parking Lot | `$ART_WORK/_backlog/_parking-lot.md`                                             | Tracks short-term actionables, pending questions, and blockers.          |
-| Milestone   | `$ART_WORK/cli/workspace/_roadmap/3-now/milestone-art-work-cli-one/milestone.md` | Coordinates this plan as Phase 2 of the Art Workspace Cli One milestone. |
+| Kind        | Path                                                                              | Role                                                                     |
+| ----------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| Parking Lot | `$ART_WORKS/_backlog/_parking-lot.md`                                             | Tracks short-term actionables, pending questions, and blockers.          |
+| Milestone   | `$ART_WORKS/cli/workspace/_roadmap/3-now/milestone-art-work-cli-one/milestone.md` | Coordinates this plan as Phase 2 of the Art Workspace Cli One milestone. |
 
 ### Required Skills
 
@@ -52,9 +52,9 @@ Audit test overlap across command layers, eliminate redundant git fixture setups
 
 ### Knowledge
 
-::READ `$ART_WORK/cli/workspace/knowledge/commands.md` (Model) — Command surface, BDD, edge cases. Relevant for Iterations 2, 3, 4.
+::READ `$ART_WORKS/cli/workspace/knowledge/commands.md` (Model) — Command surface, BDD, edge cases. Relevant for Iterations 2, 3, 4.
 
-::READ `$ART_WORK/cli/workspace/knowledge/index.md` (Model) — Execution model, data model, reports. Relevant for all iterations.
+::READ `$ART_WORKS/cli/workspace/knowledge/index.md` (Model) — Execution model, data model, reports. Relevant for all iterations.
 
 ## Scope
 
@@ -101,7 +101,7 @@ npm run ci # to verify build is green before starting
 
 **Purpose:** Confirms that the work item has been completed and satisfies its intended outcome. Operation of Workflow: Executing Work, defined in `$DOMAINS/work/workflows/executing-work/ops/verifying-completion.art`.
 
-**Instructions:** (From `$ART_WORK/_guide.md`)
+**Instructions:** (From `$ART_WORKS/_guide.md`)
 
 Run from the package directory:
 
@@ -180,9 +180,9 @@ Produce audit attachment `plan__test-coverage-audit.md` covering:
 
 #### Commits:
 
-| ID                    | Repository / Checkout / Branch      | Policy       | Hash | Status  |
-| --------------------- | ----------------------------------- | ------------ | ---- | ------- |
-| `audit-test-coverage` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `DRAFT` |
+| ID                    | Repository / Checkout / Branch       | Policy       | Hash | Status  |
+| --------------------- | ------------------------------------ | ------------ | ---- | ------- |
+| `audit-test-coverage` | Art Work / `$ART_WORKS` / `building` | `AUTONOMOUS` |      | `DRAFT` |
 
 ##### Commit: `audit-test-coverage`
 
@@ -206,7 +206,7 @@ docs(tests): audit test coverage, overlap, and gaps
 
 **Changes:**
 
-In `$ART_WORK/cli/workspace/knowledge/commands.md`:
+In `$ART_WORKS/cli/workspace/knowledge/commands.md`:
 
 1. Update **Implementation Status** section to reflect current state.
 2. Review each command's BDD — add missing scenarios discovered during testing (e.g., `checkouts run` inner flags after `--`).
@@ -220,9 +220,9 @@ In `$ART_WORK/cli/workspace/knowledge/commands.md`:
 
 #### Commits:
 
-| ID                         | Repository / Checkout / Branch      | Policy       | Hash | Status  |
-| -------------------------- | ----------------------------------- | ------------ | ---- | ------- |
-| `update-command-knowledge` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `DRAFT` |
+| ID                         | Repository / Checkout / Branch       | Policy       | Hash | Status  |
+| -------------------------- | ------------------------------------ | ------------ | ---- | ------- |
+| `update-command-knowledge` | Art Work / `$ART_WORKS` / `building` | `AUTONOMOUS` |      | `DRAFT` |
 
 ##### Commit: `update-command-knowledge`
 
@@ -246,7 +246,7 @@ docs(architecture): sync commands.md with current implementation
 
 **Changes:**
 
-In `$ART_WORK/cli/workspace/src/commands/*/*.test.ts` (run command tests):
+In `$ART_WORKS/cli/workspace/src/commands/*/*.test.ts` (run command tests):
 
 1. **Test cases to cover** (no git fixtures):
    - Validates arguments (e.g., `-c` or `--all` required).
@@ -277,9 +277,9 @@ In `$ART_WORK/cli/workspace/src/commands/*/*.test.ts` (run command tests):
 
 #### Commits:
 
-| ID                          | Repository / Checkout / Branch      | Policy       | Hash | Status  |
-| --------------------------- | ----------------------------------- | ------------ | ---- | ------- |
-| `rewrite-run-command-tests` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `DRAFT` |
+| ID                          | Repository / Checkout / Branch       | Policy       | Hash | Status  |
+| --------------------------- | ------------------------------------ | ------------ | ---- | ------- |
+| `rewrite-run-command-tests` | Art Work / `$ART_WORKS` / `building` | `AUTONOMOUS` |      | `DRAFT` |
 
 ##### Commit: `rewrite-run-command-tests`
 
@@ -346,12 +346,12 @@ test(commands): rewrite run tests as focused orchestration tests
 
 #### Commits:
 
-| ID                       | Repository / Checkout / Branch      | Policy       | Hash | Status  |
-| ------------------------ | ----------------------------------- | ------------ | ---- | ------- |
-| `remap-operations-layer` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `DRAFT` |
-| `remap-git-layer`        | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `DRAFT` |
-| `remap-scan-layer`       | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `DRAFT` |
-| `redesign-test-strategy` | Art Work / `$ART_WORK` / `building` | `AUTONOMOUS` |      | `DRAFT` |
+| ID                       | Repository / Checkout / Branch       | Policy       | Hash | Status  |
+| ------------------------ | ------------------------------------ | ------------ | ---- | ------- |
+| `remap-operations-layer` | Art Work / `$ART_WORKS` / `building` | `AUTONOMOUS` |      | `DRAFT` |
+| `remap-git-layer`        | Art Work / `$ART_WORKS` / `building` | `AUTONOMOUS` |      | `DRAFT` |
+| `remap-scan-layer`       | Art Work / `$ART_WORKS` / `building` | `AUTONOMOUS` |      | `DRAFT` |
+| `redesign-test-strategy` | Art Work / `$ART_WORKS` / `building` | `AUTONOMOUS` |      | `DRAFT` |
 
 ##### Commit: `remap-operations-layer`
 

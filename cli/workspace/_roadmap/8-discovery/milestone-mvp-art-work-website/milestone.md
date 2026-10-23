@@ -20,12 +20,12 @@
 
 ## Path Variables
 
-| Variable        | Resolved Path                | Purpose                                                                |
-| --------------- | ---------------------------- | ---------------------------------------------------------------------- |
-| `$WORKSPACE`    | Current working directory    | Workspace root directory                                               |
-| `$DOMAINS`      | `$WORKSPACE/.agents/domains` | Domain resources directory                                             |
-| `$ART_WORK`     | Provided with prompt.        | Art Work repository. Example: `$WORKSPACE/checkouts/art-work-planning` |
-| `$ART_WORK_CLI` | `$ART_WORK/cli/workspace`    | The Art Workspace Cli package, and its roadmap and backlog.            |
+| Variable         | Resolved Path                | Purpose                                                        |
+| ---------------- | ---------------------------- | -------------------------------------------------------------- |
+| `$WORKSPACE`     | Current working directory    | Workspace root directory                                       |
+| `$DOMAINS`       | `$WORKSPACE/.agents/domains` | Domain resources directory                                     |
+| `$ART_WORKS`     | Provided with prompt.        | Art Work repository. Example: `$WORKSPACE/checkouts/art-works` |
+| `$ART_WORKS_CLI` | `$ART_WORKS/cli/workspace`   | The Art Workspace Cli package, and its roadmap and backlog.    |
 
 ## Summary
 
@@ -35,9 +35,9 @@ Publish a minimal, static Art Workspace Cli website — install, configure, comm
 
 ### Upstream Work
 
-| Kind        | Path                                     | Role                                                            |
-| ----------- | ---------------------------------------- | --------------------------------------------------------------- |
-| Parking Lot | `$ART_WORK_CLI/_backlog/_parking-lot.md` | Tracks short-term actionables, pending questions, and blockers. |
+| Kind        | Path                                      | Role                                                            |
+| ----------- | ----------------------------------------- | --------------------------------------------------------------- |
+| Parking Lot | `$ART_WORKS_CLI/_backlog/_parking-lot.md` | Tracks short-term actionables, pending questions, and blockers. |
 
 ### Required Skills
 
@@ -53,9 +53,9 @@ Publish a minimal, static Art Workspace Cli website — install, configure, comm
 
 ### Knowledge
 
-::READ `$ART_WORK_CLI/README.md` (Model) — Installation, config sample, commands, and options. Relevant for Planning Work Item.
+::READ `$ART_WORKS_CLI/README.md` (Model) — Installation, config sample, commands, and options. Relevant for Planning Work Item.
 
-::READ `$ART_WORK/_guide.md` (Guide) — Repository setup and verification. Relevant for Setting Up, Verifying Completion.
+::READ `$ART_WORKS/_guide.md` (Guide) — Repository setup and verification. Relevant for Setting Up, Verifying Completion.
 
 ## Scope
 
@@ -140,9 +140,9 @@ npm ci # to install dependencies.
 
 **Purpose:** Confirms that the work item has been completed and satisfies its intended outcome. Operation of Workflow: Executing Work, defined in `$DOMAINS/work/workflows/executing-work/ops/verifying-completion.art`.
 
-**Instructions:** (From `$ART_WORK/_guide.md`)
+**Instructions:** (From `$ART_WORKS/_guide.md`)
 
-Run from the `$ART_WORK` root:
+Run from the `$ART_WORKS` root:
 
 ```bash
 npm run ci # lint, test and build
@@ -173,7 +173,7 @@ All steps MUST pass. No `it.todo()` tests may remain.
 
 ### Knowledge to Update
 
-- `$ART_WORK_CLI/README.md` — add the site URL once published.
+- `$ART_WORKS_CLI/README.md` — add the site URL once published.
 
 ### Follow Ups
 

@@ -25,11 +25,11 @@ This section describes how to report back to the delegator after completing the 
 
 ## Path Variables
 
-| Variable     | Resolved Path                | Purpose                                                                |
-| ------------ | ---------------------------- | ---------------------------------------------------------------------- |
-| `$WORKSPACE` | Current working directory    | Workspace root directory                                               |
-| `$DOMAINS`   | `$WORKSPACE/.agents/domains` | Domain resources directory                                             |
-| `$ART_WORK`  | Provided with prompt         | Art Work repository. Example: `$WORKSPACE/checkouts/art-work-building` |
+| Variable     | Resolved Path                | Purpose                                                        |
+| ------------ | ---------------------------- | -------------------------------------------------------------- |
+| `$WORKSPACE` | Current working directory    | Workspace root directory                                       |
+| `$DOMAINS`   | `$WORKSPACE/.agents/domains` | Domain resources directory                                     |
+| `$ART_WORKS` | Provided with prompt         | Art Work repository. Example: `$WORKSPACE/checkouts/art-works` |
 
 ## Working Agreements
 
@@ -52,8 +52,8 @@ This section lists the documentation and reference files the sub-agent needs to 
 - RULE: You MUST follow any links under `## Mandatory Reading` sections found in the listed files.
 - RULE: If you are unable to read a file linked under `## Mandatory Reading` you must stop and REPORT A BLOCKER.
 
-- knowledge: `$ART_WORK/cli/workspace/knowledge/index.md`
-- guide: `$ART_WORK/_guide.md`
+- knowledge: `$ART_WORKS/cli/workspace/knowledge/index.md`
+- guide: `$ART_WORKS/_guide.md`
 
 ---
 
@@ -72,7 +72,7 @@ npm ci # to install dependencies.
 npm run ci # to verify build is green before starting
 ```
 
-If any of these fail, resolve the issue before proceeding with implementation. Do NOT run `npm install` inside `$ART_WORK` (the package directory) — a local `node_modules` there shadows the monorepo resolution and breaks the build.
+If any of these fail, resolve the issue before proceeding with implementation. Do NOT run `npm install` inside `$ART_WORKS` (the package directory) — a local `node_modules` there shadows the monorepo resolution and breaks the build.
 
 ### Writing Commit Message
 
@@ -87,7 +87,7 @@ If any of these fail, resolve the issue before proceeding with implementation. D
 
 **Purpose:** Confirms that the work item has been completed and satisfies its intended outcome. Operation of Workflow: Executing Work, defined in `$DOMAINS/work/workflows/executing-work/ops/verifying-completion.art`.
 
-**Instructions:** (From `$ART_WORK/_guide.md`)
+**Instructions:** (From `$ART_WORKS/_guide.md`)
 
 Run from the package directory:
 
@@ -116,15 +116,15 @@ This section contains the detailed steps to execute, including commit steps.
 
 ### Step `1 / 3` — Update knowledge and guide
 
-Update `$ART_WORK/cli/workspace/knowledge/index.md` to document the global-install execution model: how the CLI locates configuration (current working directory and parent dirs), how it operates in global vs local modes, and the new workspace config shape (`root`, `checkouts`, `data.store`, `discover.records`).
+Update `$ART_WORKS/cli/workspace/knowledge/index.md` to document the global-install execution model: how the CLI locates configuration (current working directory and parent dirs), how it operates in global vs local modes, and the new workspace config shape (`root`, `checkouts`, `data.store`, `discover.records`).
 
-Update `$ART_WORK/_guide.md` with global install usage notes, including how to run the CLI from a global installation and how to use the `init` command to set up a fresh workspace.
+Update `$ART_WORKS/_guide.md` with global install usage notes, including how to run the CLI from a global installation and how to use the `init` command to set up a fresh workspace.
 
 Use only the new config names (`checkouts`, `data.store`, `discover.records`) — never `clone` or `records`.
 
 ### Step `2 / 3` — Update config README
 
-Update `$ART_WORK/cli/workspace/src/config/README.md` (or create it if it does not exist) describing the config file format and discovery: the manifest file name, the discovery process (current dir and parents), the compile-to-`.art`-temp-dir behaviour, and the default config values.
+Update `$ART_WORKS/cli/workspace/src/config/README.md` (or create it if it does not exist) describing the config file format and discovery: the manifest file name, the discovery process (current dir and parents), the compile-to-`.art`-temp-dir behaviour, and the default config values.
 
 ### Step `3 / 3` — Commit `update-art-work-knowledge`
 
@@ -149,9 +149,9 @@ This section describes how to confirm the iteration is completed and ready for b
 **Instructions:**
 
 - Verify that commits have been executed and pushed (or not pushed) according to the commit's policy.
-- Verify that `$ART_WORK/cli/workspace/knowledge/index.md` documents the global-install execution model and the new config shape.
-- Verify that `$ART_WORK/_guide.md` includes global install usage notes.
-- Verify that `$ART_WORK/cli/workspace/src/config/README.md` describes the config file format and discovery.
+- Verify that `$ART_WORKS/cli/workspace/knowledge/index.md` documents the global-install execution model and the new config shape.
+- Verify that `$ART_WORKS/_guide.md` includes global install usage notes.
+- Verify that `$ART_WORKS/cli/workspace/src/config/README.md` describes the config file format and discovery.
 - Verify that no references to the old config names (`clone`, `records`) remain in the updated knowledge files.
 - Execute the **Verifying Completion** step as defined in the "Operating Instructions" section.
 - Report according to the "How to Report Back to the Delegator" instructions.

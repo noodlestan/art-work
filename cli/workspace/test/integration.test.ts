@@ -90,7 +90,7 @@ describe('cli integration', () => {
 
 				expect(result.code).toBe(0);
 				expect(result.stdout).toContain('Checkouts:');
-				expect(result.stdout).toContain('Art Work');
+				expect(result.stdout).toContain('Art Works');
 			});
 
 			it('WHEN given --auto, accepts the option and runs', async () => {
@@ -131,13 +131,13 @@ describe('cli integration', () => {
 
 				expect(result.code).toBe(0);
 				expect(result.stdout).toContain('Repository:');
-				expect(result.stdout).toContain('Art Work');
+				expect(result.stdout).toContain('Art Works');
 			});
 
 			it('WHEN given a checkout location, lists that repository', async () => {
 				const root = await setupWorkspace(tempDirs);
 
-				const result = await spawnCli({ args: ['repo', 'art-work'], cwd: root });
+				const result = await spawnCli({ args: ['repo', 'art-works'], cwd: root });
 
 				expect(result.code).toBe(0);
 				expect(result.stdout).toContain('Repository:');
@@ -212,10 +212,10 @@ describe('cli integration', () => {
 		it('WHEN -c matches a checkout, it is selected', async () => {
 			const root = await setupWorkspace(tempDirs);
 
-			const result = await spawnCli({ args: ['pull', '-c', 'art-work'], cwd: root });
+			const result = await spawnCli({ args: ['pull', '-c', 'art-works'], cwd: root });
 
 			expect(result.code).toBe(0);
-			expect(result.stdout).toContain('Art Work');
+			expect(result.stdout).toContain('Art Works');
 		});
 
 		it('WHEN -c matches no checkout, it reports so', async () => {

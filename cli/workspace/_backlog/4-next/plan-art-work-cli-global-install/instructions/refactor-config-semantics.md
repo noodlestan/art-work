@@ -25,12 +25,12 @@ This section describes how to report back to the delegator after completing the 
 
 ## Path Variables
 
-| Variable     | Resolved Path                | Purpose                                                                |
-| ------------ | ---------------------------- | ---------------------------------------------------------------------- |
-| `$WORKSPACE` | Current working directory    | Workspace root directory                                               |
-| `$DOMAINS`   | `$WORKSPACE/.agents/domains` | Domain resources directory                                             |
-| `$ART_WORK`  | Provided with prompt         | Art Work repository. Example: `$WORKSPACE/checkouts/art-work-building` |
-| `$ART_LIB`   | Provided with prompt         | Art Lib repository. Example: `$WORKSPACE/checkouts/art-lib-building`   |
+| Variable     | Resolved Path                | Purpose                                                              |
+| ------------ | ---------------------------- | -------------------------------------------------------------------- |
+| `$WORKSPACE` | Current working directory    | Workspace root directory                                             |
+| `$DOMAINS`   | `$WORKSPACE/.agents/domains` | Domain resources directory                                           |
+| `$ART_WORKS` | Provided with prompt         | Art Work repository. Example: `$WORKSPACE/checkouts/art-works`       |
+| `$ART_LIB`   | Provided with prompt         | Art Lib repository. Example: `$WORKSPACE/checkouts/art-lib-building` |
 
 ## Working Agreements
 
@@ -53,7 +53,7 @@ This section lists the documentation and reference files the sub-agent needs to 
 - RULE: You MUST follow any links under `## Mandatory Reading` sections found in the listed files.
 - RULE: If you are unable to read a file linked under `## Mandatory Reading` you must stop and REPORT A BLOCKER.
 
-- knowledge: `$ART_WORK/cli/workspace/knowledge/index.md`
+- knowledge: `$ART_WORKS/cli/workspace/knowledge/index.md`
 - provider contract: `$ART_LIB/_backlog/4-next/plan-add-fs-records-adapter/plan.md` (`READY`, 2026-10-13) — the supplier plan for `@art-lib/fs-records`. The whiteboard `AGREED` contracts are the authority for the symbols this iteration consumes.
 
 ---
@@ -73,7 +73,7 @@ npm ci # to install dependencies.
 npm run ci # to verify build is green before starting
 ```
 
-If any of these fail, resolve the issue before proceeding with implementation. Do NOT run `npm install` inside `$ART_WORK` (the package directory) — a local `node_modules` there shadows the monorepo resolution and breaks the build.
+If any of these fail, resolve the issue before proceeding with implementation. Do NOT run `npm install` inside `$ART_WORKS` (the package directory) — a local `node_modules` there shadows the monorepo resolution and breaks the build.
 
 ### Writing Commit Message
 
@@ -88,7 +88,7 @@ If any of these fail, resolve the issue before proceeding with implementation. D
 
 **Purpose:** Confirms that the work item has been completed and satisfies its intended outcome. Operation of Workflow: Executing Work, defined in `$DOMAINS/work/workflows/executing-work/ops/verifying-completion.art`.
 
-**Instructions:** (From `$ART_WORK/_guide.md`)
+**Instructions:** (From `$ART_WORKS/_guide.md`)
 
 Run from the package directory:
 
@@ -159,7 +159,7 @@ If any of these symbols are missing or the boundary differs, **REPORT A BLOCKER*
 
 ### Step `2 / 8` — Add config constants
 
-Create `$ART_WORK/cli/workspace/src/config/constants.ts` with two exported constants:
+Create `$ART_WORKS/cli/workspace/src/config/constants.ts` with two exported constants:
 
 ```ts
 import type { FSRecordsPattern, FSRecordsAdapterOptions } from '@art-lib/fs-records';
@@ -180,11 +180,11 @@ export const DEFAULT_RECORDS_STORE_OPTIONS: FSRecordsAdapterOptions = {
 };
 ```
 
-The `DEFAULT_RECORDS_PATTERN` is extracted from the current `DEFAULTS` constant in `$ART_WORK/cli/workspace/src/config/private/normalizeRecordPaths.ts`.
+The `DEFAULT_RECORDS_PATTERN` is extracted from the current `DEFAULTS` constant in `$ART_WORKS/cli/workspace/src/config/private/normalizeRecordPaths.ts`.
 
 ### Step `3 / 8` — Reshape config types and defaults
 
-Update `$ART_WORK/cli/workspace/src/config/types.ts` to the new shape:
+Update `$ART_WORKS/cli/workspace/src/config/types.ts` to the new shape:
 
 ```ts
 import type { FSRecordsPattern, FSRecordsAdapterOptions } from '@art-lib/fs-records';
@@ -213,14 +213,14 @@ export interface PartialWorkspaceConfig {
 
 Note: the `clone` and `output` keys are removed from `WorkspaceConfig` per the target shape. Update all consumers accordingly.
 
-Streamline `$ART_WORK/cli/workspace/src/config/private/normalizeRecordPaths.ts` to accept the new `discover.records` shape and use `DEFAULT_RECORDS_PATTERN`:
+Streamline `$ART_WORKS/cli/workspace/src/config/private/normalizeRecordPaths.ts` to accept the new `discover.records` shape and use `DEFAULT_RECORDS_PATTERN`:
 
 ```ts
 const maybePaths = records?.paths;
 const paths = maybePaths ? maybePaths : [{}];
 ```
 
-Update `$ART_WORK/cli/workspace/src/config/defineConfig.ts`:
+Update `$ART_WORKS/cli/workspace/src/config/defineConfig.ts`:
 
 - Change `clone` => `checkouts` (config key). `checkouts.path` replaces `clone.path`.
 - Change `records.paths` => `discover.records.paths`.
@@ -228,11 +228,11 @@ Update `$ART_WORK/cli/workspace/src/config/defineConfig.ts`:
 - Move `checkouts.template` => `data.template`.
 - Remove the `output` key.
 
-Update `$ART_WORK/cli/workspace/src/config/loadWorkspaceConfig.ts` so its `DEFAULT_CONFIG` uses the new shape.
+Update `$ART_WORKS/cli/workspace/src/config/loadWorkspaceConfig.ts` so its `DEFAULT_CONFIG` uses the new shape.
 
 ### Step `4 / 8` — Extract WorkspaceContext and add fsRecords
 
-Extract the `WorkspaceContext` interface from `$ART_WORK/cli/workspace/src/private/context/createWorkspaceContext.ts` into a new file `$ART_WORK/cli/workspace/src/private/context/types.ts`:
+Extract the `WorkspaceContext` interface from `$ART_WORKS/cli/workspace/src/private/context/createWorkspaceContext.ts` into a new file `$ART_WORKS/cli/workspace/src/private/context/types.ts`:
 
 ```ts
 import type { FSRecordsAdapter } from '@art-lib/fs-records';
@@ -244,11 +244,11 @@ export interface WorkspaceContext {
 }
 ```
 
-Update `createWorkspaceContext` in `$ART_WORK/cli/workspace/src/private/context/createWorkspaceContext.ts` to receive `(config, store, fsRecords, log)` and return the `WorkspaceContext` from `types.ts`.
+Update `createWorkspaceContext` in `$ART_WORKS/cli/workspace/src/private/context/createWorkspaceContext.ts` to receive `(config, store, fsRecords, log)` and return the `WorkspaceContext` from `types.ts`.
 
 ### Step `5 / 8` — Extract createConfig and createContext factories
 
-Create `$ART_WORK/cli/workspace/src/private/cli/createConfig.ts`:
+Create `$ART_WORKS/cli/workspace/src/private/cli/createConfig.ts`:
 
 ```ts
 async function createConfig(logger: Logger) {
@@ -259,7 +259,7 @@ async function createConfig(logger: Logger) {
 }
 ```
 
-Create `$ART_WORK/cli/workspace/src/private/cli/createContext.ts`:
+Create `$ART_WORKS/cli/workspace/src/private/cli/createContext.ts`:
 
 ```ts
 createContext(config, logger) {
@@ -273,20 +273,20 @@ createContext(config, logger) {
 
 ### Step `6 / 8` — Update CLI entry and commands
 
-Update `$ART_WORK/cli/workspace/src/index.ts` to use `createConfig()` and `createContext()` instead of building config and context inline. Update all commands (sanity, branch, checkouts, clone, link, publish, pull, push, repo, sync, unlink) to use the context returned by `createContext()`.
+Update `$ART_WORKS/cli/workspace/src/index.ts` to use `createConfig()` and `createContext()` instead of building config and context inline. Update all commands (sanity, branch, checkouts, clone, link, publish, pull, push, repo, sync, unlink) to use the context returned by `createContext()`.
 
 ### Step `7 / 8` — Replace findRecordFiles with fsRecords
 
 Replace direct `findRecordFiles()` calls with `fsRecords.discoverRecordFiles()` for discovery, `fsRecords.createContentSource(file).readContent()` for content, and the `@art-js/records` facade for extraction:
 
-- `$ART_WORK/cli/workspace/src/private/resources/checkout/loadCheckoutRecords.ts`
-- `$ART_WORK/cli/workspace/src/private/resources/repository/loadRepositoryRecords.ts`
+- `$ART_WORKS/cli/workspace/src/private/resources/checkout/loadCheckoutRecords.ts`
+- `$ART_WORKS/cli/workspace/src/private/resources/repository/loadRepositoryRecords.ts`
 
 Change all discovery invocations of `findRecordFiles()` to use the discovery config (`discover.records`):
 
-- `$ART_WORK/cli/workspace/src/private/resources/project/loadProjectRecords.ts`
-- `$ART_WORK/cli/workspace/src/private/resources/namespace/loadNamespaceRecords.ts`
-- `$ART_WORK/cli/workspace/src/private/resources/package/loadPackageRecords.ts`
+- `$ART_WORKS/cli/workspace/src/private/resources/project/loadProjectRecords.ts`
+- `$ART_WORKS/cli/workspace/src/private/resources/namespace/loadNamespaceRecords.ts`
+- `$ART_WORKS/cli/workspace/src/private/resources/package/loadPackageRecords.ts`
 
 ### Step `8 / 8` — Commit `refactor-config-options`
 

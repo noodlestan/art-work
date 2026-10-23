@@ -25,11 +25,11 @@ This section describes how to report back to the delegator after completing the 
 
 ## Path Variables
 
-| Variable     | Resolved Path                | Purpose                                                                |
-| ------------ | ---------------------------- | ---------------------------------------------------------------------- |
-| `$WORKSPACE` | Current working directory    | Workspace root directory                                               |
-| `$DOMAINS`   | `$WORKSPACE/.agents/domains` | Domain resources directory                                             |
-| `$ART_WORK`  | Provided with prompt         | Art Work repository. Example: `$WORKSPACE/checkouts/art-work-building` |
+| Variable     | Resolved Path                | Purpose                                                        |
+| ------------ | ---------------------------- | -------------------------------------------------------------- |
+| `$WORKSPACE` | Current working directory    | Workspace root directory                                       |
+| `$DOMAINS`   | `$WORKSPACE/.agents/domains` | Domain resources directory                                     |
+| `$ART_WORKS` | Provided with prompt         | Art Work repository. Example: `$WORKSPACE/checkouts/art-works` |
 
 ## Working Agreements
 
@@ -52,8 +52,8 @@ This section lists the documentation and reference files the sub-agent needs to 
 - RULE: You MUST follow any links under `## Mandatory Reading` sections found in the listed files.
 - RULE: If you are unable to read a file linked under `## Mandatory Reading` you must stop and REPORT A BLOCKER.
 
-- knowledge: `$ART_WORK/cli/workspace/knowledge/index.md`
-- config loader: `$ART_WORK/cli/workspace/src/config/loadWorkspaceConfig.ts` (current manifest/temp file handling)
+- knowledge: `$ART_WORKS/cli/workspace/knowledge/index.md`
+- config loader: `$ART_WORKS/cli/workspace/src/config/loadWorkspaceConfig.ts` (current manifest/temp file handling)
 
 ---
 
@@ -72,7 +72,7 @@ npm ci # to install dependencies.
 npm run ci # to verify build is green before starting
 ```
 
-If any of these fail, resolve the issue before proceeding with implementation. Do NOT run `npm install` inside `$ART_WORK` (the package directory) — a local `node_modules` there shadows the monorepo resolution and breaks the build.
+If any of these fail, resolve the issue before proceeding with implementation. Do NOT run `npm install` inside `$ART_WORKS` (the package directory) — a local `node_modules` there shadows the monorepo resolution and breaks the build.
 
 ### Writing Commit Message
 
@@ -87,7 +87,7 @@ If any of these fail, resolve the issue before proceeding with implementation. D
 
 **Purpose:** Confirms that the work item has been completed and satisfies its intended outcome. Operation of Workflow: Executing Work, defined in `$DOMAINS/work/workflows/executing-work/ops/verifying-completion.art`.
 
-**Instructions:** (From `$ART_WORK/_guide.md`)
+**Instructions:** (From `$ART_WORKS/_guide.md`)
 
 Run from the package directory:
 
@@ -117,7 +117,7 @@ This section contains the detailed steps to execute, including commit steps.
 
 ### Step `1 / 4` — Discover configuration by scanning parent dirs
 
-Implement configuration discovery in `$ART_WORK/cli/workspace/src/private/cli/createConfig.ts` (created in the `refactor-config-semantics` iteration). Replace the `// WIP: Config discovery next.` placeholder with logic that:
+Implement configuration discovery in `$ART_WORKS/cli/workspace/src/private/cli/createConfig.ts` (created in the `refactor-config-semantics` iteration). Replace the `// WIP: Config discovery next.` placeholder with logic that:
 
 - Starts from the current working directory and walks up through parent directories.
 - Looks for the workspace config manifest file (`.art-workspace.mts`) at each level.
@@ -144,7 +144,7 @@ build(art-workspace-cli): Discover configuration file.
 
 ### Step `3 / 4` — Compile config to a hidden `.art` dir and show config options
 
-Extend the config loading so that the discovered config file is compiled to a hidden `.art` temp directory (reusing the existing esbuild bundling approach in `$ART_WORK/cli/workspace/src/config/loadWorkspaceConfig.ts`).
+Extend the config loading so that the discovered config file is compiled to a hidden `.art` temp directory (reusing the existing esbuild bundling approach in `$ART_WORKS/cli/workspace/src/config/loadWorkspaceConfig.ts`).
 
 Advertise the active configuration on every run:
 

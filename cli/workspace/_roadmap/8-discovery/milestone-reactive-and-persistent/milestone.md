@@ -20,12 +20,12 @@
 
 ## Path Variables
 
-| Variable        | Resolved Path                | Purpose                                                                |
-| --------------- | ---------------------------- | ---------------------------------------------------------------------- |
-| `$WORKSPACE`    | Current working directory    | Workspace root directory                                               |
-| `$DOMAINS`      | `$WORKSPACE/.agents/domains` | Domain resources directory                                             |
-| `$ART_WORK`     | Provided with prompt.        | Art Work repository. Example: `$WORKSPACE/checkouts/art-work-planning` |
-| `$ART_WORK_CLI` | `$ART_WORK/cli/workspace`    | The Art Workspace Cli package, and its roadmap and backlog.            |
+| Variable         | Resolved Path                | Purpose                                                        |
+| ---------------- | ---------------------------- | -------------------------------------------------------------- |
+| `$WORKSPACE`     | Current working directory    | Workspace root directory                                       |
+| `$DOMAINS`       | `$WORKSPACE/.agents/domains` | Domain resources directory                                     |
+| `$ART_WORKS`     | Provided with prompt.        | Art Work repository. Example: `$WORKSPACE/checkouts/art-works` |
+| `$ART_WORKS_CLI` | `$ART_WORKS/cli/workspace`   | The Art Workspace Cli package, and its roadmap and backlog.    |
 
 ## Summary
 
@@ -35,10 +35,10 @@ Turn the CLI from a sequence of one-shot commands into a reactive, persistent se
 
 ### Upstream Work
 
-| Kind        | Path                                                                        | Role                                                            |
-| ----------- | --------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| Parking Lot | `$ART_WORK_CLI/_backlog/_parking-lot.md`                                    | Tracks short-term actionables, pending questions, and blockers. |
-| Milestone   | `$ART_WORK_CLI/_roadmap/8-discovery/milestone-terminal-ui-poc/milestone.md` | The display surface this milestone's streaming lands in.        |
+| Kind        | Path                                                                         | Role                                                            |
+| ----------- | ---------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| Parking Lot | `$ART_WORKS_CLI/_backlog/_parking-lot.md`                                    | Tracks short-term actionables, pending questions, and blockers. |
+| Milestone   | `$ART_WORKS_CLI/_roadmap/8-discovery/milestone-terminal-ui-poc/milestone.md` | The display surface this milestone's streaming lands in.        |
 
 ### Required Skills
 
@@ -54,9 +54,9 @@ Turn the CLI from a sequence of one-shot commands into a reactive, persistent se
 
 ### Knowledge
 
-::READ `$ART_WORK_CLI/knowledge/index.md` (Model) — Execution model, operations, and reports. Relevant for Planning Work Item.
+::READ `$ART_WORKS_CLI/knowledge/index.md` (Model) — Execution model, operations, and reports. Relevant for Planning Work Item.
 
-::READ `$ART_WORK/_guide.md` (Guide) — Repository setup and verification. Relevant for Setting Up, Verifying Completion.
+::READ `$ART_WORKS/_guide.md` (Guide) — Repository setup and verification. Relevant for Setting Up, Verifying Completion.
 
 ## Scope
 
@@ -180,9 +180,9 @@ npm ci # to install dependencies.
 
 **Purpose:** Confirms that the work item has been completed and satisfies its intended outcome. Operation of Workflow: Executing Work, defined in `$DOMAINS/work/workflows/executing-work/ops/verifying-completion.art`.
 
-**Instructions:** (From `$ART_WORK/_guide.md`)
+**Instructions:** (From `$ART_WORKS/_guide.md`)
 
-Run from the `$ART_WORK` root:
+Run from the `$ART_WORKS` root:
 
 ```bash
 npm run ci # lint, test and build
@@ -213,7 +213,7 @@ All steps MUST pass. No `it.todo()` tests may remain.
 
 ### Knowledge to Update
 
-- `$ART_WORK_CLI/knowledge/index.md` — record the reactive model once Phase 1 lands.
+- `$ART_WORKS_CLI/knowledge/index.md` — record the reactive model once Phase 1 lands.
 
 ### Follow Ups
 
