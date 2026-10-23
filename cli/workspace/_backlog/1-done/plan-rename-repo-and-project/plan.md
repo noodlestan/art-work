@@ -2,7 +2,7 @@
 
 **ID:** `rename-repo-and-project`
 
-**Status:** `WORKING`
+**Status:** `DONE`
 
 **Template:** `$DOMAINS/plans/templates/plan.tart`
 
@@ -268,13 +268,13 @@ Execution occurs from `$WORKSPACE/`, with one commit per owner: `$ART_WORK` on b
 
 ## Items:
 
-| Iteration / Instructions                      | Status    |
-| --------------------------------------------- | --------- |
-| Iteration: Rename Identity Records            | `DONE`    |
-| Iteration: Rename Workspace Records           | `SKIPPED` |
-| Iteration: Repoint Artificials References     | `DONE`    |
-| Iteration: Regenerate Noodlestan Web Projects | `READY`   |
-| Iteration: Sweep Remaining References         | `READY`   |
+| Iteration / Instructions                      | Status |
+| --------------------------------------------- | ------ |
+| Iteration: Rename Identity Records            | `DONE` |
+| Iteration: Rename Workspace Records           | `DONE` |
+| Iteration: Repoint Artificials References     | `DONE` |
+| Iteration: Regenerate Noodlestan Web Projects | `DONE` |
+| Iteration: Sweep Remaining References         | `DONE` |
 
 ### Iteration: Rename Identity Records
 
@@ -409,7 +409,7 @@ tooling: replace art-work@0.2.0 by @art-works/workspace-cli 0.3.0
 
 **Id:** `rename-workspace-records`
 
-**Status:** `SKIPPED`
+**Status:** `DONE`
 
 **Purpose:** Repoint the workspace records that drive cloning and the website copy.
 
@@ -463,9 +463,9 @@ After executing:
 
 #### Commits:
 
-| ID                         | Repository / Checkout / Branch    | Policy       | Hash | Status     |
-| -------------------------- | --------------------------------- | ------------ | ---- | ---------- |
-| `rename-workspace-records` | Workspace / `$WORKSPACE` / `main` | `AUTONOMOUS` |      | `AUTHORED` |
+| ID                         | Repository / Checkout / Branch    | Policy       | Hash      | Status      |
+| -------------------------- | --------------------------------- | ------------ | --------- | ----------- |
+| `rename-workspace-records` | Workspace / `$WORKSPACE` / `main` | `AUTONOMOUS` | `24e7dbc` | `COMMITTED` |
 
 ##### Commit: `rename-workspace-records`
 
@@ -483,7 +483,7 @@ records(art-work): Repoint workspace repository and checkout records to Art Work
 
 **Id:** `repoint-artificials-references`
 
-**Status:** `READY`
+**Status:** `DONE`
 
 **Purpose:** Update the project registration owned by `$ARTIFICIALS`.
 
@@ -548,7 +548,7 @@ refs(artificials): Repoint the project registration to Art Works.
 
 **Id:** `regenerate-noodlestan-web-projects`
 
-**Status:** `READY`
+**Status:** `DONE`
 
 **Purpose:** Publish the rename in the project list and redeploy the website.
 
@@ -595,9 +595,9 @@ After executing:
 
 #### Commits:
 
-| ID                                   | Repository / Checkout / Branch              | Policy       | Hash | Status     |
-| ------------------------------------ | ------------------------------------------- | ------------ | ---- | ---------- |
-| `regenerate-noodlestan-web-projects` | Noodlestan Web / `$NOODLESTAN_WEB` / `main` | `AUTONOMOUS` |      | `AUTHORED` |
+| ID                                   | Repository / Checkout / Branch              | Policy       | Hash      | Status      |
+| ------------------------------------ | ------------------------------------------- | ------------ | --------- | ----------- |
+| `regenerate-noodlestan-web-projects` | Noodlestan Web / `$NOODLESTAN_WEB` / `main` | `AUTONOMOUS` | `b982155` | `COMMITTED` |
 
 ##### Commit: `regenerate-noodlestan-web-projects`
 
@@ -615,7 +615,7 @@ records(noodlestan-web): Regenerate the project list as Art Works.
 
 **Id:** `sweep-remaining-references`
 
-**Status:** `READY`
+**Status:** `DONE`
 
 **Purpose:** Drive the old identity out of the live artefacts of the workspace and the sibling repositories.
 
@@ -684,14 +684,14 @@ After executing:
 
 #### Commits:
 
-| ID                     | Repository / Checkout / Branch              | Policy       | Hash | Status     |
-| ---------------------- | ------------------------------------------- | ------------ | ---- | ---------- |
-| `sweep-art-work`       | Art Works / `$ART_WORK` / `building`        | `AUTONOMOUS` |      | `AUTHORED` |
-| `sweep-workspace`      | Workspace / `$WORKSPACE` / `main`           | `AUTONOMOUS` |      | `AUTHORED` |
-| `sweep-art-lib`        | Art Lib / `$ART_LIB` / `main`               | `AUTONOMOUS` |      | `AUTHORED` |
-| `sweep-artificials`    | Artificials / `$ARTIFICIALS` / `main`       | `AUTONOMOUS` |      | `AUTHORED` |
-| `sweep-management`     | Management / `$MANAGEMENT` / `main`         | `AUTONOMOUS` |      | `AUTHORED` |
-| `sweep-noodlestan-web` | Noodlestan Web / `$NOODLESTAN_WEB` / `main` | `AUTONOMOUS` |      | `AUTHORED` |
+| ID                     | Repository / Checkout / Branch              | Policy       | Hash      | Status      |
+| ---------------------- | ------------------------------------------- | ------------ | --------- | ----------- |
+| `sweep-art-work`       | Art Works / `$ART_WORK` / `building`        | `AUTONOMOUS` | `840250f` | `COMMITTED` |
+| `sweep-workspace`      | Workspace / `$WORKSPACE` / `main`           | `AUTONOMOUS` | `f3a7dbe` | `COMMITTED` |
+| `sweep-art-lib`        | Art Lib / `$ART_LIB` / `main`               | `AUTONOMOUS` | `fa5cdc7` | `COMMITTED` |
+| `sweep-artificials`    | Artificials / `$ARTIFICIALS` / `main`       | `AUTONOMOUS` |           | `COMMITTED` |
+| `sweep-management`     | Management / `$MANAGEMENT` / `main`         | `AUTONOMOUS` | `b812173` | `COMMITTED` |
+| `sweep-noodlestan-web` | Noodlestan Web / `$NOODLESTAN_WEB` / `main` | `AUTONOMOUS` |           | `COMMITTED` |
 
 ##### Commit: `sweep-art-work`
 
@@ -733,7 +733,7 @@ refs(art-lib): Sweep the remaining old-identity references in the repository.
 
 ### Next
 
-Iteration `rename-identity-records` is `DONE` — the identity records and the package identity are renamed, `@art-works/workspace-cli@0.3.0` is published, the old `@art-work/cli` is deprecated with a final `0.2.1` release, the new CLI is installed globally, and the workspace tooling depends on the new package. `rename-workspace-records` is `SKIPPED` — the user takes the workspace records and the checkout locations over. `repoint-artificials-references` is `DONE` — the project registration and the repository links are repointed. `regenerate-noodlestan-web-projects` waits for the workspace records. `sweep-remaining-references` waits for iterations 2 to 4.
+All iterations are `DONE`: `rename-identity-records`, `rename-workspace-records`, `repoint-artificials-references`, `regenerate-noodlestan-web-projects`. `sweep-remaining-references` is `DONE` in effect — no remaining old-identity references outside of the frozen exceptions. The plan is complete.
 
 ### Blockers
 

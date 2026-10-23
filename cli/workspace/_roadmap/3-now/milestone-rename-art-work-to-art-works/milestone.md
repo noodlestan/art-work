@@ -2,7 +2,7 @@
 
 **ID:** `rename-art-work-to-art-works`
 
-**Status:** `READY`
+**Status:** `DONE`
 
 **Template:** `$DOMAINS/milestones/templates/milestone.tart`
 
@@ -10,7 +10,7 @@
 
 **Purpose:** Rename the repository and the project from Art Work to Art Works so the repository can host more CLIs and tools, moving the package identity along with them.
 
-**Description:** Milestone record with 2 phases and 2 plans, coordinating the relocation of the remaining planning artefacts into `cli/workspace/` (re-scaffolding the root trees for repository-level planning) and the rename of the repository and project across `$ART_WORK`, `$WORKSPACE/_records`, `$ARTIFICIALS`, and `$NOODLESTAN_WEB`.
+**Description:** Milestone record with 2 phases and 2 plans, coordinating the relocation of the remaining planning artefacts into `cli/workspace/` (re-scaffolding the root trees for repository-level planning) and the rename of the repository and project across `$ART_WORKS`, `$WORKSPACE/_records`, `$ARTIFICIALS`, and `$NOODLESTAN_WEB`.
 
 ## Mandatory Reading
 
@@ -26,24 +26,24 @@ This section lists the path variables used throughout the milestone file and its
 | ----------------- | ------------------------------------- | ------------------------------------------------------- |
 | `$WORKSPACE`      | Current working directory             | Workspace root directory.                               |
 | `$DOMAINS`        | `$WORKSPACE/.agents/domains`          | Domain resources directory.                             |
-| `$ART_WORK`       | `$WORKSPACE/checkouts/art-work`       | Art Works repository; hosts this milestone.             |
-| `$ART_WORK_CLI`   | `$ART_WORK/cli/workspace`             | Art Workspace Cli package, and its roadmap and backlog. |
+| `$ART_WORKS`      | `$WORKSPACE/checkouts/art-work`       | Art Works repository; hosts this milestone.             |
+| `$ART_WORKS_CLI`  | `$ART_WORKS/cli/workspace`            | Art Workspace Cli package, and its roadmap and backlog. |
 | `$ARTIFICIALS`    | `$WORKSPACE/checkouts/artificials`    | Owns the project record; references to repoint.         |
 | `$NOODLESTAN_WEB` | `$WORKSPACE/checkouts/noodlestan-web` | Hosts the project list and the website to redeploy.     |
 
 ## Summary
 
-Rename the repository and the project to Art Works in 2 phases — relocate the remaining `_roadmap/` and `_backlog/` content into `$ART_WORK_CLI` and re-scaffold the root trees for repository-level planning, then rename the repository and project identity across `$WORKSPACE/_records`, `$ARTIFICIALS`, and `$NOODLESTAN_WEB` — so the repository can host more CLIs and tools, with the package identity moving to `@art-works/workspace-cli`; coordinated from the ONGOING items in `$ART_WORK/_backlog/_parking-lot.md`.
+Rename the repository and the project to Art Works in 2 phases — relocate the remaining `_roadmap/` and `_backlog/` content into `$ART_WORKS_CLI` and re-scaffold the root trees for repository-level planning, then rename the repository and project identity across `$WORKSPACE/_records`, `$ARTIFICIALS`, and `$NOODLESTAN_WEB` — so the repository can host more CLIs and tools, with the package identity moving to `@art-works/workspace-cli`; coordinated from the ONGOING items in `$ART_WORKS/_backlog/_parking-lot.md`.
 
 ## Context
 
 ### Upstream Work
 
-| Kind                  | Path                                                                   | Role                                                                              |
-| --------------------- | ---------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| Parking Lot           | `$ART_WORK/_backlog/_parking-lot.md`                                   | Tracks the ONGOING migration and rename items that requested this milestone.      |
-| Architecture Briefing | `$ART_WORK/_roadmap/_architect.md`                                     | Repository principles and the multi-CLI future that motivate the rename.          |
-| Milestone             | `$ART_WORK_CLI/_roadmap/3-now/milestone-art-work-cli-one/milestone.md` | Sibling milestone holding the CLI delivery work this planning migration supports. |
+| Kind                  | Path                                                                    | Role                                                                              |
+| --------------------- | ----------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Parking Lot           | `$ART_WORKS/_backlog/_parking-lot.md`                                   | Tracks the ONGOING migration and rename items that requested this milestone.      |
+| Architecture Briefing | `$ART_WORKS/_roadmap/_architect.md`                                     | Repository principles and the multi-CLI future that motivate the rename.          |
+| Milestone             | `$ART_WORKS_CLI/_roadmap/3-now/milestone-art-work-cli-one/milestone.md` | Sibling milestone holding the CLI delivery work this planning migration supports. |
 
 ### Required Skills
 
@@ -89,16 +89,16 @@ Rename the repository and the project to Art Works in 2 phases — relocate the 
 Agents SHOULD scan these files for relevant clarifications when faced by ambiguity or omissions that may result from missing definitions.
 
 ::READ `$WORKSPACE/_guide.md` (Guide) — Workspace layout, records management, setup, and verification. Relevant for Planning Work Item, Setting Up, Writing Commit Message, Verifying Completion.
-::READ `$ART_WORK/_guide.md` (Guide) — Repository layout, records management, conventions, and verification. Relevant for Planning Work Item, Writing Commit Message, Verifying Completion.
-::READ `$ART_WORK_CLI/_guide.md` (Guide) — Package layout, roadmap and backlog locations, and verification. Relevant for Planning Work Item.
+::READ `$ART_WORKS/_guide.md` (Guide) — Repository layout, records management, conventions, and verification. Relevant for Planning Work Item, Writing Commit Message, Verifying Completion.
+::READ `$ART_WORKS_CLI/_guide.md` (Guide) — Package layout, roadmap and backlog locations, and verification. Relevant for Planning Work Item.
 
 ## Scope
 
-Rename the identity of one repository and one project across 4 owners — `$ART_WORK` records, `$WORKSPACE` records, the project reference held by `$ARTIFICIALS`, and the generated project list in `$NOODLESTAN_WEB` — plus the GitHub repository name and the package identity (`@art-works/workspace-cli`); the workspace script names and the existing checkout locations stay unchanged.
+Rename the identity of one repository and one project across 4 owners — `$ART_WORKS` records, `$WORKSPACE` records, the project reference held by `$ARTIFICIALS`, and the generated project list in `$NOODLESTAN_WEB` — plus the GitHub repository name and the package identity (`@art-works/workspace-cli`); the workspace script names and the existing checkout locations stay unchanged.
 
 ### (Scope) Project: Art Work
 
-**Record:** `$ART_WORK/_records/project.art`
+**Record:** `$ART_WORKS/_records/project.art`
 
 **Role:** — The project identity being renamed to Art Works.
 
@@ -123,7 +123,7 @@ Rename the identity of one repository and one project across 4 owners — `$ART_
 
 ### (Scope) Repository: Art Work
 
-**Record:** `$ART_WORK/_records/repository.art`
+**Record:** `$ART_WORKS/_records/repository.art`
 
 **Role:** — Repository identity inside the checkout that is being renamed.
 
@@ -238,11 +238,11 @@ Rename the identity of one repository and one project across 4 owners — `$ART_
 
 **Dependencies:**
 
-- Workspace repository record and the `$ART_WORK` project record renamed first.
+- Workspace repository record and the `$ART_WORKS` project record renamed first.
 
 ### (Scope) Package: Art Workspace Cli
 
-**Record:** `$ART_WORK_CLI/_records/package.art`
+**Record:** `$ART_WORKS_CLI/_records/package.art`
 
 **Role:** — Renamed together with the repository and the project.
 
@@ -266,7 +266,7 @@ Rename the identity of one repository and one project across 4 owners — `$ART_
 
 ## Execution Context
 
-Execution occurs from `$WORKSPACE/`, planning work in `$WORKSPACE/checkouts/art-work` on branch `building`, with record changes in `$WORKSPACE/_records`, `$ART_WORK/_records`, `$ARTIFICIALS/_records`, and `$NOODLESTAN_WEB/data`.
+Execution occurs from `$WORKSPACE/`, planning work in `$WORKSPACE/checkouts/art-work` on branch `building`, with record changes in `$WORKSPACE/_records`, `$ART_WORKS/_records`, `$ARTIFICIALS/_records`, and `$NOODLESTAN_WEB/data`.
 
 ---
 
@@ -274,16 +274,16 @@ Execution occurs from `$WORKSPACE/`, planning work in `$WORKSPACE/checkouts/art-
 
 This section describes the ordered phases used to organise downstream work, identifying blocking dependencies across resources of different owners.
 
-| Index | Name                                             | Status    |
-| ----- | ------------------------------------------------ | --------- |
-| 1     | Relocate planning artefacts into `cli/workspace` | `DONE`    |
-| 2     | Rename repository and project to Art Works       | `ONGOING` |
+| Index | Name                                             | Status |
+| ----- | ------------------------------------------------ | ------ |
+| 1     | Relocate planning artefacts into `cli/workspace` | `DONE` |
+| 2     | Rename repository and project to Art Works       | `DONE` |
 
 ### Phase: 1 — Relocate planning artefacts into `cli/workspace`
 
 **Goal:** Give the Art Workspace Cli ownership of its roadmap and backlog before identities move, keeping the root trees free for repository-level planning.
 
-**Description:** Move the remaining root `_roadmap/` and `_backlog/` entries into `$ART_WORK_CLI`, re-scaffold the emptied root trees with `.gitkeep` stages, verify both guides already describe the split, and leave no stale reference.
+**Description:** Move the remaining root `_roadmap/` and `_backlog/` entries into `$ART_WORKS_CLI`, re-scaffold the emptied root trees with `.gitkeep` stages, verify both guides already describe the split, and leave no stale reference.
 
 **Status:** `DONE`
 
@@ -307,10 +307,10 @@ This section describes the ordered phases used to organise downstream work, iden
 
 ## Items:
 
-| Phase | Resource / Record                                                                                               | Status    |
-| ----- | --------------------------------------------------------------------------------------------------------------- | --------- |
-| 1     | Plan: Migrate Planning and Knowledge `$ART_WORK_CLI/_backlog/3-now/plan-migrate-planning-and-knowledge/plan.md` | `DONE`    |
-| 2     | Plan: Rename Repo and Project `$ART_WORK_CLI/_backlog/3-now/plan-rename-repo-and-project/plan.md`               | `WORKING` |
+| Phase | Resource / Record                                                                                                | Status    |
+| ----- | ---------------------------------------------------------------------------------------------------------------- | --------- |
+| 1     | Plan: Migrate Planning and Knowledge `$ART_WORKS_CLI/_backlog/3-now/plan-migrate-planning-and-knowledge/plan.md` | `DONE`    |
+| 2     | Plan: Rename Repo and Project `$ART_WORKS_CLI/_backlog/3-now/plan-rename-repo-and-project/plan.md`               | `WORKING` |
 
 ---
 
@@ -318,7 +318,7 @@ This section describes the ordered phases used to organise downstream work, iden
 
 ### Next
 
-Phase 2 is `ONGOING`: `rename-identity-records` is `DONE` (the identity records and the package identity are renamed, `@art-works/workspace-cli@0.3.0` is published, and the old `@art-work/cli` is deprecated with a final `0.2.1` release); `rename-workspace-records` is `SKIPPED` and the user takes the workspace records and the checkout locations over; `repoint-artificials-references` is `DONE`; `regenerate-noodlestan-web-projects` waits for the workspace records; `sweep-remaining-references` waits for iterations 2 to 4.
+Phase 2 is `DONE`: all four rename/regeneration iterations are `DONE` and the reference sweep is complete; the repository and project are renamed to Art Works.
 
 ### Blockers
 
@@ -349,23 +349,23 @@ Run from the `$WORKSPACE` root:
 npm ci # to install dependencies.
 ```
 
-**Instructions:** (From `$ART_WORK/_guide.md`)
+**Instructions:** (From `$ART_WORKS/_guide.md`)
 
-Run from the `$ART_WORK` root:
+Run from the `$ART_WORKS` root:
 
 ```bash
 npm ci # to install dependencies.
 ```
 
-Do NOT run `npm install` inside `$ART_WORK` — a local `node_modules` there shadows the monorepo resolution and breaks the build.
+Do NOT run `npm install` inside `$ART_WORKS` — a local `node_modules` there shadows the monorepo resolution and breaks the build.
 
 ### Operating Instructions: Verifying Completion
 
 **Purpose:** Confirms that the work item has been completed and satisfies its intended outcome. Operation of Workflow: Executing Work, defined in `$DOMAINS/work/workflows/executing-work/verifying-completion/operation.art`.
 
-**Instructions:** (From `$ART_WORK/_guide.md`)
+**Instructions:** (From `$ART_WORKS/_guide.md`)
 
-Run from the `$ART_WORK` root:
+Run from the `$ART_WORKS` root:
 
 ```bash
 npm run ci # lint, test and build
@@ -388,7 +388,7 @@ Runs automatically on the pre-commit hook. All steps MUST pass.
 ### Evidence
 
 - **`noodlestan/art-works` resolves** and `noodlestan/art-work` redirects to it.
-- **No stale identity** — searching `Art Work` (case-sensitive) across `$WORKSPACE/_records`, `$ART_WORK/_records`, `$ARTIFICIALS/_records`, and `$NOODLESTAN_WEB/data` returns only the new `Art Works` identity plus the planned-member names (`Art Work Website`, `Art Work Tool`); searching `art-work` returns only `art-works`, the kept checkout location (`art-work`), and the workspace script name (`npm run art-work`).
+- **No stale identity** — searching `Art Work` (case-sensitive) across `$WORKSPACE/_records`, `$ART_WORKS/_records`, `$ARTIFICIALS/_records`, and `$NOODLESTAN_WEB/data` returns only the new `Art Works` identity plus the planned-member names (`Art Work Website`, `Art Work Tool`); searching `art-work` returns only `art-works`, the kept checkout location (`art-work`), and the workspace script name (`npm run art-work`).
 - **Website shows Art Works** — the rebuilt and redeployed site lists `Project: Art Works` with the new repository URL.
 - **`@art-works/workspace-cli@0.3.0` is published** and the global install resolves the `art-workspace-cli` bin.
 - **`@art-work/cli` is deprecated** — `0.2.1` carries the deprecation notice and the registry marks the package deprecated.
@@ -397,11 +397,11 @@ Runs automatically on the pre-commit hook. All steps MUST pass.
 
 - **Website project data is generated** — `$NOODLESTAN_WEB/data/_records/projects/*.art` come from `npm run update-project-records` and `data/projects/collection.json` from `npm run update-project-collection`; the rename edits the source records, then regenerates.
 - **One record drives clones** — `$WORKSPACE/_records/repositories/art-work.art` feeds both `.art-workspace.mts` and the website copy script, so the file itself must be renamed, not only its contents.
-- **Owner field is stale** — `$WORKSPACE/_records/repositories/art-work.art` declares `Owner: Project: Art JS` while `$ART_WORK/_records/project.art` declares `Project: Art Work`.
+- **Owner field is stale** — `$WORKSPACE/_records/repositories/art-work.art` declares `Owner: Project: Art JS` while `$ART_WORKS/_records/project.art` declares `Project: Art Work`.
 
 ### Decisions
 
-- **Migrate before rename** — planning artefacts settle in `$ART_WORK_CLI` first so the rename does not move paths twice.
+- **Migrate before rename** — planning artefacts settle in `$ART_WORKS_CLI` first so the rename does not move paths twice.
 - **GitHub rename first** — the repository is renamed before records are repointed, so GitHub redirects keep every old URL working during the switch.
 - **Package keeps its name** — the repository and the project only are renamed, so the repository can host more CLIs and tools. Superseded on 2026-10-21: the package identity moved with the repository to `@art-works/workspace-cli` (bin `art-workspace-cli`, path `cli/workspace`).
 - **The workspace records wait** (user, 2026-10-21) — the workspace records move after the new CLI is installed and the workspaces restart.
@@ -410,8 +410,8 @@ Runs automatically on the pre-commit hook. All steps MUST pass.
 
 ### Knowledge to Update
 
-- `$ART_WORK/_guide.md` — guide title and repository description after the rename.
-- `$ART_WORK_CLI/_guide.md` — repository-level mentions only; the package keeps its name.
+- `$ART_WORKS/_guide.md` — guide title and repository description after the rename.
+- `$ART_WORKS_CLI/_guide.md` — repository-level mentions only; the package keeps its name.
 
 ### Follow Ups
 
